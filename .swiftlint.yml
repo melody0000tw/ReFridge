@@ -1,0 +1,5 @@
+line_length: 200
+excluded:
+  - Pods
+disabled_rules:
+  - unused_optional_binding
