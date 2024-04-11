@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    
-    let db = FirestoreManager.shared.db
+class MyFridgeViewController: UIViewController {
+
+    let db = FirestoreManager.shared.database
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +18,7 @@ class ViewController: UIViewController {
             await addData()
         }
     }
-    
+
     func addData() async {
         do {
             let foodCards = db.collection("users").document("userId").collection("foodCards")

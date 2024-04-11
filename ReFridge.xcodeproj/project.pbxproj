@@ -10,12 +10,16 @@
 		09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */; };
 		EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */; };
 		EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */; };
-		EBF88E352BC5703E00DEF2FA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E342BC5703E00DEF2FA /* ViewController.swift */; };
+		EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */; };
 		EBF88E382BC5703E00DEF2FA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBF88E362BC5703E00DEF2FA /* Main.storyboard */; };
 		EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EBF88E392BC5704200DEF2FA /* Assets.xcassets */; };
 		EBF88E3D2BC5704200DEF2FA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBF88E3B2BC5704200DEF2FA /* LaunchScreen.storyboard */; };
 		EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62C12BC789380013F50F /* FirestoreManager.swift */; };
 		EBFF62C42BC78FD50013F50F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBFF62C32BC78FD40013F50F /* GoogleService-Info.plist */; };
+		EBFF62C72BC7982E0013F50F /* FoodCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62C62BC7982E0013F50F /* FoodCardViewController.swift */; };
+		EBFF62CC2BC79D650013F50F /* FoodTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62CA2BC79D650013F50F /* FoodTypeCell.swift */; };
+		EBFF62CD2BC79D650013F50F /* FoodTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBFF62CB2BC79D650013F50F /* FoodTypeCell.xib */; };
+		EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62CF2BC79F9E0013F50F /* UICollectionView+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,13 +29,17 @@
 		EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReFridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		EBF88E342BC5703E00DEF2FA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFridgeViewController.swift; sourceTree = "<group>"; };
 		EBF88E372BC5703E00DEF2FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EBF88E392BC5704200DEF2FA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EBF88E3C2BC5704200DEF2FA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EBF88E3E2BC5704200DEF2FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBFF62C12BC789380013F50F /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		EBFF62C32BC78FD40013F50F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		EBFF62C62BC7982E0013F50F /* FoodCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCardViewController.swift; sourceTree = "<group>"; };
+		EBFF62CA2BC79D650013F50F /* FoodTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTypeCell.swift; sourceTree = "<group>"; };
+		EBFF62CB2BC79D650013F50F /* FoodTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FoodTypeCell.xib; sourceTree = "<group>"; };
+		EBFF62CF2BC79F9E0013F50F /* UICollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +92,11 @@
 		EBF88E2F2BC5703E00DEF2FA /* ReFridge */ = {
 			isa = PBXGroup;
 			children = (
+				EBFF62CE2BC79F820013F50F /* Extension */,
+				EBFF62C52BC797DA0013F50F /* Views */,
 				EBFF62C02BC787DC0013F50F /* Managers */,
 				EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */,
 				EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */,
-				EBF88E342BC5703E00DEF2FA /* ViewController.swift */,
-				EBF88E362BC5703E00DEF2FA /* Main.storyboard */,
 				EBF88E392BC5704200DEF2FA /* Assets.xcassets */,
 				EBF88E3B2BC5704200DEF2FA /* LaunchScreen.storyboard */,
 				EBFF62C32BC78FD40013F50F /* GoogleService-Info.plist */,
@@ -103,6 +111,42 @@
 				EBFF62C12BC789380013F50F /* FirestoreManager.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		EBFF62C52BC797DA0013F50F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EBF88E362BC5703E00DEF2FA /* Main.storyboard */,
+				EBFF62C82BC79CDA0013F50F /* MyFridge */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EBFF62C82BC79CDA0013F50F /* MyFridge */ = {
+			isa = PBXGroup;
+			children = (
+				EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */,
+				EBFF62C62BC7982E0013F50F /* FoodCardViewController.swift */,
+				EBFF62C92BC79D110013F50F /* FoodTypeCell */,
+			);
+			path = MyFridge;
+			sourceTree = "<group>";
+		};
+		EBFF62C92BC79D110013F50F /* FoodTypeCell */ = {
+			isa = PBXGroup;
+			children = (
+				EBFF62CA2BC79D650013F50F /* FoodTypeCell.swift */,
+				EBFF62CB2BC79D650013F50F /* FoodTypeCell.xib */,
+			);
+			path = FoodTypeCell;
+			sourceTree = "<group>";
+		};
+		EBFF62CE2BC79F820013F50F /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				EBFF62CF2BC79F9E0013F50F /* UICollectionView+Ext.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,6 +214,7 @@
 				EBFF62C42BC78FD50013F50F /* GoogleService-Info.plist in Resources */,
 				EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */,
 				EBF88E382BC5703E00DEF2FA /* Main.storyboard in Resources */,
+				EBFF62CD2BC79D650013F50F /* FoodTypeCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,10 +284,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBF88E352BC5703E00DEF2FA /* ViewController.swift in Sources */,
+				EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */,
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
 				EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */,
+				EBFF62C72BC7982E0013F50F /* FoodCardViewController.swift in Sources */,
+				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
+				EBFF62CC2BC79D650013F50F /* FoodTypeCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
