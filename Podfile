@@ -7,6 +7,7 @@ target 'ReFridge' do
 
   # Pods for ReFridge
   pod 'SwiftLint'
-
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
 
 end
