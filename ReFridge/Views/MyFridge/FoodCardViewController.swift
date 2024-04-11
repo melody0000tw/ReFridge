@@ -9,7 +9,20 @@ import UIKit
 import SnapKit
 
 class FoodCardViewController: UIViewController {
-
+    
+    private let firestoreManager = FirestoreManager.shared
+    private var data = FoodTypeData.share.data
+    private var selectedFoodCategory = FoodTypeData.share.data[0]
+    private var selectedFoodType: FoodType? {
+        didSet {
+            if let selectedFoodType = selectedFoodType {
+                nameLabel.text = selectedFoodType.name
+                imageView.image = selectedFoodType.icon
+            }
+        }
+    }
+    
+    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var barcodeTextField: UITextField!
@@ -32,17 +45,59 @@ class FoodCardViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.RF_registerCellWithNib(identifier: String(describing: FoodTypeCell.self), bundle: nil)
+        collectionView.register(FoodCategoryHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: FoodCategoryHeaderView.self))
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 100, height: 120)
+        layout.minimumLineSpacing = 16
+        layout.minimumInteritemSpacing = 8
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        layout.sectionHeadersPinToVisibleBounds = true
+        collectionView.collectionViewLayout = layout
     }
     
     private func saveData() {
         print("save data")
+        guard let name = nameLabel.text,
+              let typeId = selectedFoodType?.id,
+              let barCode = barcodeTextField.text,
+              let expireDate = expireTimeTextField.text,
+              let qty = qtyTextField.text,
+              let notificationTime = notificationTimeTextField.text
+        else {
+            print("empty data")
+            return
+        }
+        let foodCard = FoodCard(
+            name: name,
+            categoryId: selectedFoodCategory.id,
+            typeId: typeId,
+            qty: Int(qty) ?? 0,
+            createDate: Date().timeIntervalSince1970,
+            expireDate: Date().timeIntervalSince1970 + (Double(expireDate) ?? 10000.0),
+            notificationTime: Int(notificationTime) ?? 0,
+            barCode: Int(barCode) ?? 0,
+            storageType: storageSegment.selectedSegmentIndex,
+            notes: "notenote")
         
+        print(foodCard)
+        
+        Task {
+            await firestoreManager.addFoodCard(foodCard) { result in
+                switch result {
+                case .success:
+                    print("Document successfully written!")
+                case .failure(let error):
+                    print("Error adding document: \(error)")
+                }
+                
+            }
+        }
     }
 }
 
 extension FoodCardViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        return selectedFoodCategory.foodTypes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -50,7 +105,33 @@ extension FoodCardViewController: UICollectionViewDataSource, UICollectionViewDe
         else {
             return UICollectionViewCell()
         }
+        let foodType = selectedFoodCategory.foodTypes[indexPath.item]
+        cell.iconImage.image = foodType.icon
+        cell.titleLabel.text = foodType.name
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("indexPath.item = \(indexPath.item)")
+        let foodType = selectedFoodCategory.foodTypes[indexPath.item]
+        selectedFoodType = foodType
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: FoodCategoryHeaderView.self), for: indexPath) as? FoodCategoryHeaderView
+        else {
+            return UICollectionReusableView()
+        }
+        headerView.onChangeCategory = { id in
+            self.selectedFoodCategory = self.data[id]
+            DispatchQueue.main.async {
+                collectionView.reloadData()
+            }
+        }
+        return headerView
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 60)
+    }
 }

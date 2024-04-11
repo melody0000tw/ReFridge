@@ -67,13 +67,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yk-w0-fkX">
-                                <rect key="frame" x="16" y="103" width="361" height="20.333333333333329"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <rect key="frame" x="16" y="126.99999999999999" width="361" height="26.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GsL-jp-nZF">
-                                <rect key="frame" x="16" y="147.33333333333334" width="361" height="200.00000000000003"/>
+                                <rect key="frame" x="16" y="177.33333333333337" width="361" height="200"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="wuC-YW-jV6"/>
@@ -96,7 +96,7 @@
                                 </cells>
                             </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ltj-iD-XJL" userLabel="照片 數量 Stack View">
-                                <rect key="frame" x="23" y="371.33333333333331" width="353.66666666666669" height="149.99999999999994"/>
+                                <rect key="frame" x="23" y="401.33333333333331" width="353.66666666666669" height="149.99999999999994"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="750" image="fork.knife.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="STo-OA-gWU">
                                         <rect key="frame" x="0.0" y="1" width="150" height="148.66666666666666"/>
@@ -135,7 +135,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hde-RP-Eox" userLabel="到期提醒 Stack View">
-                                <rect key="frame" x="16" y="545.33333333333337" width="361" height="34"/>
+                                <rect key="frame" x="16" y="575.33333333333337" width="361" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="到期提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Okb-ns-ceo">
                                         <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="34"/>
@@ -151,7 +151,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lwK-WW-HtH" userLabel="保存方式 Stack View">
-                                <rect key="frame" x="16" y="595.33333333333337" width="361" height="31"/>
+                                <rect key="frame" x="16" y="625.33333333333337" width="361" height="31"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存方式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AtK-1s-IeR">
                                         <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="31"/>
@@ -189,6 +189,7 @@
                         <viewLayoutGuide key="safeArea" id="UTL-Dc-lBO"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
+                            <constraint firstItem="GsL-jp-nZF" firstAttribute="top" secondItem="7yk-w0-fkX" secondAttribute="bottom" constant="24" id="5dh-8x-p30"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="7yk-w0-fkX" secondAttribute="trailing" constant="16" id="BwP-PH-1x6"/>
                             <constraint firstItem="ltj-iD-XJL" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="23" id="C0j-az-CDk"/>
                             <constraint firstItem="KGR-3L-WSO" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="24" id="D6q-JG-9e4"/>
@@ -196,14 +197,13 @@
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="ltj-iD-XJL" secondAttribute="trailing" constant="16.333333333333314" id="M52-7u-NwA"/>
                             <constraint firstAttribute="bottom" secondItem="2kH-BC-MLQ" secondAttribute="bottom" constant="100" id="S54-E7-sjB"/>
                             <constraint firstItem="hde-RP-Eox" firstAttribute="top" secondItem="ltj-iD-XJL" secondAttribute="bottom" constant="24" id="Uqp-br-ELG"/>
-                            <constraint firstItem="GsL-jp-nZF" firstAttribute="top" secondItem="7yk-w0-fkX" secondAttribute="bottom" constant="24" id="ZQW-Hq-SIt"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="GsL-jp-nZF" secondAttribute="trailing" constant="16" id="ebc-kL-ef5"/>
                             <constraint firstItem="GsL-jp-nZF" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="gDa-KE-U7J"/>
                             <constraint firstItem="7yk-w0-fkX" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="hLo-AR-iaO"/>
                             <constraint firstItem="lwK-WW-HtH" firstAttribute="top" secondItem="hde-RP-Eox" secondAttribute="bottom" constant="16" id="idx-ul-SCT"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="lwK-WW-HtH" secondAttribute="trailing" constant="16" id="kvw-1q-Sj2"/>
                             <constraint firstItem="ltj-iD-XJL" firstAttribute="top" secondItem="GsL-jp-nZF" secondAttribute="bottom" constant="24" id="oPA-KE-y5U"/>
-                            <constraint firstItem="7yk-w0-fkX" firstAttribute="top" secondItem="UTL-Dc-lBO" secondAttribute="top" id="r8B-rl-9QB"/>
+                            <constraint firstItem="7yk-w0-fkX" firstAttribute="top" secondItem="UTL-Dc-lBO" secondAttribute="top" constant="24" id="r8B-rl-9QB"/>
                             <constraint firstItem="lwK-WW-HtH" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="vBk-bZ-Tsu"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="2kH-BC-MLQ" secondAttribute="trailing" constant="24" id="vue-cN-bma"/>
                             <constraint firstAttribute="bottom" secondItem="KGR-3L-WSO" secondAttribute="bottom" constant="100" id="xDU-Ew-mtd"/>
@@ -216,6 +216,7 @@
                         <outlet property="collectionView" destination="GsL-jp-nZF" id="bFg-vG-WZC"/>
                         <outlet property="expireTimeTextField" destination="ai2-nW-sSs" id="1SU-jH-Oid"/>
                         <outlet property="imageView" destination="STo-OA-gWU" id="1Pn-El-5cA"/>
+                        <outlet property="nameLabel" destination="7yk-w0-fkX" id="nr1-QX-Ir1"/>
                         <outlet property="notificationTimeTextField" destination="wGz-3c-IMt" id="mwx-q5-hoU"/>
                         <outlet property="qtyTextField" destination="9j6-Bs-c2A" id="UGH-29-sPP"/>
                         <outlet property="storageSegment" destination="0Z4-2S-F0I" id="1uv-JP-wJm"/>
@@ -233,6 +234,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6og-3h-vFL">
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <tabBarAppearance key="scrollEdgeAppearance"/>
                     </tabBar>
                     <connections>
                         <segue destination="5y0-yn-TDP" kind="relationship" relationship="viewControllers" id="yxz-yP-aTh"/>
@@ -251,6 +253,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="q0W-vA-Y2s">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <navigationBarAppearance key="scrollEdgeAppearance"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

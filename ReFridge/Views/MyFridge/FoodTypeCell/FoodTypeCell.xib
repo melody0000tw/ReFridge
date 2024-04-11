@@ -44,6 +44,10 @@
                 <constraint firstItem="3H9-xU-EWk" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="ltX-HC-mWP"/>
             </constraints>
             <size key="customSize" width="221" height="284"/>
+            <connections>
+                <outlet property="iconImage" destination="3H9-xU-EWk" id="X0F-F9-EZY"/>
+                <outlet property="titleLabel" destination="xeY-UH-Uiz" id="G1A-fa-kkc"/>
+            </connections>
             <point key="canvasLocation" x="237.40458015267174" y="102.8169014084507"/>
         </collectionViewCell>
     </objects>
