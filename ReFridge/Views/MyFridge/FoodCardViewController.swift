@@ -9,6 +9,13 @@ import UIKit
 import SnapKit
 
 class FoodCardViewController: UIViewController {
+    let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
     
     private let firestoreManager = FirestoreManager.shared
     private var data = FoodTypeData.share.data
@@ -21,6 +28,15 @@ class FoodCardViewController: UIViewController {
             }
         }
     }
+    private var expiredDate: Date? {
+        didSet {
+            if let expiredDate = expiredDate {
+                expireTimeTextField.text = formatter.string(from: expiredDate)
+            }
+        }
+    }
+    
+    let datePicker = UIDatePicker()
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -39,6 +55,7 @@ class FoodCardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
+        setupDatePicker()
     }
     
     private func setupCollectionView() {
@@ -55,13 +72,31 @@ class FoodCardViewController: UIViewController {
         collectionView.collectionViewLayout = layout
     }
     
+    private func setupDatePicker() {
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .date
+        expireTimeTextField.inputView = datePicker
+        
+        // Toolbar
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
+        toolbar.setItems([doneButton], animated: true)
+        expireTimeTextField.inputAccessoryView = toolbar
+    }
+    
+    @objc func doneAction() {
+        expiredDate = datePicker.date
+        expireTimeTextField.resignFirstResponder()
+    }
+    
     private func saveData() {
         print("save data")
         guard let name = nameLabel.text,
               let typeId = selectedFoodType?.id,
               let iconName = selectedFoodType?.iconName,
               let barCode = barcodeTextField.text,
-              let expireDate = expireTimeTextField.text,
+              let expireDate = expiredDate,
               let qty = qtyTextField.text,
               let notificationTime = notificationTimeTextField.text
         else {
@@ -75,7 +110,7 @@ class FoodCardViewController: UIViewController {
             iconName: iconName,
             qty: Int(qty) ?? 0,
             createDate: Date().timeIntervalSince1970,
-            expireDate: Date().timeIntervalSince1970 + (Double(expireDate) ?? 10000.0),
+            expireDate: expireDate.timeIntervalSince1970,
             notificationTime: Int(notificationTime) ?? 0,
             barCode: Int(barCode) ?? 0,
             storageType: storageSegment.selectedSegmentIndex,

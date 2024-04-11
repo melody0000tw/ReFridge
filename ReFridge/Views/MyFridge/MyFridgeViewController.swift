@@ -70,8 +70,14 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             return UICollectionViewCell()
         }
         let foodCard = foodCards[indexPath.item]
+        
+        let expireDate = Date(timeIntervalSince1970: foodCard.expireDate)
+        let remainingDays: Int? = expireDate.calculateRemainingDays()
         cell.nameLabel.text = foodCard.name
         cell.iconImage.image = UIImage(named: foodCard.iconName)
+        guard let remainingDays = remainingDays else { return cell }
+        cell.remainDayLabel.text = remainingDays >= 0 ? "還剩\(remainingDays)天" : "過期 \(abs(remainingDays))天"
+        
         return cell
     }
     

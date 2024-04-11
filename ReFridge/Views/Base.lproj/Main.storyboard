@@ -39,7 +39,7 @@
                                         </menu>
                                         <state key="normal" title="篩選方式"/>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CnR-4x-fty">
+                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CnR-4x-fty" userLabel="排序方式">
                                         <rect key="frame" x="184.66666666666663" y="0.0" width="176.33333333333337" height="30"/>
                                         <color key="backgroundColor" systemColor="systemGray4Color"/>
                                         <constraints>
@@ -48,10 +48,9 @@
                                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <menu key="menu" id="vhO-6t-jfT">
                                             <children>
-                                                <command title="全部" id="2BZ-rU-NDl"/>
-                                                <command title="冷藏" id="pVF-hP-fMg"/>
-                                                <command title="冷凍" id="Ukx-uH-S1E"/>
-                                                <command title="常溫" id="Zle-WG-dk0"/>
+                                                <command title="全部" id="2BZ-rU-NDl" userLabel="依照剩餘天數"/>
+                                                <command title="冷藏" id="pVF-hP-fMg" userLabel="依照加入日期"/>
+                                                <command title="冷凍" id="Ukx-uH-S1E" userLabel="依照種類"/>
                                             </children>
                                         </menu>
                                         <state key="normal" title="篩選方式"/>
@@ -283,6 +282,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="kkL-YJ-AjL" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6og-3h-vFL">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <tabBarAppearance key="scrollEdgeAppearance"/>
