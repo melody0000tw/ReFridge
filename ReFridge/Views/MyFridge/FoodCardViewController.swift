@@ -17,7 +17,7 @@ class FoodCardViewController: UIViewController {
         didSet {
             if let selectedFoodType = selectedFoodType {
                 nameLabel.text = selectedFoodType.name
-                imageView.image = selectedFoodType.icon
+                imageView.image = UIImage(named: selectedFoodType.iconName)
             }
         }
     }
@@ -59,6 +59,7 @@ class FoodCardViewController: UIViewController {
         print("save data")
         guard let name = nameLabel.text,
               let typeId = selectedFoodType?.id,
+              let iconName = selectedFoodType?.iconName,
               let barCode = barcodeTextField.text,
               let expireDate = expireTimeTextField.text,
               let qty = qtyTextField.text,
@@ -71,6 +72,7 @@ class FoodCardViewController: UIViewController {
             name: name,
             categoryId: selectedFoodCategory.id,
             typeId: typeId,
+            iconName: iconName,
             qty: Int(qty) ?? 0,
             createDate: Date().timeIntervalSince1970,
             expireDate: Date().timeIntervalSince1970 + (Double(expireDate) ?? 10000.0),
@@ -106,7 +108,7 @@ extension FoodCardViewController: UICollectionViewDataSource, UICollectionViewDe
             return UICollectionViewCell()
         }
         let foodType = selectedFoodCategory.foodTypes[indexPath.item]
-        cell.iconImage.image = foodType.icon
+        cell.iconImage.image = UIImage(named: foodType.iconName)
         cell.titleLabel.text = foodType.name
         return cell
     }

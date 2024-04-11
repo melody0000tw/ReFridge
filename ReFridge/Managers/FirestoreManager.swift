@@ -16,6 +16,22 @@ class FirestoreManager {
         database = Firestore.firestore()
     }
     
+    func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
+        do {
+            let querySnapshot = try await database.collection("users").document("userId").collection("foodCards").getDocuments()
+            
+            var foodCards = [FoodCard]()
+            for document in querySnapshot.documents {
+                let foodCard = try document.data(as: FoodCard.self)
+                print(foodCard.name)
+                foodCards.append(foodCard)
+            }
+            completion(.success(foodCards))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
     func addFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {
             let foodCards = database.collection("users").document("userId").collection("foodCards")
@@ -24,6 +40,7 @@ class FirestoreManager {
                 "name": foodCard.name,
                 "categoryId": foodCard.categoryId,
                 "typeId": foodCard.typeId,
+                "iconName": foodCard.iconName,
                 "qty": foodCard.qty,
                 "createDate": foodCard.createDate,
                 "expireDate": foodCard.expireDate,

@@ -24,6 +24,8 @@
 		EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D42BC7CF7F0013F50F /* FoodType.swift */; };
 		EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D62BC7E4750013F50F /* UIImage+Ext.swift */; };
 		EBFF62D92BC7E9EA0013F50F /* FoodCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D82BC7E9EA0013F50F /* FoodCategoryHeaderView.swift */; };
+		EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62DB2BC8197A0013F50F /* FoodCardCell.swift */; };
+		EBFF62DE2BC8197A0013F50F /* FoodCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBFF62DC2BC8197A0013F50F /* FoodCardCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,8 @@
 		EBFF62D42BC7CF7F0013F50F /* FoodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodType.swift; sourceTree = "<group>"; };
 		EBFF62D62BC7E4750013F50F /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		EBFF62D82BC7E9EA0013F50F /* FoodCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCategoryHeaderView.swift; sourceTree = "<group>"; };
+		EBFF62DB2BC8197A0013F50F /* FoodCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCardCell.swift; sourceTree = "<group>"; };
+		EBFF62DC2BC8197A0013F50F /* FoodCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FoodCardCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,8 +140,9 @@
 			children = (
 				EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */,
 				EBFF62C62BC7982E0013F50F /* FoodCardViewController.swift */,
-				EBFF62C92BC79D110013F50F /* FoodTypeCell */,
 				EBFF62D82BC7E9EA0013F50F /* FoodCategoryHeaderView.swift */,
+				EBFF62DA2BC819470013F50F /* FoodCardCell */,
+				EBFF62C92BC79D110013F50F /* FoodTypeCell */,
 			);
 			path = MyFridge;
 			sourceTree = "<group>";
@@ -167,6 +172,15 @@
 				EBFF62D42BC7CF7F0013F50F /* FoodType.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		EBFF62DA2BC819470013F50F /* FoodCardCell */ = {
+			isa = PBXGroup;
+			children = (
+				EBFF62DB2BC8197A0013F50F /* FoodCardCell.swift */,
+				EBFF62DC2BC8197A0013F50F /* FoodCardCell.xib */,
+			);
+			path = FoodCardCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +247,7 @@
 				EBF88E3D2BC5704200DEF2FA /* LaunchScreen.storyboard in Resources */,
 				EBFF62C42BC78FD50013F50F /* GoogleService-Info.plist in Resources */,
 				EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */,
+				EBFF62DE2BC8197A0013F50F /* FoodCardCell.xib in Resources */,
 				EBF88E382BC5703E00DEF2FA /* Main.storyboard in Resources */,
 				EBFF62CD2BC79D650013F50F /* FoodTypeCell.xib in Resources */,
 			);
@@ -311,6 +326,7 @@
 				EBFF62C72BC7982E0013F50F /* FoodCardViewController.swift in Sources */,
 				EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */,
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
+				EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
 				EBFF62D92BC7E9EA0013F50F /* FoodCategoryHeaderView.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,

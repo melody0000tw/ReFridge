@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,9 +19,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="OxU-Ai-va3">
-                                <rect key="frame" x="16" y="193" width="361" height="486"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="JeY-0e-6R8" userLabel="篩選 Menu Stack View">
+                                <rect key="frame" x="16" y="119" width="361" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y6s-YQ-fxy">
+                                        <rect key="frame" x="0.0" y="0.0" width="176.66666666666666" height="30"/>
+                                        <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="0Tk-Xv-Lsq"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <menu key="menu" id="zyi-aU-OXn">
+                                            <children>
+                                                <command title="全部" id="WY7-9L-qCQ"/>
+                                                <command title="冷藏" id="DRl-Jl-3U0"/>
+                                                <command title="冷凍" id="Eav-fv-MPW"/>
+                                                <command title="常溫" id="1ag-66-bmW"/>
+                                            </children>
+                                        </menu>
+                                        <state key="normal" title="篩選方式"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CnR-4x-fty">
+                                        <rect key="frame" x="184.66666666666663" y="0.0" width="176.33333333333337" height="30"/>
+                                        <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="X1R-0r-4cP"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <menu key="menu" id="vhO-6t-jfT">
+                                            <children>
+                                                <command title="全部" id="2BZ-rU-NDl"/>
+                                                <command title="冷藏" id="pVF-hP-fMg"/>
+                                                <command title="冷凍" id="Ukx-uH-S1E"/>
+                                                <command title="常溫" id="Zle-WG-dk0"/>
+                                            </children>
+                                        </menu>
+                                        <state key="normal" title="篩選方式"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="OxU-Ai-va3">
+                                <rect key="frame" x="16" y="173" width="361" height="580"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nC0-hi-M2z">
                                     <size key="itemSize" width="128" height="128"/>
@@ -51,8 +90,20 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="JeY-0e-6R8" secondAttribute="trailing" constant="16" id="4ur-I7-SO8"/>
+                            <constraint firstItem="OxU-Ai-va3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="GxU-ms-RhZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OxU-Ai-va3" secondAttribute="trailing" constant="16" id="Y73-fc-WIw"/>
+                            <constraint firstItem="JeY-0e-6R8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="aMN-lu-4Wd"/>
+                            <constraint firstItem="OxU-Ai-va3" firstAttribute="top" secondItem="JeY-0e-6R8" secondAttribute="bottom" constant="24" id="gJw-P7-dYO"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="OxU-Ai-va3" secondAttribute="bottom" constant="16" id="uJo-89-7iJ"/>
+                            <constraint firstItem="JeY-0e-6R8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="y14-Yn-cgl"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="我的冰箱" id="1I9-uv-LqY"/>
+                    <connections>
+                        <outlet property="collectionView" destination="OxU-Ai-va3" id="pKj-nc-uNa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -111,12 +162,12 @@
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="數量" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9j6-Bs-c2A">
                                                 <rect key="frame" x="0.0" y="0.0" width="187.66666666666666" height="44.666666666666664"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="到期日" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ai2-nW-sSs">
                                                 <rect key="frame" x="0.0" y="52.666666666666686" width="187.66666666666666" height="44.666666666666657"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
+                                                <textInputTraits key="textInputTraits" textContentType="date-time"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="BarCode" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJA-Kv-WqP">
                                                 <rect key="frame" x="0.0" y="105.33333333333337" width="187.66666666666666" height="44.666666666666657"/>
@@ -269,6 +320,9 @@
         <image name="fork.knife.circle" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

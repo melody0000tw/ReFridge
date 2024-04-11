@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct FoodCard {
+struct FoodCard: Codable {
     let name: String
     let categoryId: Int
     let typeId: Int
+    let iconName: String
     let qty: Int
     let createDate: Double
     let expireDate: Double
