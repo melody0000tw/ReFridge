@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */; };
+		EB9B2C512BC95589004CB435 /* FoodTypeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9B2C4F2BC95589004CB435 /* FoodTypeCollectionViewController.swift */; };
 		EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */; };
 		EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */; };
 		EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */; };
@@ -33,6 +34,7 @@
 		2A2A3BE874E2D79E74386116 /* Pods-ReFridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReFridge.debug.xcconfig"; path = "Target Support Files/Pods-ReFridge/Pods-ReFridge.debug.xcconfig"; sourceTree = "<group>"; };
 		7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReFridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB7EF03CBFBE351CEBCF8C77 /* Pods-ReFridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReFridge.release.xcconfig"; path = "Target Support Files/Pods-ReFridge/Pods-ReFridge.release.xcconfig"; sourceTree = "<group>"; };
+		EB9B2C4F2BC95589004CB435 /* FoodTypeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodTypeCollectionViewController.swift; sourceTree = "<group>"; };
 		EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReFridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EB9B2C4B2BC954C3004CB435 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				EB9B2C4C2BC954D5004CB435 /* FoodTypeCollectionView */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		EB9B2C4C2BC954D5004CB435 /* FoodTypeCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				EB9B2C4F2BC95589004CB435 /* FoodTypeCollectionViewController.swift */,
+			);
+			path = FoodTypeCollectionView;
+			sourceTree = "<group>";
+		};
 		EBF88E242BC5703E00DEF2FA = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +149,7 @@
 		EBFF62C52BC797DA0013F50F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EB9B2C4B2BC954C3004CB435 /* Base */,
 				EBF88E362BC5703E00DEF2FA /* Main.storyboard */,
 				EBFF62C82BC79CDA0013F50F /* MyFridge */,
 			);
@@ -329,6 +348,7 @@
 				EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */,
 				EBFF62C72BC7982E0013F50F /* FoodCardViewController.swift in Sources */,
 				EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */,
+				EB9B2C512BC95589004CB435 /* FoodTypeCollectionViewController.swift in Sources */,
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
 				EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
