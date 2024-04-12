@@ -24,7 +24,6 @@
 		EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D22BC7C9E10013F50F /* FoodCard.swift */; };
 		EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D42BC7CF7F0013F50F /* FoodType.swift */; };
 		EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D62BC7E4750013F50F /* UIImage+Ext.swift */; };
-		EBFF62D92BC7E9EA0013F50F /* FoodCategoryHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62D82BC7E9EA0013F50F /* FoodCategoryHeaderView.swift */; };
 		EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62DB2BC8197A0013F50F /* FoodCardCell.swift */; };
 		EBFF62DE2BC8197A0013F50F /* FoodCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBFF62DC2BC8197A0013F50F /* FoodCardCell.xib */; };
 		EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62DF2BC8565E0013F50F /* Date+Ext.swift */; };
@@ -52,7 +51,6 @@
 		EBFF62D22BC7C9E10013F50F /* FoodCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCard.swift; sourceTree = "<group>"; };
 		EBFF62D42BC7CF7F0013F50F /* FoodType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodType.swift; sourceTree = "<group>"; };
 		EBFF62D62BC7E4750013F50F /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
-		EBFF62D82BC7E9EA0013F50F /* FoodCategoryHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCategoryHeaderView.swift; sourceTree = "<group>"; };
 		EBFF62DB2BC8197A0013F50F /* FoodCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCardCell.swift; sourceTree = "<group>"; };
 		EBFF62DC2BC8197A0013F50F /* FoodCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FoodCardCell.xib; sourceTree = "<group>"; };
 		EBFF62DF2BC8565E0013F50F /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
@@ -99,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				EB9B2C4F2BC95589004CB435 /* FoodTypeCollectionViewController.swift */,
+				EBFF62C92BC79D110013F50F /* FoodTypeCell */,
 			);
 			path = FoodTypeCollectionView;
 			sourceTree = "<group>";
@@ -161,9 +160,7 @@
 			children = (
 				EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */,
 				EBFF62C62BC7982E0013F50F /* FoodCardViewController.swift */,
-				EBFF62D82BC7E9EA0013F50F /* FoodCategoryHeaderView.swift */,
 				EBFF62DA2BC819470013F50F /* FoodCardCell */,
-				EBFF62C92BC79D110013F50F /* FoodTypeCell */,
 			);
 			path = MyFridge;
 			sourceTree = "<group>";
@@ -352,7 +349,6 @@
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
 				EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
-				EBFF62D92BC7E9EA0013F50F /* FoodCategoryHeaderView.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
 				EBFF62CC2BC79D650013F50F /* FoodTypeCell.swift in Sources */,
 			);

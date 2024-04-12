@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SvD-uA-PrW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="kkL-YJ-AjL">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -114,31 +114,17 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GsL-jp-nZF">
-                                <rect key="frame" x="16" y="153.33333333333334" width="361" height="200.00000000000003"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9lv-kc-tri">
+                                <rect key="frame" x="16" y="169" width="361" height="200"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="wuC-YW-jV6"/>
+                                    <constraint firstAttribute="height" constant="200" id="zdO-ew-mfT"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yqE-Ao-npp">
-                                    <size key="itemSize" width="128" height="128"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ZuH-76-qTi">
-                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="isY-I2-APH">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </collectionViewCellContentView>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
+                                <connections>
+                                    <segue destination="dwK-Cv-YmH" kind="embed" id="QUy-Iy-4jO"/>
+                                </connections>
+                            </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ltj-iD-XJL" userLabel="照片 數量 Stack View">
-                                <rect key="frame" x="23" y="377.33333333333331" width="353.66666666666669" height="118"/>
+                                <rect key="frame" x="23" y="393.33333333333331" width="353.66666666666669" height="118"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="750" image="fork.knife.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="STo-OA-gWU">
                                         <rect key="frame" x="0.0" y="1" width="100" height="98.666666666666671"/>
@@ -178,7 +164,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hde-RP-Eox" userLabel="到期提醒 Stack View">
-                                <rect key="frame" x="16" y="519.33333333333337" width="361" height="34"/>
+                                <rect key="frame" x="16" y="535.33333333333337" width="361" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="即期提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Okb-ns-ceo">
                                         <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="34"/>
@@ -194,7 +180,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lwK-WW-HtH" userLabel="保存方式 Stack View">
-                                <rect key="frame" x="16" y="569.33333333333337" width="361" height="31"/>
+                                <rect key="frame" x="16" y="585.33333333333337" width="361" height="31"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存方式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AtK-1s-IeR">
                                         <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="31"/>
@@ -213,7 +199,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wty-dS-0hz">
-                                <rect key="frame" x="16" y="624.33333333333337" width="361" height="34"/>
+                                <rect key="frame" x="16" y="640.33333333333337" width="361" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註事項" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8T2-tm-PO7">
                                         <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="34"/>
@@ -233,19 +219,19 @@
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstItem="Wty-dS-0hz" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="1Fl-gb-EGc"/>
-                            <constraint firstItem="GsL-jp-nZF" firstAttribute="top" secondItem="7yk-w0-fkX" secondAttribute="bottom" constant="8" symbolic="YES" id="5dh-8x-p30"/>
+                            <constraint firstItem="ltj-iD-XJL" firstAttribute="top" secondItem="9lv-kc-tri" secondAttribute="bottom" constant="24" id="56G-3l-7So"/>
                             <constraint firstItem="Wty-dS-0hz" firstAttribute="top" secondItem="lwK-WW-HtH" secondAttribute="bottom" constant="24" id="9sw-gD-JCU"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="7yk-w0-fkX" secondAttribute="trailing" constant="16" id="BwP-PH-1x6"/>
                             <constraint firstItem="ltj-iD-XJL" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="23" id="C0j-az-CDk"/>
                             <constraint firstItem="hde-RP-Eox" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="DPu-0w-V4m"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="ltj-iD-XJL" secondAttribute="trailing" constant="16.333333333333314" id="M52-7u-NwA"/>
+                            <constraint firstItem="9lv-kc-tri" firstAttribute="top" secondItem="7yk-w0-fkX" secondAttribute="bottom" constant="24" id="U8x-Ds-uV4"/>
                             <constraint firstItem="hde-RP-Eox" firstAttribute="top" secondItem="ltj-iD-XJL" secondAttribute="bottom" constant="24" id="Uqp-br-ELG"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="GsL-jp-nZF" secondAttribute="trailing" constant="16" id="ebc-kL-ef5"/>
-                            <constraint firstItem="GsL-jp-nZF" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="gDa-KE-U7J"/>
+                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="9lv-kc-tri" secondAttribute="trailing" constant="16" id="eBi-xx-a7F"/>
                             <constraint firstItem="7yk-w0-fkX" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="hLo-AR-iaO"/>
                             <constraint firstItem="lwK-WW-HtH" firstAttribute="top" secondItem="hde-RP-Eox" secondAttribute="bottom" constant="16" id="idx-ul-SCT"/>
+                            <constraint firstItem="9lv-kc-tri" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="ji2-Hs-5CY"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="lwK-WW-HtH" secondAttribute="trailing" constant="16" id="kvw-1q-Sj2"/>
-                            <constraint firstItem="ltj-iD-XJL" firstAttribute="top" secondItem="GsL-jp-nZF" secondAttribute="bottom" constant="24" id="oPA-KE-y5U"/>
                             <constraint firstItem="7yk-w0-fkX" firstAttribute="top" secondItem="UTL-Dc-lBO" secondAttribute="top" constant="16" id="r8B-rl-9QB"/>
                             <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="Wty-dS-0hz" secondAttribute="trailing" constant="16" id="s7c-8Q-bij"/>
                             <constraint firstItem="lwK-WW-HtH" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="vBk-bZ-Tsu"/>
@@ -262,7 +248,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="barcodeTextField" destination="fJA-Kv-WqP" id="1rJ-2q-T4T"/>
-                        <outlet property="collectionView" destination="GsL-jp-nZF" id="bFg-vG-WZC"/>
                         <outlet property="expireTimeTextField" destination="ai2-nW-sSs" id="1SU-jH-Oid"/>
                         <outlet property="imageView" destination="STo-OA-gWU" id="1Pn-El-5cA"/>
                         <outlet property="nameLabel" destination="7yk-w0-fkX" id="nr1-QX-Ir1"/>
@@ -346,12 +331,27 @@
                     <view key="view" contentMode="scaleToFill" id="8NG-Co-Foe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="348"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="8qH-Vx-rPg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="muV-9a-lLl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1873" y="496"/>
+        </scene>
+        <!--Food Type Collection View Controller-->
+        <scene sceneID="HqK-NN-jAA">
+            <objects>
+                <viewController id="dwK-Cv-YmH" customClass="FoodTypeCollectionViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="R8F-DR-VK8">
+                        <rect key="frame" x="0.0" y="0.0" width="361" height="200"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Pr-Gn-ym7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3524" y="-262"/>
         </scene>
     </scenes>
     <resources>

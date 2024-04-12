@@ -14,14 +14,13 @@ class FoodTypeCollectionViewController: UIViewController {
     let categories = CategoryData.share.data
     
     var allFoodTypes: [FoodType] = []
-    var typiesOfSelectedCategory: [FoodType] = [] {
+    var typesOfSelectedCategory: [FoodType] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
     }
-    
     
     var onSelectFoodType: ((FoodType) -> Void)?
 
@@ -90,7 +89,7 @@ class FoodTypeCollectionViewController: UIViewController {
     @objc func onChangeCategory(sender: UIButton) {
         print("did tapped category id: \(sender.tag)")
         let selectedCategoryId = sender.tag
-        typiesOfSelectedCategory = allFoodTypes.filter({ type in
+        typesOfSelectedCategory = allFoodTypes.filter({ type in
             type.categoryId == selectedCategoryId
         })
 
@@ -102,7 +101,7 @@ class FoodTypeCollectionViewController: UIViewController {
                 switch result {
                 case .success(let foodTypes):
                     allFoodTypes = foodTypes
-                    typiesOfSelectedCategory = allFoodTypes.filter({ type in
+                    typesOfSelectedCategory = allFoodTypes.filter({ type in
                         type.categoryId == 1
                     })
                     print("已取得所有 foodTypes")
@@ -116,14 +115,14 @@ class FoodTypeCollectionViewController: UIViewController {
 
 extension FoodTypeCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return typiesOfSelectedCategory.count
+        return typesOfSelectedCategory.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: FoodTypeCell.self), for: indexPath) as? FoodTypeCell else {
             return UICollectionViewCell()
         }
-        let foodType = typiesOfSelectedCategory[indexPath.row]
+        let foodType = typesOfSelectedCategory[indexPath.row]
         cell.iconImage.image = UIImage(named: foodType.typeIcon)
         cell.titleLabel.text = foodType.typeName
         
@@ -131,9 +130,9 @@ extension FoodTypeCollectionViewController: UICollectionViewDataSource, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        let selectedType = foodTypes[indexPath.row]
-//        onSelectFoodType?(selectedType)
+        let foodType = typesOfSelectedCategory[indexPath.item]
+        if let onSelectFoodType = onSelectFoodType {
+            onSelectFoodType(foodType)
+        }
     }
 }
-
-
