@@ -10,6 +10,8 @@ import SnapKit
 import IQKeyboardManagerSwift
 
 class FoodCardViewController: UIViewController {
+    var foodCard = FoodCard.share
+    
     let formatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -17,18 +19,29 @@ class FoodCardViewController: UIViewController {
         return formatter
     }()
     
-    
     private let firestoreManager = FirestoreManager.shared
-    private var data = FoodTypeData.share.data
-    private var selectedFoodCategory = FoodTypeData.share.data[0]
-    private var selectedFoodType: FoodType? {
+    
+    // 要移到View中
+    private var allFoodTypes = [FoodType]()
+    private var selectedTypes = [FoodType]() {
         didSet {
-            if let selectedFoodType = selectedFoodType {
-                nameLabel.text = selectedFoodType.name
-                imageView.image = UIImage(named: selectedFoodType.iconName)
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
             }
         }
     }
+//    private var data = FoodTypeData.share.data
+    
+    
+//    private var selectedFoodCategory = FoodTypeData.share.data[0]
+//    private var selectedFoodType: FoodType? {
+//        didSet {
+//            if let selectedFoodType = selectedFoodType {
+//                nameLabel.text = selectedFoodType.name
+//                imageView.image = UIImage(named: selectedFoodType.iconName)
+//            }
+//        }
+//    }
     private var expiredDate: Date? {
         didSet {
             if let expiredDate = expiredDate {
@@ -47,18 +60,21 @@ class FoodCardViewController: UIViewController {
     @IBOutlet weak var qtyTextField: UITextField!
     @IBOutlet weak var notificationTimeTextField: UITextField!
     @IBOutlet weak var storageSegment: UISegmentedControl!
-    @IBAction func didTappedSave(_ sender: UIButton) {
+    @IBOutlet weak var noteTextField: UITextField!
+    @IBAction func didTappedSave(_ sender: Any) {
         saveData()
     }
-    @IBAction func didTappedDelete(_ sender: UIButton) {
-    }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionView()
         setupDatePicker()
+        setupInitialData()
+        fetchFoodTypes()
     }
     
+    // MARK: Setups
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -91,51 +107,149 @@ class FoodCardViewController: UIViewController {
         expireTimeTextField.resignFirstResponder()
     }
     
-    private func saveData() {
-        print("save data")
-        guard let name = nameLabel.text,
-              let typeId = selectedFoodType?.id,
-              let iconName = selectedFoodType?.iconName,
-              let barCode = barcodeTextField.text,
-              let expireDate = expiredDate,
-              let qty = qtyTextField.text,
-              let notificationTime = notificationTimeTextField.text
-        else {
-            print("empty data")
-            return
-        }
-        let foodCard = FoodCard(
-            name: name,
-            categoryId: selectedFoodCategory.id,
-            typeId: typeId,
-            iconName: iconName,
-            qty: Int(qty) ?? 0,
-            createDate: Date().timeIntervalSince1970,
-            expireDate: expireDate.timeIntervalSince1970,
-            notificationTime: Int(notificationTime) ?? 0,
-            barCode: Int(barCode) ?? 0,
-            storageType: storageSegment.selectedSegmentIndex,
-            notes: "notenote")
-        
-        print(foodCard)
-        
+    // MARK: - Data
+    // collectionView
+    private func fetchFoodTypes() {
         Task {
-            await firestoreManager.addFoodCard(foodCard) { result in
+            await firestoreManager.fetchFoodType { result in
                 switch result {
-                case .success:
-                    print("Document successfully written!")
+                case .success(let foodTypes):
+                    allFoodTypes = foodTypes
+                    selectedTypes = foodTypes
+                    print("已取得所有 foodTypes")
                 case .failure(let error):
-                    print("Error adding document: \(error)")
+                    print(error)
                 }
-                
             }
         }
     }
+    
+    private func setupInitialData() {
+        if foodCard.cardId != "" {
+            nameLabel.text = foodCard.name
+            imageView.image = UIImage(named: foodCard.iconName)
+            barcodeTextField.text = String(foodCard.barCode)
+            expireTimeTextField.text = formatter.string(from: foodCard.expireDate)
+            qtyTextField.text = String(foodCard.qty)
+            notificationTimeTextField.text = String(foodCard.notificationTime)
+            noteTextField.text = foodCard.notes
+            storageSegment.selectedSegmentIndex = foodCard.storageType
+        } else {
+            resetData()
+        }
+    }
+    
+    private func resetData() {
+        DispatchQueue.main.async { [self] in
+            nameLabel.text = "請選取食物種類"
+            imageView.image = UIImage(systemName: "fork.knife.circle")
+            barcodeTextField.text = nil
+            expireTimeTextField.text = ""
+            qtyTextField.text = nil
+            notificationTimeTextField.text = nil
+            noteTextField.text = nil
+            storageSegment.selectedSegmentIndex = 0
+        }
+    }
+    
+//    private func saveData() {
+//        print("save data")
+//        guard let name = nameLabel.text,
+//              let typeId = selectedFoodType?.id,
+//              let iconName = selectedFoodType?.iconName,
+//              let barCode = barcodeTextField.text,
+//              let expireDate = expiredDate,
+//              let qty = qtyTextField.text,
+//              let notificationTime = notificationTimeTextField.text
+//        else {
+//            print("empty data")
+//            return
+//        }
+//        let foodCard = FoodCard(
+//            cardId: UUID().uuidString,
+//            name: name,
+//            categoryId: selectedFoodCategory.id,
+//            typeId: typeId,
+//            iconName: iconName,
+//            qty: Int(qty) ?? 0,
+//            createDate: Date(),
+//            expireDate: expireDate,
+//            notificationTime: Int(notificationTime) ?? 0,
+//            barCode: Int(barCode) ?? 0,
+//            storageType: storageSegment.selectedSegmentIndex,
+//            notes: noteTextField.text ?? "")
+//        
+//        print(foodCard)
+//        
+//        Task {
+//            await firestoreManager.addFoodCard(foodCard) { result in
+//                switch result {
+//                case .success:
+//                    print("Document successfully written!")
+//                    resetData()
+//                case .failure(let error):
+//                    print("Error adding document: \(error)")
+//                }
+//                
+//            }
+//        }
+//    }
+    
+    private func saveData() {
+        print("save data")
+//        guard let name = nameLabel.text,
+//              let typeId = selectedFoodType?.typeId,
+//              let iconName = selectedFoodType?.typeIcon,
+//              let barCode = barcodeTextField.text,
+//              let expireDate = expiredDate,
+//              let qty = qtyTextField.text,
+//              let notificationTime = notificationTimeTextField.text
+//        else {
+//            print("empty data")
+//            return
+//        }
+//        let foodCard = FoodCard(
+//            cardId: UUID().uuidString,
+//            name: name,
+//            categoryId: selectedFoodCategory.id,
+//            typeId: typeId,
+//            iconName: iconName,
+//            qty: Int(qty) ?? 0,
+//            createDate: Date(),
+//            expireDate: expireDate,
+//            notificationTime: Int(notificationTime) ?? 0,
+//            barCode: Int(barCode) ?? 0,
+//            storageType: storageSegment.selectedSegmentIndex,
+//            notes: noteTextField.text ?? "")
+//        
+//        print(foodCard)
+//        
+//        Task {
+//            await firestoreManager.addFoodCard(foodCard) { result in
+//                switch result {
+//                case .success:
+//                    print("Document successfully written!")
+//                    resetData()
+//                case .failure(let error):
+//                    print("Error adding document: \(error)")
+//                }
+//                
+//            }
+//        }
+    }
+    
+    private func addDefaultTypes() {
+        Task {
+            await firestoreManager.addDefaultTypes()
+        }
+    }
+    
 }
 
 extension FoodCardViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return selectedFoodCategory.foodTypes.count
+//        return selectedFoodCategory.foodTypes.count
+        selectedTypes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -143,16 +257,19 @@ extension FoodCardViewController: UICollectionViewDataSource, UICollectionViewDe
         else {
             return UICollectionViewCell()
         }
-        let foodType = selectedFoodCategory.foodTypes[indexPath.item]
-        cell.iconImage.image = UIImage(named: foodType.iconName)
-        cell.titleLabel.text = foodType.name
+//        let foodType = selectedFoodCategory.foodTypes[indexPath.item]
+//        cell.iconImage.image = UIImage(named: foodType.iconName)
+//        cell.titleLabel.text = foodType.name
+        let foodType = selectedTypes[indexPath.item]
+        cell.iconImage.image = UIImage(named: foodType.typeIcon)
+        cell.titleLabel.text = foodType.typeName
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("indexPath.item = \(indexPath.item)")
-        let foodType = selectedFoodCategory.foodTypes[indexPath.item]
-        selectedFoodType = foodType
+//        let foodType = selectedFoodCategory.foodTypes[indexPath.item]
+//        selectedFoodType = foodType
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -160,12 +277,12 @@ extension FoodCardViewController: UICollectionViewDataSource, UICollectionViewDe
         else {
             return UICollectionReusableView()
         }
-        headerView.onChangeCategory = { id in
-            self.selectedFoodCategory = self.data[id]
-            DispatchQueue.main.async {
-                collectionView.reloadData()
-            }
-        }
+//        headerView.onChangeCategory = { id in
+//            self.selectedFoodCategory = self.data[id]
+//            DispatchQueue.main.async {
+//                collectionView.reloadData()
+//            }
+//        }
         return headerView
     }
     

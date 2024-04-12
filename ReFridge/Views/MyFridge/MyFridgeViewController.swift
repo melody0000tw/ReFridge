@@ -45,6 +45,15 @@ class MyFridgeViewController: UIViewController {
         collectionView.collectionViewLayout = layout
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let foodCard = sender as? FoodCard,
+           let foodCardVC = segue.destination as? FoodCardViewController {
+            print("foodcard: \(foodCard)")
+            foodCardVC.foodCard = foodCard
+            return
+        }
+    }
+    
     private func fetchData() async {
         await firestoreManager.fetchFoodCard { result in
             switch result {
@@ -56,16 +65,11 @@ class MyFridgeViewController: UIViewController {
             }
         }
     }
-    
-    private func arrangeByRemainingDay() {
-        
-    }
-    
 }
 
 extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        foodCards.count
+        foodCards.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -73,11 +77,30 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
         else {
             return UICollectionViewCell()
         }
-        let foodCard = foodCards[indexPath.item]
-        cell.foodCard = foodCard
-        cell.setupCell()
+        
+        switch indexPath.item {
+        case 0:
+            cell.iconImage.image = UIImage(systemName: "plus")
+            cell.remainDayLabel.isHidden = true
+            cell.nameLabel.text = "新增食物"
+        default:
+            let foodCard = foodCards[indexPath.item - 1]
+            cell.foodCard = foodCard
+            cell.setupCell()
+        }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.item {
+        case 0:
+            performSegue(withIdentifier: "showFoodCardVC", sender: nil)
+        default:
+            let selectedFoodCard = foodCards[indexPath.item - 1]
+            performSegue(withIdentifier: "showFoodCardVC", sender: selectedFoodCard)
+        }
+        
     }
     
 }

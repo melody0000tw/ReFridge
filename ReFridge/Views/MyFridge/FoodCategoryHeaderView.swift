@@ -10,7 +10,7 @@ import SnapKit
 
 class FoodCategoryHeaderView: UICollectionReusableView {
     
-    let categories = FoodTypeData.share.data
+//    let categories = FoodTypeData.share.data
     
     var onChangeCategory: ((Int) -> Void)?
     
@@ -37,15 +37,15 @@ class FoodCategoryHeaderView: UICollectionReusableView {
             make.edges.equalTo(self.snp.edges)
         }
         
-        for category in categories {
-            let button = UIButton(type: .system)
-            button.setTitle(category.name, for: .normal)
-            button.tintColor = .darkGray
-            button.tag = category.id
-            button.addTarget(self, action: #selector(onChangeCategory(sender: )), for: .touchUpInside)
-            buttons.append(button)
-            stackView.addArrangedSubview(button)
-        }
+//        for category in categories {
+//            let button = UIButton(type: .system)
+//            button.setTitle(category.name, for: .normal)
+//            button.tintColor = .darkGray
+//            button.tag = category.id
+//            button.addTarget(self, action: #selector(onChangeCategory(sender: )), for: .touchUpInside)
+//            buttons.append(button)
+//            stackView.addArrangedSubview(button)
+//        }
     }
     
     @objc func onChangeCategory(sender: UIButton) {

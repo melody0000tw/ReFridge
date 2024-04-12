@@ -16,6 +16,7 @@ class FoodCardCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.backgroundColor = .tertiarySystemBackground
         // Initialization code
     }
     
@@ -23,7 +24,7 @@ class FoodCardCell: UICollectionViewCell {
         guard let foodCard = foodCard else { return }
         nameLabel.text = foodCard.name
         iconImage.image = UIImage(named: foodCard.iconName)
-        remainDayLabel.text = getRemainingDayText(expireDate: Date(timeIntervalSince1970: foodCard.expireDate))
+        remainDayLabel.text = getRemainingDayText(expireDate: foodCard.expireDate)
     }
     
     private func getRemainingDayText(expireDate: Date) -> String {
@@ -41,6 +42,7 @@ class FoodCardCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         foodCard = nil
+        remainDayLabel.isHidden = false
     }
 
 }
