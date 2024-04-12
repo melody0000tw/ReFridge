@@ -21,14 +21,6 @@ class FoodCardViewController: UIViewController {
     
     private let firestoreManager = FirestoreManager.shared
     
-    private var expiredDate: Date? {
-        didSet {
-            if let expiredDate = expiredDate {
-                expireTimeTextField.text = formatter.string(from: expiredDate)
-            }
-        }
-    }
-    
     let datePicker = UIDatePicker()
     
     @IBOutlet weak var nameLabel: UILabel!
@@ -54,8 +46,14 @@ class FoodCardViewController: UIViewController {
     // MARK: Setups
     private func setupFoodTypeCollection() {
         if let foodTypeVC = children.compactMap({ $0 as? FoodTypeViewController }).first {
-            foodTypeVC.onSelectFoodType = { foodType in
+            foodTypeVC.onSelectFoodType = { [self] foodType in
                 print("card vc knows the selected foodtype: \(foodType)")
+                foodCard.categoryId = foodType.categoryId
+                foodCard.typeId = foodType.typeId
+                foodCard.name = foodType.typeName
+                foodCard.iconName = foodType.typeIcon
+                nameLabel.text = foodType.typeName
+                imageView.image = UIImage(named: foodType.typeIcon)
             }
         }
     }
@@ -74,12 +72,13 @@ class FoodCardViewController: UIViewController {
     }
     
     @objc func doneAction() {
-        expiredDate = datePicker.date
+        let expiredDate = datePicker.date
+        foodCard.expireDate = expiredDate
+        expireTimeTextField.text = formatter.string(from: expiredDate)
         expireTimeTextField.resignFirstResponder()
     }
     
     // MARK: - Data
-    
     private func setupInitialData() {
         if foodCard.cardId != "" {
             nameLabel.text = foodCard.name
@@ -107,91 +106,38 @@ class FoodCardViewController: UIViewController {
             storageSegment.selectedSegmentIndex = 0
         }
     }
-    
-//    private func saveData() {
-//        print("save data")
-//        guard let name = nameLabel.text,
-//              let typeId = selectedFoodType?.id,
-//              let iconName = selectedFoodType?.iconName,
-//              let barCode = barcodeTextField.text,
-//              let expireDate = expiredDate,
-//              let qty = qtyTextField.text,
-//              let notificationTime = notificationTimeTextField.text
-//        else {
-//            print("empty data")
-//            return
-//        }
-//        let foodCard = FoodCard(
-//            cardId: UUID().uuidString,
-//            name: name,
-//            categoryId: selectedFoodCategory.id,
-//            typeId: typeId,
-//            iconName: iconName,
-//            qty: Int(qty) ?? 0,
-//            createDate: Date(),
-//            expireDate: expireDate,
-//            notificationTime: Int(notificationTime) ?? 0,
-//            barCode: Int(barCode) ?? 0,
-//            storageType: storageSegment.selectedSegmentIndex,
-//            notes: noteTextField.text ?? "")
-//        
-//        print(foodCard)
-//        
-//        Task {
-//            await firestoreManager.addFoodCard(foodCard) { result in
-//                switch result {
-//                case .success:
-//                    print("Document successfully written!")
-//                    resetData()
-//                case .failure(let error):
-//                    print("Error adding document: \(error)")
-//                }
-//                
-//            }
-//        }
-//    }
-    
+
     private func saveData() {
+        print(foodCard)
         print("save data")
-//        guard let name = nameLabel.text,
-//              let typeId = selectedFoodType?.typeId,
-//              let iconName = selectedFoodType?.typeIcon,
-//              let barCode = barcodeTextField.text,
-//              let expireDate = expiredDate,
-//              let qty = qtyTextField.text,
-//              let notificationTime = notificationTimeTextField.text
-//        else {
-//            print("empty data")
-//            return
-//        }
-//        let foodCard = FoodCard(
-//            cardId: UUID().uuidString,
-//            name: name,
-//            categoryId: selectedFoodCategory.id,
-//            typeId: typeId,
-//            iconName: iconName,
-//            qty: Int(qty) ?? 0,
-//            createDate: Date(),
-//            expireDate: expireDate,
-//            notificationTime: Int(notificationTime) ?? 0,
-//            barCode: Int(barCode) ?? 0,
-//            storageType: storageSegment.selectedSegmentIndex,
-//            notes: noteTextField.text ?? "")
-//        
-//        print(foodCard)
-//        
-//        Task {
-//            await firestoreManager.addFoodCard(foodCard) { result in
-//                switch result {
-//                case .success:
-//                    print("Document successfully written!")
-//                    resetData()
-//                case .failure(let error):
-//                    print("Error adding document: \(error)")
-//                }
-//                
-//            }
-//        }
+        guard let qty = qtyTextField.text,
+            let barCode = barcodeTextField.text,
+            let notificationTime = notificationTimeTextField.text
+        else {
+           print("empty data")
+           return
+        }
+        foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
+        foodCard.qty = Int(qty) ?? 1
+        foodCard.barCode = Int(barCode) ?? 0
+        foodCard.notificationTime = Int(notificationTime) ?? 0
+        foodCard.storageType = storageSegment.selectedSegmentIndex
+        foodCard.notes = noteTextField.text ?? ""
+        print(foodCard)
+        
+        
+        Task {
+            await firestoreManager.addFoodCard(foodCard) { result in
+                switch result {
+                case .success:
+                    print("Document successfully written!")
+                    resetData()
+                case .failure(let error):
+                    print("Error adding document: \(error)")
+                }
+
+            }
+        }
     }
     
     private func addDefaultTypes() {
