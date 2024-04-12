@@ -10,5 +10,6 @@ target 'ReFridge' do
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
   pod 'SnapKit', '~> 5.7.0'
+  pod 'IQKeyboardManagerSwift'
 
 end
