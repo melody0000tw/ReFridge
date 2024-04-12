@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class FoodTypeCollectionViewController: UIViewController {
+class FoodTypeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
     let categories = CategoryData.share.data
@@ -75,8 +75,6 @@ class FoodTypeCollectionViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.RF_registerCellWithNib(identifier: String(describing: FoodTypeCell.self), bundle: nil)
-        collectionView.register(FoodCategoryHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: FoodCategoryHeaderView.self))
-        
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).offset(60)
@@ -113,7 +111,7 @@ class FoodTypeCollectionViewController: UIViewController {
     }
 }
 
-extension FoodTypeCollectionViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return typesOfSelectedCategory.count
     }

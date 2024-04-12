@@ -115,7 +115,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9lv-kc-tri">
-                                <rect key="frame" x="16" y="169" width="361" height="200"/>
+                                <rect key="frame" x="16" y="169.33333333333337" width="361" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="zdO-ew-mfT"/>
                                 </constraints>
@@ -339,13 +339,14 @@
             </objects>
             <point key="canvasLocation" x="1873" y="496"/>
         </scene>
-        <!--Food Type Collection View Controller-->
+        <!--Food Type View Controller-->
         <scene sceneID="HqK-NN-jAA">
             <objects>
-                <viewController id="dwK-Cv-YmH" customClass="FoodTypeCollectionViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dwK-Cv-YmH" customClass="FoodTypeViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="R8F-DR-VK8">
                         <rect key="frame" x="0.0" y="0.0" width="361" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="RKU-ad-c7N"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>

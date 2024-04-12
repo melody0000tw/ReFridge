@@ -53,7 +53,7 @@ class FoodCardViewController: UIViewController {
     
     // MARK: Setups
     private func setupFoodTypeCollection() {
-        if let foodTypeVC = children.compactMap({ $0 as? FoodTypeCollectionViewController }).first {
+        if let foodTypeVC = children.compactMap({ $0 as? FoodTypeViewController }).first {
             foodTypeVC.onSelectFoodType = { foodType in
                 print("card vc knows the selected foodtype: \(foodType)")
             }
