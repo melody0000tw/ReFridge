@@ -17,6 +17,32 @@ class RecipeIngredientCell: UITableViewCell {
     @IBOutlet weak var lackIngredientsLabel: UILabel!
 
     @IBAction func addToShoppingList(_ sender: Any) {
+        print("addToShoppingList")
+        let firestoreManager = FirestoreManager.shared
+        if let ingredientStatus = ingredientStatus {
+            for lackType in ingredientStatus.lackTypes {
+                let item = ListItem(
+                    itemId: "",
+                    typeId: lackType.typeId,
+                    checkStatus: 0,
+                    isRoutineItem: false,
+                    routinePeriod: nil,
+                    routineStartTime: nil)
+                Task {
+                    await firestoreManager.addListItem(item, completion: { result in
+                        switch result {
+                        case .success:
+                            print("adding type: \(item.typeId) successed!")
+                        case .failure(let error):
+                            print("error: \(error)")
+                        }
+                    })
+                }
+            }
+        }
+        
+        
+        
     }
     
     func setupCell() {

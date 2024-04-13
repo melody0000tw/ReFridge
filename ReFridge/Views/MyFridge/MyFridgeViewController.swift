@@ -23,7 +23,6 @@ class MyFridgeViewController: UIViewController {
         super.viewDidLoad()
         print("123")
         setupCollectionView()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {

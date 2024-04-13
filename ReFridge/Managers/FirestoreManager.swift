@@ -13,6 +13,7 @@ class FirestoreManager {
     let database: Firestore
     lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
     lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
+    lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
 
     private init() {
         database = Firestore.firestore()
@@ -134,7 +135,6 @@ class FirestoreManager {
     }
     
     // MARK: - Recipe
-    
     func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
         do {
             let querySnapshot = try await database.collection("recipes").getDocuments()
@@ -145,6 +145,40 @@ class FirestoreManager {
                 recipes.append(recipe)
             }
             completion(.success(recipes))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - Shopping List
+    func addListItem(_ item: ListItem, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = shoppingListRef.document()
+            let data: [String: Any] = [
+                "itemId": docRef.documentID,
+                "typeId": item.typeId,
+                "checkStatus": item.checkStatus,
+                "isRoutineItem": item.isRoutineItem,
+                "routinePeriod": item.routinePeriod ?? 0,
+                "routineStartTime": item.routineStartTime ?? Date()
+            ]
+            try await docRef.setData(data)
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchListItems(completion: (Result<[ListItem], Error>) -> Void) async {
+        do {
+            let querySnapshot = try await shoppingListRef.getDocuments()
+            var list = [ListItem]()
+            for document in querySnapshot.documents {
+                let item = try document.data(as: ListItem.self)
+                print(item)
+                list.append(item)
+            }
+            completion(.success(list))
         } catch {
             completion(.failure(error))
         }

@@ -11,13 +11,8 @@ import SnapKit
 class RecipeDetailViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
-    var recipe: Recipe? {
-        didSet {
-            if let recipe = recipe {
-                checkIngredientStatus(recipe: recipe)
-            }
-        }
-    }
+    var recipe: Recipe?
+    
     var ingredientStatus: IngredientStatus? {
         didSet {
             self.tableView.reloadData()
@@ -25,10 +20,17 @@ class RecipeDetailViewController: UIViewController {
     }
     
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let recipe = recipe {
+            checkIngredientStatus(recipe: recipe)
+        }
     }
     
     private func setupTableView() {
@@ -49,7 +51,7 @@ class RecipeDetailViewController: UIViewController {
             
             // 找小卡有沒有，歸類到 lack or check
             Task {
-                await firestoreManager.queryFoodCard(by: typeId,completion: { result in
+                await firestoreManager.queryFoodCard(by: typeId, completion: { result in
                     switch result {
                     case .success(let foodCards):
                         if foodCards.count == 0 {

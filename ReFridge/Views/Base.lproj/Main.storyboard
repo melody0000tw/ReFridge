@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -440,7 +439,7 @@
                                                     <rect key="frame" x="16" y="16" width="361" height="93.333333333333329"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3X3-fd-Q3L">
-                                                            <rect key="frame" x="15.999999999999998" y="22.666666666666664" width="18.333333333333329" height="47.999999999999993"/>
+                                                            <rect key="frame" x="15.999999999999998" y="22.666666666666664" width="18.333333333333321" height="47.999999999999993"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -629,9 +628,10 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQx-9y-XVd">
                                 <rect key="frame" x="169" y="741" width="56" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="刪除" image="trash" catalog="system">
-                                    <color key="titleColor" name="AccentColor"/>
+                                    <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="didTappedDelete:" destination="i4A-nY-j9y" eventType="touchUpInside" id="8aU-D4-0SI"/>
@@ -699,11 +699,12 @@
                     <connections>
                         <segue destination="5y0-yn-TDP" kind="relationship" relationship="viewControllers" id="yxz-yP-aTh"/>
                         <segue destination="tdU-yV-oF9" kind="relationship" relationship="viewControllers" id="MtB-cF-MHb"/>
+                        <segue destination="98u-R0-314" kind="relationship" relationship="viewControllers" id="NdA-Ns-uzT"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Y5-10-VYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="130.53435114503816" y="-27.464788732394368"/>
+            <point key="canvasLocation" x="-83" y="701"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Bhq-08-AW8">
@@ -740,11 +741,11 @@
             </objects>
             <point key="canvasLocation" x="3650" y="-258"/>
         </scene>
-        <!--Item-->
+        <!--Navigation Controller-->
         <scene sceneID="6k1-Ku-RTH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tdU-yV-oF9" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" image="book.pages.fill" catalog="system" id="0nb-mz-JQY"/>
+                    <tabBarItem key="tabBarItem" title="" image="book.pages.fill" catalog="system" id="0nb-mz-JQY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bfk-S8-JQp">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -760,6 +761,129 @@
             </objects>
             <point key="canvasLocation" x="1054" y="701"/>
         </scene>
+        <!--購物清單-->
+        <scene sceneID="WyX-C0-b0z">
+            <objects>
+                <viewController id="PAu-I8-xrj" customClass="ShoppingListViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wlw-hQ-Baq">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="x7m-EB-I0u">
+                                <rect key="frame" x="0.0" y="103" width="393" height="586"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ListCell" id="CTx-gj-45B" customClass="ListCell" customModule="ReFridge" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="93.333335876464844"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CTx-gj-45B" id="XHL-DW-ws5">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="93.333335876464844"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2go-Qd-mCf">
+                                                    <rect key="frame" x="24" y="16.000000000000004" width="345" height="61.333333333333343"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-mT-SkT">
+                                                            <rect key="frame" x="0.0" y="20.666666666666664" width="20" height="20"/>
+                                                            <color key="backgroundColor" systemColor="systemGray4Color"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="20" id="jb7-N6-NJ9"/>
+                                                                <constraint firstAttribute="height" constant="20" id="xRM-QE-Wok"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIa-zg-I2T">
+                                                            <rect key="frame" x="36" y="0.33333333333333215" width="273" height="61"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGK-Lu-b8Y">
+                                                            <rect key="frame" x="325" y="20.666666666666664" width="20" height="20"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="20" id="ANb-oa-uab"/>
+                                                                <constraint firstAttribute="height" constant="20" id="D5G-ld-2qm"/>
+                                                            </constraints>
+                                                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" image="xmark" catalog="system"/>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="2go-Qd-mCf" secondAttribute="bottom" constant="16" id="8gR-dH-VWq"/>
+                                                <constraint firstAttribute="trailing" secondItem="2go-Qd-mCf" secondAttribute="trailing" constant="24" id="PJS-ux-uao"/>
+                                                <constraint firstItem="2go-Qd-mCf" firstAttribute="leading" secondItem="XHL-DW-ws5" secondAttribute="leading" constant="24" id="sK0-6O-5B3"/>
+                                                <constraint firstItem="2go-Qd-mCf" firstAttribute="top" secondItem="XHL-DW-ws5" secondAttribute="top" constant="16" id="urn-TG-81e"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="deleteButton" destination="vGK-Lu-b8Y" id="9l8-uY-dAS"/>
+                                            <outlet property="itemLabel" destination="QIa-zg-I2T" id="gDa-0f-aMB"/>
+                                            <outlet property="squareView" destination="g4d-mT-SkT" id="7fl-e9-LQ3"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SU9-fa-xnf">
+                                <rect key="frame" x="16" y="713" width="361" height="40"/>
+                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="fq0-R6-ecY"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="將完成項目加入冰箱">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="addToFridge:" destination="PAu-I8-xrj" eventType="touchUpInside" id="BgQ-Ke-Jtm"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Tnm-HI-8FD"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="SU9-fa-xnf" firstAttribute="leading" secondItem="Tnm-HI-8FD" secondAttribute="leading" constant="16" id="L8i-Pv-Msp"/>
+                            <constraint firstItem="x7m-EB-I0u" firstAttribute="leading" secondItem="Tnm-HI-8FD" secondAttribute="leading" id="YQQ-Yh-fVQ"/>
+                            <constraint firstItem="Tnm-HI-8FD" firstAttribute="trailing" secondItem="x7m-EB-I0u" secondAttribute="trailing" id="et4-wu-InQ"/>
+                            <constraint firstItem="x7m-EB-I0u" firstAttribute="top" secondItem="Tnm-HI-8FD" secondAttribute="top" id="gFo-Oo-aXl"/>
+                            <constraint firstItem="Tnm-HI-8FD" firstAttribute="trailing" secondItem="SU9-fa-xnf" secondAttribute="trailing" constant="16" id="j3u-4h-dlX"/>
+                            <constraint firstItem="SU9-fa-xnf" firstAttribute="bottom" secondItem="Tnm-HI-8FD" secondAttribute="bottom" constant="-16" id="tkg-rC-Gg6"/>
+                            <constraint firstItem="Tnm-HI-8FD" firstAttribute="bottom" secondItem="x7m-EB-I0u" secondAttribute="bottom" constant="80" id="vrt-Rz-xUy"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="購物清單" id="96i-eA-WaH">
+                        <barButtonItem key="leftBarButtonItem" image="line.3.horizontal" catalog="system" id="ZL9-rx-tT5"/>
+                        <barButtonItem key="rightBarButtonItem" image="plus" catalog="system" id="Vd0-04-nmb"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="x7m-EB-I0u" id="2v6-nL-gXo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i9J-eP-9FU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1980.916030534351" y="1453.5211267605634"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="coA-Y9-924">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="98u-R0-314" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="list.bullet" catalog="system" id="AIU-VN-hxo"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="IAM-HG-uHz">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <navigationBarAppearance key="scrollEdgeAppearance"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="PAu-I8-xrj" kind="relationship" relationship="rootViewController" id="8oI-Ih-oBO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hWp-Vc-wHv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1053" y="1454"/>
+        </scene>
     </scenes>
     <resources>
         <image name="book.pages.fill" catalog="system" width="107" height="128"/>
@@ -770,13 +894,13 @@
         <image name="fork.knife.circle" catalog="system" width="128" height="123"/>
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="line.3.horizontal" catalog="system" width="128" height="65"/>
+        <image name="list.bullet" catalog="system" width="128" height="87"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="person.2.fill" catalog="system" width="128" height="86"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="refrigerator.fill" catalog="system" width="95" height="128"/>
         <image name="trash" catalog="system" width="117" height="128"/>
-        <namedColor name="AccentColor">
-            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
