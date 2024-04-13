@@ -8,7 +8,7 @@
 import UIKit
 
 class RecipeDescriptionCell: UITableViewCell {
-    
+    static let reuseIdentifier = String(describing: RecipeDescriptionCell.self)
     
     @IBOutlet weak var descriptionLabel: UILabel!
     

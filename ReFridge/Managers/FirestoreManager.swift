@@ -117,6 +117,24 @@ class FirestoreManager {
         }
     }
     
+    func queryFoodCard(by typeId: Int, completion: (Result<[FoodCard], Error>) -> Void) async {
+        do {
+            let querySnapshot = try await foodCardsRef.whereField("typeId", isEqualTo: typeId).getDocuments()
+            var foodCards = [FoodCard]()
+            for document in querySnapshot.documents {
+                let foodCard = try document.data(as: FoodCard.self)
+                print("冰箱有的type: \(foodCard.name), card id: \(foodCard.cardId)")
+                foodCards.append(foodCard)
+            }
+            
+            completion(.success(foodCards))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - Recipe
+    
     func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
         do {
             let querySnapshot = try await database.collection("recipes").getDocuments()

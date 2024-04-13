@@ -8,15 +8,15 @@
 import UIKit
 
 class RecipeTitleCell: UITableViewCell {
+    static let reuseIdentifier = String(describing: RecipeTitleCell.self)
     
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var FavoriteButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var caloriesLabel: UILabel!
     @IBOutlet weak var servingLabel: UILabel!
     @IBOutlet weak var cookingTimeLabel: UILabel!
     
-    
-    @IBAction func didTappedFavoriteBtn(_ sender: Any) {
+    @IBAction func didTappedLikeBtn(_ sender: Any) {
     }
     override func awakeFromNib() {
         super.awakeFromNib()

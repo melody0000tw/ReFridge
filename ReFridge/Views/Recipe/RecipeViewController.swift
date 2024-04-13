@@ -78,24 +78,28 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         
         var ingredientString = String()
         for ingredient in recipe.ingredients {
-            // 用id 找到 local type (因為大家的default值都一樣，食譜也只會有 default值得)
+            // 用id 找到 local type (因為大家的default值都一樣，食譜也只會有 default 的那些 type)
             let queryId = ingredient.typeId
-            let foodTypes = FoodTypeData.share.data
-            let foodType = foodTypes.first { type in
-                type.typeId == queryId
+            guard let foodType = FoodTypeData.share.queryFoodType(typeId: queryId) else {
+                print("找不到 food type")
+                return cell
             }
-            if let foodType = foodType {
-                ingredientString.append(foodType.typeName)
-                ingredientString.append(" ")
-            }
-            
-            // 用id 看 foodCard
-            // 比對是否有一樣的 foodCard
-            // 顯示內容
-            
-//            ingredientString += ingredient.
+            ingredientString.append(foodType.typeName)
+            ingredientString.append(" ")
+            cell.ingredientLabel.text = "所需食材: \(ingredientString)"
         }
-        cell.ingredientLabel.text = "所需食材: \(ingredientString)"
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let recipe = recipes[indexPath.row]
+        performSegue(withIdentifier: "showRecipeDetailVC", sender: recipe)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let detailVC = segue.destination as? RecipeDetailViewController,
+           let recipe = sender as? Recipe {
+            detailVC.recipe = recipe
+        }
     }
 }

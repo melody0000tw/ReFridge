@@ -30,6 +30,14 @@ struct FoodTypeData {
         FoodType(categoryId: 2, typeId: 204, typeName: "酪梨", typeIcon: "avocado"),
         FoodType(categoryId: 2, typeId: 205, typeName: "草莓", typeIcon: "strawberry")
     ]
+    
+    func queryFoodType(typeId: Int) -> FoodType? {
+        let foodType = data.first { type in
+            type.typeId == typeId
+        }
+        guard let foodType = foodType else { return nil }
+        return foodType
+    }
 }
 
 struct FoodCategory: Codable {
@@ -41,8 +49,17 @@ struct FoodCategory: Codable {
 
 struct CategoryData {
     static let share = CategoryData()
+    
     let data: [FoodCategory] = [
         FoodCategory(categoryId: 1, categoryName: "蔬菜", categoryIcon: "lettuce", categoryColor: "FF34FF"),
         FoodCategory(categoryId: 2, categoryName: "水果", categoryIcon: "apple", categoryColor: "FF34BB")
     ]
+    
+    func queryFoodCategory(categoryId: Int) -> FoodCategory? {
+        let category = data.first { type in
+            type.categoryId == categoryId
+        }
+        guard let category = category else { return nil }
+        return category
+    }
 }

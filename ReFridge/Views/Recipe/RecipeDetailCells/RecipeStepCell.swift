@@ -8,11 +8,11 @@
 import UIKit
 
 class RecipeStepCell: UITableViewCell {
-
+    static let reuseIdentifier = String(describing: RecipeStepCell.self)
+    
     @IBOutlet weak var checkButton: UIButton!
     @IBOutlet weak var stepTextLabel: UILabel!
     @IBOutlet weak var numberLabel: UILabel!
-    
     
     @IBAction func didTappedCheckBtn(_ sender: Any) {
     }
