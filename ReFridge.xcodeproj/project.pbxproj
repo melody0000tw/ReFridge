@@ -14,6 +14,12 @@
 		EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */; };
 		EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */; };
 		EBCC79532BCA345A0029B754 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79522BCA345A0029B754 /* Recipe.swift */; };
+		EBCC79552BCA5D920029B754 /* IngredientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79542BCA5D920029B754 /* IngredientStatus.swift */; };
+		EBCC79582BCA71BF0029B754 /* RecipeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */; };
+		EBCC795A2BCA73A10029B754 /* RecipeTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79592BCA73A10029B754 /* RecipeTitleCell.swift */; };
+		EBCC795C2BCA73B90029B754 /* RecipeDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC795B2BCA73B90029B754 /* RecipeDescriptionCell.swift */; };
+		EBCC795E2BCA73D30029B754 /* RecipeIngredientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC795D2BCA73D30029B754 /* RecipeIngredientCell.swift */; };
+		EBCC79602BCA73F00029B754 /* RecipeStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */; };
 		EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */; };
 		EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */; };
 		EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */; };
@@ -42,6 +48,12 @@
 		EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
 		EBCC79522BCA345A0029B754 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
+		EBCC79542BCA5D920029B754 /* IngredientStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientStatus.swift; sourceTree = "<group>"; };
+		EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewController.swift; sourceTree = "<group>"; };
+		EBCC79592BCA73A10029B754 /* RecipeTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeTitleCell.swift; sourceTree = "<group>"; };
+		EBCC795B2BCA73B90029B754 /* RecipeDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDescriptionCell.swift; sourceTree = "<group>"; };
+		EBCC795D2BCA73D30029B754 /* RecipeIngredientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeIngredientCell.swift; sourceTree = "<group>"; };
+		EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepCell.swift; sourceTree = "<group>"; };
 		EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReFridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,8 +129,21 @@
 			children = (
 				EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */,
 				EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */,
+				EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */,
+				EBCC79562BCA71960029B754 /* RecipeDetailCells */,
 			);
 			path = Recipe;
+			sourceTree = "<group>";
+		};
+		EBCC79562BCA71960029B754 /* RecipeDetailCells */ = {
+			isa = PBXGroup;
+			children = (
+				EBCC79592BCA73A10029B754 /* RecipeTitleCell.swift */,
+				EBCC795B2BCA73B90029B754 /* RecipeDescriptionCell.swift */,
+				EBCC795D2BCA73D30029B754 /* RecipeIngredientCell.swift */,
+				EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */,
+			);
+			path = RecipeDetailCells;
 			sourceTree = "<group>";
 		};
 		EBF88E242BC5703E00DEF2FA = {
@@ -210,6 +235,7 @@
 				EBFF62D22BC7C9E10013F50F /* FoodCard.swift */,
 				EBFF62D42BC7CF7F0013F50F /* FoodType.swift */,
 				EBCC79522BCA345A0029B754 /* Recipe.swift */,
+				EBCC79542BCA5D920029B754 /* IngredientStatus.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -372,16 +398,22 @@
 				EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */,
 				EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */,
 				EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */,
+				EBCC795E2BCA73D30029B754 /* RecipeIngredientCell.swift in Sources */,
 				EBFF62C72BC7982E0013F50F /* FoodCardViewController.swift in Sources */,
 				EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */,
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
 				EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */,
+				EBCC79582BCA71BF0029B754 /* RecipeDetailViewController.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
+				EBCC79552BCA5D920029B754 /* IngredientStatus.swift in Sources */,
 				EBAC18902BC98325002BB6E7 /* FoodTypeViewController.swift in Sources */,
 				EBFF62CC2BC79D650013F50F /* FoodTypeCell.swift in Sources */,
 				EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */,
 				EBCC79532BCA345A0029B754 /* Recipe.swift in Sources */,
+				EBCC795C2BCA73B90029B754 /* RecipeDescriptionCell.swift in Sources */,
+				EBCC795A2BCA73A10029B754 /* RecipeTitleCell.swift in Sources */,
+				EBCC79602BCA73F00029B754 /* RecipeStepCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

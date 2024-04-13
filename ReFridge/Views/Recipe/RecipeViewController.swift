@@ -89,10 +89,6 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
                 ingredientString.append(" ")
             }
             
-//            let foodType = queryFoodType(typeId: typeId)
-//            if let foodType = foodType {
-//                ingredientString.append(foodType.typeName)
-//            }
             // 用id 看 foodCard
             // 比對是否有一樣的 foodCard
             // 顯示內容
