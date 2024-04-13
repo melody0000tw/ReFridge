@@ -27,9 +27,7 @@ class MyFridgeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        Task {
-            await fetchData()
-        }
+        fetchData()
     }
     
     // MARK: - Private function
@@ -54,14 +52,16 @@ class MyFridgeViewController: UIViewController {
         }
     }
     
-    private func fetchData() async {
-        await firestoreManager.fetchFoodCard { result in
-            switch result {
-            case .success(let foodCards):
-                print("got food cards! \(foodCards)")
-                self.foodCards = foodCards
-            case .failure(let error):
-                print("error: \(error)")
+    private func fetchData() {
+        Task {
+            await firestoreManager.fetchFoodCard { result in
+                switch result {
+                case .success(let foodCards):
+                    print("got food cards! \(foodCards)")
+                    self.foodCards = foodCards
+                case .failure(let error):
+                    print("error: \(error)")
+                }
             }
         }
     }

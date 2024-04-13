@@ -32,7 +32,6 @@ class FoodTypeViewController: UIViewController {
         setupButtons()
         setupCollectionView()
         fetchFoodTypes()
-        collectionView.backgroundColor = .green
     }
     
     private func configureLayout() -> UICollectionViewLayout {
@@ -49,14 +48,14 @@ class FoodTypeViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 8
+        stackView.spacing = 0
         view.addSubview(stackView)
         
         stackView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-            make.height.equalTo(60)
+            make.height.equalTo(40)
         }
         
         for category in categories {
@@ -64,7 +63,7 @@ class FoodTypeViewController: UIViewController {
             button.setTitle(category.categoryName, for: .normal)
             button.tintColor = .darkGray
             button.tag = category.categoryId
-            button.backgroundColor = .systemPink
+            button.backgroundColor = .lightGray
             button.addTarget(self, action: #selector(onChangeCategory(sender: )), for: .touchUpInside)
             buttons.append(button)
             stackView.addArrangedSubview(button)
@@ -77,7 +76,7 @@ class FoodTypeViewController: UIViewController {
         collectionView.RF_registerCellWithNib(identifier: String(describing: FoodTypeCell.self), bundle: nil)
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(60)
+            make.top.equalTo(view.snp.top).offset(40)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
             make.bottom.equalTo(view.snp.bottom)
