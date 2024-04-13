@@ -101,6 +101,22 @@
             </objects>
             <point key="canvasLocation" x="1982.4427480916029" y="-27.464788732394368"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="quF-0b-Dap">
+            <objects>
+                <viewController id="mpQ-h2-Oko" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IDs-fD-aFL">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="52o-O1-h1J"/>
+                        <color key="backgroundColor" systemColor="systemBrownColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="ch4-6u-f2d"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jP9-td-zHT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1982" y="701"/>
+        </scene>
         <!--食物小卡-->
         <scene sceneID="hFY-24-W4l">
             <objects>
@@ -282,10 +298,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <tabBarAppearance key="scrollEdgeAppearance"/>
                     </tabBar>
                     <connections>
                         <segue destination="5y0-yn-TDP" kind="relationship" relationship="viewControllers" id="yxz-yP-aTh"/>
+                        <segue destination="tdU-yV-oF9" kind="relationship" relationship="viewControllers" id="MtB-cF-MHb"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Y5-10-VYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -296,7 +314,7 @@
         <scene sceneID="Bhq-08-AW8">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5y0-yn-TDP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" selectedImage="refrigerator.fill" catalog="system" id="mXV-eb-tnF"/>
+                    <tabBarItem key="tabBarItem" title="" image="refrigerator.fill" catalog="system" id="mXV-eb-tnF"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="q0W-vA-Y2s">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -327,17 +345,40 @@
             </objects>
             <point key="canvasLocation" x="3524" y="-262"/>
         </scene>
+        <!--Item-->
+        <scene sceneID="6k1-Ku-RTH">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tdU-yV-oF9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" image="book.pages.fill" catalog="system" id="0nb-mz-JQY"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bfk-S8-JQp">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mpQ-h2-Oko" kind="relationship" relationship="rootViewController" id="IQ0-O4-lD6"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d81-fd-zSI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1054" y="701"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="book.pages.fill" catalog="system" width="107" height="128"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="fork.knife.circle" catalog="system" width="128" height="123"/>
         <image name="refrigerator.fill" catalog="system" width="95" height="128"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
             <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
