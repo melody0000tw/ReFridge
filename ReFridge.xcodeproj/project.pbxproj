@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */; };
 		EBAC18902BC98325002BB6E7 /* FoodTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAC188F2BC98325002BB6E7 /* FoodTypeViewController.swift */; };
+		EBAC18932BCA22F0002BB6E7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */; };
+		EBAC18952BCA22F0002BB6E7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EBAC18942BCA22F0002BB6E7 /* FirebaseFirestore */; };
 		EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */; };
 		EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */; };
 		EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E342BC5703E00DEF2FA /* MyFridgeViewController.swift */; };
@@ -62,6 +64,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */,
+				EBAC18932BCA22F0002BB6E7 /* FirebaseAuth in Frameworks */,
+				EBAC18952BCA22F0002BB6E7 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +225,10 @@
 			dependencies = (
 			);
 			name = ReFridge;
+			packageProductDependencies = (
+				EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */,
+				EBAC18942BCA22F0002BB6E7 /* FirebaseFirestore */,
+			);
 			productName = ReFridge;
 			productReference = EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */;
 			productType = "com.apple.product-type.application";
@@ -249,6 +257,9 @@
 				Base,
 			);
 			mainGroup = EBF88E242BC5703E00DEF2FA;
+			packageReferences = (
+				EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = EBF88E2E2BC5703E00DEF2FA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -575,6 +586,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.24.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		EBAC18942BCA22F0002BB6E7 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EBF88E252BC5703E00DEF2FA /* Project object */;
 }
