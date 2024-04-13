@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -214,6 +215,17 @@
                                     </textField>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQx-9y-XVd">
+                                <rect key="frame" x="169" y="741" width="56" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="刪除" image="trash" catalog="system">
+                                    <color key="titleColor" name="AccentColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTappedDelete:" destination="i4A-nY-j9y" eventType="touchUpInside" id="8aU-D4-0SI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="UTL-Dc-lBO"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -261,30 +273,6 @@
             </objects>
             <point key="canvasLocation" x="2762.5954198473282" y="-27.464788732394368"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="vYo-uu-StD">
-            <objects>
-                <viewController id="SvD-uA-PrW" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Gn3-Am-wkI">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9oP-rZ-3b6">
-                                <rect key="frame" x="0.0" y="99" width="393" height="348"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <connections>
-                                    <segue destination="7qw-rX-vQf" kind="embed" id="0ji-9z-T0l"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="Fmo-3d-5Td"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qb6-nL-sQN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2713.740458015267" y="735.91549295774655"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="akH-cD-8Ua">
             <objects>
@@ -324,21 +312,6 @@
             </objects>
             <point key="canvasLocation" x="1055.7251908396945" y="-27.464788732394368"/>
         </scene>
-        <!--Food Type Collection View Controller-->
-        <scene sceneID="9Qw-cL-nlx">
-            <objects>
-                <viewController id="7qw-rX-vQf" customClass="FoodTypeCollectionViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8NG-Co-Foe">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="348"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="8qH-Vx-rPg"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="muV-9a-lLl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1873" y="496"/>
-        </scene>
         <!--Food Type View Controller-->
         <scene sceneID="HqK-NN-jAA">
             <objects>
@@ -359,6 +332,10 @@
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="fork.knife.circle" catalog="system" width="128" height="123"/>
         <image name="refrigerator.fill" catalog="system" width="95" height="128"/>
+        <image name="trash" catalog="system" width="117" height="128"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

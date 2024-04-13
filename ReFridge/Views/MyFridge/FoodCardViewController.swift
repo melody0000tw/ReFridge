@@ -35,6 +35,9 @@ class FoodCardViewController: UIViewController {
         saveData()
     }
     
+    @IBAction func didTappedDelete(_ sender: Any) {
+       deleteData()
+    }
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -125,9 +128,8 @@ class FoodCardViewController: UIViewController {
         foodCard.notes = noteTextField.text ?? ""
         print(foodCard)
         
-        
         Task {
-            await firestoreManager.addFoodCard(foodCard) { result in
+            await firestoreManager.saveFoodCard(foodCard) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
@@ -136,6 +138,22 @@ class FoodCardViewController: UIViewController {
                     print("Error adding document: \(error)")
                 }
 
+            }
+        }
+    }
+    
+    private func deleteData() {
+        if foodCard.cardId != "" {
+            Task {
+                await firestoreManager.deleteFoodCard( foodCard.cardId) { result in
+                    switch result {
+                    case .success:
+                        print("Document successfully delete!")
+                        resetData()
+                    case .failure(let error):
+                        print("Error adding document: \(error)")
+                    }
+                }
             }
         }
     }

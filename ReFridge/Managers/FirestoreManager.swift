@@ -11,12 +11,13 @@ import FirebaseFirestore
 class FirestoreManager {
     static let shared = FirestoreManager()
     let database: Firestore
+    lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
 
     private init() {
         database = Firestore.firestore()
     }
     
-    // MARK: -Food Type
+    //MARK: -Food Type
     // 剛註冊時加入即可
     func addDefaultTypes() async {
         let types: [FoodType] = DefaultTypeData.share.data
@@ -40,7 +41,6 @@ class FirestoreManager {
         
     }
     
- 
     func fetchFoodType(completion: (Result<[FoodType], Error>) -> Void) async {
         do {
             let querySnapshot = try await database.collection("users").document("userId").collection("foodTypes").getDocuments()
@@ -59,7 +59,7 @@ class FirestoreManager {
     // MARK: -Food Card
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
-            let querySnapshot = try await database.collection("users").document("userId").collection("foodCards").getDocuments()
+            let querySnapshot = try await foodCardsRef.getDocuments() /*database.collection("users").document("userId").collection("foodCards").getDocuments()*/
             
             var foodCards = [FoodCard]()
             for document in querySnapshot.documents {
@@ -73,9 +73,9 @@ class FirestoreManager {
         }
     }
     
-    func addFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
+    func saveFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {
-            let foodCardsRef = database.collection("users").document("userId").collection("foodCards")
+//            let foodCardsRef = database.collection("users").document("userId").collection("foodCards")
             let docRef = foodCardsRef.document(foodCard.cardId)
             let data: [String: Any] = [
                 "cardId": foodCard.cardId,
@@ -92,6 +92,15 @@ class FirestoreManager {
                 "notes": foodCard.notes
             ]
             try await docRef.setData(data)
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func deleteFoodCard(_ cardId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try await foodCardsRef.document(cardId).delete()
             completion(.success(nil))
         } catch {
             completion(.failure(error))
