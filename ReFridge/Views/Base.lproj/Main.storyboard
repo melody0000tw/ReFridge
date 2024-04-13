@@ -101,21 +101,100 @@
             </objects>
             <point key="canvasLocation" x="1982.4427480916029" y="-27.464788732394368"/>
         </scene>
-        <!--View Controller-->
+        <!--清冰箱食譜-->
         <scene sceneID="quF-0b-Dap">
             <objects>
-                <viewController id="mpQ-h2-Oko" sceneMemberID="viewController">
+                <viewController id="mpQ-h2-Oko" customClass="RecipeViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IDs-fD-aFL">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="mge-UC-beV">
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCell" id="qYW-8d-c6g" customClass="RecipeCell" customModule="ReFridge" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="132.33332824707031"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qYW-8d-c6g" id="85B-Xr-vSf">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="132.33332824707031"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="CTF-fi-tRn">
+                                                    <rect key="frame" x="16" y="15.999999999999993" width="361" height="100.33333333333331"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fork.knife.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fXJ-ds-Rau">
+                                                            <rect key="frame" x="0.0" y="1" width="100" height="99"/>
+                                                            <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="100" id="EBb-Pm-uQ6"/>
+                                                                <constraint firstAttribute="width" constant="100" id="JTz-Gl-tPp"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="7KJ-ws-Xjp">
+                                                            <rect key="frame" x="116" y="0.0" width="245" height="100.33333333333333"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="名稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ua-Yv-L15">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="245" height="20.333333333333332"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="烹調時間" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M9n-em-fGx">
+                                                                    <rect key="frame" x="0.0" y="38.333333333333336" width="245" height="20.333333333333336"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="所需食材" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sA5-Vo-6vD">
+                                                                    <rect key="frame" x="0.0" y="76.666666666666671" width="245" height="23.666666666666671"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="CTF-fi-tRn" firstAttribute="top" secondItem="85B-Xr-vSf" secondAttribute="top" constant="16" id="54K-JC-fCw"/>
+                                                <constraint firstAttribute="bottom" secondItem="CTF-fi-tRn" secondAttribute="bottom" constant="16" id="Nz9-CT-1eH"/>
+                                                <constraint firstAttribute="trailing" secondItem="CTF-fi-tRn" secondAttribute="trailing" constant="16" id="nFG-2A-flb"/>
+                                                <constraint firstItem="CTF-fi-tRn" firstAttribute="leading" secondItem="85B-Xr-vSf" secondAttribute="leading" constant="16" id="qKS-Us-DAB"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cookingTimeLabel" destination="M9n-em-fGx" id="Zcb-fz-q5A"/>
+                                            <outlet property="imageView" destination="fXJ-ds-Rau" id="0Eg-A8-yZk"/>
+                                            <outlet property="ingredientLabel" destination="sA5-Vo-6vD" id="Tnp-Zv-VPY"/>
+                                            <outlet property="recipeImage" destination="fXJ-ds-Rau" id="Bki-m3-C4W"/>
+                                            <outlet property="titleLabel" destination="7ua-Yv-L15" id="yzt-Yb-vjh"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="52o-O1-h1J"/>
-                        <color key="backgroundColor" systemColor="systemBrownColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mge-UC-beV" firstAttribute="top" secondItem="52o-O1-h1J" secondAttribute="top" id="3ck-mK-6du"/>
+                            <constraint firstItem="52o-O1-h1J" firstAttribute="bottom" secondItem="mge-UC-beV" secondAttribute="bottom" id="j2h-YY-a6M"/>
+                            <constraint firstItem="52o-O1-h1J" firstAttribute="trailing" secondItem="mge-UC-beV" secondAttribute="trailing" id="muA-Ou-ARD"/>
+                            <constraint firstItem="mge-UC-beV" firstAttribute="leading" secondItem="52o-O1-h1J" secondAttribute="leading" id="xCC-IF-zm6"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="ch4-6u-f2d"/>
+                    <navigationItem key="navigationItem" title="清冰箱食譜" id="ch4-6u-f2d">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="line.3.horizontal" catalog="system" id="o9J-Ab-y4I"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="magnifyingglass" catalog="system" id="Qoz-og-gtl"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="mge-UC-beV" id="cZi-Cj-BEB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jP9-td-zHT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1982" y="701"/>
+            <point key="canvasLocation" x="1980.916030534351" y="700.70422535211276"/>
         </scene>
         <!--食物小卡-->
         <scene sceneID="hFY-24-W4l">
@@ -354,6 +433,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bfk-S8-JQp">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <navigationBarAppearance key="scrollEdgeAppearance"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -369,16 +449,18 @@
         <image name="book.pages.fill" catalog="system" width="107" height="128"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="fork.knife.circle" catalog="system" width="128" height="123"/>
+        <image name="line.3.horizontal" catalog="system" width="128" height="65"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="refrigerator.fill" catalog="system" width="95" height="128"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="AccentColor">
             <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBrownColor">
-            <color red="0.63529411764705879" green="0.51764705882352946" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray4Color">
             <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -15,8 +15,8 @@ struct FoodType: Codable {
     var typeIcon: String
 }
 
-struct DefaultTypeData {
-    static let share = DefaultTypeData()
+struct FoodTypeData {
+    static let share = FoodTypeData()
     
     let data: [FoodType] = [
         FoodType(categoryId: 1, typeId: 101, typeName: "萵苣", typeIcon: "lettuce"),

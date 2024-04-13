@@ -12,19 +12,19 @@ class FirestoreManager {
     static let shared = FirestoreManager()
     let database: Firestore
     lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
+    lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
 
     private init() {
         database = Firestore.firestore()
     }
     
-    //MARK: -Food Type
+    //MARK: - Food Type
     // 剛註冊時加入即可
     func addDefaultTypes() async {
-        let types: [FoodType] = DefaultTypeData.share.data
+        let types: [FoodType] = FoodTypeData.share.data
         
         for type in types {
             do {
-                let foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
                 let docRef = foodTypesRef.document(String(type.typeId))
                 let data: [String: Any] = [
                     "categoryId": type.categoryId,
@@ -43,7 +43,7 @@ class FirestoreManager {
     
     func fetchFoodType(completion: (Result<[FoodType], Error>) -> Void) async {
         do {
-            let querySnapshot = try await database.collection("users").document("userId").collection("foodTypes").getDocuments()
+            let querySnapshot = try await foodTypesRef.getDocuments()
             var foodTypes = [FoodType]()
             for document in querySnapshot.documents {
                 let foodType = try document.data(as: FoodType.self)
@@ -56,10 +56,21 @@ class FirestoreManager {
         }
     }
     
-    // MARK: -Food Card
+    func queryFoodType(typeId: Int, completion: (Result< FoodType, Error>) -> Void) async {
+        do {
+            let querySnapshot = try await foodTypesRef.document(String(describing: typeId)).getDocument()
+            let foodType = try querySnapshot.data(as: FoodType.self)
+            print("你要尋找的foodType: \(foodType)")
+            completion(.success(foodType))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - Food Card
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
-            let querySnapshot = try await foodCardsRef.getDocuments() /*database.collection("users").document("userId").collection("foodCards").getDocuments()*/
+            let querySnapshot = try await foodCardsRef.getDocuments()
             
             var foodCards = [FoodCard]()
             for document in querySnapshot.documents {
@@ -75,7 +86,6 @@ class FirestoreManager {
     
     func saveFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {
-//            let foodCardsRef = database.collection("users").document("userId").collection("foodCards")
             let docRef = foodCardsRef.document(foodCard.cardId)
             let data: [String: Any] = [
                 "cardId": foodCard.cardId,
@@ -102,6 +112,21 @@ class FirestoreManager {
         do {
             try await foodCardsRef.document(cardId).delete()
             completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
+        do {
+            let querySnapshot = try await database.collection("recipes").getDocuments()
+            var recipes = [Recipe]()
+            for document in querySnapshot.documents {
+                let recipe = try document.data(as: Recipe.self)
+                print(recipe)
+                recipes.append(recipe)
+            }
+            completion(.success(recipes))
         } catch {
             completion(.failure(error))
         }
