@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import SnapKit
 
 class RecipeDetailViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
+    
     var recipe: Recipe? {
         didSet {
             if let recipe = recipe {
@@ -32,6 +34,7 @@ class RecipeDetailViewController: UIViewController {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
     }
     
     private func checkIngredientStatus(recipe: Recipe) {
@@ -116,8 +119,9 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
             
             cell.titleLabel.text = recipe.title
-            cell.cookingTimeLabel.text = "\(String(describing: recipe.cookingTime))分鐘"
-            cell.servingLabel.text = "\(String(describing: recipe.servings))人份"
+            cell.cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
+            cell.servingLabel.text = "\(String(recipe.servings))人份"
+            cell.caloriesLabel.text = "\(String(recipe.calories))大卡"
             
             return cell
             
@@ -150,5 +154,24 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             cell.stepTextLabel.text = step
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sections = ["料理介紹", "食材", "料理步驟"]
+        if section != 0 {
+            let view = UIView()
+            let label = UILabel()
+            label.text = sections[section - 1]
+            label.font = UIFont(name: "PingFangHK-Medium", size: 20)
+            label.textColor = .darkGray
+            view.addSubview(label)
+            label.snp.makeConstraints { make in
+                make.top.equalTo(view.snp.top)
+                make.leading.equalTo(view.snp.leading).offset(16)
+            }
+            
+            return view
+        }
+        return nil
     }
 }
