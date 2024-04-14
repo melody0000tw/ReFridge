@@ -184,4 +184,13 @@ class FirestoreManager {
             completion(.failure(error))
         }
     }
+    
+    func deleteListItem(by itemId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try await shoppingListRef.document(itemId).delete()
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
 }

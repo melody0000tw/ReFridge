@@ -7,12 +7,22 @@
 
 import UIKit
 
+protocol ListCellDelegate: AnyObject {
+    func delete(cell: UITableViewCell)
+}
+
 class ListCell: UITableViewCell {
+    weak var delegate: ListCellDelegate?
     static let reuseIdentifier = String(describing: ListCell.self)
     
     @IBOutlet weak var squareView: UIView!
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
+    
+    
+    @IBAction func didTappedDeleteBtn(_ sender: Any) {
+        delegate?.delete(cell: self)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

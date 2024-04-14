@@ -61,6 +61,8 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
         else {
             return UITableViewCell()
         }
+        
+        cell.delegate = self
         let item = list[indexPath.row]
         guard let foodType = FoodTypeData.share.queryFoodType(typeId: item.typeId) else {
             return cell
@@ -69,4 +71,31 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
         
         return cell
     }
+}
+
+// MARK: - ListCellDelegate
+extension ShoppingListViewController: ListCellDelegate {
+    func delete(cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        // 要刪除的 item
+        let itemToDelete = list.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        
+        // 將刪除更新到資料庫
+        Task {
+            await firestoreManager.deleteListItem(by: itemToDelete.itemId) { result in
+                switch result {
+                case .success:
+                    print("did delete item")
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            }
+        }
+        
+    }
+    
+    
 }
