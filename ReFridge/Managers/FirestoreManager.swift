@@ -157,10 +157,11 @@ class FirestoreManager {
             let data: [String: Any] = [
                 "itemId": docRef.documentID,
                 "typeId": item.typeId,
+                "qty": item.qty,
                 "checkStatus": item.checkStatus,
                 "isRoutineItem": item.isRoutineItem,
-                "routinePeriod": item.routinePeriod ?? 0,
-                "routineStartTime": item.routineStartTime ?? Date()
+                "routinePeriod": item.routinePeriod,
+                "routineStartTime": item.routineStartTime
             ]
             try await docRef.setData(data)
             completion(.success(nil))

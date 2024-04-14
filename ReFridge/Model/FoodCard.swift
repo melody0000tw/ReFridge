@@ -21,5 +21,5 @@ struct FoodCard: Codable {
     var storageType: Int
     var notes: String
     
-    static var share = FoodCard(cardId: "", name: "", categoryId: 0, typeId: 0, iconName: "", qty: 1, createDate: Date(), expireDate: Date(), notificationTime: 0, barCode: 0, storageType: 0, notes: "")
+    static let share = FoodCard(cardId: "", name: "", categoryId: 0, typeId: 0, iconName: "", qty: 1, createDate: Date(), expireDate: Date(), notificationTime: 0, barCode: 0, storageType: 0, notes: "")
 }

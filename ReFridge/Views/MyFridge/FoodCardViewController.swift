@@ -51,6 +51,7 @@ class FoodCardViewController: UIViewController {
         if let foodTypeVC = children.compactMap({ $0 as? FoodTypeViewController }).first {
             foodTypeVC.onSelectFoodType = { [self] foodType in
                 print("card vc knows the selected foodtype: \(foodType)")
+                // 選擇完 foodType 後
                 foodCard.categoryId = foodType.categoryId
                 foodCard.typeId = foodType.typeId
                 foodCard.name = foodType.typeName
@@ -109,7 +110,8 @@ class FoodCardViewController: UIViewController {
             storageSegment.selectedSegmentIndex = 0
         }
     }
-
+    
+    // add & edit
     private func saveData() {
         print(foodCard)
         print("save data")
@@ -158,6 +160,7 @@ class FoodCardViewController: UIViewController {
         }
     }
     
+    // TODO: 是否刪除
     private func addDefaultTypes() {
         Task {
             await firestoreManager.addDefaultTypes()

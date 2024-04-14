@@ -24,10 +24,11 @@ class RecipeIngredientCell: UITableViewCell {
                 let item = ListItem(
                     itemId: "",
                     typeId: lackType.typeId,
+                    qty: 1, // TODO: 要改成食譜上的數字？
                     checkStatus: 0,
                     isRoutineItem: false,
-                    routinePeriod: nil,
-                    routineStartTime: nil)
+                    routinePeriod: 0,
+                    routineStartTime: Date())
                 Task {
                     await firestoreManager.addListItem(item, completion: { result in
                         switch result {

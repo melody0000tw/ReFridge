@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */; };
+		EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */; };
+		EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */; };
 		EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937C2BCADFE600189B7C /* ListItem.swift */; };
 		EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */; };
 		EB8893822BCAE7E700189B7C /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8893812BCAE7E700189B7C /* ListCell.swift */; };
@@ -47,6 +49,8 @@
 		2A2A3BE874E2D79E74386116 /* Pods-ReFridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReFridge.debug.xcconfig"; path = "Target Support Files/Pods-ReFridge/Pods-ReFridge.debug.xcconfig"; sourceTree = "<group>"; };
 		7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReFridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB7EF03CBFBE351CEBCF8C77 /* Pods-ReFridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReFridge.release.xcconfig"; path = "Target Support Files/Pods-ReFridge/Pods-ReFridge.release.xcconfig"; sourceTree = "<group>"; };
+		EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
+		EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterManager.swift; sourceTree = "<group>"; };
 		EB88937C2BCADFE600189B7C /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		EB8893812BCAE7E700189B7C /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
@@ -118,6 +122,7 @@
 			children = (
 				EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */,
 				EB8893812BCAE7E700189B7C /* ListCell.swift */,
+				EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */,
 			);
 			path = ShoppingList;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 			isa = PBXGroup;
 			children = (
 				EBFF62C12BC789380013F50F /* FirestoreManager.swift */,
+				EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -414,6 +420,8 @@
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
 				EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */,
 				EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */,
+				EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */,
+				EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */,
 				EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */,
 				EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */,
 				EBCC795E2BCA73D30029B754 /* RecipeIngredientCell.swift in Sources */,
