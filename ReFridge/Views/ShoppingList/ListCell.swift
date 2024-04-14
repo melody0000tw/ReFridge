@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol ListCellDelegate: AnyObject {
     func delete(cell: UITableViewCell)
@@ -15,10 +16,11 @@ class ListCell: UITableViewCell {
     weak var delegate: ListCellDelegate?
     static let reuseIdentifier = String(describing: ListCell.self)
     
-    @IBOutlet weak var squareView: UIView!
+    lazy var squareView = UIView(frame: CGRect())
+    lazy var checkView = UIImageView(frame: CGRect())
+    
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
-    
     
     @IBAction func didTappedDeleteBtn(_ sender: Any) {
         delegate?.delete(cell: self)
@@ -27,13 +29,40 @@ class ListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        // Initialization code
+        setupMarks()
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    private func setupMarks() {
+        squareView.layer.borderWidth = 1
+        squareView.layer.borderColor = UIColor.darkGray.cgColor
+        squareView.backgroundColor = .clear
+        contentView.addSubview(squareView)
+        squareView.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.width.height.equalTo(24)
+            make.centerY.equalTo(contentView.snp.centerY)
+        }
+        squareView.isHidden = false
+        
+        checkView.image = UIImage(systemName: "checkmark")
+        checkView.tintColor = .darkGray
+        contentView.addSubview(checkView)
+        checkView.snp.makeConstraints { make in
+            make.leading.equalTo(contentView.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.width.height.equalTo(20)
+            make.centerY.equalTo(contentView.snp.centerY)
+        }
+        checkView.isHidden = true
+    }
+    
+    func toggleStyle(checkStatus: Int) {
+        if checkStatus == 0 {
+            squareView.isHidden = false
+            checkView.isHidden = true
+        } else {
+            squareView.isHidden = true
+            checkView.isHidden = false
+        }
     }
 
 }

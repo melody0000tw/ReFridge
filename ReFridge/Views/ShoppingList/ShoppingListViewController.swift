@@ -68,8 +68,25 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
             return cell
         }
         cell.itemLabel.text = foodType.typeName
+        cell.toggleStyle(checkStatus: item.checkStatus)
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let originalStatus = list[indexPath.row].checkStatus
+        list[indexPath.row].checkStatus = originalStatus == 0 ? 1 : 0 // tableView.reloadData
+        let newItem = list[indexPath.row]
+        Task {
+            await firestoreManager.updateCheckStatus(newItem: newItem) { result in
+                switch result {
+                case .success:
+                    print("did update checkStatus for \(newItem.itemId)")
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            }
+        }
     }
 }
 
@@ -96,6 +113,4 @@ extension ShoppingListViewController: ListCellDelegate {
         }
         
     }
-    
-    
 }

@@ -170,6 +170,18 @@ class FirestoreManager {
         }
     }
     
+    func updateCheckStatus(newItem: ListItem, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = shoppingListRef.document(newItem.itemId)
+            try await docRef.updateData([
+                "checkStatus": newItem.checkStatus
+              ])
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
     func fetchListItems(completion: (Result<[ListItem], Error>) -> Void) async {
         do {
             let querySnapshot = try await shoppingListRef.getDocuments()

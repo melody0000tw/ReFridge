@@ -780,50 +780,39 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="93.333335876464844"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2go-Qd-mCf">
-                                                    <rect key="frame" x="24" y="16.000000000000004" width="345" height="61.333333333333343"/>
-                                                    <subviews>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-mT-SkT">
-                                                            <rect key="frame" x="0.0" y="20.666666666666664" width="20" height="20"/>
-                                                            <color key="backgroundColor" systemColor="systemGray4Color"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="20" id="jb7-N6-NJ9"/>
-                                                                <constraint firstAttribute="height" constant="20" id="xRM-QE-Wok"/>
-                                                            </constraints>
-                                                        </view>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIa-zg-I2T">
-                                                            <rect key="frame" x="36" y="0.33333333333333215" width="273" height="61"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGK-Lu-b8Y">
-                                                            <rect key="frame" x="325" y="20.666666666666664" width="20" height="20"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="20" id="ANb-oa-uab"/>
-                                                                <constraint firstAttribute="height" constant="20" id="D5G-ld-2qm"/>
-                                                            </constraints>
-                                                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                            <state key="normal" image="xmark" catalog="system"/>
-                                                            <connections>
-                                                                <action selector="didTappedDeleteBtn:" destination="CTx-gj-45B" eventType="touchUpInside" id="gTY-BT-RkI"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIa-zg-I2T">
+                                                    <rect key="frame" x="60" y="16.000000000000004" width="281" height="61.333333333333343"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vGK-Lu-b8Y">
+                                                    <rect key="frame" x="357" y="36.666666666666664" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="20" id="ANb-oa-uab"/>
+                                                        <constraint firstAttribute="height" constant="20" id="D5G-ld-2qm"/>
+                                                    </constraints>
+                                                    <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="xmark" catalog="system"/>
+                                                    <connections>
+                                                        <action selector="didTappedDeleteBtn:" destination="CTx-gj-45B" eventType="touchUpInside" id="gTY-BT-RkI"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="2go-Qd-mCf" secondAttribute="bottom" constant="16" id="8gR-dH-VWq"/>
-                                                <constraint firstAttribute="trailing" secondItem="2go-Qd-mCf" secondAttribute="trailing" constant="24" id="PJS-ux-uao"/>
-                                                <constraint firstItem="2go-Qd-mCf" firstAttribute="leading" secondItem="XHL-DW-ws5" secondAttribute="leading" constant="24" id="sK0-6O-5B3"/>
-                                                <constraint firstItem="2go-Qd-mCf" firstAttribute="top" secondItem="XHL-DW-ws5" secondAttribute="top" constant="16" id="urn-TG-81e"/>
+                                                <constraint firstAttribute="trailing" secondItem="vGK-Lu-b8Y" secondAttribute="trailing" constant="16" id="105-B7-IL9"/>
+                                                <constraint firstItem="QIa-zg-I2T" firstAttribute="top" secondItem="XHL-DW-ws5" secondAttribute="top" constant="16" id="7xi-8I-NvQ"/>
+                                                <constraint firstItem="QIa-zg-I2T" firstAttribute="leading" secondItem="XHL-DW-ws5" secondAttribute="leading" constant="60" id="Ase-fE-0vV"/>
+                                                <constraint firstAttribute="bottom" secondItem="QIa-zg-I2T" secondAttribute="bottom" constant="16" id="PN5-k6-jKX"/>
+                                                <constraint firstItem="vGK-Lu-b8Y" firstAttribute="centerY" secondItem="XHL-DW-ws5" secondAttribute="centerY" id="TTY-dN-Y9G"/>
+                                                <constraint firstItem="QIa-zg-I2T" firstAttribute="centerY" secondItem="XHL-DW-ws5" secondAttribute="centerY" id="nn1-hd-lh9"/>
+                                                <constraint firstItem="vGK-Lu-b8Y" firstAttribute="leading" secondItem="QIa-zg-I2T" secondAttribute="trailing" constant="16" id="yvj-6F-Eg9"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="deleteButton" destination="vGK-Lu-b8Y" id="9l8-uY-dAS"/>
                                             <outlet property="itemLabel" destination="QIa-zg-I2T" id="gDa-0f-aMB"/>
-                                            <outlet property="squareView" destination="g4d-mT-SkT" id="7fl-e9-LQ3"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1064,6 +1053,7 @@
                     <view key="view" contentMode="scaleToFill" id="JHS-LP-o2f">
                         <rect key="frame" x="0.0" y="0.0" width="361" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="bYK-yQ-XaQ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
