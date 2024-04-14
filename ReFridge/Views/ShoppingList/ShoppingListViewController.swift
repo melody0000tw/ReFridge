@@ -12,6 +12,7 @@ class ShoppingListViewController: UIViewController {
     var list = [ListItem]() {
         didSet {
             DispatchQueue.main.async {
+                print("new list count: \(self.list.count)")
                 self.tableView.reloadData()
             }
         }
@@ -19,6 +20,7 @@ class ShoppingListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBAction func addToFridge(_ sender: Any) {
+        addCheckItemToFridge()
     }
     
     override func viewDidLoad() {
@@ -49,6 +51,80 @@ class ShoppingListViewController: UIViewController {
             }
         }
     }
+    
+    private func addCheckItemToFridge() {
+        let dispatchGroup = DispatchGroup()
+        // filter checkItems
+        let checkItems = list.filter { item in
+            item.checkStatus == 1
+        }
+        // create card
+        for item in checkItems {
+            dispatchGroup.enter()
+            Task {
+                await firestoreManager.queryFoodType(typeId: item.typeId) { result in
+                    switch result {
+                    case .success(let foodType):
+                        print("取得foodType 資料: \(foodType.typeName)")
+                        createFoodCard(foodType: foodType, item: item)
+                    case .failure(let error):
+                        print("error: \(error)")
+                    }
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) { [self] in
+            fetchList()
+        }
+    }
+    
+    private func createFoodCard(foodType: FoodType, item: ListItem) {
+        // make food card
+        let foodCard = FoodCard(
+            cardId: UUID().uuidString,
+            name: foodType.typeName,
+            categoryId: foodType.categoryId,
+            typeId: foodType.typeId,
+            iconName: foodType.typeIcon,
+            qty: item.qty,
+            createDate: Date(),
+            expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
+            notificationTime: 3,
+            barCode: 0,
+            storageType: 2, // default 值常溫？
+            notes: "")
+        
+        
+        // post card
+        Task {
+            await firestoreManager.saveFoodCard(foodCard) { result in
+                switch result {
+                case .success:
+                    print("成功新增小卡 \(foodCard.name)")
+                    deleteItem(item: item)
+                case .failure(let error):
+                    print("Error adding document: \(error)")
+                }
+
+            }
+        }
+    }
+    
+    private func deleteItem(item: ListItem) {
+        Task {
+            await firestoreManager.deleteListItem(by: item.itemId) { result in
+                switch result {
+                case .success(let itemId):
+                    print("成功刪除itemId: \(String(describing: itemId))")
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            }
+        }
+    }
+        
 }
 
 extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate {
@@ -98,7 +174,6 @@ extension ShoppingListViewController: ListCellDelegate {
         }
         // 要刪除的 item
         let itemToDelete = list.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .automatic)
         
         // 將刪除更新到資料庫
         Task {
