@@ -13,8 +13,10 @@ class ListCell: UITableViewCell {
     @IBOutlet weak var squareView: UIView!
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var deleteButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        selectionStyle = .none
         // Initialization code
     }
 

@@ -77,31 +77,30 @@ class AddItemViewController: UIViewController {
     }
     
     private func addData() {
-        guard listItem.typeId != 0,
-              let qty = Int(qtyTextField.text ?? "1"),
-              let routinePeriod = Int(routinePeriodTextField.text ?? "0")
-        else {
-            print("輸入有誤")
+        guard listItem.typeId != 0 else {
+            print("沒有選擇 type")
             return
         }
         
-        listItem.routinePeriod = routinePeriod
-        listItem.qty = qty
+        if let qty = Int(qtyTextField.text ?? "1"),
+           let routinePeriod = Int(routinePeriodTextField.text ?? "0") {
+            listItem.routinePeriod = routinePeriod
+            listItem.qty = qty
+        }
+        
         print("準備添加item: \(listItem)")
         Task {
-            await firestoreManager.addListItem(listItem) {
-                result in
+            await firestoreManager.addListItem(listItem) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
-                    resetData()
+                    DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 case .failure(let error):
                     print("Error adding document: \(error)")
                 }
             }
         }
-        
     }
-    
-
 }
