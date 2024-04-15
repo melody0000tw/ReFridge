@@ -683,7 +683,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dY-2k-TjE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2827" y="-697"/>
+            <point key="canvasLocation" x="2827" y="-258"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="akH-cD-8Ua">
@@ -740,7 +740,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Pr-Gn-ym7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3633" y="-927"/>
+            <point key="canvasLocation" x="3633" y="-489"/>
         </scene>
         <!--Scan Result View Controller-->
         <scene sceneID="0kp-Fa-A5l">
@@ -987,11 +987,12 @@
                     <connections>
                         <outlet property="notRecongCollectionView" destination="yGv-S0-zr3" id="Gnq-A1-dYv"/>
                         <outlet property="recongCollectionView" destination="GHf-Se-2N6" id="eH9-WM-rjS"/>
+                        <segue destination="i4A-nY-j9y" kind="show" identifier="editScanResult" id="G3D-hI-hkd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vra-Ca-LKn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2826.7175572519081" y="23.943661971830988"/>
+            <point key="canvasLocation" x="2827" y="-986"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6k1-Ku-RTH">
@@ -1314,6 +1315,9 @@
             <point key="canvasLocation" x="3634" y="1223"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="G3D-hI-hkd"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="book.pages.fill" catalog="system" width="107" height="128"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>

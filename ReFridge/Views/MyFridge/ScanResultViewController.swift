@@ -16,7 +16,6 @@ class ScanResultViewController: UIViewController {
     @IBOutlet weak var notRecongCollectionView: UICollectionView!
     @IBOutlet weak var recongCollectionView: UICollectionView!
     @IBAction func createCards(_ sender: Any) {
-        print("create Cards")
         saveData()
     }
     
@@ -24,7 +23,27 @@ class ScanResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionViews()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let foodCardVC = segue.destination as? FoodCardViewController,
+           let foodCard = sender as? FoodCard {
+            foodCardVC.foodCard = foodCard
+            foodCardVC.onChangeFoodCard = { newFoodCard in
+                guard var scanResult = self.scanResult else {
+                    return
+                }
+                
+                if let index = scanResult.recongItems.firstIndex(where: { $0.cardId == newFoodCard.cardId }) {
+                    scanResult.recongItems[index] = newFoodCard
+                    self.scanResult = scanResult
 
+                    let indexPath = IndexPath(item: index, section: 0)
+                    self.recongCollectionView.reloadItems(at: [indexPath])
+                }
+                
+            }
+        }
     }
     
     // MARK: - Setup
@@ -66,10 +85,7 @@ class ScanResultViewController: UIViewController {
         }
         
         let dispatchGroup = DispatchGroup()
-        for item in scanResult.recongItems {
-            guard let foodCard = item.foodCard else {
-                return
-            }
+        for foodCard in scanResult.recongItems {
             dispatchGroup.enter()
             Task {
                 await firestoreManager.saveFoodCard(foodCard) { result in
@@ -110,20 +126,21 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             return UICollectionViewCell()
         }
         if collectionView == recongCollectionView {
-            guard let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath) as? RecongCell,
-                  let foodCard = scanResult.recongItems[indexPath.item].foodCard
+            guard let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath) as? RecongCell
             else {
                 return UICollectionViewCell()
             }
             cell.delegate = self
-            let item = scanResult.recongItems[indexPath.item]
-            cell.scanTextLabel.text = item.text
+            let foodCard = scanResult.recongItems[indexPath.item]
+//            let item = scanResult.recongItems[indexPath.item]
+            cell.scanTextLabel.text = foodCard.name
             
             guard let foodType = FoodTypeData.share.queryFoodType(typeId: foodCard.typeId) else {
                 return cell
             }
             cell.iconImage.image = UIImage(named: foodType.typeIcon)
             cell.typeLabel.text = foodType.typeName
+            cell.qtyLabel.text = String(foodCard.qty)
             cell.expireDateLabel.text = formatter.string(from: foodCard.expireDate)
             return cell
         } else {
@@ -132,7 +149,7 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             }
             cell.delegate = self
             let item = scanResult.notRecongItems[indexPath.item]
-            cell.scanTextLabel.text = item.text
+            cell.scanTextLabel.text = item
             return cell
         }
     }
@@ -146,10 +163,10 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
         else {
             return
         }
-        var item = scanResult.notRecongItems.remove(at: indexPath.item)
-        item.foodCard = FoodCard(
+        var text = scanResult.notRecongItems.remove(at: indexPath.item)
+        let foodCard = FoodCard(
             cardId: UUID().uuidString,
-            name: item.text,
+            name: text,
             categoryId: 5,
             typeId: 501,
             iconName: "other",
@@ -159,7 +176,7 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
             barCode: 0,
             storageType: 0,
             notes: "")
-        scanResult.recongItems.insert(item, at: 0)
+        scanResult.recongItems.insert(foodCard, at: 0)
         self.scanResult = scanResult
         recongCollectionView.reloadData()
     }
@@ -176,6 +193,14 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
     }
     
     func editRecongCell(cell: UICollectionViewCell) {
-        print("edit")
+        guard let scanResult = scanResult,
+              let indexPath = recongCollectionView.indexPath(for: cell)
+        else {
+            return
+        }
+        
+        let foodCard = scanResult.recongItems[indexPath.item]
+        performSegue(withIdentifier: "editScanResult", sender: foodCard)
+
     }
 }

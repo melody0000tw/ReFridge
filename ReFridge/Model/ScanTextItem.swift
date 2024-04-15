@@ -7,13 +7,12 @@
 
 import Foundation
 
-
 struct ScanResult {
-    var recongItems: [ScanTextItem]
-    var notRecongItems: [ScanTextItem]
+    var recongItems: [FoodCard]
+    var notRecongItems: [String]
 }
 
-struct ScanTextItem {
-    var text: String
-    var foodCard: FoodCard?
-}
+//struct ScanTextItem {
+//    var text: String
+//    var foodCard: FoodCard?
+//}

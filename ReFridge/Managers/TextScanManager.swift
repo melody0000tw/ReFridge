@@ -62,29 +62,26 @@ class TextScanManager {
             }
         }
         
-        var recogResult = [ScanTextItem]()
+        var recogResult = [FoodCard]()
         for text in recongTexts {
-            let result = ScanTextItem(
-                text: text,
-                foodCard: FoodCard(
-                    cardId: UUID().uuidString,
-                    name: text,
-                    categoryId: 5,
-                    typeId: 501,
-                    iconName: "other",
-                    qty: 1, createDate: Date(),
-                    expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-                    notificationTime: 3,
-                    barCode: 0,
-                    storageType: 0,
-                    notes: ""))
+            let result = FoodCard(
+                cardId: UUID().uuidString,
+                name: text,
+                categoryId: 5,
+                typeId: 501,
+                iconName: "other",
+                qty: 1, createDate: Date(),
+                expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
+                notificationTime: 3,
+                barCode: 0,
+                storageType: 0,
+                notes: "")
             recogResult.append(result)
         }
         
-        var notRecogResult = [ScanTextItem]()
+        var notRecogResult = [String]()
         for text in notRecongTexts {
-            let result = ScanTextItem(text: text)
-            notRecogResult.append(result)
+            notRecogResult.append(text)
         }
         
         let result = ScanResult(recongItems: recogResult, notRecongItems: notRecogResult)

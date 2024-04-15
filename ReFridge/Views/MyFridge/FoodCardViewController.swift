@@ -10,16 +10,11 @@ import SnapKit
 import IQKeyboardManagerSwift
 
 class FoodCardViewController: UIViewController {
-    var foodCard = FoodCard.share
-    
-    let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter
-    }()
-    
+    let formatter = FormatterManager.share.formatter
     private let firestoreManager = FirestoreManager.shared
+    
+    var foodCard = FoodCard.share
+    var onChangeFoodCard: ((FoodCard) -> Void)?
     
     let datePicker = UIDatePicker()
     
@@ -38,6 +33,7 @@ class FoodCardViewController: UIViewController {
     @IBAction func didTappedDelete(_ sender: Any) {
        deleteData()
     }
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +109,6 @@ class FoodCardViewController: UIViewController {
     
     // add & edit
     private func saveData() {
-        print(foodCard)
         print("save data")
         guard let qty = qtyTextField.text,
             let barCode = barcodeTextField.text,
@@ -128,18 +123,24 @@ class FoodCardViewController: UIViewController {
         foodCard.notificationTime = Int(notificationTime) ?? 0
         foodCard.storageType = storageSegment.selectedSegmentIndex
         foodCard.notes = noteTextField.text ?? ""
-        print(foodCard)
+        
+        if let onChangeFoodCard = onChangeFoodCard {
+            onChangeFoodCard(foodCard)
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
         
         Task {
             await firestoreManager.saveFoodCard(foodCard) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
-                    resetData()
+                    DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 case .failure(let error):
                     print("Error adding document: \(error)")
                 }
-
             }
         }
     }
