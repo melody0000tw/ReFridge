@@ -51,7 +51,7 @@ class TextScanManager {
     }
     
     func filterFoodTypeText(from texts: [String]) -> ScanResult {
-        let foodKeywords = ["金針菇", "咖啡豆", "火腿"] // Example keywords
+        let foodKeywords = ["菇", "豆", "火腿", "菜", "肉", "萵苣", "大陸妹", "吐司", "蘿美"] // Example keywords
         var recongTexts = [String]()
         var notRecongTexts = [String]()
         for text in texts {
@@ -64,7 +64,20 @@ class TextScanManager {
         
         var recogResult = [ScanTextItem]()
         for text in recongTexts {
-            let result = ScanTextItem(text: text)
+            let result = ScanTextItem(
+                text: text,
+                foodCard: FoodCard(
+                    cardId: UUID().uuidString,
+                    name: text,
+                    categoryId: 5,
+                    typeId: 501,
+                    iconName: "other",
+                    qty: 1, createDate: Date(),
+                    expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
+                    notificationTime: 3,
+                    barCode: 0,
+                    storageType: 0,
+                    notes: ""))
             recogResult.append(result)
         }
         

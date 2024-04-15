@@ -8,21 +8,26 @@
 import UIKit
 
 class ScanResultViewController: UIViewController {
+    let formatter = FormatterManager.share.formatter
+    let firestoreManager = FirestoreManager.shared
     
-    var scanResult: ScanResult? {
-        didSet {
-            print("scan vc did get scanResult: \(String(describing: scanResult))")
-        }
-    }
+    var scanResult: ScanResult?
     
     @IBOutlet weak var notRecongCollectionView: UICollectionView!
     @IBOutlet weak var recongCollectionView: UICollectionView!
+    @IBAction func createCards(_ sender: Any) {
+        print("create Cards")
+        saveData()
+    }
+    
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionViews()
 
     }
     
+    // MARK: - Setup
     private func setupCollectionViews() {
         recongCollectionView.dataSource = self
         recongCollectionView.delegate = self
@@ -52,8 +57,42 @@ class ScanResultViewController: UIViewController {
         section.orthogonalScrollingBehavior = .continuous
         return UICollectionViewCompositionalLayout(section: section)
     }
+    
+    // MARK: - Data
+    private func saveData() {
+        print("save data")
+        guard let scanResult = scanResult else {
+            return
+        }
+        
+        let dispatchGroup = DispatchGroup()
+        for item in scanResult.recongItems {
+            guard let foodCard = item.foodCard else {
+                return
+            }
+            dispatchGroup.enter()
+            Task {
+                await firestoreManager.saveFoodCard(foodCard) { result in
+                    switch result {
+                    case .success:
+                        print("Document successfully written!")
+                    case .failure(let error):
+                        print("Error adding document: \(error)")
+                    }
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("所有小卡都已新增完畢！")
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
 }
 
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension ScanResultViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let scanResult = scanResult else {
@@ -71,11 +110,20 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             return UICollectionViewCell()
         }
         if collectionView == recongCollectionView {
-            guard let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath) as? RecongCell else {
+            guard let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath) as? RecongCell,
+                  let foodCard = scanResult.recongItems[indexPath.item].foodCard
+            else {
                 return UICollectionViewCell()
             }
             let item = scanResult.recongItems[indexPath.item]
             cell.scanTextLabel.text = item.text
+            
+            guard let foodType = FoodTypeData.share.queryFoodType(typeId: foodCard.typeId) else {
+                return cell
+            }
+            cell.iconImage.image = UIImage(named: foodType.typeIcon)
+            cell.typeLabel.text = foodType.typeName
+            cell.expireDateLabel.text = formatter.string(from: foodCard.expireDate)
             return cell
         } else {
             guard let cell = notRecongCollectionView.dequeueReusableCell(withReuseIdentifier: NotRecongCell.reuseIdentifier, for: indexPath) as? NotRecongCell else {

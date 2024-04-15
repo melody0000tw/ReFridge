@@ -977,7 +977,13 @@
                             <constraint firstItem="6D0-Im-oK8" firstAttribute="trailing" secondItem="GHf-Se-2N6" secondAttribute="trailing" constant="16" id="yPe-EL-mmW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="43M-Ig-hMJ"/>
+                    <navigationItem key="navigationItem" id="43M-Ig-hMJ">
+                        <barButtonItem key="rightBarButtonItem" image="checkmark" catalog="system" id="39t-3F-80c">
+                            <connections>
+                                <action selector="createCards:" destination="kTv-O8-Tw4" id="FM9-oR-pbc"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="notRecongCollectionView" destination="yGv-S0-zr3" id="Gnq-A1-dYv"/>
                         <outlet property="recongCollectionView" destination="GHf-Se-2N6" id="eH9-WM-rjS"/>
