@@ -7,11 +7,18 @@
 
 import UIKit
 
+protocol NotRecongCellDelegate: AnyObject {
+    func addRecongCell(cell: UICollectionViewCell)
+}
+
 class NotRecongCell: UICollectionViewCell {
+    var delegate: NotRecongCellDelegate?
+    
     static let reuseIdentifier = String(describing: NotRecongCell.self)
     
     @IBAction func addAction(_ sender: Any) {
         print("addAction")
+        delegate?.addRecongCell(cell: self)
     }
     @IBOutlet weak var scanTextLabel: UILabel!
 }

@@ -115,6 +115,7 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             else {
                 return UICollectionViewCell()
             }
+            cell.delegate = self
             let item = scanResult.recongItems[indexPath.item]
             cell.scanTextLabel.text = item.text
             
@@ -129,9 +130,52 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             guard let cell = notRecongCollectionView.dequeueReusableCell(withReuseIdentifier: NotRecongCell.reuseIdentifier, for: indexPath) as? NotRecongCell else {
                 return UICollectionViewCell()
             }
+            cell.delegate = self
             let item = scanResult.notRecongItems[indexPath.item]
             cell.scanTextLabel.text = item.text
             return cell
         }
+    }
+}
+
+// MARK: - RecongCellDelegate
+extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
+    func addRecongCell(cell: UICollectionViewCell) {
+        guard var scanResult = scanResult,
+              let indexPath = notRecongCollectionView.indexPath(for: cell)
+        else {
+            return
+        }
+        var item = scanResult.notRecongItems.remove(at: indexPath.item)
+        item.foodCard = FoodCard(
+            cardId: UUID().uuidString,
+            name: item.text,
+            categoryId: 5,
+            typeId: 501,
+            iconName: "other",
+            qty: 1, createDate: Date(),
+            expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
+            notificationTime: 3,
+            barCode: 0,
+            storageType: 0,
+            notes: "")
+        scanResult.recongItems.insert(item, at: 0)
+        self.scanResult = scanResult
+        recongCollectionView.reloadData()
+    }
+    
+    func deleteRecongCell(cell: UICollectionViewCell) {
+        guard var scanResult = scanResult,
+              let indexPath = recongCollectionView.indexPath(for: cell)
+        else {
+            return
+        }
+        scanResult.recongItems.remove(at: indexPath.item)
+        self.scanResult = scanResult
+        recongCollectionView.reloadData()
+    }
+    
+    func editRecongCell(cell: UICollectionViewCell) {
+        print("edit")
     }
 }

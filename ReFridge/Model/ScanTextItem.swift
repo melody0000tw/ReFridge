@@ -9,8 +9,8 @@ import Foundation
 
 
 struct ScanResult {
-    let recongItems: [ScanTextItem]
-    let notRecongItems: [ScanTextItem]
+    var recongItems: [ScanTextItem]
+    var notRecongItems: [ScanTextItem]
 }
 
 struct ScanTextItem {
