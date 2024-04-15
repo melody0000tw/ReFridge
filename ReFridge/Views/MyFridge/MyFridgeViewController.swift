@@ -56,7 +56,7 @@ class MyFridgeViewController: UIViewController {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
                 case .success(let foodCards):
-                    print("got food cards! \(foodCards)")
+                    print("got food cards!")
                     self.foodCards = foodCards
                 case .failure(let error):
                     print("error: \(error)")
@@ -64,11 +64,20 @@ class MyFridgeViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - imagePicker
+    private func presentImagePicker() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        self.present(picker, animated: true)
+    }
 }
 
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        foodCards.count + 1
+        foodCards.count + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -82,8 +91,12 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.iconImage.image = UIImage(systemName: "plus")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "新增食物"
+        case 1:
+            cell.iconImage.image = UIImage(systemName: "doc.viewfinder")
+            cell.remainDayLabel.isHidden = true
+            cell.nameLabel.text = "掃描收據"
         default:
-            let foodCard = foodCards[indexPath.item - 1]
+            let foodCard = foodCards[indexPath.item - 2]
             cell.foodCard = foodCard
             cell.setupCell()
         }
@@ -95,11 +108,26 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
         switch indexPath.item {
         case 0:
             performSegue(withIdentifier: "showFoodCardVC", sender: nil)
+        case 1:
+            presentImagePicker()
         default:
-            let selectedFoodCard = foodCards[indexPath.item - 1]
+            let selectedFoodCard = foodCards[indexPath.item - 2]
             performSegue(withIdentifier: "showFoodCardVC", sender: selectedFoodCard)
         }
         
     }
-    
+}
+
+// MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
+extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        // 把資料丟給 text scan manager 處理
+        guard let image = info[.originalImage] as? UIImage else { return }
+        let scanManager = TextScanManager.shared
+        Task {
+            scanManager.detectText(in: image)
+        }
+        picker.dismiss(animated: true)
+        performSegue(withIdentifier: "showScanResultVC", sender: nil)
+    }
 }
