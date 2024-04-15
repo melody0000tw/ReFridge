@@ -66,21 +66,19 @@ class ShoppingListViewController: UIViewController {
                     switch result {
                     case .success(let foodType):
                         print("取得foodType 資料: \(foodType.typeName)")
-                        createFoodCard(foodType: foodType, item: item)
+                        createFoodCard(foodType: foodType, item: item, group: dispatchGroup)
                     case .failure(let error):
                         print("error: \(error)")
                     }
                 }
-                dispatchGroup.leave()
             }
         }
-        
         dispatchGroup.notify(queue: .main) { [self] in
             fetchList()
         }
     }
     
-    private func createFoodCard(foodType: FoodType, item: ListItem) {
+    private func createFoodCard(foodType: FoodType, item: ListItem, group: DispatchGroup) {
         // make food card
         let foodCard = FoodCard(
             cardId: UUID().uuidString,
@@ -96,23 +94,21 @@ class ShoppingListViewController: UIViewController {
             storageType: 2, // default 值常溫？
             notes: "")
         
-        
         // post card
         Task {
             await firestoreManager.saveFoodCard(foodCard) { result in
                 switch result {
                 case .success:
                     print("成功新增小卡 \(foodCard.name)")
-                    deleteItem(item: item)
+                    deleteItem(item: item, group: group)
                 case .failure(let error):
                     print("Error adding document: \(error)")
                 }
-
             }
         }
     }
     
-    private func deleteItem(item: ListItem) {
+    private func deleteItem(item: ListItem, group: DispatchGroup) {
         Task {
             await firestoreManager.deleteListItem(by: item.itemId) { result in
                 switch result {
@@ -122,6 +118,7 @@ class ShoppingListViewController: UIViewController {
                     print("error: \(error)")
                 }
             }
+            group.leave()
         }
     }
         
