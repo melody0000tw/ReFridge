@@ -13,6 +13,7 @@ class FirestoreManager {
     let database: Firestore
     lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
     lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
+    lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
 
     private init() {
         database = Firestore.firestore()
@@ -47,7 +48,6 @@ class FirestoreManager {
             var foodTypes = [FoodType]()
             for document in querySnapshot.documents {
                 let foodType = try document.data(as: FoodType.self)
-                print(foodType)
                 foodTypes.append(foodType)
             }
             completion(.success(foodTypes))
@@ -60,7 +60,6 @@ class FirestoreManager {
         do {
             let querySnapshot = try await foodTypesRef.document(String(describing: typeId)).getDocument()
             let foodType = try querySnapshot.data(as: FoodType.self)
-            print("你要尋找的foodType: \(foodType)")
             completion(.success(foodType))
         } catch {
             completion(.failure(error))
@@ -71,11 +70,9 @@ class FirestoreManager {
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
             let querySnapshot = try await foodCardsRef.getDocuments()
-            
             var foodCards = [FoodCard]()
             for document in querySnapshot.documents {
                 let foodCard = try document.data(as: FoodCard.self)
-                print(foodCard.name)
                 foodCards.append(foodCard)
             }
             completion(.success(foodCards))
@@ -102,7 +99,7 @@ class FirestoreManager {
                 "notes": foodCard.notes
             ]
             try await docRef.setData(data)
-            completion(.success(nil))
+            completion(.success(foodCard))
         } catch {
             completion(.failure(error))
         }
@@ -123,7 +120,6 @@ class FirestoreManager {
             var foodCards = [FoodCard]()
             for document in querySnapshot.documents {
                 let foodCard = try document.data(as: FoodCard.self)
-                print("冰箱有的type: \(foodCard.name), card id: \(foodCard.cardId)")
                 foodCards.append(foodCard)
             }
             
@@ -134,17 +130,70 @@ class FirestoreManager {
     }
     
     // MARK: - Recipe
-    
     func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
         do {
             let querySnapshot = try await database.collection("recipes").getDocuments()
             var recipes = [Recipe]()
             for document in querySnapshot.documents {
                 let recipe = try document.data(as: Recipe.self)
-                print(recipe)
                 recipes.append(recipe)
             }
             completion(.success(recipes))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - Shopping List
+    func addListItem(_ item: ListItem, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = shoppingListRef.document()
+            let data: [String: Any] = [
+                "itemId": docRef.documentID,
+                "typeId": item.typeId,
+                "qty": item.qty,
+                "checkStatus": item.checkStatus,
+                "isRoutineItem": item.isRoutineItem,
+                "routinePeriod": item.routinePeriod,
+                "routineStartTime": item.routineStartTime
+            ]
+            try await docRef.setData(data)
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func updateCheckStatus(newItem: ListItem, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = shoppingListRef.document(newItem.itemId)
+            try await docRef.updateData([
+                "checkStatus": newItem.checkStatus
+              ])
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchListItems(completion: (Result<[ListItem], Error>) -> Void) async {
+        do {
+            let querySnapshot = try await shoppingListRef.getDocuments()
+            var list = [ListItem]()
+            for document in querySnapshot.documents {
+                let item = try document.data(as: ListItem.self)
+                list.append(item)
+            }
+            completion(.success(list))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func deleteListItem(by itemId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try await shoppingListRef.document(itemId).delete()
+            completion(.success(itemId))
         } catch {
             completion(.failure(error))
         }

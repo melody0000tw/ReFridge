@@ -16,4 +16,14 @@ extension Date {
         let components = calendar.dateComponents([.day], from: startOfToday, to: startOfExpireDate)
         return components.day
     }
+    
+    func createExpiredDate(afterDays: Int) -> Date? {
+        let dateComponents = DateComponents(day: afterDays)
+
+        if let futureDate = Calendar.current.date(byAdding: dateComponents, to: self) {
+            return futureDate
+        } else {
+            return nil
+        }
+    }
 }
