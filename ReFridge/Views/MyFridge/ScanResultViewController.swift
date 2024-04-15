@@ -52,24 +52,37 @@ class ScanResultViewController: UIViewController {
         section.orthogonalScrollingBehavior = .continuous
         return UICollectionViewCompositionalLayout(section: section)
     }
-
 }
 
 extension ScanResultViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        guard let scanResult = scanResult else {
+            return 0
+        }
         if collectionView == recongCollectionView {
-            10
+            return scanResult.recongItems.count
         } else {
-            10
+            return scanResult.notRecongItems.count
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let scanResult = scanResult else {
+            return UICollectionViewCell()
+        }
         if collectionView == recongCollectionView {
-            let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath)
+            guard let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath) as? RecongCell else {
+                return UICollectionViewCell()
+            }
+            let item = scanResult.recongItems[indexPath.item]
+            cell.scanTextLabel.text = item.text
             return cell
         } else {
-            let cell = notRecongCollectionView.dequeueReusableCell(withReuseIdentifier: NotRecongCell.reuseIdentifier, for: indexPath)
+            guard let cell = notRecongCollectionView.dequeueReusableCell(withReuseIdentifier: NotRecongCell.reuseIdentifier, for: indexPath) as? NotRecongCell else {
+                return UICollectionViewCell()
+            }
+            let item = scanResult.notRecongItems[indexPath.item]
+            cell.scanTextLabel.text = item.text
             return cell
         }
     }
