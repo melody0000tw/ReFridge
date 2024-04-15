@@ -8,9 +8,12 @@
 import UIKit
 
 class ScanResultViewController: UIViewController {
-
-    var recogDatas = [ScanResult]()
-    var notRecogDatas = [ScanResult]()
+    
+    var scanResult: ScanResult? {
+        didSet {
+            print("scan vc did get scanResult: \(String(describing: scanResult))")
+        }
+    }
     
     @IBOutlet weak var notRecongCollectionView: UICollectionView!
     @IBOutlet weak var recongCollectionView: UICollectionView!

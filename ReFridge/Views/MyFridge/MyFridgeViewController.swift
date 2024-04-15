@@ -49,6 +49,11 @@ class MyFridgeViewController: UIViewController {
             foodCardVC.foodCard = foodCard
             return
         }
+        
+        if let scanResult = sender as? ScanResult,
+           let scanResultVC = segue.destination as? ScanResultViewController {
+            scanResultVC.scanResult = scanResult
+        }
     }
     
     private func fetchData() {
@@ -125,9 +130,16 @@ extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationC
         guard let image = info[.originalImage] as? UIImage else { return }
         let scanManager = TextScanManager.shared
         Task {
-            scanManager.detectText(in: image)
+            scanManager.detectText(in: image, completion: { result in
+                guard let scanResult = result else {
+                    print("無法辨識圖片")
+                    return
+                }
+                self.performSegue(withIdentifier: "showScanResultVC", sender: scanResult)
+                
+            })
         }
         picker.dismiss(animated: true)
-        performSegue(withIdentifier: "showScanResultVC", sender: nil)
+//        performSegue(withIdentifier: "showScanResultVC", sender: nil)
     }
 }

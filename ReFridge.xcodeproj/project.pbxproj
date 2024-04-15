@@ -20,7 +20,7 @@
 		EBAD13202BCCF75000F40A71 /* RecongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD131F2BCCF75000F40A71 /* RecongCell.swift */; };
 		EBAD13222BCCF78200F40A71 /* NotRecongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13212BCCF78200F40A71 /* NotRecongCell.swift */; };
 		EBAD13242BCCF7A800F40A71 /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13232BCCF7A800F40A71 /* ScanResultViewController.swift */; };
-		EBAD13262BCCFDCB00F40A71 /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13252BCCFDCB00F40A71 /* ScanResult.swift */; };
+		EBAD13262BCCFDCB00F40A71 /* ScanTextItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */; };
 		EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */; };
 		EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */; };
 		EBCC79532BCA345A0029B754 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79522BCA345A0029B754 /* Recipe.swift */; };
@@ -64,7 +64,7 @@
 		EBAD131F2BCCF75000F40A71 /* RecongCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecongCell.swift; sourceTree = "<group>"; };
 		EBAD13212BCCF78200F40A71 /* NotRecongCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRecongCell.swift; sourceTree = "<group>"; };
 		EBAD13232BCCF7A800F40A71 /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
-		EBAD13252BCCFDCB00F40A71 /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
+		EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextItem.swift; sourceTree = "<group>"; };
 		EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
 		EBCC79522BCA345A0029B754 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 				EBCC79522BCA345A0029B754 /* Recipe.swift */,
 				EBCC79542BCA5D920029B754 /* IngredientStatus.swift */,
 				EB88937C2BCADFE600189B7C /* ListItem.swift */,
-				EBAD13252BCCFDCB00F40A71 /* ScanResult.swift */,
+				EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -453,7 +453,7 @@
 				EBFF62C72BC7982E0013F50F /* FoodCardViewController.swift in Sources */,
 				EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */,
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
-				EBAD13262BCCFDCB00F40A71 /* ScanResult.swift in Sources */,
+				EBAD13262BCCFDCB00F40A71 /* ScanTextItem.swift in Sources */,
 				EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */,
 				EBCC79582BCA71BF0029B754 /* RecipeDetailViewController.swift in Sources */,
 				EBAD13222BCCF78200F40A71 /* NotRecongCell.swift in Sources */,
