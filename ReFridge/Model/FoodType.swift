@@ -28,7 +28,8 @@ struct FoodTypeData {
         FoodType(categoryId: 2, typeId: 202, typeName: "蘋果", typeIcon: "apple"),
         FoodType(categoryId: 2, typeId: 203, typeName: "檸檬", typeIcon: "lemon"),
         FoodType(categoryId: 2, typeId: 204, typeName: "酪梨", typeIcon: "avocado"),
-        FoodType(categoryId: 2, typeId: 205, typeName: "草莓", typeIcon: "strawberry")
+        FoodType(categoryId: 2, typeId: 205, typeName: "草莓", typeIcon: "strawberry"),
+        FoodType(categoryId: 5, typeId: 501, typeName: "其他", typeIcon: "other")
     ]
     
     func queryFoodType(typeId: Int) -> FoodType? {
@@ -52,7 +53,8 @@ struct CategoryData {
     
     let data: [FoodCategory] = [
         FoodCategory(categoryId: 1, categoryName: "蔬菜", categoryIcon: "lettuce", categoryColor: "FF34FF"),
-        FoodCategory(categoryId: 2, categoryName: "水果", categoryIcon: "apple", categoryColor: "FF34BB")
+        FoodCategory(categoryId: 2, categoryName: "水果", categoryIcon: "apple", categoryColor: "FF34BB"),
+        FoodCategory(categoryId: 5, categoryName: "其他", categoryIcon: "other", categoryColor: "FF34BB")
     ]
     
     func queryFoodCategory(categoryId: Int) -> FoodCategory? {
