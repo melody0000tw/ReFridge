@@ -87,7 +87,9 @@ class RecipeDetailViewController: UIViewController {
                 recipeId: recipe.recipeId,
                 allTypes: allTypes,
                 checkTypes: checkTypes,
-                lackTypes: lackTypes)
+                lackTypes: lackTypes,
+                fitPercentage: (Double(checkTypes.count) / Double(allTypes.count)).rounding(toDecimal: 2)
+            )
         }
     }
 }

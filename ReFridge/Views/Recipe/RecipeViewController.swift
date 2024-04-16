@@ -11,7 +11,23 @@ class RecipeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
     
-    var recipes: [Recipe] = [] {
+    @IBAction func filterAction(_ sender: Any) {
+        toggleFilterStatus()
+    }
+    
+    var allRecipes: [Recipe] = []
+    var showRecipes: [Recipe] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    var isFilterd = false
+    
+//    var filterdRecipes: [Recipe] = []
+    var ingredientsDict: [String: IngredientStatus] = [:] {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -40,7 +56,12 @@ class RecipeViewController: UIViewController {
                 switch result {
                 case .success(let recipes):
                     print("got recipes! \(recipes)")
-                    self.recipes = recipes
+                    self.allRecipes = recipes
+                    self.showRecipes = recipes
+                    checkAllStatus(recipes: self.allRecipes) { dict in
+                        self.ingredientsDict = dict
+                        print("ingredientsDicts fetch 成功")
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -63,11 +84,112 @@ class RecipeViewController: UIViewController {
         }
         return queryFoodType
     }
+    
+    private func checkAllStatus(recipes: [Recipe], completion: @escaping ([String: IngredientStatus]) -> Void) {
+        var ingredientsDict: [String: IngredientStatus] = [:]
+        let dispatchGroup = DispatchGroup()
+        for recipe in recipes {
+            dispatchGroup.enter()
+            print("Recipe id: \(recipe.recipeId) 小組任務開始")
+            checkIngredientStatus(recipe: recipe) { ingredientStatus in
+//                let dict = [ingredientStatus.recipeId: ingredientStatus]
+                ingredientsDict[ingredientStatus.recipeId] = ingredientStatus
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("全部小組任務結束，回傳 filterd Recipe")
+            completion(ingredientsDict)
+        }
+    }
+    
+    private func checkIngredientStatus(recipe: Recipe, completion: @escaping (IngredientStatus) -> Void ) {
+        var allTypes = [FoodType]()
+        var lackTypes = [FoodType]()
+        var checkTypes = [FoodType]()
+        
+        let dispatchGroup = DispatchGroup() // 建立小組任務
+        for ingredient in recipe.ingredients {
+            dispatchGroup.enter() // 小組任務開始
+            let typeId = ingredient.typeId
+            
+            // 找小卡有沒有，歸類到 lack or check
+            Task {
+                await firestoreManager.queryFoodCard(by: typeId, completion: { result in
+                    switch result {
+                    case .success(let foodCards):
+                        if foodCards.count == 0 {
+                            // 缺乏的食材，先用id找到type
+                            let foodType = FoodTypeData.share.queryFoodType(typeId: typeId)
+                            guard let foodType = foodType else {
+                                print("找不到 foodtype")
+                                return
+                            }
+                            print("把\(foodType.typeName)放到 lack")
+                            lackTypes.append(foodType)
+                            allTypes.append(foodType)
+                        } else {
+                            // 冰箱有的，用id找到type
+                            let foodType = FoodTypeData.share.queryFoodType(typeId: typeId)
+                            guard let foodType = foodType else {
+                                print("找不到 foodtype")
+                                return
+                            }
+                            print("把\(foodType.typeName)放到 check")
+                            checkTypes.append(foodType)
+                            allTypes.append(foodType)
+                        }
+                    case .failure(let error):
+                        print("error: \(error)")
+                    }
+                })
+                dispatchGroup.leave()
+            }
+        }
+        dispatchGroup.notify(queue: .main) {
+            let ingredientStatus = IngredientStatus(
+                recipeId: recipe.recipeId,
+                allTypes: allTypes,
+                checkTypes: checkTypes,
+                lackTypes: lackTypes,
+                fitPercentage: (Double(checkTypes.count) / Double(allTypes.count)).rounding(toDecimal: 2)
+            )
+            completion(ingredientStatus)
+        }
+    }
+    
+    private func toggleFilterStatus() {
+        switch isFilterd {
+        case true:
+            showRecipes = allRecipes
+            isFilterd = false
+        case false:
+            filterRecipe(over: 0.5)
+            isFilterd = true
+        }
+    }
+    
+    private func filterRecipe(over fitPercentage: Double) {
+        guard allRecipes.count != 0, ingredientsDict.count != 0 else {
+            print("all recipe or ingredientDict is empty")
+            return
+        }
+        
+        var filteredRecipes = allRecipes.filter { recipe in
+            guard let ingredientStatus = ingredientsDict[recipe.recipeId] else {
+                print("cannot find percentage info")
+                return false
+            }
+            return ingredientStatus.fitPercentage >= fitPercentage
+        }
+        showRecipes = filteredRecipes
+    }
 }
 
 extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipes.count
+        showRecipes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,27 +198,20 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        let recipe = recipes[indexPath.row]
-        cell.titleLabel.text = recipe.title
-        cell.cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
+        let recipe = showRecipes[indexPath.row]
+        cell.recipe = recipe
+        cell.setupRecipeInfo()
         
-        var ingredientString = String()
-        for ingredient in recipe.ingredients {
-            // 用id 找到 local type (因為大家的default值都一樣，食譜也只會有 default 的那些 type)
-            let queryId = ingredient.typeId
-            guard let foodType = FoodTypeData.share.queryFoodType(typeId: queryId) else {
-                print("找不到 food type")
-                return cell
-            }
-            ingredientString.append(foodType.typeName)
-            ingredientString.append(" ")
-            cell.ingredientLabel.text = "所需食材: \(ingredientString)"
+        if let ingredientStatus = ingredientsDict[recipe.recipeId] {
+            cell.ingredientStatus = ingredientStatus
+            cell.setupRecipeInfo()
         }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let recipe = recipes[indexPath.row]
+        let recipe = showRecipes[indexPath.row]
         performSegue(withIdentifier: "showRecipeDetailVC", sender: recipe)
     }
     
