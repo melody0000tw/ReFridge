@@ -237,7 +237,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - UISearchResultsUpdating
+// MARK: - UISearchResultsUpdating, UISearchBarDelegate
 extension RecipeViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text,
