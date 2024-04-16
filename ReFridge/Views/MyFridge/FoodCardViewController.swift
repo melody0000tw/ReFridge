@@ -60,7 +60,7 @@ class FoodCardViewController: UIViewController {
     }
     
     private func setupDatePicker() {
-        datePicker.preferredDatePickerStyle = .compact
+        datePicker.preferredDatePickerStyle = .inline
         datePicker.datePickerMode = .date
         expireTimeTextField.inputView = datePicker
         
@@ -155,7 +155,9 @@ class FoodCardViewController: UIViewController {
                     switch result {
                     case .success:
                         print("Document successfully delete!")
-                        self.navigationController?.popViewController(animated: true)
+                        DispatchQueue.main.async {
+                            self.navigationController?.popViewController(animated: true)
+                        }
                     case .failure(let error):
                         print("Error adding document: \(error)")
                     }
