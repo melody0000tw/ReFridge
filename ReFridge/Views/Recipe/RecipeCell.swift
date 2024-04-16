@@ -34,7 +34,7 @@ class RecipeCell: UITableViewCell {
             var stringAry = [String]()
             if ingredientStatus.lackTypes.count == 0 {
                 ingredientIcon.image = UIImage(systemName: "checkmark.circle.fill")
-                ingredientLabel.text = ""
+                ingredientLabel.text = "食材已準備就緒"
                 return
             } else {
                 for type in ingredientStatus.lackTypes {

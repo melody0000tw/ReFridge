@@ -13,7 +13,8 @@ class FoodCardViewController: UIViewController {
     let formatter = FormatterManager.share.formatter
     private let firestoreManager = FirestoreManager.shared
     
-    var foodCard = FoodCard.share
+    var foodCard = FoodCard()
+    var isAddingMode = false
     var onChangeFoodCard: ((FoodCard) -> Void)?
     
     let datePicker = UIDatePicker()
@@ -59,7 +60,7 @@ class FoodCardViewController: UIViewController {
     }
     
     private func setupDatePicker() {
-        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
         expireTimeTextField.inputView = datePicker
         
@@ -80,36 +81,36 @@ class FoodCardViewController: UIViewController {
     
     // MARK: - Data
     private func setupInitialData() {
-        if foodCard.cardId != "" {
-            nameLabel.text = foodCard.name
-            imageView.image = UIImage(named: foodCard.iconName)
-            barcodeTextField.text = String(foodCard.barCode)
-            expireTimeTextField.text = formatter.string(from: foodCard.expireDate)
-            qtyTextField.text = String(foodCard.qty)
-            notificationTimeTextField.text = String(foodCard.notificationTime)
-            noteTextField.text = foodCard.notes
-            storageSegment.selectedSegmentIndex = foodCard.storageType
-        } else {
-            resetData()
-        }
-    }
-    
-    private func resetData() {
-        DispatchQueue.main.async { [self] in
+        if isAddingMode {
             nameLabel.text = "請選取食物種類"
-            imageView.image = UIImage(systemName: "fork.knife.circle")
+            imageView.image = UIImage(named: foodCard.iconName)
             barcodeTextField.text = nil
-            expireTimeTextField.text = ""
+            expireTimeTextField.text = nil
             qtyTextField.text = nil
             notificationTimeTextField.text = nil
             noteTextField.text = nil
             storageSegment.selectedSegmentIndex = 0
+        } else {
+            nameLabel.text = foodCard.name
+            imageView.image = UIImage(named: foodCard.iconName)
+            barcodeTextField.text = foodCard.barCode == 0 ? nil : String(foodCard.barCode)
+            expireTimeTextField.text = formatter.string(from: foodCard.expireDate)
+            qtyTextField.text = String(foodCard.qty)
+            notificationTimeTextField.text = foodCard.notificationTime == 0 ? nil : String(foodCard.notificationTime)
+            noteTextField.text = foodCard.notes
+            storageSegment.selectedSegmentIndex = foodCard.storageType
         }
     }
     
     // add & edit
     private func saveData() {
         print("save data")
+        
+        if isAddingMode, foodCard.name.isEmpty {
+            print("Adding mode can not be empty name!")
+            return
+        }
+        
         guard let qty = qtyTextField.text,
             let barCode = barcodeTextField.text,
             let notificationTime = notificationTimeTextField.text
@@ -123,11 +124,13 @@ class FoodCardViewController: UIViewController {
         foodCard.notificationTime = Int(notificationTime) ?? 0
         foodCard.storageType = storageSegment.selectedSegmentIndex
         foodCard.notes = noteTextField.text ?? ""
-        
+
         if let onChangeFoodCard = onChangeFoodCard {
             onChangeFoodCard(foodCard)
             self.navigationController?.popViewController(animated: true)
             return
+        } else {
+            
         }
         
         Task {
@@ -152,7 +155,7 @@ class FoodCardViewController: UIViewController {
                     switch result {
                     case .success:
                         print("Document successfully delete!")
-                        resetData()
+                        self.navigationController?.popViewController(animated: true)
                     case .failure(let error):
                         print("Error adding document: \(error)")
                     }

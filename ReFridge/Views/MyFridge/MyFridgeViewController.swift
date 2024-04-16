@@ -9,13 +9,17 @@ import UIKit
 
 class MyFridgeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
-    var foodCards = [FoodCard]() {
+    
+    var allCards = [FoodCard]()
+    
+    var showCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
     }
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Life Cycle
@@ -23,26 +27,19 @@ class MyFridgeViewController: UIViewController {
         super.viewDidLoad()
         print("123")
         setupCollectionView()
+        setupSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
     }
     
-    // MARK: - Private function
-    private func setupCollectionView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.RF_registerCellWithNib(identifier: String(describing: FoodCardCell.self), bundle: nil)
-        let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 100, height: 100)
-        layout.minimumLineSpacing = 16
-        layout.minimumInteritemSpacing = 8
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        collectionView.collectionViewLayout = layout
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if sender == nil, let foodCardVC = segue.destination as? FoodCardViewController {
+            foodCardVC.isAddingMode = true
+            return
+        }
+        
         if let foodCard = sender as? FoodCard,
            let foodCardVC = segue.destination as? FoodCardViewController {
             print("foodcard: \(foodCard)")
@@ -56,13 +53,36 @@ class MyFridgeViewController: UIViewController {
         }
     }
     
+    // MARK: - Setups
+    private func setupCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.RF_registerCellWithNib(identifier: String(describing: FoodCardCell.self), bundle: nil)
+        let layout = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 100, height: 100)
+        layout.minimumLineSpacing = 16
+        layout.minimumInteritemSpacing = 8
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        collectionView.collectionViewLayout = layout
+    }
+    
+    private func setupSearchBar() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    // MARK: - Data
     private func fetchData() {
         Task {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
                 case .success(let foodCards):
                     print("got food cards!")
-                    self.foodCards = foodCards
+                    self.allCards = foodCards
+                    self.showCards = foodCards
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -82,7 +102,7 @@ class MyFridgeViewController: UIViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        foodCards.count + 2
+        showCards.count + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -101,7 +121,7 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "掃描收據"
         default:
-            let foodCard = foodCards[indexPath.item - 2]
+            let foodCard = showCards[indexPath.item - 2]
             cell.foodCard = foodCard
             cell.setupCell()
         }
@@ -116,7 +136,7 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
         case 1:
             presentImagePicker()
         default:
-            let selectedFoodCard = foodCards[indexPath.item - 2]
+            let selectedFoodCard = showCards[indexPath.item - 2]
             performSegue(withIdentifier: "showFoodCardVC", sender: selectedFoodCard)
         }
         
@@ -140,6 +160,23 @@ extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationC
             })
         }
         picker.dismiss(animated: true)
-//        performSegue(withIdentifier: "showScanResultVC", sender: nil)
     }
 }
+
+// MARK: - UISearchResultsUpdating, UISearchBarDelegate
+extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text,
+           searchText.isEmpty != true {
+            let filteredCards = allCards.filter({ card in
+                card.name.localizedCaseInsensitiveContains(searchText)
+            })
+            showCards = filteredCards
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        showCards = allCards
+    }
+}
+

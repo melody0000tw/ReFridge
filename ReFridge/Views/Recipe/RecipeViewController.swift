@@ -26,7 +26,6 @@ class RecipeViewController: UIViewController {
     
     var isFilterd = false
     
-//    var filterdRecipes: [Recipe] = []
     var ingredientsDict: [String: IngredientStatus] = [:] {
         didSet {
             DispatchQueue.main.async {
@@ -35,9 +34,11 @@ class RecipeViewController: UIViewController {
         }
     }
     
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        setupSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,11 +46,21 @@ class RecipeViewController: UIViewController {
         fetchRecipes()
     }
     
+    // MARK: - Setups
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
     }
     
+    private func setupSearchBar() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    // MARK: - Data
     private func fetchRecipes() {
         Task {
             await firestoreManager.fetchRecipes { result in
@@ -92,7 +103,6 @@ class RecipeViewController: UIViewController {
             dispatchGroup.enter()
             print("Recipe id: \(recipe.recipeId) 小組任務開始")
             checkIngredientStatus(recipe: recipe) { ingredientStatus in
-//                let dict = [ingredientStatus.recipeId: ingredientStatus]
                 ingredientsDict[ingredientStatus.recipeId] = ingredientStatus
                 dispatchGroup.leave()
             }
@@ -187,6 +197,8 @@ class RecipeViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
+
 extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         showRecipes.count
@@ -217,8 +229,27 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailVC = segue.destination as? RecipeDetailViewController,
-           let recipe = sender as? Recipe {
+           let recipe = sender as? Recipe,
+           let ingredientStatus = ingredientsDict[recipe.recipeId] {
             detailVC.recipe = recipe
+            detailVC.ingredientStatus = ingredientStatus
         }
+    }
+}
+
+// MARK: - UISearchResultsUpdating, UISearchBarDelegate
+extension RecipeViewController: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        if let searchText = searchController.searchBar.text,
+           searchText.isEmpty != true {
+            let filteredRecipes = allRecipes.filter({ recipe in
+                recipe.title.localizedCaseInsensitiveContains(searchText)
+            })
+            showRecipes = filteredRecipes
+        }
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        showRecipes = allRecipes
     }
 }
