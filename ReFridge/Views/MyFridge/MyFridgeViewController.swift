@@ -35,6 +35,11 @@ class MyFridgeViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if sender == nil, let foodCardVC = segue.destination as? FoodCardViewController {
+            foodCardVC.isAddingMode = true
+            return
+        }
+        
         if let foodCard = sender as? FoodCard,
            let foodCardVC = segue.destination as? FoodCardViewController {
             print("foodcard: \(foodCard)")
