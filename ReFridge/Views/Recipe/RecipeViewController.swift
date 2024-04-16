@@ -229,8 +229,10 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let detailVC = segue.destination as? RecipeDetailViewController,
-           let recipe = sender as? Recipe {
+           let recipe = sender as? Recipe,
+           let ingredientStatus = ingredientsDict[recipe.recipeId] {
             detailVC.recipe = recipe
+            detailVC.ingredientStatus = ingredientStatus
         }
     }
 }
