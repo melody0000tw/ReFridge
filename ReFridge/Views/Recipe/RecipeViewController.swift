@@ -11,7 +11,6 @@ class RecipeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
     
-    
     @IBOutlet weak var filterBtn: UIBarButtonItem!
     
     var allRecipes: [Recipe] = []
@@ -199,7 +198,7 @@ class RecipeViewController: UIViewController {
         case .all:
             showRecipes = allRecipes
         case .favorite:
-            print("did tapped favorite")
+            getLikedRecipes()
         case .fit:
             getFitRecipes(over: 0.5)
         }
@@ -218,6 +217,19 @@ class RecipeViewController: UIViewController {
             }
             return ingredientStatus.fitPercentage >= fitPercentage
         }
+        showRecipes = filteredRecipes
+    }
+    
+    private func getLikedRecipes() {
+        guard allRecipes.count != 0 else {
+            print("all recipe is empty")
+            return
+        }
+        
+        let filteredRecipes = allRecipes.filter { recipe in
+            likedRecipeId.contains([recipe.recipeId])
+        }
+        
         showRecipes = filteredRecipes
     }
 }
