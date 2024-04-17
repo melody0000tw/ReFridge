@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import IQKeyboardManagerSwift
+import VisionKit
+import Vision
 
 class FoodCardViewController: UIViewController {
     let formatter = FormatterManager.share.formatter
@@ -18,6 +20,12 @@ class FoodCardViewController: UIViewController {
     var onChangeFoodCard: ((FoodCard) -> Void)?
     
     let datePicker = UIDatePicker()
+    
+    @IBAction func scanBarCode(_ sender: Any) {
+        let documentCameraViewController = VNDocumentCameraViewController()
+        documentCameraViewController.delegate = self
+        present(documentCameraViewController, animated: true)
+    }
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -93,7 +101,7 @@ class FoodCardViewController: UIViewController {
         } else {
             nameLabel.text = foodCard.name
             imageView.image = UIImage(named: foodCard.iconName)
-            barcodeTextField.text = foodCard.barCode == 0 ? nil : String(foodCard.barCode)
+            barcodeTextField.text = foodCard.barCode == "" ? nil : foodCard.barCode
             expireTimeTextField.text = formatter.string(from: foodCard.expireDate)
             qtyTextField.text = String(foodCard.qty)
             notificationTimeTextField.text = foodCard.notificationTime == 0 ? nil : String(foodCard.notificationTime)
@@ -120,7 +128,7 @@ class FoodCardViewController: UIViewController {
         }
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
         foodCard.qty = Int(qty) ?? 1
-        foodCard.barCode = Int(barCode) ?? 0
+        foodCard.barCode = barCode
         foodCard.notificationTime = Int(notificationTime) ?? 0
         foodCard.storageType = storageSegment.selectedSegmentIndex
         foodCard.notes = noteTextField.text ?? ""
@@ -173,4 +181,42 @@ class FoodCardViewController: UIViewController {
         }
     }
     
+}
+
+// MARK: - BarCode
+extension FoodCardViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            let image = scan.imageOfPage(at: scan.pageCount - 1)
+            print(image)
+            processImage(image: image)
+            dismiss(animated: true, completion: nil)
+        }
+    
+    func processImage(image: UIImage) {
+            guard let cgImage = image.cgImage else {
+                print("Failed to get cgimage from input image")
+                return
+            }
+            let handler = VNImageRequestHandler(cgImage: cgImage)
+            let request = VNDetectBarcodesRequest { request, error in
+                if let observation = request.results?.first as? VNBarcodeObservation,
+                   observation.symbology == .ean13 {
+                    guard let barcode = observation.payloadStringValue else {
+                        return
+                    }
+                    print("get barcode: \(barcode)")
+                    self.foodCard.barCode = barcode
+                    DispatchQueue.main.async {
+                        self.barcodeTextField.text = barcode
+                    }
+                } else {
+                    print(error.debugDescription)
+                }
+            }
+            do {
+                try handler.perform([request])
+            } catch {
+                print(error)
+            }
+    }
 }

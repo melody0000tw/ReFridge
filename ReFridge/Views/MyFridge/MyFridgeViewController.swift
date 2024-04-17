@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import VisionKit
+import Vision
 
 class MyFridgeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var allCards = [FoodCard]()
-    
     var showCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async {
@@ -29,6 +30,13 @@ class MyFridgeViewController: UIViewController {
     @IBOutlet weak var filterBarButton: UIBarButtonItem!
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBAction func searchByBarCode(_ sender: Any) {
+        print("search by bar code")
+        let documentCameraViewController = VNDocumentCameraViewController()
+        documentCameraViewController.delegate = self
+        present(documentCameraViewController, animated: true)
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -121,6 +129,10 @@ class MyFridgeViewController: UIViewController {
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
     
+    private func searchBarCode() {
+        
+    }
+    
     // MARK: - Data
     private func fetchData() {
         Task {
@@ -130,7 +142,6 @@ class MyFridgeViewController: UIViewController {
                     print("got food cards!")
                     self.allCards = foodCards
                     filterFoodCards()
-//                    self.showCards = foodCards
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -167,6 +178,14 @@ class MyFridgeViewController: UIViewController {
         }
         
         showCards = filteredCards
+    }
+    
+    private func searchFoodCard(barCode: String) {
+        let filteredFoodCards = allCards.filter { foodCard in
+            foodCard.barCode == barCode
+        }
+        showCards = filteredFoodCards
+        
     }
     
     // MARK: - imagePicker
@@ -256,5 +275,37 @@ extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         showCards = allCards
+    }
+}
+
+// MARK: - BarCode
+extension MyFridgeViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            let image = scan.imageOfPage(at: scan.pageCount - 1)
+            dismiss(animated: true, completion: {
+                self.processImage(image: image)
+        })
+    }
+    
+    func processImage(image: UIImage) {
+            guard let cgImage = image.cgImage else {
+                print("Failed to get cgimage from input image")
+                return
+            }
+            let handler = VNImageRequestHandler(cgImage: cgImage)
+            let request = VNDetectBarcodesRequest { request, error in
+                if let observation = request.results?.first as? VNBarcodeObservation,
+                   observation.symbology == .ean13 {
+                    guard let barcode = observation.payloadStringValue else {
+                        return
+                    }
+                    self.searchFoodCard(barCode: barcode)
+                }
+            }
+            do {
+                try handler.perform([request])
+            } catch {
+                print(error)
+            }
     }
 }

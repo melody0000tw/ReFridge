@@ -90,7 +90,7 @@ class ShoppingListViewController: UIViewController {
             createDate: Date(),
             expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
             notificationTime: 3,
-            barCode: 0,
+            barCode: "",
             storageType: 2, // default 值常溫？
             notes: "")
         
