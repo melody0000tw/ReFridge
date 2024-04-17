@@ -20,6 +20,14 @@ class MyFridgeViewController: UIViewController {
         }
     }
     
+    var cardFilter = CardFilter(categoryId: nil, sortBy: .remainingDay) {
+        didSet {
+            filterFoodCards()
+        }
+    }
+    
+    @IBOutlet weak var filterBarButton: UIBarButtonItem!
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Life Cycle
@@ -28,6 +36,7 @@ class MyFridgeViewController: UIViewController {
         print("123")
         setupCollectionView()
         setupSearchBar()
+        setupFilterBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +83,44 @@ class MyFridgeViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
+    private func setupFilterBtn() {
+        filterBarButton.primaryAction = nil
+        let filterMenu = UIMenu(title: "食物類型", options: .singleSelection, children: [
+            UIAction(title: "全部", handler: { _ in
+                self.cardFilter.categoryId = nil
+            }),
+            UIAction(title: "蔬菜", handler: { _ in
+                self.cardFilter.categoryId = 1
+            }),
+            UIAction(title: "水果", handler: { _ in
+                self.cardFilter.categoryId = 2
+            }),
+            UIAction(title: "蛋白質", handler: { _ in
+                self.cardFilter.categoryId = 3
+            }),
+            UIAction(title: "穀物", handler: { _ in
+                self.cardFilter.categoryId = 4
+            }),
+            UIAction(title: "其他", handler: { _ in
+                self.cardFilter.categoryId = 5
+            })
+        ])
+        
+        let arrangeMenu = UIMenu(title: "排序方式", options: .singleSelection, children: [
+            UIAction(title: "依照剩餘天數", handler: { _ in
+                self.cardFilter.sortBy = .remainingDay
+            }),
+            UIAction(title: "依照加入日期", handler: { _ in
+                self.cardFilter.sortBy = .createDay
+            }),
+            UIAction(title: "依照種類", handler: { _ in
+                self.cardFilter.sortBy = .category
+            })
+        ])
+        
+        filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
+    }
+    
     // MARK: - Data
     private func fetchData() {
         Task {
@@ -82,12 +129,44 @@ class MyFridgeViewController: UIViewController {
                 case .success(let foodCards):
                     print("got food cards!")
                     self.allCards = foodCards
-                    self.showCards = foodCards
+                    filterFoodCards()
+//                    self.showCards = foodCards
                 case .failure(let error):
                     print("error: \(error)")
                 }
             }
         }
+    }
+    
+    private func filterFoodCards() {
+        // filter
+        var filteredCards = [FoodCard]()
+        if let categoryId = cardFilter.categoryId {
+            filteredCards = allCards.filter { card in
+                card.categoryId == categoryId
+            }
+        } else {
+            filteredCards = allCards
+        }
+        
+        // sort
+        let sortBy = cardFilter.sortBy
+        switch sortBy {
+        case .remainingDay:
+            filteredCards.sort { lhs, rhs in
+                lhs.expireDate.calculateRemainingDays() ?? 0 <= rhs.expireDate.calculateRemainingDays() ?? 0
+            }
+        case .createDay:
+            filteredCards.sort { lhs, rhs in
+                lhs.createDate >= rhs.createDate
+            }
+        case .category:
+            filteredCards.sort { lhs, rhs in
+                lhs.categoryId <= rhs.categoryId
+            }
+        }
+        
+        showCards = filteredCards
     }
     
     // MARK: - imagePicker
@@ -179,4 +258,3 @@ extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
         showCards = allCards
     }
 }
-
