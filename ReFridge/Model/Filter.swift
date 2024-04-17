@@ -17,3 +17,9 @@ enum CardSortMethod {
     case createDay
     case category
 }
+
+enum RecipeFilter {
+    case all
+    case favorite
+    case fit
+}

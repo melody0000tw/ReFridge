@@ -11,9 +11,8 @@ class RecipeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
     
-    @IBAction func filterAction(_ sender: Any) {
-        toggleFilterStatus()
-    }
+    
+    @IBOutlet weak var filterBtn: UIBarButtonItem!
     
     var allRecipes: [Recipe] = []
     var showRecipes: [Recipe] = [] {
@@ -24,7 +23,11 @@ class RecipeViewController: UIViewController {
         }
     }
     
-    var isFilterd = false
+    var recipeFilter = RecipeFilter.all {
+        didSet {
+            filterRecipes()
+        }
+    }
     
     var ingredientsDict: [String: IngredientStatus] = [:] {
         didSet {
@@ -39,6 +42,7 @@ class RecipeViewController: UIViewController {
         super.viewDidLoad()
         setupTableView()
         setupSearchBar()
+        setupFilterBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,7 +61,23 @@ class RecipeViewController: UIViewController {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.hidesSearchBarWhenScrolling =  false
+    }
+    
+    private func setupFilterBtn() {
+        filterBtn.primaryAction = nil
+        
+        filterBtn.menu = UIMenu(title: "篩選方式", options: .singleSelection, children: [
+            UIAction(title: "顯示全部", handler: { _ in
+                self.recipeFilter = .all
+            }),
+            UIAction(title: "顯示收藏食譜", handler: { _ in
+                self.recipeFilter = .favorite
+            }),
+            UIAction(title: "推薦清冰箱食譜", handler: { _ in
+                self.recipeFilter = .fit
+            })
+        ])
     }
     
     // MARK: - Data
@@ -73,27 +93,12 @@ class RecipeViewController: UIViewController {
                         self.ingredientsDict = dict
                         print("ingredientsDicts fetch 成功")
                     }
+                    filterRecipes()
                 case .failure(let error):
                     print("error: \(error)")
                 }
             }
         }
-    }
-    
-    private func queryFoodType(typeId: Int) -> FoodType? {
-        var queryFoodType: FoodType?
-        Task {
-            await firestoreManager.queryFoodType(typeId: typeId, completion: { result in
-                switch result {
-                case .success(let foodType):
-                    print("vc got foodType! \(foodType)")
-                    queryFoodType = foodType
-                case .failure(let error):
-                    print("error: \(error)")
-                }
-            })
-        }
-        return queryFoodType
     }
     
     private func checkAllStatus(recipes: [Recipe], completion: @escaping ([String: IngredientStatus]) -> Void) {
@@ -169,18 +174,20 @@ class RecipeViewController: UIViewController {
         }
     }
     
-    private func toggleFilterStatus() {
-        switch isFilterd {
-        case true:
+    private func filterRecipes() {
+        var filteredRecipes = [Recipe]()
+        
+        switch recipeFilter {
+        case .all:
             showRecipes = allRecipes
-            isFilterd = false
-        case false:
-            filterRecipe(over: 0.5)
-            isFilterd = true
+        case .favorite:
+            print("did tapped favorite")
+        case .fit:
+            getFitRecipes(over: 0.5)
         }
     }
     
-    private func filterRecipe(over fitPercentage: Double) {
+    private func getFitRecipes(over fitPercentage: Double) {
         guard allRecipes.count != 0, ingredientsDict.count != 0 else {
             print("all recipe or ingredientDict is empty")
             return

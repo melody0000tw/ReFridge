@@ -175,13 +175,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="清冰箱食譜" id="ch4-6u-f2d">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="line.3.horizontal" catalog="system" id="o9J-Ab-y4I"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="line.3.horizontal.decrease.circle.fill" catalog="system" id="Qoz-og-gtl">
-                            <connections>
-                                <action selector="filterAction:" destination="mpQ-h2-Oko" id="Rtj-cK-DTr"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="line.3.horizontal.decrease.circle.fill" catalog="system" id="Qoz-og-gtl"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="filterBtn" destination="Qoz-og-gtl" id="hUh-Gh-UUu"/>
                         <outlet property="tableView" destination="mge-UC-beV" id="cZi-Cj-BEB"/>
                         <segue destination="hQL-Y5-Kdl" kind="show" identifier="showRecipeDetailVC" id="6eB-0c-1zR"/>
                     </connections>

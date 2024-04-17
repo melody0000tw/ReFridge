@@ -17,7 +17,7 @@ class RecipeDetailViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: - LufeCycle
+    // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()

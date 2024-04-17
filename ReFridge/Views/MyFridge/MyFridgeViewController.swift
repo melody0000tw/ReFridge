@@ -26,7 +26,6 @@ class MyFridgeViewController: UIViewController {
         }
     }
     
-    
     @IBOutlet weak var filterBarButton: UIBarButtonItem!
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -130,7 +129,8 @@ class MyFridgeViewController: UIViewController {
                 case .success(let foodCards):
                     print("got food cards!")
                     self.allCards = foodCards
-                    self.showCards = foodCards
+                    filterFoodCards()
+//                    self.showCards = foodCards
                 case .failure(let error):
                     print("error: \(error)")
                 }

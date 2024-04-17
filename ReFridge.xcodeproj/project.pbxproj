@@ -11,7 +11,7 @@
 		EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */; };
 		EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */; };
 		EB2F1D8D2BCE1C58000C9295 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */; };
-		EB425BDB2BCF7D74000C75A6 /* CardFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDA2BCF7D74000C75A6 /* CardFilter.swift */; };
+		EB425BDB2BCF7D74000C75A6 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDA2BCF7D74000C75A6 /* Filter.swift */; };
 		EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937C2BCADFE600189B7C /* ListItem.swift */; };
 		EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */; };
 		EB8893822BCAE7E700189B7C /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8893812BCAE7E700189B7C /* ListCell.swift */; };
@@ -59,7 +59,7 @@
 		EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterManager.swift; sourceTree = "<group>"; };
 		EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
-		EB425BDA2BCF7D74000C75A6 /* CardFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFilter.swift; sourceTree = "<group>"; };
+		EB425BDA2BCF7D74000C75A6 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		EB88937C2BCADFE600189B7C /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		EB8893812BCAE7E700189B7C /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
@@ -170,9 +170,9 @@
 		EBCC794D2BCA2C950029B754 /* Recipe */ = {
 			isa = PBXGroup;
 			children = (
-				EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */,
 				EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */,
 				EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */,
+				EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */,
 				EBCC79562BCA71960029B754 /* RecipeDetailCells */,
 			);
 			path = Recipe;
@@ -287,7 +287,7 @@
 				EBCC79542BCA5D920029B754 /* IngredientStatus.swift */,
 				EB88937C2BCADFE600189B7C /* ListItem.swift */,
 				EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */,
-				EB425BDA2BCF7D74000C75A6 /* CardFilter.swift */,
+				EB425BDA2BCF7D74000C75A6 /* Filter.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -453,7 +453,7 @@
 				EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */,
 				EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */,
 				EBF88E332BC5703E00DEF2FA /* SceneDelegate.swift in Sources */,
-				EB425BDB2BCF7D74000C75A6 /* CardFilter.swift in Sources */,
+				EB425BDB2BCF7D74000C75A6 /* Filter.swift in Sources */,
 				EBAD13202BCCF75000F40A71 /* RecongCell.swift in Sources */,
 				EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */,
 				EBCC795E2BCA73D30029B754 /* RecipeIngredientCell.swift in Sources */,
