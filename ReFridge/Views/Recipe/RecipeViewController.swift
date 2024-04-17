@@ -37,6 +37,8 @@ class RecipeViewController: UIViewController {
         }
     }
     
+    var likedRecipeId = [String]()
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +50,7 @@ class RecipeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchRecipes()
+        fetchLikedRecipeId()
     }
     
     // MARK: - Setups
@@ -97,6 +100,21 @@ class RecipeViewController: UIViewController {
                 case .failure(let error):
                     print("error: \(error)")
                 }
+            }
+        }
+    }
+    
+    private func fetchLikedRecipeId() {
+        Task {
+            await firestoreManager.fetchLikedRecipeId { result in
+                switch result {
+                case .success(let ids):
+                    print("got id: \(ids.count)")
+                    likedRecipeId = ids
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+                
             }
         }
     }
@@ -224,6 +242,11 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         if let ingredientStatus = ingredientsDict[recipe.recipeId] {
             cell.ingredientStatus = ingredientStatus
             cell.setupRecipeInfo()
+        }
+        
+        if !likedRecipeId.isEmpty {
+            let isLiked = likedRecipeId.contains([recipe.recipeId])
+            cell.toggleLikeBtn(isLiked: isLiked)
         }
         
         return cell

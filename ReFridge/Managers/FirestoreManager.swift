@@ -144,6 +144,20 @@ class FirestoreManager {
         }
     }
     
+    func fetchLikedRecipeId(completion: (Result<[String], Error>) -> Void ) async {
+        do {
+            
+            let likedRecipes = try await database.collection("users").document("userId").getDocument().get("likedRecipes")
+            guard let likedRecipes = likedRecipes as? [String] else {
+                print("cannot get liked Recipes")
+                return
+            }
+            completion(.success(likedRecipes))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
     // MARK: - Shopping List
     func addListItem(_ item: ListItem, completion: (Result<Any?, Error>) -> Void) async {
         do {

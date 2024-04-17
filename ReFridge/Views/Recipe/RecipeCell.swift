@@ -23,6 +23,14 @@ class RecipeCell: UITableViewCell {
         selectionStyle = .none
     }
     
+    func toggleLikeBtn(isLiked: Bool) {
+        if isLiked {
+            likeBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        } else {
+            likeBtn.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
+    }
+    
     func setupRecipeInfo() {
         guard let recipe = recipe else {
             return
