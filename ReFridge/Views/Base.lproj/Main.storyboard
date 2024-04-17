@@ -49,6 +49,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="我的冰箱" id="1I9-uv-LqY">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="barcode.viewfinder" catalog="system" id="fKM-aE-3W0">
+                            <connections>
+                                <action selector="searchByBarCode:" destination="BYZ-38-t0r" id="mPK-mE-fie"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="line.3.horizontal.decrease.circle.fill" catalog="system" id="ZVk-pf-1Bk"/>
                     </navigationItem>
                     <connections>
@@ -527,7 +532,7 @@
                                 </connections>
                             </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ltj-iD-XJL" userLabel="照片 數量 Stack View">
-                                <rect key="frame" x="23" y="393.33333333333331" width="353.66666666666669" height="118"/>
+                                <rect key="frame" x="23" y="393.33333333333331" width="353.66666666666669" height="118.99999999999994"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="750" image="fork.knife.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="STo-OA-gWU">
                                         <rect key="frame" x="0.0" y="1" width="100" height="98.666666666666671"/>
@@ -538,23 +543,36 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="APt-kZ-0ia" userLabel="Input Stack View">
-                                        <rect key="frame" x="115.99999999999999" y="0.0" width="237.66666666666663" height="118"/>
+                                        <rect key="frame" x="115.99999999999999" y="0.0" width="237.66666666666663" height="119"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="數量" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9j6-Bs-c2A">
-                                                <rect key="frame" x="0.0" y="0.0" width="237.66666666666666" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="237.66666666666666" height="34.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="到期日" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ai2-nW-sSs">
-                                                <rect key="frame" x="0.0" y="42" width="237.66666666666666" height="34"/>
+                                                <rect key="frame" x="0.0" y="42.333333333333371" width="237.66666666666666" height="34.333333333333343"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" textContentType="date-time"/>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="BarCode" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJA-Kv-WqP">
-                                                <rect key="frame" x="0.0" y="84" width="237.66666666666666" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Yq-Y6-gGA">
+                                                <rect key="frame" x="0.0" y="84.666666666666686" width="237.66666666666666" height="34.333333333333343"/>
+                                                <subviews>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="BarCode" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJA-Kv-WqP">
+                                                        <rect key="frame" x="0.0" y="0.0" width="179.66666666666666" height="34.333333333333336"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                    </textField>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9H-JY-AuT">
+                                                        <rect key="frame" x="187.66666666666669" y="0.0" width="50" height="34.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="barcode" catalog="system"/>
+                                                        <connections>
+                                                            <action selector="scanBarCode:" destination="i4A-nY-j9y" eventType="touchUpInside" id="7ii-Hn-h3M"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -567,7 +585,7 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hde-RP-Eox" userLabel="到期提醒 Stack View">
-                                <rect key="frame" x="16" y="535.33333333333337" width="361" height="34"/>
+                                <rect key="frame" x="16" y="536.33333333333337" width="361" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="即期提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Okb-ns-ceo">
                                         <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="34"/>
@@ -583,7 +601,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lwK-WW-HtH" userLabel="保存方式 Stack View">
-                                <rect key="frame" x="16" y="585.33333333333337" width="361" height="31"/>
+                                <rect key="frame" x="16" y="586.33333333333337" width="361" height="31"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存方式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AtK-1s-IeR">
                                         <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="31"/>
@@ -602,7 +620,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wty-dS-0hz">
-                                <rect key="frame" x="16" y="640.33333333333337" width="361" height="34"/>
+                                <rect key="frame" x="16" y="641.33333333333337" width="361" height="34"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註事項" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8T2-tm-PO7">
                                         <rect key="frame" x="0.0" y="0.0" width="61.333333333333336" height="34"/>
@@ -1310,6 +1328,8 @@
         <segue reference="aaR-r1-bWa"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="barcode" catalog="system" width="128" height="94"/>
+        <image name="barcode.viewfinder" catalog="system" width="128" height="115"/>
         <image name="book.pages.fill" catalog="system" width="107" height="128"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="circle" catalog="system" width="128" height="123"/>

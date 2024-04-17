@@ -17,7 +17,7 @@ struct FoodCard: Codable {
     var createDate: Date = Date()
     var expireDate: Date = Date().createExpiredDate(afterDays: 7) ?? Date()
     var notificationTime: Int = 0
-    var barCode: Int = 0
+    var barCode: String = ""
     var storageType: Int = 0
     var notes: String = ""
     

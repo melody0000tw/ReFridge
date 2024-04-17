@@ -173,7 +173,7 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
             qty: 1, createDate: Date(),
             expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
             notificationTime: 3,
-            barCode: 0,
+            barCode: "",
             storageType: 0,
             notes: "")
         scanResult.recongItems.insert(foodCard, at: 0)
