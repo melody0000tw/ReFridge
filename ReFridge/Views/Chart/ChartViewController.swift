@@ -9,18 +9,15 @@ import UIKit
 import SnapKit
 import Charts
 
-struct CategoryCardCount {
-    var categoryId: Int
-    var cardCounts: Int
-}
-
 class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     private var foodCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async {
-                let pieChartView = FridgePieChartView(frame: CGRect(), foodCards: self.foodCards)
-                self.pieChartView = pieChartView
+                // pie chart
+                self.pieChartView.configurePieCart(foodCards: self.foodCards)
+                // bar chart
+                self.barChartView.configurePieCart(foodCards: self.foodCards)
                 self.setupChartViews()
             }
         }
@@ -32,13 +29,18 @@ class ChartViewController: UIViewController {
     lazy var cherishFoodView = UIView()
     lazy var buttons = [UIButton]()
     
-    lazy var pieChartView = PieChartView()
-    lazy var barChartView = BarChartView()
+    lazy var pieChartView = FridgePieChartView()
+    lazy var barChartView = FridgeBarChartView()
     
+    // MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderView()
         setupButtons()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchData()
     }
     
@@ -141,20 +143,20 @@ class ChartViewController: UIViewController {
     
     // MARK: - Food Chart
     private func setupChartViews() {
-        view.addSubview(pieChartView)
-        pieChartView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(200)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(24)
-        }
+//        view.addSubview(pieChartView)
+//        pieChartView.snp.makeConstraints { make in
+//            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(200)
+//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(24)
+//        }
         
         view.addSubview(barChartView)
         barChartView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(200)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(24)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
         }
     }
     

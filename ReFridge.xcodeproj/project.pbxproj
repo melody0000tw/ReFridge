@@ -15,6 +15,8 @@
 		EB425BDE2BD0DEF8000C75A6 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */; };
 		EB425BE02BD0F873000C75A6 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDF2BD0F873000C75A6 /* UIColor+Ext.swift */; };
 		EB425BE22BD12FDA000C75A6 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BE12BD12FDA000C75A6 /* PieChartView.swift */; };
+		EB425BE42BD1354D000C75A6 /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BE32BD1354D000C75A6 /* BarChartView.swift */; };
+		EB425BE62BD145DD000C75A6 /* ChartCounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BE52BD145DD000C75A6 /* ChartCounts.swift */; };
 		EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937C2BCADFE600189B7C /* ListItem.swift */; };
 		EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */; };
 		EB8893822BCAE7E700189B7C /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8893812BCAE7E700189B7C /* ListCell.swift */; };
@@ -66,6 +68,8 @@
 		EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
 		EB425BDF2BD0F873000C75A6 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		EB425BE12BD12FDA000C75A6 /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
+		EB425BE32BD1354D000C75A6 /* BarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
+		EB425BE52BD145DD000C75A6 /* ChartCounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCounts.swift; sourceTree = "<group>"; };
 		EB88937C2BCADFE600189B7C /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		EB8893812BCAE7E700189B7C /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 			children = (
 				EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */,
 				EB425BE12BD12FDA000C75A6 /* PieChartView.swift */,
+				EB425BE32BD1354D000C75A6 /* BarChartView.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -305,6 +310,7 @@
 				EB88937C2BCADFE600189B7C /* ListItem.swift */,
 				EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */,
 				EB425BDA2BCF7D74000C75A6 /* Filter.swift */,
+				EB425BE52BD145DD000C75A6 /* ChartCounts.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -462,6 +468,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */,
+				EB425BE42BD1354D000C75A6 /* BarChartView.swift in Sources */,
 				EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */,
 				EBAD13242BCCF7A800F40A71 /* ScanResultViewController.swift in Sources */,
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
@@ -483,6 +490,7 @@
 				EBAD13222BCCF78200F40A71 /* NotRecongCell.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
+				EB425BE62BD145DD000C75A6 /* ChartCounts.swift in Sources */,
 				EBCC79552BCA5D920029B754 /* IngredientStatus.swift in Sources */,
 				EBAC18902BC98325002BB6E7 /* FoodTypeViewController.swift in Sources */,
 				EB425BE22BD12FDA000C75A6 /* PieChartView.swift in Sources */,
