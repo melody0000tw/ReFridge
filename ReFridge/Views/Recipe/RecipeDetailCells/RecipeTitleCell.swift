@@ -7,8 +7,13 @@
 
 import UIKit
 
+protocol RecipeTitleCellDelegate: AnyObject {
+    func didTappedLikeBtn()
+}
+
 class RecipeTitleCell: UITableViewCell {
     static let reuseIdentifier = String(describing: RecipeTitleCell.self)
+    weak var delegate: RecipeTitleCellDelegate?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
@@ -16,17 +21,18 @@ class RecipeTitleCell: UITableViewCell {
     @IBOutlet weak var servingLabel: UILabel!
     @IBOutlet weak var cookingTimeLabel: UILabel!
     
+    // TODO: 點選按鈕可改變 Liked 狀態
     @IBAction func didTappedLikeBtn(_ sender: Any) {
+        delegate?.didTappedLikeBtn()
     }
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    func toggleLikeBtn(isLiked: Bool) {
+        switch isLiked {
+        case true:
+            likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        case false:
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+        }
     }
 
 }

@@ -14,6 +14,7 @@ class FirestoreManager {
     lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
     lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
     lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
+    lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
 
     private init() {
         database = Firestore.firestore()
@@ -139,6 +140,40 @@ class FirestoreManager {
                 recipes.append(recipe)
             }
             completion(.success(recipes))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchLikedRecipeId(completion: (Result<[String], Error>) -> Void ) async {
+        do {
+            let querySnapshot = try await likedRecipesRef.getDocuments()
+            var likedRecipes = [String]()
+            for document in querySnapshot.documents {
+                let recipeid = document.documentID
+                likedRecipes.append(recipeid)
+            }
+            completion(.success(likedRecipes))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func addLikedRecipe(by recipeId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = likedRecipesRef.document(recipeId)
+            let data: [String: Any] = [ "recipeId": recipeId ]
+            try await docRef.setData(data)
+            completion(.success(recipeId))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func removeLikedRecipe(by recipeId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try await likedRecipesRef.document(recipeId).delete()
+            completion(.success(recipeId))
         } catch {
             completion(.failure(error))
         }

@@ -11,7 +11,6 @@ class RecipeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
     
-    
     @IBOutlet weak var filterBtn: UIBarButtonItem!
     
     var allRecipes: [Recipe] = []
@@ -37,6 +36,8 @@ class RecipeViewController: UIViewController {
         }
     }
     
+    var likedRecipeId = [String]()
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +49,7 @@ class RecipeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchRecipes()
+        fetchLikedRecipeId()
     }
     
     // MARK: - Setups
@@ -97,6 +99,21 @@ class RecipeViewController: UIViewController {
                 case .failure(let error):
                     print("error: \(error)")
                 }
+            }
+        }
+    }
+    
+    private func fetchLikedRecipeId() {
+        Task {
+            await firestoreManager.fetchLikedRecipeId { result in
+                switch result {
+                case .success(let ids):
+                    print("got id: \(ids.count)")
+                    likedRecipeId = ids
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+                
             }
         }
     }
@@ -175,13 +192,11 @@ class RecipeViewController: UIViewController {
     }
     
     private func filterRecipes() {
-        var filteredRecipes = [Recipe]()
-        
         switch recipeFilter {
         case .all:
             showRecipes = allRecipes
         case .favorite:
-            print("did tapped favorite")
+            getLikedRecipes()
         case .fit:
             getFitRecipes(over: 0.5)
         }
@@ -193,13 +208,26 @@ class RecipeViewController: UIViewController {
             return
         }
         
-        var filteredRecipes = allRecipes.filter { recipe in
+        let filteredRecipes = allRecipes.filter { recipe in
             guard let ingredientStatus = ingredientsDict[recipe.recipeId] else {
                 print("cannot find percentage info")
                 return false
             }
             return ingredientStatus.fitPercentage >= fitPercentage
         }
+        showRecipes = filteredRecipes
+    }
+    
+    private func getLikedRecipes() {
+        guard allRecipes.count != 0 else {
+            print("all recipe is empty")
+            return
+        }
+        
+        let filteredRecipes = allRecipes.filter { recipe in
+            likedRecipeId.contains([recipe.recipeId])
+        }
+        
         showRecipes = filteredRecipes
     }
 }
@@ -226,6 +254,11 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             cell.setupRecipeInfo()
         }
         
+        if !likedRecipeId.isEmpty {
+            let isLiked = likedRecipeId.contains([recipe.recipeId])
+            cell.toggleLikeBtn(isLiked: isLiked)
+        }
+        
         return cell
     }
     
@@ -240,6 +273,8 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
            let ingredientStatus = ingredientsDict[recipe.recipeId] {
             detailVC.recipe = recipe
             detailVC.ingredientStatus = ingredientStatus
+            let isLiked = likedRecipeId.contains([recipe.recipeId])
+            detailVC.isLiked = isLiked
         }
     }
 }
