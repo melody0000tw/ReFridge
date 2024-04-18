@@ -18,19 +18,130 @@ class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     private var foodCards = [FoodCard]()
     
+    lazy var imageView = UIImageView()
+    lazy var nameLabel = UILabel()
+    lazy var cherishLabel = UILabel()
+    lazy var cherishFoodView = UIView()
+    lazy var buttons = [UIButton]()
     lazy var fridgeChartView = PieChartView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupHeaderView()
+        setupButtons()
         fetchData()
         setupFridgeChart()
     }
     
     // MARK: - setups
+    private func setupHeaderView() {
+        let colorView = UIView()
+        view.addSubview(colorView)
+        colorView.backgroundColor = UIColor(hex: "638889")
+        colorView.snp.makeConstraints { make in
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.top.equalTo(view.snp.top)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.height.equalTo(240)
+        }
+        
+        let headerView = UIView()
+        view.addSubview(headerView)
+        headerView.backgroundColor = .clear
+        headerView.snp.makeConstraints { make in
+            make.leading.equalTo(colorView.snp.leading)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.trailing.equalTo(colorView.snp.trailing)
+            make.bottom.equalTo(colorView.snp.bottom)
+        }
+        
+        imageView.image = UIImage(named: "placeholder")
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 40
+        imageView.clipsToBounds = true
+        headerView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalTo(headerView.snp.centerY)
+            make.leading.equalTo(headerView.snp.leading).offset(16)
+            make.height.width.equalTo(80)
+        }
+        
+        nameLabel.text = "Melody"
+        nameLabel.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        nameLabel.textAlignment = .left
+        nameLabel.textColor = .white
+        nameLabel.numberOfLines = 1
+        nameLabel.sizeToFit()
+        headerView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.top)
+            make.leading.equalTo(imageView.snp.trailing).offset(16)
+        }
+        
+        cherishLabel.text = "完食分數: 100%"
+        cherishLabel.font = UIFont(name: "PingFangTC-Regular", size: 15)
+        cherishLabel.textAlignment = .left
+        cherishLabel.textColor = .white
+        cherishLabel.numberOfLines = 1
+        cherishLabel.sizeToFit()
+        headerView.addSubview(cherishLabel)
+        cherishLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+            make.leading.equalTo(imageView.snp.trailing).offset(16)
+        }
+        
+        cherishFoodView.backgroundColor = UIColor(hex: "EBD9B4")
+        cherishFoodView.layer.cornerRadius = 5
+        headerView.addSubview(cherishFoodView)
+        
+        cherishFoodView.snp.makeConstraints { make in
+            make.top.equalTo(cherishLabel.snp.bottom).offset(8)
+            make.leading.equalTo(imageView.snp.trailing).offset(16)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-16)
+//            make.bottom.equalTo(headerView.snp.bottom).offset(-24)
+//            make.centerY.equalTo(cherishLabel.snp.centerY)
+            make.height.equalTo(10)
+            
+        }
+        
+    }
+    
+    private func setupButtons() {
+        let titles = ["食物類型", "保存期限"]
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 0
+        view.addSubview(stackView)
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(140)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.height.equalTo(60)
+        }
+        
+        for index in 0...(titles.count - 1) {
+            let button = UIButton(type: .system)
+            button.setTitle(titles[index], for: .normal)
+            button.tintColor = .darkGray
+            button.tag = index
+//            button.backgroundColor = .lightGray
+//            button.addTarget(self, action: nil, for: .touchUpInside)
+            buttons.append(button)
+            stackView.addArrangedSubview(button)
+        }
+    }
+    
+    // MARK: - Food Chart
     private func setupFridgeChart() {
         view.addSubview(fridgeChartView)
         fridgeChartView.snp.makeConstraints { make in
-            make.edges.equalTo(view.snp.edges)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(140)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(24)
+//            make.edges.equalTo(view.snp.edges)
         }
     }
     
@@ -53,6 +164,8 @@ class ChartViewController: UIViewController {
         fridgeChartView.data?.setValueFormatter(DefaultValueFormatter(formatter: percentFormatter)) // 要在這邊指派！不能再上上一行！
         fridgeChartView.legend.form = .circle // 設定圖例樣式
         fridgeChartView.usePercentValuesEnabled = true // 可顯示 % 數
+        fridgeChartView.legend.horizontalAlignment = .center
+       
     }
     
     // MARK: - Data
