@@ -275,6 +275,8 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
            let ingredientStatus = ingredientsDict[recipe.recipeId] {
             detailVC.recipe = recipe
             detailVC.ingredientStatus = ingredientStatus
+            let isLiked = likedRecipeId.contains([recipe.recipeId])
+            detailVC.isLiked = isLiked
         }
     }
 }

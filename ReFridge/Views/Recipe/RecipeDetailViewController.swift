@@ -12,8 +12,8 @@ class RecipeDetailViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var recipe: Recipe?
-    
     var ingredientStatus: IngredientStatus?
+    var isLiked = false
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -59,10 +59,12 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 return UITableViewCell()
             }
             
+            cell.delegate = self
             cell.titleLabel.text = recipe.title
             cell.cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
             cell.servingLabel.text = "\(String(recipe.servings))人份"
             cell.caloriesLabel.text = "\(String(recipe.calories))大卡"
+            cell.toggleLikeBtn(isLiked: isLiked)
             
             return cell
             
@@ -115,4 +117,42 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
         return nil
     }
+}
+
+extension RecipeDetailViewController: RecipeTitleCellDelegate {
+    func didTappedLikeBtn() {
+        // 確認現在狀態
+        isLiked = isLiked ? false : true
+        guard let recipeTitleCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? RecipeTitleCell else {
+            print("cannot find the cell")
+            return
+        }
+        recipeTitleCell.toggleLikeBtn(isLiked: isLiked)
+        
+        Task {
+            guard let recipe = recipe else { return }
+            switch isLiked {
+            case true:
+                await firestoreManager.addLikedRecipe(by: recipe.recipeId) { result in
+                    switch result {
+                    case .success:
+                        print("成功加入收藏清單")
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            case false:
+                await firestoreManager.removeLikedRecipe(by: recipe.recipeId) { result in
+                    switch result {
+                    case .success:
+                        print("成功刪除清單")
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
+    
+    
 }
