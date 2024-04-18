@@ -12,6 +12,8 @@
 		EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */; };
 		EB2F1D8D2BCE1C58000C9295 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */; };
 		EB425BDB2BCF7D74000C75A6 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDA2BCF7D74000C75A6 /* Filter.swift */; };
+		EB425BDE2BD0DEF8000C75A6 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */; };
+		EB425BE02BD0F873000C75A6 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB425BDF2BD0F873000C75A6 /* UIColor+Ext.swift */; };
 		EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937C2BCADFE600189B7C /* ListItem.swift */; };
 		EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */; };
 		EB8893822BCAE7E700189B7C /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8893812BCAE7E700189B7C /* ListCell.swift */; };
@@ -60,6 +62,8 @@
 		EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterManager.swift; sourceTree = "<group>"; };
 		EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
 		EB425BDA2BCF7D74000C75A6 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		EB425BDF2BD0F873000C75A6 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		EB88937C2BCADFE600189B7C /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
 		EB8893812BCAE7E700189B7C /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
@@ -129,6 +133,14 @@
 				7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EB425BDC2BD0DE8C000C75A6 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		EB88937E2BCAE79F00189B7C /* ShoppingList */ = {
@@ -242,6 +254,7 @@
 				EBFF62C82BC79CDA0013F50F /* MyFridge */,
 				EBCC794D2BCA2C950029B754 /* Recipe */,
 				EB88937E2BCAE79F00189B7C /* ShoppingList */,
+				EB425BDC2BD0DE8C000C75A6 /* Chart */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -274,6 +287,7 @@
 				EBFF62D62BC7E4750013F50F /* UIImage+Ext.swift */,
 				EBFF62DF2BC8565E0013F50F /* Date+Ext.swift */,
 				EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */,
+				EB425BDF2BD0F873000C75A6 /* UIColor+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -477,7 +491,9 @@
 				EBCC795C2BCA73B90029B754 /* RecipeDescriptionCell.swift in Sources */,
 				EBAD131D2BCCDEB000F40A71 /* TextScanManager.swift in Sources */,
 				EBCC795A2BCA73A10029B754 /* RecipeTitleCell.swift in Sources */,
+				EB425BE02BD0F873000C75A6 /* UIColor+Ext.swift in Sources */,
 				EBCC79602BCA73F00029B754 /* RecipeStepCell.swift in Sources */,
+				EB425BDE2BD0DEF8000C75A6 /* ChartViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
