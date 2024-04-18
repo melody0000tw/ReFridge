@@ -192,8 +192,6 @@ class RecipeViewController: UIViewController {
     }
     
     private func filterRecipes() {
-        var filteredRecipes = [Recipe]()
-        
         switch recipeFilter {
         case .all:
             showRecipes = allRecipes
@@ -210,7 +208,7 @@ class RecipeViewController: UIViewController {
             return
         }
         
-        var filteredRecipes = allRecipes.filter { recipe in
+        let filteredRecipes = allRecipes.filter { recipe in
             guard let ingredientStatus = ingredientsDict[recipe.recipeId] else {
                 print("cannot find percentage info")
                 return false

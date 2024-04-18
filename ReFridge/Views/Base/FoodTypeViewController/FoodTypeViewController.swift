@@ -11,10 +11,11 @@ import SnapKit
 class FoodTypeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
-    let categories = CategoryData.share.data
-    
-    var allFoodTypes: [FoodType] = []
-    var typesOfSelectedCategory: [FoodType] = [] {
+    private let categories = CategoryData.share.data
+    private let allFoodTypes: [FoodType] = FoodTypeData.share.data
+    private lazy var typesOfSelectedCategory: [FoodType] = allFoodTypes.filter({ type in
+        type.categoryId == 1
+    }) {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -31,7 +32,7 @@ class FoodTypeViewController: UIViewController {
         super.viewDidLoad()
         setupButtons()
         setupCollectionView()
-        fetchFoodTypes()
+//        fetchFoodTypes()
     }
     
     private func configureLayout() -> UICollectionViewLayout {
@@ -92,22 +93,23 @@ class FoodTypeViewController: UIViewController {
 
     }
     
-    private func fetchFoodTypes() {
-        Task {
-            await firestoreManager.fetchFoodType { result in
-                switch result {
-                case .success(let foodTypes):
-                    allFoodTypes = foodTypes
-                    typesOfSelectedCategory = allFoodTypes.filter({ type in
-                        type.categoryId == 1
-                    })
-                    print("已取得所有 foodTypes")
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
+    // 用不到
+//    private func fetchFoodTypes() {
+//        Task {
+//            await firestoreManager.fetchFoodType { result in
+//                switch result {
+//                case .success(let foodTypes):
+//                    allFoodTypes = foodTypes
+//                    typesOfSelectedCategory = allFoodTypes.filter({ type in
+//                        type.categoryId == 1
+//                    })
+//                    print("已取得所有 foodTypes")
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//        }
+//    }
 }
 
 extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
