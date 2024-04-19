@@ -20,6 +20,6 @@ struct Recipe: Codable {
 }
 
 struct Ingredient: Codable {
-    let typeId: Int
+    let typeId: String
     let qty: Int
 }

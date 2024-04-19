@@ -45,6 +45,7 @@ class AddFoodTypeViewController: UIViewController {
     }
     
     var userFoodTypeCount: Int?
+    var foodTypeVCdelegate: FoodTypeViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -176,19 +177,24 @@ class AddFoodTypeViewController: UIViewController {
             return
         }
         
-        let typeId = 1001 + count
+//        let typeId = 1001 + count
         let foodType = FoodType(
             categoryId: categoryId,
-            typeId: typeId,
+            typeId: UUID().uuidString,
             typeName: typeName,
             typeIcon: selectedImage,
-            userId: "userId")
+            isDeletable: true)
         
         Task {
             await firestoreManager.addUserFoodTypes(foodType: foodType) { result in
                 switch result {
                 case .success:
                     print("type新增成功！")
+                    foodTypeVCdelegate?.fetchUserFoodTypes()
+                    DispatchQueue.main.async {
+                        self.presentingViewController?.dismiss(animated: true)
+                    }
+                    
                 case .failure(let error):
                     print("error: \(error)")
                 }

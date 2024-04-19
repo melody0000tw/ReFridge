@@ -45,13 +45,14 @@ class FirestoreManager {
     }
     
     func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {
-        
         do {
             let docRef = foodTypesRef.document(String(foodType.typeId))
             try docRef.setData(from: foodType)
             print("default data was written!")
+            completion(.success(nil))
         } catch {
             print("error: \(error)")
+            completion(.failure(error))
         }
         
     }
@@ -70,7 +71,7 @@ class FirestoreManager {
         }
     }
     
-    func queryFoodType(typeId: Int, completion: (Result< FoodType, Error>) -> Void) async {
+    func queryFoodType(typeId: String, completion: (Result< FoodType, Error>) -> Void) async {
         do {
             let querySnapshot = try await foodTypesRef.document(String(describing: typeId)).getDocument()
             let foodType = try querySnapshot.data(as: FoodType.self)
@@ -128,7 +129,7 @@ class FirestoreManager {
         }
     }
     
-    func queryFoodCard(by typeId: Int, completion: (Result<[FoodCard], Error>) -> Void) async {
+    func queryFoodCard(by typeId: String, completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
             let querySnapshot = try await foodCardsRef.whereField("typeId", isEqualTo: typeId).getDocuments()
             var foodCards = [FoodCard]()

@@ -68,7 +68,7 @@ class TextScanManager {
                 cardId: UUID().uuidString,
                 name: text,
                 categoryId: 5,
-                typeId: 501,
+                typeId: "501",
                 iconName: "other",
                 qty: 1, createDate: Date(),
                 expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),

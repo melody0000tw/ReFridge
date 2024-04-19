@@ -11,7 +11,7 @@ struct FoodCard: Codable {
     var cardId: String = ""
     var name: String = ""
     var categoryId: Int = 5
-    var typeId: Int = 501
+    var typeId: String = "501"
     var iconName: String = "other"
     var qty: Int = 1
     var createDate: Date = Date()

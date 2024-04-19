@@ -12,6 +12,9 @@ class FoodTypeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
     private let categories = CategoryData.share.data
+    
+    private var userFoodTypes = [FoodType]()
+    private var defaultFoodTpyes = FoodTypeData.share.data
     private var allFoodTypes: [FoodType] = FoodTypeData.share.data
     private lazy var typesOfSelectedCategory: [FoodType] = allFoodTypes.filter({ type in
         type.categoryId == 1
@@ -28,7 +31,6 @@ class FoodTypeViewController: UIViewController {
     var selectedCategoryId = 1
     lazy var selectedType: FoodType = allFoodTypes[0]
     
-    var userFoodTypes = [FoodType]()
 
     lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
     lazy var buttons = [UIButton]()
@@ -40,10 +42,16 @@ class FoodTypeViewController: UIViewController {
         super.viewDidLoad()
         setupButtons()
         setupCollectionView()
-        fetchUserFoodTypes()
         setupDeleteBtn()
         setupSelectionBtn()
 //        fetchFoodTypes()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
+        print(" viewWillAppear")
+        fetchUserFoodTypes()
     }
     
     private func configureLayout() -> UICollectionViewLayout {
@@ -157,13 +165,13 @@ class FoodTypeViewController: UIViewController {
 //        }
 //    }
     
-    private func fetchUserFoodTypes() {
+    func fetchUserFoodTypes() {
         Task {
             await firestoreManager.fetchFoodType { result in
                 switch result {
                 case .success(let foodTypes):
                     userFoodTypes = foodTypes
-                    allFoodTypes += foodTypes
+                    allFoodTypes = defaultFoodTpyes + userFoodTypes
                     typesOfSelectedCategory = allFoodTypes.filter({ type in
                         type.categoryId == 1
                     })
@@ -205,6 +213,7 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             addTypeVC.categoryId = selectedCategoryId
             addTypeVC.modalPresentationStyle = .automatic
             addTypeVC.userFoodTypeCount = userFoodTypes.count
+            addTypeVC.foodTypeVCdelegate = self
             self.parent?.present(addTypeVC, animated: true)
         } else {
             let foodType = typesOfSelectedCategory[indexPath.item]

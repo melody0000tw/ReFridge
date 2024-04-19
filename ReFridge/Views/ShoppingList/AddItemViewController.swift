@@ -77,7 +77,7 @@ class AddItemViewController: UIViewController {
     }
     
     private func addData() {
-        guard listItem.typeId != 0 else {
+        guard listItem.typeId != "501" else {
             print("沒有選擇 type")
             return
         }
