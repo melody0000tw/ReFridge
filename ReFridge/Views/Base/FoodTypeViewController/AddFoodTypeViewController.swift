@@ -8,6 +8,8 @@
 import UIKit
 
 class AddFoodTypeViewController: UIViewController {
+    private let firestoreManager = FirestoreManager.shared
+    
     
     let images = ["carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other"]
     
@@ -41,6 +43,8 @@ class AddFoodTypeViewController: UIViewController {
             }
         }
     }
+    
+    var userFoodTypeCount: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,7 +123,6 @@ class AddFoodTypeViewController: UIViewController {
         }
     }
     
-    
     private func setupCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -161,11 +164,38 @@ class AddFoodTypeViewController: UIViewController {
     }
     
     @objc func createType() {
-        guard nameTextField.text != "", let name = nameTextField.text else {
+        guard nameTextField.text != "", let typeName = nameTextField.text else {
             print("名稱不能為空！")
             return
         }
-        print("type name: \(name), image: \(selectedImage)")
+        print("type name: \(typeName), image: \(selectedImage)")
+        
+        guard let count = userFoodTypeCount,
+            let categoryId = categoryId else {
+            print("cannot get user food type count")
+            return
+        }
+        
+        let typeId = 1001 + count
+        let foodType = FoodType(
+            categoryId: categoryId,
+            typeId: typeId,
+            typeName: typeName,
+            typeIcon: selectedImage,
+            userId: "userId")
+        
+        Task {
+            await firestoreManager.addUserFoodTypes(foodType: foodType) { result in
+                switch result {
+                case .success:
+                    print("type新增成功！")
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+                
+            }
+        }
+        
     }
 }
 

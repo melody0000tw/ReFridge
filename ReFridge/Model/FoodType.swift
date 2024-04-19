@@ -13,6 +13,7 @@ struct FoodType: Codable {
     var typeId: Int
     var typeName: String
     var typeIcon: String
+    var userId: String?
 }
 
 struct FoodCategory: Codable {
@@ -21,7 +22,6 @@ struct FoodCategory: Codable {
     var categoryIcon: String
     var categoryColor: String
 }
-
 
 // MARK: - Food Type Data
 struct FoodTypeData {

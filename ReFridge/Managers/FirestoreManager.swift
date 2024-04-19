@@ -44,6 +44,18 @@ class FirestoreManager {
         
     }
     
+    func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {
+        
+        do {
+            let docRef = foodTypesRef.document(String(foodType.typeId))
+            try docRef.setData(from: foodType)
+            print("default data was written!")
+        } catch {
+            print("error: \(error)")
+        }
+        
+    }
+    
     func fetchFoodType(completion: (Result<[FoodType], Error>) -> Void) async {
         do {
             let querySnapshot = try await foodTypesRef.getDocuments()

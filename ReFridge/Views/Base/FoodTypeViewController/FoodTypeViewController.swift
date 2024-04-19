@@ -27,6 +27,8 @@ class FoodTypeViewController: UIViewController {
     
     var selectedCategoryId = 1
     lazy var selectedType: FoodType = allFoodTypes[0]
+    
+    var userFoodTypes = [FoodType]()
 
     lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
     lazy var buttons = [UIButton]()
@@ -160,6 +162,7 @@ class FoodTypeViewController: UIViewController {
             await firestoreManager.fetchFoodType { result in
                 switch result {
                 case .success(let foodTypes):
+                    userFoodTypes = foodTypes
                     allFoodTypes += foodTypes
                     typesOfSelectedCategory = allFoodTypes.filter({ type in
                         type.categoryId == 1
@@ -201,6 +204,7 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             let addTypeVC = AddFoodTypeViewController()
             addTypeVC.categoryId = selectedCategoryId
             addTypeVC.modalPresentationStyle = .automatic
+            addTypeVC.userFoodTypeCount = userFoodTypes.count
             self.parent?.present(addTypeVC, animated: true)
         } else {
             let foodType = typesOfSelectedCategory[indexPath.item]
