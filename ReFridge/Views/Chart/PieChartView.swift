@@ -62,12 +62,11 @@ class FridgePieChartView: PieChartView {
         percentFormatter.multiplier = 1
         percentFormatter.percentSymbol = "%"
         
-        
         data = chartData
         data?.setValueFormatter(DefaultValueFormatter(formatter: percentFormatter)) // 要在這邊指派！不能再上上一行！
         legend.form = .circle
         usePercentValuesEnabled = true // 可顯示 % 數
-        legend.horizontalAlignment = .center
+        legend.enabled = false
        
     }
 

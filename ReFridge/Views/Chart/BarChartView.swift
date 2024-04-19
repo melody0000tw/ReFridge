@@ -53,8 +53,8 @@ class FridgeBarChartView: BarChartView {
         
         let dataSet = BarChartDataSet(entries: entries, label: "食物數量")
         dataSet.colors = [UIColor(hex: "EFBC9B"), UIColor(hex: "EBD9B4"), UIColor(hex: "9DBC98"), UIColor(hex: "638889"), UIColor(hex: "9CAFAA")]
-        dataSet.highlightEnabled = false
-        dataSet.valueFont = UIFont.systemFont(ofSize: 14)
+//        dataSet.highlightEnabled = false
+        dataSet.valueFont = UIFont.systemFont(ofSize: 13)
         
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -62,12 +62,14 @@ class FridgeBarChartView: BarChartView {
         data = BarChartData(dataSet: dataSet)
         data?.setValueFormatter(DefaultValueFormatter(formatter: formatter))
         
-        let xValue = ["0天", "7天", "30天", "90天"]
-//        xAxis.valueFormatter = 
+        let xValue = ["剩0天", "剩7天", "剩30天", "剩90天"]
+        xAxis.valueFormatter = IndexAxisValueFormatter(values: xValue)
+        xAxis.granularity = 1
         xAxis.drawGridLinesEnabled = false
         xAxis.drawAxisLineEnabled = true
         xAxis.centerAxisLabelsEnabled = true
         xAxis.labelPosition = .bottom
+        xAxis.labelFont = UIFont.systemFont(ofSize: 13)
         
         leftAxis.drawGridLinesEnabled = false
         leftAxis.enabled = false
@@ -77,6 +79,8 @@ class FridgeBarChartView: BarChartView {
         scaleXEnabled = false
         scaleYEnabled = true
         doubleTapToZoomEnabled = false
+        
+        legend.enabled = false
     }
 
 }

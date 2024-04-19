@@ -15,6 +15,7 @@ class FirestoreManager {
     lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
     lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
     lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
+    lazy var scoresRef = database.collection("users").document("userId").collection("cherishScores")
 
     private init() {
         database = Firestore.firestore()
@@ -125,6 +126,23 @@ class FirestoreManager {
             }
             
             completion(.success(foodCards))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    // MARK: - Scores
+    func fetchScores(completion: (Result<Scores, Error>) -> Void) async {
+        do {
+            let consumedNum = try await scoresRef.document("consumed").getDocument().get("number")
+            let thrownNum = try await scoresRef.document("thrown").getDocument().get("number")
+            guard let consumedNum = consumedNum as? Int, let thrownNum = thrownNum as? Int else {
+                print("cannot get the score number")
+                return
+            }
+            
+            let scores = Scores(consumed: consumedNum, thrown: thrownNum)
+            completion(.success(scores))
         } catch {
             completion(.failure(error))
         }
