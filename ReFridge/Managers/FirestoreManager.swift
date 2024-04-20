@@ -169,6 +169,24 @@ class FirestoreManager {
         }
     }
     
+    func changeScores(deleteWay: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            
+            let docRef = scoresRef.document(deleteWay)
+            let number = try await docRef.getDocument().get("number")
+            guard let oldScore = number as? Int else {
+                print("cannot get the score number")
+                return
+            }
+            let newScore = oldScore + 1
+            let data: [String: Any] = [ "number": newScore ]
+            try await docRef.setData(data)
+            completion(.success(newScore))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
     // MARK: - Recipe
     func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
         do {

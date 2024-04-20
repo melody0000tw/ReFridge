@@ -134,6 +134,7 @@
                 <outlet property="barcodeTextField" destination="4gt-tz-9ae" id="fkp-0H-lwf"/>
                 <outlet property="dateBtn" destination="Ww1-01-Q0Q" id="Os2-h6-G6m"/>
                 <outlet property="expireDateTextField" destination="sIT-ks-KMR" id="Fvp-YZ-Oxa"/>
+                <outlet property="iconBgView" destination="tXI-nZ-4yC" id="nT6-yD-Ns7"/>
                 <outlet property="iconImage" destination="aYF-gf-JNK" id="taX-QN-Ik3"/>
                 <outlet property="noteTextView" destination="1gq-05-kT2" id="UcH-9e-oF5"/>
                 <outlet property="qtyTextField" destination="rSB-wX-Lok" id="Ygu-Qn-6FR"/>

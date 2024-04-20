@@ -67,8 +67,8 @@ class AddFoodTypeViewController: UIViewController {
     }
     
     private func setupViews() {
-        containerView.backgroundColor = UIColor(hex: "9CAFAA")
-        containerView.layer.cornerRadius = 10
+        containerView.backgroundColor = .C1
+        containerView.layer.cornerRadius = 5
         view.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).offset(40)

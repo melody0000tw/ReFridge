@@ -30,6 +30,7 @@ class CardInfoCell: UITableViewCell {
     let datePicker = UIDatePicker()
     let formatter = FormatterManager.share.formatter
     
+    @IBOutlet weak var iconBgView: UIView!
     @IBOutlet weak var qtyTextField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var storageSegment: UISegmentedControl!
@@ -51,15 +52,20 @@ class CardInfoCell: UITableViewCell {
         qtyTextField.delegate = self
         noteTextView.delegate = self
         storageSegment.addTarget(self, action: #selector(onChangeStorageType(sender:)), for: .valueChanged)
+//        storageSegment.backgroundColor = .clear
+//        storageSegment.
+//        storageSegment.selectedSegmentTintColor = .C1
         barcodeTextField.delegate = self
         barcodeBtn.backgroundColor = .clear
         barcodeBtn.setImage(UIImage(systemName: "barcode.viewfinder"), for: .normal)
-        barcodeBtn.tintColor = .C1
+        barcodeBtn.tintColor = .C2
         barcodeBtn.addTarget(self, action: #selector(didTappedBarcodeBtn), for: .touchUpInside)
         dateBtn.backgroundColor = .clear
         dateBtn.setImage(UIImage(systemName: "calendar"), for: .normal)
-        dateBtn.tintColor = .C1
+        dateBtn.tintColor = .C2
         expireDateTextField.delegate = self
+        iconBgView.backgroundColor = .C1
+//        iconBgView.layer.cornerRadius = 5
     }
     
     func setupData() {

@@ -9,18 +9,20 @@ import Foundation
 import UIKit
 
 private enum RFColor: String {
+    // swiftlint:disable identifier_name
     case C1 = "D6DAC8"
-    case C2 = "9CAFAA"
+    case C2 = "627254"
     case C3 = "FBF3D5"
     case C4 = "EFBC9B"
     case T1 = "31363F"
     case T2 = "FEFBF6"
     case B1 = "FCF5ED"
+    // swiftlint:enable identifier_name
 }
 
 
 extension UIColor {
-    
+    // swiftlint:disable identifier_name
     static let C1 = RFColor(.C1)
     static let C2 = RFColor(.C2)
     static let C3 = RFColor(.C3)
@@ -28,6 +30,7 @@ extension UIColor {
     static let T1 = RFColor(.T1)
     static let T2 = RFColor(.T2)
     static let B1 = RFColor(.B1)
+    // swiftlint:enable identifier_name
     
     private static func RFColor(_ color: RFColor, alpha: CGFloat = 1) -> UIColor {
         return UIColor.init(hex: color.rawValue, alpha: alpha)

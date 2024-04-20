@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import VisionKit
+import Vision
 
 enum FoodCardMode {
     case adding
@@ -15,21 +17,37 @@ enum FoodCardMode {
 
 class AddFoodCardViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
+    
     @IBOutlet weak var tableView: UITableView!
+    
+    @IBAction func deleteByThrown(_ sender: Any) {
+        changeScore(deleteWay: .thrown)
+        deleteData()
+    }
+    @IBAction func deleteByFinished(_ sender: Any) {
+        changeScore(deleteWay: .consumed)
+        deleteData()
+    }
     
     let typeVC = FoodTypeViewController()
     let saveBtn = UIBarButtonItem()
+    let closeBtn = UIBarButtonItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         setupTypeView()
         setupNavigationView()
+        self.tabBarController?.tabBar.isHidden = true
     }
     
-    var foodCard = FoodCard() 
+    override func viewWillDisappear(_ animated: Bool) {
+        super .viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
     
     
+    var foodCard = FoodCard()
     var mode = FoodCardMode.adding
     var onChangeFoodCard: ((FoodCard) -> Void)?
     
@@ -59,6 +77,12 @@ class AddFoodCardViewController: UIViewController {
         saveBtn.target = self
         saveBtn.action = #selector(saveData)
         navigationItem.rightBarButtonItem = saveBtn
+        closeBtn.tintColor = .C2
+        closeBtn.image = UIImage(systemName: "xmark")
+        closeBtn.target = self
+        closeBtn.action = #selector(closePage)
+        navigationItem.backBarButtonItem?.isHidden = true
+        navigationItem.leftBarButtonItem = closeBtn
     }
     
     private func updateCardInfo() {
@@ -69,6 +93,7 @@ class AddFoodCardViewController: UIViewController {
         }
         typeCell.nameLabel.text = foodCard.name
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
+        infoCell.barcodeTextField.text = foodCard.barCode
     }
     
     // MARK: - Data
@@ -91,6 +116,10 @@ class AddFoodCardViewController: UIViewController {
         }
     }
     
+    @objc func closePage() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     // edit or adding
     private func saveFoodCard() {
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
@@ -103,6 +132,38 @@ class AddFoodCardViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.navigationController?.popViewController(animated: true)
                     }
+                case .failure(let error):
+                    print("Error adding document: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func deleteData() {
+        if foodCard.cardId != "" {
+            Task {
+                await firestoreManager.deleteFoodCard( foodCard.cardId) { result in
+                    switch result {
+                    case .success:
+                        print("Document successfully delete!")
+                        DispatchQueue.main.async {
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    case .failure(let error):
+                        print("Error adding document: \(error)")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func changeScore(deleteWay: DeleteWay) {
+        let way = deleteWay.rawValue
+        Task {
+            await firestoreManager.changeScores(deleteWay: way) { result in
+                switch result {
+                case .success(let newScore):
+                    print("successfully change score of \(way) to \(String(describing: newScore))")
                 case .failure(let error):
                     print("Error adding document: \(error)")
                 }
@@ -137,8 +198,13 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
     }
 }
 
+// MARK: - CardTypeCellDelegate, CardInfoCellDelegate
 extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate {
     func didTappedBarcodeBtn() {
+        let documentCameraViewController = VNDocumentCameraViewController()
+        documentCameraViewController.delegate = self
+        present(documentCameraViewController, animated: true)
+        
         print("============ vc 召喚 bar code")
     }
     
@@ -152,11 +218,47 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     
     func didToggleTypeView() {
         print("didToggle")
-//        guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
-//            return
-//        }
-//        tableView.reloadData()
     }
 }
+
+// MARK: - BarCode
+extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            let image = scan.imageOfPage(at: scan.pageCount - 1)
+            print(image)
+            processImage(image: image)
+            dismiss(animated: true, completion: nil)
+        }
+    
+    func processImage(image: UIImage) {
+            guard let cgImage = image.cgImage else {
+                print("Failed to get cgimage from input image")
+                return
+            }
+            let handler = VNImageRequestHandler(cgImage: cgImage)
+            let request = VNDetectBarcodesRequest { request, error in
+                if let observation = request.results?.first as? VNBarcodeObservation,
+                   observation.symbology == .ean13 {
+                    guard let barcode = observation.payloadStringValue else {
+                        return
+                    }
+                    print("get barcode: \(barcode)")
+                    self.foodCard.barCode = barcode
+                    
+                    DispatchQueue.main.async {
+                        self.updateCardInfo()
+                    }
+                } else {
+                    print(error.debugDescription)
+                }
+            }
+            do {
+                try handler.perform([request])
+            } catch {
+                print(error)
+            }
+    }
+}
+
 
 

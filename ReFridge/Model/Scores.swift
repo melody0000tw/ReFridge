@@ -11,3 +11,8 @@ struct Scores: Codable {
     let consumed: Int
     let thrown: Int
 }
+
+enum DeleteWay: String {
+    case consumed
+    case thrown
+}

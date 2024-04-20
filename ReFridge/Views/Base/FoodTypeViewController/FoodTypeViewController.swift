@@ -99,26 +99,26 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(stackView.snp.bottom)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-            make.bottom.equalTo(view.snp.bottom)
+//            make.height.equalTo(view.snp.height).multipliedBy(0.7)
+            make.bottom.equalTo(view.snp.bottom).offset(-40)
         }
     }
     
     private func setupDeleteBtn() {
-        deleteTypeBtn.setTitle(" 刪除選取類型", for: .normal)
+        deleteTypeBtn.setTitle(" 刪除類型", for: .normal)
         deleteTypeBtn.setTitleColor(.darkGray, for: .normal)
-        deleteTypeBtn.setTitleColor(.lightGray, for: .disabled)
-        deleteTypeBtn.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteTypeBtn.setTitleColor(.clear, for: .disabled)
+//        deleteTypeBtn.setImage(UIImage(systemName: "trash"), for: .normal)
         deleteTypeBtn.tintColor = .darkGray
-        deleteTypeBtn.backgroundColor = .C1
+        deleteTypeBtn.backgroundColor = .clear
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
         view.addSubview(deleteTypeBtn)
         deleteTypeBtn.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom)
             make.trailing.equalTo(view.snp.trailing).offset(-16)
-            make.bottom.equalTo(view.snp.bottom).offset(-16)
+            make.bottom.equalTo(view.snp.bottom)
         }
     }
-    
     
     // MARK: - Data
     @objc func onChangeCategory(sender: UIButton) {
