@@ -36,7 +36,6 @@ class FoodTypeViewController: UIViewController {
     lazy var buttons = [UIButton]()
     
     lazy var deleteTypeBtn = UIButton(type: .system)
-    lazy var selectTypeBtn = UIButton(type: .system)
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -44,9 +43,6 @@ class FoodTypeViewController: UIViewController {
         setupButtons()
         setupCollectionView()
         setupDeleteBtn()
-        setupSelectionBtn()
-//        filterTypes()
-//        fetchFoodTypes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -103,40 +99,26 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(stackView.snp.bottom)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-            make.height.equalTo(view.snp.height).multipliedBy(0.7)
-//            make.bottom.equalTo(view.snp.bottom).offset(-50)
+            make.bottom.equalTo(view.snp.bottom)
         }
     }
     
     private func setupDeleteBtn() {
-        deleteTypeBtn.setTitle("刪除選取類型", for: .normal)
+        deleteTypeBtn.setTitle(" 刪除選取類型", for: .normal)
         deleteTypeBtn.setTitleColor(.darkGray, for: .normal)
         deleteTypeBtn.setTitleColor(.lightGray, for: .disabled)
         deleteTypeBtn.setImage(UIImage(systemName: "trash"), for: .normal)
         deleteTypeBtn.tintColor = .darkGray
+        deleteTypeBtn.backgroundColor = .C1
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
         view.addSubview(deleteTypeBtn)
         deleteTypeBtn.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom)
-            make.leading.equalTo(view.snp.leading).offset(16)
+            make.trailing.equalTo(view.snp.trailing).offset(-16)
             make.bottom.equalTo(view.snp.bottom).offset(-16)
-//            make.height.equalTo(view.snp.height).multipliedBy(0.15)
         }
     }
     
-    private func setupSelectionBtn() {
-        selectTypeBtn.setTitle("選取此類型", for: .normal)
-        selectTypeBtn.setImage(UIImage(systemName: "checkmark"), for: .normal)
-        selectTypeBtn.tintColor = .darkGray
-        selectTypeBtn.addTarget(self, action: #selector(selectType), for: .touchUpInside)
-        view.addSubview( selectTypeBtn)
-        selectTypeBtn.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
-            make.trailing.equalTo(view.snp.trailing).offset(-16)
-            make.bottom.equalTo(view.snp.bottom).offset(-16)
-//            make.height.equalTo(view.snp.height).multipliedBy(0.15)
-        }
-    }
     
     // MARK: - Data
     @objc func onChangeCategory(sender: UIButton) {
@@ -175,12 +157,12 @@ class FoodTypeViewController: UIViewController {
         }
     }
     
-    @objc func selectType() {
-        print("selectType: \(selectedType)")
-        if let onSelectFoodType = onSelectFoodType {
-            onSelectFoodType(selectedType)
-        }
-    }
+//    @objc func selectType() {
+//        print("selectType: \(selectedType)")
+//        if let onSelectFoodType = onSelectFoodType {
+//            onSelectFoodType(selectedType)
+//        }
+//    }
     
     func fetchUserFoodTypes() {
         Task {
@@ -236,16 +218,15 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             let addTypeVC = AddFoodTypeViewController()
             addTypeVC.categoryId = selectedCategoryId
             addTypeVC.modalPresentationStyle = .automatic
-//            addTypeVC.userFoodTypeCount = userFoodTypes.count
             addTypeVC.foodTypeVCdelegate = self
             self.parent?.present(addTypeVC, animated: true)
         } else {
             let foodType = typesOfSelectedCategory[indexPath.item]
             selectedType = foodType
             toggleDeleteBtn()
-//            if let onSelectFoodType = onSelectFoodType {
-//                onSelectFoodType(foodType)
-//            }
+            if let onSelectFoodType = onSelectFoodType {
+                onSelectFoodType(foodType)
+            }
         }
     }
 }

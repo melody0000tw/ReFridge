@@ -9,18 +9,22 @@ import UIKit
 
 class FoodTypeCell: UICollectionViewCell {
 
+    @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var iconImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        bgView.backgroundColor = .C1
+        bgView.layer.cornerRadius = 20
+    }
     
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                contentView.layer.borderColor = UIColor.darkGray.cgColor
-                contentView.layer.borderWidth = 1
+                bgView.backgroundColor = .C1
             } else {
-                contentView.layer.borderColor = UIColor.darkGray.cgColor
-                contentView.layer.borderWidth = 0
+                bgView.backgroundColor = .clear
             }
         }
     }
