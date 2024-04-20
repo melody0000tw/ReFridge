@@ -54,7 +54,15 @@ class FirestoreManager {
             print("error: \(error)")
             completion(.failure(error))
         }
-        
+    }
+    
+    func deleteUserFoodTypes(typeId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try await foodTypesRef.document(typeId).delete()
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
     }
     
     func fetchFoodType(completion: (Result<[FoodType], Error>) -> Void) async {

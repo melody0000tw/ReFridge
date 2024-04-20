@@ -44,7 +44,7 @@ class AddFoodTypeViewController: UIViewController {
         }
     }
     
-    var userFoodTypeCount: Int?
+//    var userFoodTypeCount: Int?
     var foodTypeVCdelegate: FoodTypeViewController?
     
     override func viewDidLoad() {
@@ -171,8 +171,7 @@ class AddFoodTypeViewController: UIViewController {
         }
         print("type name: \(typeName), image: \(selectedImage)")
         
-        guard let count = userFoodTypeCount,
-            let categoryId = categoryId else {
+        guard let categoryId = categoryId else {
             print("cannot get user food type count")
             return
         }
@@ -183,7 +182,8 @@ class AddFoodTypeViewController: UIViewController {
             typeId: UUID().uuidString,
             typeName: typeName,
             typeIcon: selectedImage,
-            isDeletable: true)
+            isDeletable: true,
+            createTime: Date())
         
         Task {
             await firestoreManager.addUserFoodTypes(foodType: foodType) { result in

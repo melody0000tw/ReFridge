@@ -17,7 +17,7 @@ class FoodTypeViewController: UIViewController {
     private var defaultFoodTpyes = FoodTypeData.share.data
     private var allFoodTypes: [FoodType] = FoodTypeData.share.data
     private lazy var typesOfSelectedCategory: [FoodType] = allFoodTypes.filter({ type in
-        type.categoryId == 1
+        type.categoryId == selectedCategoryId
     }) {
         didSet {
             DispatchQueue.main.async {
@@ -31,19 +31,20 @@ class FoodTypeViewController: UIViewController {
     var selectedCategoryId = 1
     lazy var selectedType: FoodType = allFoodTypes[0]
     
-
     lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
     lazy var buttons = [UIButton]()
     
     lazy var deleteTypeBtn = UIButton(type: .system)
     lazy var selectTypeBtn = UIButton(type: .system)
 
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupButtons()
         setupCollectionView()
         setupDeleteBtn()
         setupSelectionBtn()
+//        filterTypes()
 //        fetchFoodTypes()
     }
     
@@ -52,8 +53,10 @@ class FoodTypeViewController: UIViewController {
         super.viewWillAppear(animated)
         print(" viewWillAppear")
         fetchUserFoodTypes()
+        toggleDeleteBtn()
     }
     
+    // MARK: - Setups
     private func configureLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 60, height: 80)
@@ -105,6 +108,8 @@ class FoodTypeViewController: UIViewController {
     
     private func setupDeleteBtn() {
         deleteTypeBtn.setTitle("刪除選取類型", for: .normal)
+        deleteTypeBtn.setTitleColor(.darkGray, for: .normal)
+        deleteTypeBtn.setTitleColor(.lightGray, for: .disabled)
         deleteTypeBtn.setImage(UIImage(systemName: "trash"), for: .normal)
         deleteTypeBtn.tintColor = .darkGray
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
@@ -127,17 +132,41 @@ class FoodTypeViewController: UIViewController {
         }
     }
     
+    // MARK: - Data
     @objc func onChangeCategory(sender: UIButton) {
         print("did tapped category id: \(sender.tag)")
         selectedCategoryId = sender.tag
+        filterTypes()
+    }
+    
+    private func filterTypes() {
         typesOfSelectedCategory = allFoodTypes.filter({ type in
             type.categoryId == selectedCategoryId
         })
-
+    }
+    
+    private func toggleDeleteBtn() {
+        deleteTypeBtn.isEnabled = false
+        if selectedType.isDeletable {
+            deleteTypeBtn.isEnabled = true
+        }
     }
     
     @objc func deleteType() {
         print("deleteType tapped")
+        if selectedType.isDeletable {
+            Task {
+                await firestoreManager.deleteUserFoodTypes(typeId: selectedType.typeId) { result in
+                    switch result {
+                    case .success(let foodTypes):
+                        self.fetchUserFoodTypes()
+                        print("已刪除foodTypes")
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+        }
     }
     
     @objc func selectType() {
@@ -147,34 +176,23 @@ class FoodTypeViewController: UIViewController {
         }
     }
     
-    // 用不到
-//    private func fetchFoodTypes() {
-//        Task {
-//            await firestoreManager.fetchFoodType { result in
-//                switch result {
-//                case .success(let foodTypes):
-//                    allFoodTypes = foodTypes
-//                    typesOfSelectedCategory = allFoodTypes.filter({ type in
-//                        type.categoryId == 1
-//                    })
-//                    print("已取得所有 foodTypes")
-//                case .failure(let error):
-//                    print(error)
-//                }
-//            }
-//        }
-//    }
-    
     func fetchUserFoodTypes() {
         Task {
             await firestoreManager.fetchFoodType { result in
                 switch result {
                 case .success(let foodTypes):
-                    userFoodTypes = foodTypes
-                    allFoodTypes = defaultFoodTpyes + userFoodTypes
-                    typesOfSelectedCategory = allFoodTypes.filter({ type in
-                        type.categoryId == 1
+                    
+                    userFoodTypes = foodTypes.sorted(by: { lhs, rhs in
+                        if let lshTime = lhs.createTime, let rhsTime = rhs.createTime {
+                            return lshTime < rhsTime
+                        }
+                        return lhs.typeName < rhs.typeName
                     })
+                    allFoodTypes = defaultFoodTpyes + userFoodTypes
+                    filterTypes()
+//                    typesOfSelectedCategory = allFoodTypes.filter({ type in
+//                        type.categoryId == 1
+//                    })
                     print("已取得所有 foodTypes")
                 case .failure(let error):
                     print(error)
@@ -212,12 +230,13 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             let addTypeVC = AddFoodTypeViewController()
             addTypeVC.categoryId = selectedCategoryId
             addTypeVC.modalPresentationStyle = .automatic
-            addTypeVC.userFoodTypeCount = userFoodTypes.count
+//            addTypeVC.userFoodTypeCount = userFoodTypes.count
             addTypeVC.foodTypeVCdelegate = self
             self.parent?.present(addTypeVC, animated: true)
         } else {
             let foodType = typesOfSelectedCategory[indexPath.item]
             selectedType = foodType
+            toggleDeleteBtn()
 //            if let onSelectFoodType = onSelectFoodType {
 //                onSelectFoodType(foodType)
 //            }

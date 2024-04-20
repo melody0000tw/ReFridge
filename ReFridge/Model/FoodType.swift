@@ -14,6 +14,7 @@ struct FoodType: Codable {
     var typeName: String
     var typeIcon: String
     var isDeletable: Bool
+    var createTime: Date?
 }
 
 struct FoodCategory: Codable {
