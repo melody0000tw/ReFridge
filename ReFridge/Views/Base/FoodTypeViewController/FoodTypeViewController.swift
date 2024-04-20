@@ -31,6 +31,7 @@ class FoodTypeViewController: UIViewController {
     var selectedCategoryId = 1
     lazy var selectedType: FoodType = allFoodTypes[0]
     
+    lazy var stackView = UIStackView()
     lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
     lazy var buttons = [UIButton]()
     
@@ -68,7 +69,6 @@ class FoodTypeViewController: UIViewController {
     }
     
     private func setupButtons() {
-        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 0
@@ -78,15 +78,16 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(view.snp.top)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-            make.height.equalTo(40)
+//            make.height.equalTo(40)
+            make.height.equalTo(view.snp.height).multipliedBy(0.15)
         }
         
         for category in categories {
             let button = UIButton(type: .system)
             button.setTitle(category.categoryName, for: .normal)
-            button.tintColor = .darkGray
+            button.tintColor = .T1
             button.tag = category.categoryId
-            button.backgroundColor = .lightGray
+            button.backgroundColor = .C1
             button.addTarget(self, action: #selector(onChangeCategory(sender: )), for: .touchUpInside)
             buttons.append(button)
             stackView.addArrangedSubview(button)
@@ -99,10 +100,11 @@ class FoodTypeViewController: UIViewController {
         collectionView.RF_registerCellWithNib(identifier: String(describing: FoodTypeCell.self), bundle: nil)
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(40)
+            make.top.equalTo(stackView.snp.bottom)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-            make.bottom.equalTo(view.snp.bottom).offset(-50)
+            make.height.equalTo(view.snp.height).multipliedBy(0.7)
+//            make.bottom.equalTo(view.snp.bottom).offset(-50)
         }
     }
     
@@ -115,8 +117,10 @@ class FoodTypeViewController: UIViewController {
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
         view.addSubview(deleteTypeBtn)
         deleteTypeBtn.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
             make.leading.equalTo(view.snp.leading).offset(16)
             make.bottom.equalTo(view.snp.bottom).offset(-16)
+//            make.height.equalTo(view.snp.height).multipliedBy(0.15)
         }
     }
     
@@ -127,8 +131,10 @@ class FoodTypeViewController: UIViewController {
         selectTypeBtn.addTarget(self, action: #selector(selectType), for: .touchUpInside)
         view.addSubview( selectTypeBtn)
         selectTypeBtn.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
             make.trailing.equalTo(view.snp.trailing).offset(-16)
             make.bottom.equalTo(view.snp.bottom).offset(-16)
+//            make.height.equalTo(view.snp.height).multipliedBy(0.15)
         }
     }
     
