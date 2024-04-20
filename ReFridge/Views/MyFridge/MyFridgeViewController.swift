@@ -202,10 +202,12 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.iconImage.image = UIImage(systemName: "plus")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "新增食物"
+            cell.setupDefaultCell()
         case 1:
             cell.iconImage.image = UIImage(systemName: "doc.viewfinder")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "掃描收據"
+            cell.setupDefaultCell()
         default:
             let foodCard = showCards[indexPath.item - 2]
             cell.foodCard = foodCard

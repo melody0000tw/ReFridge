@@ -68,11 +68,11 @@ struct CategoryData {
     static let share = CategoryData()
     
     let data: [FoodCategory] = [
-        FoodCategory(categoryId: 1, categoryName: "蔬菜", categoryIcon: "lettuce", categoryColor: "FF34FF"),
-        FoodCategory(categoryId: 2, categoryName: "水果", categoryIcon: "apple", categoryColor: "FF34BB"),
-        FoodCategory(categoryId: 3, categoryName: "蛋白質", categoryIcon: "lettuce", categoryColor: "FF34FF"),
-        FoodCategory(categoryId: 4, categoryName: "穀物", categoryIcon: "apple", categoryColor: "FF34BB"),
-        FoodCategory(categoryId: 5, categoryName: "其他", categoryIcon: "other", categoryColor: "FF34BB")
+        FoodCategory(categoryId: 1, categoryName: "蔬菜", categoryIcon: "lettuce", categoryColor: "D6DAC8"),
+        FoodCategory(categoryId: 2, categoryName: "水果", categoryIcon: "apple", categoryColor: "FBF3D5"),
+        FoodCategory(categoryId: 3, categoryName: "蛋白質", categoryIcon: "lettuce", categoryColor: "EFBC9B"),
+        FoodCategory(categoryId: 4, categoryName: "穀物", categoryIcon: "apple", categoryColor: "E0D8B0"),
+        FoodCategory(categoryId: 5, categoryName: "其他", categoryIcon: "other", categoryColor: "DBD0C0")
     ]
     
     func queryFoodCategory(categoryId: Int) -> FoodCategory? {

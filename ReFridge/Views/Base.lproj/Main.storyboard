@@ -721,7 +721,9 @@
         <scene sceneID="Bhq-08-AW8">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="5y0-yn-TDP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="refrigerator.fill" catalog="system" id="mXV-eb-tnF"/>
+                    <tabBarItem key="tabBarItem" title="" image="refrigerator.fill" catalog="system" id="mXV-eb-tnF">
+                        <color key="badgeColor" red="0.38823529411764707" green="0.53333333333333333" blue="0.53725490196078429" alpha="1" colorSpace="calibratedRGB"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="q0W-vA-Y2s">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -788,7 +790,6 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xk3-OX-K3n">
                                         <rect key="frame" x="216" y="16" width="88" height="28"/>
-                                        <color key="backgroundColor" red="0.83921568629999999" green="0.85490196080000003" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="完食刪除" image="smiley" catalog="system"/>
@@ -1085,7 +1086,9 @@
         <scene sceneID="6k1-Ku-RTH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tdU-yV-oF9" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="book.pages.fill" catalog="system" id="0nb-mz-JQY"/>
+                    <tabBarItem key="tabBarItem" title="" image="book.pages.fill" catalog="system" id="0nb-mz-JQY">
+                        <color key="badgeColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bfk-S8-JQp">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -1386,7 +1389,9 @@
         <scene sceneID="coA-Y9-924">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="98u-R0-314" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="list.bullet" catalog="system" id="AIU-VN-hxo"/>
+                    <tabBarItem key="tabBarItem" title="" image="list.bullet" catalog="system" id="AIU-VN-hxo">
+                        <color key="badgeColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="IAM-HG-uHz">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -1421,7 +1426,9 @@
         <scene sceneID="qto-UY-CBf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="gUp-9F-h17" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="chart.bar.xaxis" catalog="system" id="d03-sG-CtY"/>
+                    <tabBarItem key="tabBarItem" title="" image="chart.bar.xaxis" catalog="system" id="d03-sG-CtY">
+                        <color key="badgeColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dzh-I0-KK2">
                         <rect key="frame" x="0.0" y="20" width="320" height="44"/>
@@ -1440,6 +1447,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="aaR-r1-bWa"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.38823529411764707" green="0.53333333333333333" blue="0.53725490196078429" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="barcode" catalog="system" width="128" height="94"/>
         <image name="barcode.viewfinder" catalog="system" width="128" height="115"/>

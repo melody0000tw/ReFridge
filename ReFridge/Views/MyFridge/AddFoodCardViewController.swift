@@ -46,7 +46,6 @@ class AddFoodCardViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    
     var foodCard = FoodCard()
     var mode = FoodCardMode.adding
     var onChangeFoodCard: ((FoodCard) -> Void)?
