@@ -9,12 +9,12 @@ import UIKit
 
 class AddItemViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
-    private let formatter = FormatterManager.share.formatter
-    var listItem = ListItem.share
-    lazy var datePicker = UIDatePicker()
+//    private let formatter = FormatterManager.share.formatter
+    var listItem = ListItem()
+//    lazy var datePicker = UIDatePicker()
     
     @IBAction func save(_ sender: Any) {
-        addData()
+//        addData()
     }
     
     @IBOutlet weak var isRoutineButton: UIButton!
@@ -29,7 +29,7 @@ class AddItemViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupFoodTypeVC()
-        setupDatePicker()
+//        setupDatePicker()
         resetData()
     }
     
@@ -46,24 +46,24 @@ class AddItemViewController: UIViewController {
         }
     }
     
-    private func setupDatePicker() {
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.datePickerMode = .date
-        routineStartTimeTextField.inputView = datePicker
-        
-        // Toolbar
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
-        toolbar.setItems([doneButton], animated: true)
-        routineStartTimeTextField.inputAccessoryView = toolbar
-    }
-    
-    @objc func doneAction() {
-        listItem.routineStartTime = datePicker.date
-        routineStartTimeTextField.text =  formatter.string(from: listItem.routineStartTime)
-        routineStartTimeTextField.resignFirstResponder()
-    }
+//    private func setupDatePicker() {
+//        datePicker.preferredDatePickerStyle = .wheels
+//        datePicker.datePickerMode = .date
+//        routineStartTimeTextField.inputView = datePicker
+//        
+//        // Toolbar
+//        let toolbar = UIToolbar()
+//        toolbar.sizeToFit()
+//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
+//        toolbar.setItems([doneButton], animated: true)
+//        routineStartTimeTextField.inputAccessoryView = toolbar
+//    }
+//    
+//    @objc func doneAction() {
+//        listItem.routineStartTime = datePicker.date
+//        routineStartTimeTextField.text =  formatter.string(from: listItem.routineStartTime)
+//        routineStartTimeTextField.resignFirstResponder()
+//    }
     
     // MARK: - Data
     private func resetData() {
@@ -76,31 +76,31 @@ class AddItemViewController: UIViewController {
         }
     }
     
-    private func addData() {
-        guard listItem.typeId != "501" else {
-            print("沒有選擇 type")
-            return
-        }
-        
-        if let qty = Int(qtyTextField.text ?? "1"),
-           let routinePeriod = Int(routinePeriodTextField.text ?? "0") {
-            listItem.routinePeriod = routinePeriod
-            listItem.qty = qty
-        }
-        
-        print("準備添加item: \(listItem)")
-        Task {
-            await firestoreManager.addListItem(listItem) { result in
-                switch result {
-                case .success:
-                    print("Document successfully written!")
-                    DispatchQueue.main.async {
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                case .failure(let error):
-                    print("Error adding document: \(error)")
-                }
-            }
-        }
-    }
+//    private func addData() {
+//        guard listItem.typeId != "501" else {
+//            print("沒有選擇 type")
+//            return
+//        }
+//        
+//        if let qty = Int(qtyTextField.text ?? "1"),
+//           let routinePeriod = Int(routinePeriodTextField.text ?? "0") {
+//            listItem.routinePeriod = routinePeriod
+//            listItem.qty = qty
+//        }
+//        
+//        print("準備添加item: \(listItem)")
+//        Task {
+//            await firestoreManager.addListItem(listItem) { result in
+//                switch result {
+//                case .success:
+//                    print("Document successfully written!")
+//                    DispatchQueue.main.async {
+//                        self.navigationController?.popViewController(animated: true)
+//                    }
+//                case .failure(let error):
+//                    print("Error adding document: \(error)")
+//                }
+//            }
+//        }
+//    }
 }

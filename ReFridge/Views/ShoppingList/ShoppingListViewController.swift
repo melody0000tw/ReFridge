@@ -89,7 +89,7 @@ class ShoppingListViewController: UIViewController {
             qty: item.qty,
             createDate: Date(),
             expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-            notificationTime: 3,
+            isRoutineItem: false,
             barCode: "",
             storageType: 2, // default 值常溫？
             notes: "")
@@ -124,6 +124,7 @@ class ShoppingListViewController: UIViewController {
         
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         list.count
@@ -137,10 +138,11 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
         
         cell.delegate = self
         let item = list[indexPath.row]
-        guard let foodType = FoodTypeData.share.queryFoodType(typeId: item.typeId) else {
-            return cell
-        }
-        cell.itemLabel.text = foodType.typeName
+//        guard let foodType = FoodTypeData.share.queryFoodType(typeId: item.typeId) else {
+//            return cell
+//        }
+//        cell.itemLabel.text = foodType.typeName
+        cell.itemLabel.text = item.name
         cell.toggleStyle(checkStatus: item.checkStatus)
         
         return cell

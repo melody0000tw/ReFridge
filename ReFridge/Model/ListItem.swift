@@ -8,13 +8,15 @@
 import Foundation
 
 struct ListItem: Codable {
-    var itemId: String
-    var typeId: String
-    var qty: Int
-    var checkStatus: Int
-    var isRoutineItem: Bool
-    var routinePeriod: Int
-    var routineStartTime: Date
+    var itemId: String = ""
+    var typeId: String = "501"
+    var categoryId: Int = 0
+    var qty: Int = 1
+    var checkStatus: Int = 0
+    var isRoutineItem: Bool = false
+    var name: String = ""
+//    var routinePeriod: Int
+//    var routineStartTime: Date
     
-    static let share = ListItem(itemId: "", typeId: "501", qty: 1, checkStatus: 0, isRoutineItem: false, routinePeriod: 0, routineStartTime: Date())
+//    static let share = ListItem(itemId: "", typeId: "501", qty: 1, checkStatus: 0, isRoutineItem: false, routinePeriod: 0, routineStartTime: Date())
 }

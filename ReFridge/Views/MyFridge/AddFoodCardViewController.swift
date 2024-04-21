@@ -18,16 +18,18 @@ enum FoodCardMode {
 class AddFoodCardViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
+    @IBOutlet weak var deleteByThrownBtn: UIButton!
+    @IBOutlet weak var deleteByConsumedBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-    @IBAction func deleteByThrown(_ sender: Any) {
-        changeScore(deleteWay: .thrown)
-        deleteData()
-    }
-    @IBAction func deleteByFinished(_ sender: Any) {
-        changeScore(deleteWay: .consumed)
-        deleteData()
-    }
+//    @IBAction func deleteByThrown(_ sender: Any) {
+//        changeScore(deleteWay: .thrown)
+//        deleteData()
+//    }
+//    @IBAction func deleteByFinished(_ sender: Any) {
+//        changeScore(deleteWay: .consumed)
+//        deleteData()
+//    }
     
     let typeVC = FoodTypeViewController()
     let saveBtn = UIBarButtonItem()
@@ -38,6 +40,8 @@ class AddFoodCardViewController: UIViewController {
         setupTableView()
         setupTypeView()
         setupNavigationView()
+        setupDeleteBtns()
+        toggleDeleteBtns()
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -59,7 +63,7 @@ class AddFoodCardViewController: UIViewController {
             foodCard.typeId = foodType.typeId
             foodCard.name = foodType.typeName
             foodCard.iconName = foodType.typeIcon
-            updateCardInfo()
+            updateCardInfoCell()
         }
     }
     
@@ -84,7 +88,23 @@ class AddFoodCardViewController: UIViewController {
         navigationItem.leftBarButtonItem = closeBtn
     }
     
-    private func updateCardInfo() {
+    private func setupDeleteBtns() {
+        deleteByThrownBtn.setTitleColor(.lightGray, for: .disabled)
+        deleteByThrownBtn.addTarget(self, action: #selector(didTappedDelete(sender:)), for: .touchUpInside)
+        deleteByConsumedBtn.setTitleColor(.lightGray, for: .disabled)
+        deleteByConsumedBtn.addTarget(self, action: #selector(didTappedDelete(sender:)), for: .touchUpInside)
+    }
+    
+    private func toggleDeleteBtns() {
+        deleteByThrownBtn.isEnabled = false
+        deleteByConsumedBtn.isEnabled = false
+        if mode == .editing {
+            deleteByThrownBtn.isEnabled = true
+            deleteByConsumedBtn.isEnabled = true
+        }
+    }
+    
+    private func updateCardInfoCell() {
         guard let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell,
             let infoCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardInfoCell
         else {
@@ -94,6 +114,19 @@ class AddFoodCardViewController: UIViewController {
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
+    
+    // 應該要在點擊save之後重新更新表單
+//    private func updateFoodCard() {
+//        guard let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardInfoCell
+//        else {
+//            print("update Food Card failed")
+//            return
+//        }
+//        
+//        let barcode = cell.barcodeTextField.text
+//        let expiredDate  = cell.foodCard.expireDate
+//        let qty = Int(cell.qtyTextField.text) ?? 1
+//    }
     
     // MARK: - Data
     @objc func saveData() {
@@ -138,6 +171,21 @@ class AddFoodCardViewController: UIViewController {
         }
     }
     
+    @objc func didTappedDelete(sender: UIButton) {
+        // 確認是否加入購物清單
+        if foodCard.isRoutineItem {
+            addToShoopingList()
+        }
+        
+        if sender == deleteByConsumedBtn {
+            changeScore(deleteWay: .consumed)
+        } else if sender == deleteByThrownBtn {
+            changeScore(deleteWay: .thrown)
+        }
+        
+        deleteData()
+    }
+    
     private func deleteData() {
         if foodCard.cardId != "" {
             Task {
@@ -169,8 +217,31 @@ class AddFoodCardViewController: UIViewController {
             }
         }
     }
+    
+    private func addToShoopingList() {
+        var item = ListItem()
+        item.checkStatus = 0
+        item.itemId = UUID().uuidString
+        item.categoryId = foodCard.categoryId
+        item.name = foodCard.name
+        item.qty = foodCard.qty
+        item.typeId = foodCard.typeId
+        item.isRoutineItem = foodCard.isRoutineItem
+        
+        Task {
+            await firestoreManager.addListItem(item) { result in
+                switch result {
+                case .success:
+                    print("Document successfully written!")
+                case .failure(let error):
+                    print("Error adding list item: \(error)")
+                }
+            }
+        }
+    }
 }
 
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         2
@@ -212,6 +283,7 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         self.foodCard.expireDate = foodCard.expireDate
         self.foodCard.barCode = foodCard.barCode
         self.foodCard.storageType = foodCard.storageType
+        self.foodCard.isRoutineItem = foodCard.isRoutineItem
         self.foodCard.notes = foodCard.notes
     }
     
@@ -245,7 +317,7 @@ extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
                     self.foodCard.barCode = barcode
                     
                     DispatchQueue.main.async {
-                        self.updateCardInfo()
+                        self.updateCardInfoCell()
                     }
                 } else {
                     print(error.debugDescription)

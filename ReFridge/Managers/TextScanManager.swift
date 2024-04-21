@@ -72,7 +72,7 @@ class TextScanManager {
                 iconName: "other",
                 qty: 1, createDate: Date(),
                 expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-                notificationTime: 3,
+                isRoutineItem: false,
                 barCode: "",
                 storageType: 0,
                 notes: "")

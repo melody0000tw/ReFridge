@@ -784,18 +784,12 @@
                                         <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="過期丟棄" image="trash" catalog="system"/>
-                                        <connections>
-                                            <action selector="deleteByThrown:" destination="WaG-iY-QEP" eventType="touchUpInside" id="yb1-bz-HAt"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xk3-OX-K3n">
                                         <rect key="frame" x="216" y="16" width="88" height="28"/>
                                         <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="完食刪除" image="smiley" catalog="system"/>
-                                        <connections>
-                                            <action selector="deleteByFinished:" destination="WaG-iY-QEP" eventType="touchUpInside" id="iQQ-rw-c6A"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -823,6 +817,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deleteByConsumedBtn" destination="Xk3-OX-K3n" id="9QM-Ku-CKA"/>
+                        <outlet property="deleteByThrownBtn" destination="fUP-3m-jZD" id="dga-TO-0nm"/>
                         <outlet property="tableView" destination="cqI-tA-8m4" id="Y6U-Cg-IAJ"/>
                     </connections>
                 </viewController>
@@ -1091,7 +1087,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="bfk-S8-JQp">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <navigationBarAppearance key="scrollEdgeAppearance"/>
                     </navigationBar>
@@ -1394,7 +1390,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="IAM-HG-uHz">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <navigationBarAppearance key="scrollEdgeAppearance"/>
                     </navigationBar>

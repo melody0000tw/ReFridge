@@ -38,6 +38,7 @@ class CardInfoCell: UITableViewCell {
     @IBOutlet weak var dateBtn: UIButton!
     @IBOutlet weak var barcodeTextField: UITextField!
     @IBOutlet weak var expireDateTextField: UITextField!
+    @IBOutlet weak var routineItemSwitch: UISwitch!
     @IBOutlet weak var iconImage: UIImageView!
     
     override func awakeFromNib() {
@@ -55,6 +56,7 @@ class CardInfoCell: UITableViewCell {
 //        storageSegment.backgroundColor = .clear
 //        storageSegment.
 //        storageSegment.selectedSegmentTintColor = .C1
+        routineItemSwitch.addTarget(self, action: #selector(onChangeRoutineStatus(sender:)), for: .valueChanged)
         barcodeTextField.delegate = self
         barcodeBtn.backgroundColor = .clear
         barcodeBtn.setImage(UIImage(systemName: "barcode.viewfinder"), for: .normal)
@@ -77,12 +79,14 @@ class CardInfoCell: UITableViewCell {
             barcodeTextField.text = foodCard.barCode == "" ? nil : String(describing: foodCard.barCode)
             expireDateTextField.text = formatter.string(from: foodCard.expireDate)
             iconImage.image = UIImage(named: foodCard.iconName)
+            routineItemSwitch.setOn(foodCard.isRoutineItem, animated: false)
         } else {
             // adding
             qtyTextField.text = String(describing: foodCard.qty)
             noteTextView.text = nil
             barcodeTextField.text = nil
             expireDateTextField.text = nil
+            routineItemSwitch.setOn(false, animated: false)
         }
     }
     
@@ -111,6 +115,11 @@ class CardInfoCell: UITableViewCell {
         print("已選取儲存方式：\(index)")
         foodCard.storageType = index
         
+    }
+    
+    @objc func onChangeRoutineStatus(sender: UISwitch) {
+        let isRoutineItem = sender.isOn
+        foodCard.isRoutineItem = isRoutineItem
     }
     
     @objc func didTappedBarcodeBtn() {

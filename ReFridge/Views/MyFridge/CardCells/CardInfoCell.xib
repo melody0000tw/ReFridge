@@ -85,7 +85,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存方式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bc7-S3-3wH">
                                 <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="31"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1yx-Jc-lZl">
@@ -95,11 +95,29 @@
                                     <segment title="冷藏"/>
                                     <segment title="常溫"/>
                                 </segments>
+                                <color key="selectedSegmentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </segmentedControl>
                         </subviews>
                     </stackView>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="i9i-Je-AZT">
+                        <rect key="frame" x="16.000000000000014" y="215" width="242.33333333333337" height="31"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ml-dw-xvQ">
+                                <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
+                                <color key="tintColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="onTintColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="刪除後自動加入購物清單" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKR-ub-bap">
+                                <rect key="frame" x="85.000000000000014" y="7" width="157.33333333333337" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="備註" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1gq-05-kT2">
-                        <rect key="frame" x="16" y="211" width="295" height="309"/>
+                        <rect key="frame" x="16" y="262" width="295" height="258"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="uqH-SO-etJ"/>
@@ -112,8 +130,8 @@
                 <constraints>
                     <constraint firstItem="tXI-nZ-4yC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="3b0-Bh-G4V"/>
                     <constraint firstItem="U1j-6U-P1V" firstAttribute="trailing" secondItem="4gt-tz-9ae" secondAttribute="trailing" constant="-8" id="5pG-Mf-CdM"/>
-                    <constraint firstItem="1gq-05-kT2" firstAttribute="top" secondItem="Wi4-5M-3il" secondAttribute="bottom" constant="12" id="6Fu-ld-fZ7"/>
                     <constraint firstItem="U1j-6U-P1V" firstAttribute="centerY" secondItem="4gt-tz-9ae" secondAttribute="centerY" id="Bn8-Bd-611"/>
+                    <constraint firstItem="1gq-05-kT2" firstAttribute="top" secondItem="i9i-Je-AZT" secondAttribute="bottom" constant="16" id="D1t-Kq-Bxt"/>
                     <constraint firstItem="LsA-6R-RKW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="Eit-FD-6tE"/>
                     <constraint firstItem="Ww1-01-Q0Q" firstAttribute="trailing" secondItem="sIT-ks-KMR" secondAttribute="trailing" constant="-8" id="GAG-Bi-0pm"/>
                     <constraint firstItem="tXI-nZ-4yC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="HSg-h0-E5V"/>
@@ -122,8 +140,10 @@
                     <constraint firstAttribute="bottom" secondItem="1gq-05-kT2" secondAttribute="bottom" constant="16" id="U4D-aD-RH8"/>
                     <constraint firstItem="Wi4-5M-3il" firstAttribute="top" secondItem="LsA-6R-RKW" secondAttribute="bottom" constant="16" id="XiB-jn-2Kk"/>
                     <constraint firstItem="LsA-6R-RKW" firstAttribute="leading" secondItem="tXI-nZ-4yC" secondAttribute="trailing" constant="16" id="iav-6p-Uwl"/>
+                    <constraint firstItem="i9i-Je-AZT" firstAttribute="top" secondItem="Wi4-5M-3il" secondAttribute="bottom" constant="16" id="k8I-MI-kKB"/>
                     <constraint firstAttribute="trailing" secondItem="1gq-05-kT2" secondAttribute="trailing" constant="9" id="o53-36-P8F"/>
                     <constraint firstItem="1gq-05-kT2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="oaF-7e-RhC"/>
+                    <constraint firstItem="i9i-Je-AZT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ohY-oT-c0U"/>
                     <constraint firstItem="Wi4-5M-3il" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="tYZ-7K-Kwv"/>
                     <constraint firstAttribute="trailing" secondItem="Wi4-5M-3il" secondAttribute="trailing" constant="16" id="vzU-QD-Cdt"/>
                 </constraints>
@@ -138,6 +158,7 @@
                 <outlet property="iconImage" destination="aYF-gf-JNK" id="taX-QN-Ik3"/>
                 <outlet property="noteTextView" destination="1gq-05-kT2" id="UcH-9e-oF5"/>
                 <outlet property="qtyTextField" destination="rSB-wX-Lok" id="Ygu-Qn-6FR"/>
+                <outlet property="routineItemSwitch" destination="0ml-dw-xvQ" id="q9T-xq-6Xt"/>
                 <outlet property="storageSegment" destination="1yx-Jc-lZl" id="LcT-bL-ALw"/>
             </connections>
             <point key="canvasLocation" x="129.7709923664122" y="161.26760563380282"/>
