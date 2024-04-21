@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
@@ -22,7 +22,7 @@
                         <rect key="frame" x="16" y="16" width="136" height="136"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fork.knife.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="aYF-gf-JNK">
-                                <rect key="frame" x="28" y="29.000000000000007" width="80" height="78.666666666666686"/>
+                                <rect key="frame" x="28" y="28.5" width="80" height="79"/>
                                 <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="HR8-ts-8vd"/>
@@ -83,13 +83,13 @@
                         <rect key="frame" x="16" y="168" width="288" height="31"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存方式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bc7-S3-3wH">
-                                <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="31"/>
+                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="31"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="1yx-Jc-lZl">
-                                <rect key="frame" x="82.333333333333329" y="0.0" width="205.66666666666669" height="32"/>
+                                <rect key="frame" x="82.5" y="0.0" width="205.5" height="32"/>
                                 <segments>
                                     <segment title="冷凍"/>
                                     <segment title="冷藏"/>
@@ -100,7 +100,7 @@
                         </subviews>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="i9i-Je-AZT">
-                        <rect key="frame" x="16.000000000000014" y="215" width="242.33333333333337" height="31"/>
+                        <rect key="frame" x="16" y="215" width="242.5" height="31"/>
                         <subviews>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0ml-dw-xvQ">
                                 <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
@@ -109,7 +109,7 @@
                                 <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="刪除後自動加入購物清單" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xKR-ub-bap">
-                                <rect key="frame" x="85.000000000000014" y="7" width="157.33333333333337" height="17"/>
+                                <rect key="frame" x="85" y="7" width="157.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -161,7 +161,7 @@
                 <outlet property="routineItemSwitch" destination="0ml-dw-xvQ" id="q9T-xq-6Xt"/>
                 <outlet property="storageSegment" destination="1yx-Jc-lZl" id="LcT-bL-ALw"/>
             </connections>
-            <point key="canvasLocation" x="129.7709923664122" y="161.26760563380282"/>
+            <point key="canvasLocation" x="129.375" y="160.56338028169014"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -225,6 +225,7 @@ class AddFoodCardViewController: UIViewController {
         item.categoryId = foodCard.categoryId
         item.name = foodCard.name
         item.qty = foodCard.qty
+        item.mesureWord = foodCard.mesureWord
         item.typeId = foodCard.typeId
         item.isRoutineItem = foodCard.isRoutineItem
         

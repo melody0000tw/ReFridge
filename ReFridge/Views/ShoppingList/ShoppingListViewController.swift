@@ -36,6 +36,7 @@ class ShoppingListViewController: UIViewController {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.RF_registerCellWithNib(identifier: ShoppingListCell.reuseIdentifier, bundle: nil)
     }
     
     private func fetchList() {
@@ -87,6 +88,7 @@ class ShoppingListViewController: UIViewController {
             typeId: foodType.typeId,
             iconName: foodType.typeIcon,
             qty: item.qty,
+            mesureWord: item.mesureWord,
             createDate: Date(),
             expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
             isRoutineItem: false,
@@ -131,11 +133,16 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ShoppingListCell.reuseIdentifier, for: indexPath) as? ShoppingListCell
         else {
             return UITableViewCell()
         }
         
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell
+//        else {
+//            return UITableViewCell()
+//        }
+//        
         cell.delegate = self
         let item = list[indexPath.row]
 //        guard let foodType = FoodTypeData.share.queryFoodType(typeId: item.typeId) else {
@@ -143,6 +150,7 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
 //        }
 //        cell.itemLabel.text = foodType.typeName
         cell.itemLabel.text = item.name
+        cell.qtyLabel.text = "\(String(item.qty))\(item.mesureWord)"
         cell.toggleStyle(checkStatus: item.checkStatus)
         
         return cell
@@ -166,7 +174,7 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
 }
 
 // MARK: - ListCellDelegate
-extension ShoppingListViewController: ListCellDelegate {
+extension ShoppingListViewController: ShoppingListCellDelegate {
     func delete(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return

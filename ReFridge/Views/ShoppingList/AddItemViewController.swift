@@ -9,98 +9,143 @@ import UIKit
 
 class AddItemViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
-//    private let formatter = FormatterManager.share.formatter
     var listItem = ListItem()
-//    lazy var datePicker = UIDatePicker()
     
-    @IBAction func save(_ sender: Any) {
-//        addData()
-    }
     
-    @IBOutlet weak var isRoutineButton: UIButton!
-    @IBOutlet weak var qtyTextField: UITextField!
-    @IBOutlet weak var iconImage: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var routineView: UIView!
-    @IBOutlet weak var routineStartTimeTextField: UITextField!
-    @IBOutlet weak var routinePeriodTextField: UITextField!
-    @IBOutlet weak var foodTypeView: UIView!
+    @IBOutlet weak var tableView: UITableView!
+    
+    let typeVC = FoodTypeViewController()
+    let saveBtn = UIBarButtonItem()
+    let closeBtn = UIBarButtonItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupFoodTypeVC()
-//        setupDatePicker()
-        resetData()
+        setupTableView()
+        setupTypeView()
+        setupNavigationView()
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super .viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: setups
-    private func setupFoodTypeVC() {
-        if let foodTypeVC = children.compactMap({ $0 as? FoodTypeViewController }).first {
-            foodTypeVC.onSelectFoodType = { [self] foodType in
-                print("list vc knows the selected foodtype: \(foodType)")
-                // 選擇完 foodType 後
-                listItem.typeId = foodType.typeId
-                nameLabel.text = foodType.typeName
-                iconImage.image = UIImage(named: foodType.typeIcon)
+    private func setupTypeView() {
+        addChild(typeVC)
+        typeVC.onSelectFoodType = { [self] foodType in
+            print("card vc knows the selected foodtype: \(foodType)")
+            // 選擇完 foodType 後
+            listItem.typeId = foodType.typeId
+            listItem.categoryId = foodType.categoryId
+            listItem.name = foodType.typeName
+            listItem.iconName = foodType.typeIcon
+            updateCardInfoCell()
+        }
+    }
+    
+    private func setupNavigationView() {
+        saveBtn.tintColor = .C2
+        saveBtn.image = UIImage(systemName: "checkmark")
+        saveBtn.target = self
+        saveBtn.action = #selector(saveData)
+        navigationItem.rightBarButtonItem = saveBtn
+        closeBtn.tintColor = .C2
+        closeBtn.image = UIImage(systemName: "xmark")
+        closeBtn.target = self
+        closeBtn.action = #selector(closePage)
+        navigationItem.backBarButtonItem?.isHidden = true
+        navigationItem.leftBarButtonItem = closeBtn
+    }
+    
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.RF_registerCellWithNib(identifier: CardTypeCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: CardQtyCell.reuseIdentifier, bundle: nil)
+    }
+    
+
+    
+    // MARK: - Data
+    
+    private func updateCardInfoCell() {
+        guard let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell,
+            let qtyCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardQtyCell
+        else {
+            return
+        }
+        typeCell.nameLabel.text = listItem.name
+        qtyCell.iconImage.image = UIImage(named: listItem.iconName)
+        qtyCell.nameLabel.text = listItem.name
+    }
+    
+//    private func resetData() {
+//        DispatchQueue.main.async { [self] in
+//            nameLabel.text = "請選取食物種類"
+//            iconImage.image = UIImage(systemName: "fork.knife.circle")
+//            qtyTextField.text = String(listItem.qty)
+//            routinePeriodTextField.text = nil
+//            routineStartTimeTextField.text = nil
+//        }
+//    }
+    
+    @objc func closePage() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func saveData() {
+        guard listItem.name != "" else {
+            print("沒有選擇 type")
+            return
+        }
+        
+        print(listItem)
+
+        Task {
+            await firestoreManager.addListItem(listItem) { result in
+                switch result {
+                case .success:
+                    print("Document successfully written!")
+                    DispatchQueue.main.async {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                case .failure(let error):
+                    print("Error adding document: \(error)")
+                }
             }
         }
     }
-    
-//    private func setupDatePicker() {
-//        datePicker.preferredDatePickerStyle = .wheels
-//        datePicker.datePickerMode = .date
-//        routineStartTimeTextField.inputView = datePicker
-//        
-//        // Toolbar
-//        let toolbar = UIToolbar()
-//        toolbar.sizeToFit()
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
-//        toolbar.setItems([doneButton], animated: true)
-//        routineStartTimeTextField.inputAccessoryView = toolbar
-//    }
-//    
-//    @objc func doneAction() {
-//        listItem.routineStartTime = datePicker.date
-//        routineStartTimeTextField.text =  formatter.string(from: listItem.routineStartTime)
-//        routineStartTimeTextField.resignFirstResponder()
-//    }
-    
-    // MARK: - Data
-    private func resetData() {
-        DispatchQueue.main.async { [self] in
-            nameLabel.text = "請選取食物種類"
-            iconImage.image = UIImage(systemName: "fork.knife.circle")
-            qtyTextField.text = String(listItem.qty)
-            routinePeriodTextField.text = nil
-            routineStartTimeTextField.text = nil
-        }
+}
+
+extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        2
     }
     
-//    private func addData() {
-//        guard listItem.typeId != "501" else {
-//            print("沒有選擇 type")
-//            return
-//        }
-//        
-//        if let qty = Int(qtyTextField.text ?? "1"),
-//           let routinePeriod = Int(routinePeriodTextField.text ?? "0") {
-//            listItem.routinePeriod = routinePeriod
-//            listItem.qty = qty
-//        }
-//        
-//        print("準備添加item: \(listItem)")
-//        Task {
-//            await firestoreManager.addListItem(listItem) { result in
-//                switch result {
-//                case .success:
-//                    print("Document successfully written!")
-//                    DispatchQueue.main.async {
-//                        self.navigationController?.popViewController(animated: true)
-//                    }
-//                case .failure(let error):
-//                    print("Error adding document: \(error)")
-//                }
-//            }
-//        }
-//    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: CardTypeCell.reuseIdentifier, for: indexPath) as? CardTypeCell {
+                typeVC.view.frame = cell.typeContainerView.bounds
+                cell.typeContainerView.addSubview(typeVC.view)
+                cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
+                return cell
+            }
+        }
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: CardQtyCell.reuseIdentifier, for: indexPath) as? CardQtyCell {
+            cell.delegate = self
+            return cell
+        }
+        return UITableViewCell()
+    }
+    
+}
+
+extension  AddItemViewController: CardQtyCellDelegate {
+    func didChangeQty(qty: Int, mesureWord: String) {
+        listItem.qty = qty
+        listItem.mesureWord = mesureWord
+    }
 }

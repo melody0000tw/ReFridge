@@ -14,6 +14,7 @@ struct FoodCard: Codable {
     var typeId: String = "501"
     var iconName: String = "other"
     var qty: Int = 1
+    var mesureWord: String = "個"
     var createDate: Date = Date()
     var expireDate: Date = Date().createExpiredDate(afterDays: 7) ?? Date()
     var isRoutineItem: Bool = false
