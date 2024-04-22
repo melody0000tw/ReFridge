@@ -27,7 +27,9 @@ class RecipeDetailViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.RF_registerCellWithNib(identifier: RecipeIngredientCell.reuseIdentifier, bundle: nil)
         
+        // gallery header
         let galleryView = RecipeGalleryView()
         guard let recipe = self.recipe else { return }
         galleryView.images = [recipe.image]
@@ -44,6 +46,11 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
+        case 2:
+            if let recipe = recipe {
+                return recipe.ingredients.count
+            }
+            return 1
         case 3:
             if let recipe = recipe {
                 return recipe.steps.count
@@ -87,11 +94,31 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 return UITableViewCell()
             }
             
-            guard let ingredientStatus = ingredientStatus else { return cell }
-            cell.ingredientStatus = ingredientStatus
-            cell.setupCell()
+            let ingredient = recipe.ingredients[indexPath.row]
+            cell.ingredient = ingredient
+            
+            if let ingredientStatus = ingredientStatus {
+                let status = ingredientStatus.checkTypes.contains(where: { foodType in
+                    ingredient.typeId == foodType.typeId
+                })
+                
+                cell.status = status
+            }
+            cell.setupData()
             
             return cell
+            
+            
+            
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeIngredientsCell.reuseIdentifier, for: indexPath) as? RecipeIngredientsCell else {
+//                return UITableViewCell()
+//            }
+//            
+//            guard let ingredientStatus = ingredientStatus else { return cell }
+//            cell.ingredientStatus = ingredientStatus
+//            cell.setupCell()
+//            
+//            return cell
             
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeStepCell.reuseIdentifier, for: indexPath) as? RecipeStepCell else {
