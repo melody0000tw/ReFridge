@@ -59,7 +59,6 @@
                     <connections>
                         <outlet property="collectionView" destination="OxU-Ai-va3" id="pKj-nc-uNa"/>
                         <outlet property="filterBarButton" destination="ZVk-pf-1Bk" id="TsF-wp-uuk"/>
-                        <segue destination="i4A-nY-j9y" kind="show" identifier="showFoodCardVC" id="aaR-r1-bWa"/>
                         <segue destination="kTv-O8-Tw4" kind="show" identifier="showScanResultVC" id="kFJ-3L-ueE"/>
                     </connections>
                 </viewController>
@@ -508,192 +507,6 @@
             </objects>
             <point key="canvasLocation" x="2826.7175572519081" y="700.70422535211276"/>
         </scene>
-        <!--食物小卡-->
-        <scene sceneID="hFY-24-W4l">
-            <objects>
-                <viewController id="i4A-nY-j9y" customClass="FoodCardViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="b3z-cM-fsG">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yk-w0-fkX">
-                                <rect key="frame" x="16" y="80" width="288" height="26.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9lv-kc-tri">
-                                <rect key="frame" x="16" y="130.5" width="288" height="250"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="250" id="zdO-ew-mfT"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="dwK-Cv-YmH" kind="embed" id="QUy-Iy-4jO"/>
-                                </connections>
-                            </containerView>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ltj-iD-XJL" userLabel="照片 數量 Stack View">
-                                <rect key="frame" x="23" y="404.5" width="280.5" height="118"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="750" verticalHuggingPriority="750" image="fork.knife.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="STo-OA-gWU">
-                                        <rect key="frame" x="0.0" y="0.5" width="100" height="99"/>
-                                        <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="100" id="QAq-4t-iXB"/>
-                                            <constraint firstAttribute="height" constant="100" id="jhB-XW-5B7"/>
-                                        </constraints>
-                                    </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="APt-kZ-0ia" userLabel="Input Stack View">
-                                        <rect key="frame" x="116" y="0.0" width="164.5" height="118"/>
-                                        <subviews>
-                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="數量" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9j6-Bs-c2A">
-                                                <rect key="frame" x="0.0" y="0.0" width="164.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                                            </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="到期日" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ai2-nW-sSs">
-                                                <rect key="frame" x="0.0" y="42" width="164.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" textContentType="date-time"/>
-                                            </textField>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Yq-Y6-gGA">
-                                                <rect key="frame" x="0.0" y="84" width="164.5" height="34"/>
-                                                <subviews>
-                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="BarCode" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fJA-Kv-WqP">
-                                                        <rect key="frame" x="0.0" y="0.0" width="106.5" height="34"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
-                                                    </textField>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U9H-JY-AuT">
-                                                        <rect key="frame" x="114.5" y="0.0" width="50" height="34"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="barcode" catalog="system"/>
-                                                        <connections>
-                                                            <action selector="scanBarCode:" destination="i4A-nY-j9y" eventType="touchUpInside" id="7ii-Hn-h3M"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="APt-kZ-0ia" firstAttribute="top" secondItem="ltj-iD-XJL" secondAttribute="top" id="5oh-DR-0j2"/>
-                                    <constraint firstAttribute="bottom" secondItem="APt-kZ-0ia" secondAttribute="bottom" id="QnE-BL-t4f"/>
-                                    <constraint firstItem="STo-OA-gWU" firstAttribute="leading" secondItem="ltj-iD-XJL" secondAttribute="leading" id="mD3-IT-w5a"/>
-                                    <constraint firstAttribute="trailing" secondItem="APt-kZ-0ia" secondAttribute="trailing" id="ote-Vd-eKc"/>
-                                    <constraint firstItem="STo-OA-gWU" firstAttribute="top" secondItem="ltj-iD-XJL" secondAttribute="top" id="tfq-eC-FEY"/>
-                                </constraints>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="hde-RP-Eox" userLabel="到期提醒 Stack View">
-                                <rect key="frame" x="16" y="546.5" width="288" height="34"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="即期提醒" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Okb-ns-ceo">
-                                        <rect key="frame" x="0.0" y="0.0" width="61.5" height="34"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="到期提醒時間" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wGz-3c-IMt">
-                                        <rect key="frame" x="77.5" y="0.0" width="210.5" height="34"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="lwK-WW-HtH" userLabel="保存方式 Stack View">
-                                <rect key="frame" x="16" y="596.5" width="288" height="31"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="保存方式" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AtK-1s-IeR">
-                                        <rect key="frame" x="0.0" y="0.0" width="61.5" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="0Z4-2S-F0I">
-                                        <rect key="frame" x="77.5" y="0.0" width="210.5" height="32"/>
-                                        <segments>
-                                            <segment title="冷凍"/>
-                                            <segment title="冷藏"/>
-                                            <segment title="常溫"/>
-                                        </segments>
-                                    </segmentedControl>
-                                </subviews>
-                            </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Wty-dS-0hz">
-                                <rect key="frame" x="16" y="651.5" width="288" height="34"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="備註事項" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8T2-tm-PO7">
-                                        <rect key="frame" x="0.0" y="0.0" width="61.5" height="34"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="填寫備註事項" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="e0D-IA-yHB">
-                                        <rect key="frame" x="77.5" y="0.0" width="210.5" height="34"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SQx-9y-XVd">
-                                <rect key="frame" x="169" y="741" width="56" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="刪除" image="trash" catalog="system">
-                                    <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="didTappedDelete:" destination="i4A-nY-j9y" eventType="touchUpInside" id="8aU-D4-0SI"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="UTL-Dc-lBO"/>
-                        <color key="backgroundColor" systemColor="systemGray6Color"/>
-                        <constraints>
-                            <constraint firstItem="Wty-dS-0hz" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="1Fl-gb-EGc"/>
-                            <constraint firstItem="ltj-iD-XJL" firstAttribute="top" secondItem="9lv-kc-tri" secondAttribute="bottom" constant="24" id="56G-3l-7So"/>
-                            <constraint firstItem="Wty-dS-0hz" firstAttribute="top" secondItem="lwK-WW-HtH" secondAttribute="bottom" constant="24" id="9sw-gD-JCU"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="7yk-w0-fkX" secondAttribute="trailing" constant="16" id="BwP-PH-1x6"/>
-                            <constraint firstItem="ltj-iD-XJL" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="23" id="C0j-az-CDk"/>
-                            <constraint firstItem="hde-RP-Eox" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="DPu-0w-V4m"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="ltj-iD-XJL" secondAttribute="trailing" constant="16.333333333333314" id="M52-7u-NwA"/>
-                            <constraint firstItem="9lv-kc-tri" firstAttribute="top" secondItem="7yk-w0-fkX" secondAttribute="bottom" constant="24" id="U8x-Ds-uV4"/>
-                            <constraint firstItem="hde-RP-Eox" firstAttribute="top" secondItem="ltj-iD-XJL" secondAttribute="bottom" constant="24" id="Uqp-br-ELG"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="9lv-kc-tri" secondAttribute="trailing" constant="16" id="eBi-xx-a7F"/>
-                            <constraint firstItem="7yk-w0-fkX" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="hLo-AR-iaO"/>
-                            <constraint firstItem="lwK-WW-HtH" firstAttribute="top" secondItem="hde-RP-Eox" secondAttribute="bottom" constant="16" id="idx-ul-SCT"/>
-                            <constraint firstItem="9lv-kc-tri" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="ji2-Hs-5CY"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="lwK-WW-HtH" secondAttribute="trailing" constant="16" id="kvw-1q-Sj2"/>
-                            <constraint firstItem="7yk-w0-fkX" firstAttribute="top" secondItem="UTL-Dc-lBO" secondAttribute="top" constant="16" id="r8B-rl-9QB"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="Wty-dS-0hz" secondAttribute="trailing" constant="16" id="s7c-8Q-bij"/>
-                            <constraint firstItem="lwK-WW-HtH" firstAttribute="leading" secondItem="UTL-Dc-lBO" secondAttribute="leading" constant="16" id="vBk-bZ-Tsu"/>
-                            <constraint firstItem="UTL-Dc-lBO" firstAttribute="trailing" secondItem="hde-RP-Eox" secondAttribute="trailing" constant="16" id="xpk-qb-QwC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="食物小卡" id="qJN-le-7RH">
-                        <barButtonItem key="rightBarButtonItem" image="checkmark" catalog="system" id="AkD-Ey-TQA">
-                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <action selector="didTappedSave:" destination="i4A-nY-j9y" id="qjx-eL-iDw"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="barcodeTextField" destination="fJA-Kv-WqP" id="1rJ-2q-T4T"/>
-                        <outlet property="expireTimeTextField" destination="ai2-nW-sSs" id="1SU-jH-Oid"/>
-                        <outlet property="imageView" destination="STo-OA-gWU" id="1Pn-El-5cA"/>
-                        <outlet property="nameLabel" destination="7yk-w0-fkX" id="nr1-QX-Ir1"/>
-                        <outlet property="noteTextField" destination="e0D-IA-yHB" id="q94-jt-snE"/>
-                        <outlet property="notificationTimeTextField" destination="wGz-3c-IMt" id="mwx-q5-hoU"/>
-                        <outlet property="qtyTextField" destination="9j6-Bs-c2A" id="UGH-29-sPP"/>
-                        <outlet property="storageSegment" destination="0Z4-2S-F0I" id="1uv-JP-wJm"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7dY-2k-TjE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2827" y="-258"/>
-        </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="akH-cD-8Ua">
             <objects>
@@ -738,21 +551,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tDf-nC-MOr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1053" y="-258"/>
-        </scene>
-        <!--Food Type View Controller-->
-        <scene sceneID="HqK-NN-jAA">
-            <objects>
-                <viewController id="dwK-Cv-YmH" customClass="FoodTypeViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="R8F-DR-VK8">
-                        <rect key="frame" x="0.0" y="0.0" width="288" height="250"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="RKU-ad-c7N"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Pr-Gn-ym7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3633" y="-489"/>
         </scene>
         <!--Add Food Card View Controller-->
         <scene sceneID="QFJ-Vo-Fru">
@@ -824,7 +622,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BtN-gm-vVb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4365" y="-258.80281690140845"/>
+            <point key="canvasLocation" x="2882" y="-259"/>
         </scene>
         <!--Scan Result View Controller-->
         <scene sceneID="0kp-Fa-A5l">
@@ -1071,7 +869,6 @@
                     <connections>
                         <outlet property="notRecongCollectionView" destination="yGv-S0-zr3" id="Gnq-A1-dYv"/>
                         <outlet property="recongCollectionView" destination="GHf-Se-2N6" id="eH9-WM-rjS"/>
-                        <segue destination="i4A-nY-j9y" kind="show" identifier="editScanResult" id="G3D-hI-hkd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vra-Ca-LKn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1239,7 +1036,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NzY-17-x6l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5083" y="-259"/>
+            <point key="canvasLocation" x="3660" y="-259"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="qto-UY-CBf">
@@ -1263,12 +1060,8 @@
             <point key="canvasLocation" x="1053" y="2223"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="aaR-r1-bWa"/>
-    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.38823529411764707" green="0.53333333333333333" blue="0.53725490196078429" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
-        <image name="barcode" catalog="system" width="128" height="94"/>
         <image name="barcode.viewfinder" catalog="system" width="128" height="115"/>
         <image name="book.pages.fill" catalog="system" width="107" height="128"/>
         <image name="chart.bar.xaxis" catalog="system" width="128" height="97"/>
@@ -1296,9 +1089,6 @@
         </systemColor>
         <systemColor name="systemGray5Color">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -10,6 +10,7 @@ import SnapKit
 
 class RecipeDetailViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
+    private let galleryView = RecipeGalleryView()
     
     var recipe: Recipe?
     var ingredientStatus: IngredientStatus?
@@ -27,6 +28,8 @@ class RecipeDetailViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.tableHeaderView = galleryView
+        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 300)
     }
 }
 
