@@ -21,6 +21,14 @@ class RecipeCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        setupViews()
+    }
+    
+    private func setupViews() {
+        recipeImage.layer.cornerRadius = 5
+        recipeImage.clipsToBounds = true
+        recipeImage.contentMode = .scaleAspectFill
+        
     }
     
     func toggleLikeBtn(isLiked: Bool) {
@@ -37,6 +45,7 @@ class RecipeCell: UITableViewCell {
         }
         titleLabel.text = recipe.title
         cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
+        recipeImage.loadImage(recipe.image)
         
         if let ingredientStatus = ingredientStatus {
             var stringAry = [String]()

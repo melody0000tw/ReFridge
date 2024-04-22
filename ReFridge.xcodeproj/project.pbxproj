@@ -10,6 +10,7 @@
 		09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */; };
 		EB0DD7B22BD637BC002147CC /* RecipeGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0DD7B12BD637BC002147CC /* RecipeGalleryView.swift */; };
 		EB0DD7B52BD63D21002147CC /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0DD7B42BD63D21002147CC /* GalleryCell.swift */; };
+		EB0DD7B82BD64CA2002147CC /* KingFisherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0DD7B72BD64CA2002147CC /* KingFisherWrapper.swift */; };
 		EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */; };
 		EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */; };
 		EB2F1D8D2BCE1C58000C9295 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */; };
@@ -78,6 +79,7 @@
 		CB7EF03CBFBE351CEBCF8C77 /* Pods-ReFridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReFridge.release.xcconfig"; path = "Target Support Files/Pods-ReFridge/Pods-ReFridge.release.xcconfig"; sourceTree = "<group>"; };
 		EB0DD7B12BD637BC002147CC /* RecipeGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeGalleryView.swift; sourceTree = "<group>"; };
 		EB0DD7B42BD63D21002147CC /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
+		EB0DD7B72BD64CA2002147CC /* KingFisherWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingFisherWrapper.swift; sourceTree = "<group>"; };
 		EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterManager.swift; sourceTree = "<group>"; };
 		EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
@@ -178,6 +180,14 @@
 				EB0DD7B42BD63D21002147CC /* GalleryCell.swift */,
 			);
 			path = RecipeGalleryView;
+			sourceTree = "<group>";
+		};
+		EB0DD7B62BD64C79002147CC /* ThirdPartyWrappers */ = {
+			isa = PBXGroup;
+			children = (
+				EB0DD7B72BD64CA2002147CC /* KingFisherWrapper.swift */,
+			);
+			path = ThirdPartyWrappers;
 			sourceTree = "<group>";
 		};
 		EB425BDC2BD0DE8C000C75A6 /* Chart */ = {
@@ -311,6 +321,7 @@
 		EBF88E2F2BC5703E00DEF2FA /* ReFridge */ = {
 			isa = PBXGroup;
 			children = (
+				EB0DD7B62BD64C79002147CC /* ThirdPartyWrappers */,
 				EBFF62CE2BC79F820013F50F /* Extension */,
 				EBFF62C52BC797DA0013F50F /* Views */,
 				EBFF62C02BC787DC0013F50F /* Managers */,
@@ -582,6 +593,7 @@
 				EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,
 				EB84D43A2BD24661008E274C /* Scores.swift in Sources */,
+				EB0DD7B82BD64CA2002147CC /* KingFisherWrapper.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
 				EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */,
 				EB425BE62BD145DD000C75A6 /* ChartCounts.swift in Sources */,

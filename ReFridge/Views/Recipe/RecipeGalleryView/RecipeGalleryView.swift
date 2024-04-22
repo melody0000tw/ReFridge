@@ -11,7 +11,7 @@ class RecipeGalleryView: UIView {
     private lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
     private lazy var pageControl = UIPageControl()
     
-    private var images = ["123", "123", "123", "123", "123"] {
+    var images = [String]() {
         didSet {
             collectionView.reloadData()
             pageControl.numberOfPages = images.count
@@ -86,8 +86,8 @@ extension RecipeGalleryView: UICollectionViewDataSource, UICollectionViewDelegat
             print("cannot dequeue gallery cell")
             return UICollectionViewCell()
         }
-        
-        cell.imageView.image = UIImage(named: "placeholder")
+        let image = images[indexPath.item]
+        cell.imageView.loadImage(image)
         
         return cell
     }
