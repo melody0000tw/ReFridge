@@ -1174,7 +1174,7 @@
         <!--Add Item View Controller-->
         <scene sceneID="g5G-Hx-Kyo">
             <objects>
-                <viewController id="INm-BP-fR9" customClass="AddItemViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddItemViewController" id="INm-BP-fR9" customClass="AddItemViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="s47-oV-rdb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1194,11 +1194,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="amQ-wK-AOL">
-                        <barButtonItem key="rightBarButtonItem" image="checkmark" catalog="system" id="xIr-im-jmb">
-                            <connections>
-                                <action selector="save:" destination="INm-BP-fR9" id="QpO-C5-CfR"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="checkmark" catalog="system" id="xIr-im-jmb"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="u3r-NM-7Us" id="f3a-gc-t4d"/>
@@ -1254,7 +1250,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="dzh-I0-KK2">
-                        <rect key="frame" x="0.0" y="20" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

@@ -9,6 +9,7 @@ import UIKit
 
 class AddItemViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
+    
     var listItem = ListItem()
     
     
@@ -139,6 +140,10 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: CardQtyCell.reuseIdentifier, for: indexPath) as? CardQtyCell {
             cell.delegate = self
+            cell.iconImage.image = UIImage(named: listItem.iconName)
+            cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
+            cell.qtyTextField.text = listItem.qty == 1 ? "1" : String(listItem.qty)
+            cell.mesureWordTextField.text = listItem.mesureWord
             return cell
         }
         return UITableViewCell()

@@ -284,6 +284,7 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     
     func didChangeCardInfo(foodCard: FoodCard) {
         self.foodCard.qty = foodCard.qty
+        self.foodCard.mesureWord = foodCard.mesureWord
         self.foodCard.expireDate = foodCard.expireDate
         self.foodCard.barCode = foodCard.barCode
         self.foodCard.storageType = foodCard.storageType

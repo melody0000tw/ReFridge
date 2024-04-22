@@ -20,14 +20,14 @@
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aSw-Rx-hgr">
                         <rect key="frame" x="60" y="16" width="244" height="124"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LabeLabeLabeLabeLabeLabeLabLabeLabeLabeLabeLabeLabeLabee" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9U-Od-r9X">
-                                <rect key="frame" x="0.0" y="21.333333333333336" width="132" height="81.333333333333314"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="洋蔥" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9U-Od-r9X">
+                                <rect key="frame" x="0.0" y="52" width="96" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="200個" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="an0-Ze-uPR">
-                                <rect key="frame" x="148" y="53" width="60" height="18"/>
+                                <rect key="frame" x="112" y="53" width="60" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="80s-eX-zF6"/>
                                 </constraints>
@@ -35,6 +35,21 @@
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAI-9q-Lmc">
+                                <rect key="frame" x="188" y="52" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="eA7-zk-R06"/>
+                                    <constraint firstAttribute="width" constant="20" id="hyX-ld-YFo"/>
+                                </constraints>
+                                <color key="tintColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="square.and.pencil" catalog="system">
+                                    <color key="titleColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTappedEditBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1g5-Sc-jEW"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTh-e5-goT">
                                 <rect key="frame" x="224" y="52" width="20" height="20"/>
                                 <constraints>
@@ -63,6 +78,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="deleteButton" destination="lTh-e5-goT" id="hqm-Ly-Jci"/>
+                <outlet property="editButton" destination="pAI-9q-Lmc" id="mF8-gS-2bl"/>
                 <outlet property="itemLabel" destination="C9U-Od-r9X" id="5nX-hk-Qs2"/>
                 <outlet property="qtyLabel" destination="an0-Ze-uPR" id="phO-W9-GHl"/>
             </connections>
@@ -70,6 +86,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="square.and.pencil" catalog="system" width="128" height="121"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
     </resources>
 </document>

@@ -10,6 +10,7 @@ import SnapKit
 
 protocol ShoppingListCellDelegate: AnyObject {
     func delete(cell: UITableViewCell)
+    func edit(cell: UITableViewCell)
 }
 
 class ShoppingListCell: UITableViewCell {
@@ -22,7 +23,12 @@ class ShoppingListCell: UITableViewCell {
     
     @IBOutlet weak var qtyLabel: UILabel!
     @IBOutlet weak var itemLabel: UILabel!
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
+    
+    @IBAction func didTappedEditBtn(_ sender: Any) {
+        delegate?.edit(cell: self)
+    }
     
     @IBAction func didTappedDeleteBtn(_ sender: Any) {
         delegate?.delete(cell: self)
