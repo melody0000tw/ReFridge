@@ -25,27 +25,6 @@ class ScanResultViewController: UIViewController {
         setupCollectionViews()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let foodCardVC = segue.destination as? FoodCardViewController,
-           let foodCard = sender as? FoodCard {
-            foodCardVC.foodCard = foodCard
-            foodCardVC.onChangeFoodCard = { newFoodCard in
-                guard var scanResult = self.scanResult else {
-                    return
-                }
-                
-                if let index = scanResult.recongItems.firstIndex(where: { $0.cardId == newFoodCard.cardId }) {
-                    scanResult.recongItems[index] = newFoodCard
-                    self.scanResult = scanResult
-
-                    let indexPath = IndexPath(item: index, section: 0)
-                    self.recongCollectionView.reloadItems(at: [indexPath])
-                }
-                
-            }
-        }
-    }
-    
     // MARK: - Setup
     private func setupCollectionViews() {
         recongCollectionView.dataSource = self
@@ -168,16 +147,17 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
             cardId: UUID().uuidString,
             name: text,
             categoryId: 5,
-            typeId: 501,
+            typeId: "501",
             iconName: "other",
             qty: 1, createDate: Date(),
             expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-            notificationTime: 3,
+            isRoutineItem: false,
             barCode: "",
             storageType: 0,
             notes: "")
         scanResult.recongItems.insert(foodCard, at: 0)
         self.scanResult = scanResult
+        notRecongCollectionView.reloadData()
         recongCollectionView.reloadData()
     }
     
@@ -200,7 +180,26 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
         }
         
         let foodCard = scanResult.recongItems[indexPath.item]
-        performSegue(withIdentifier: "editScanResult", sender: foodCard)
+        guard let foodCardVC =
+                storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
+                    print("cannot find foodCardVC")
+                    return
+                }
+        foodCardVC.mode = .editingBatch
+        foodCardVC.foodCard = foodCard
+        foodCardVC.onChangeFoodCard = { newFoodCard in
+            guard var scanResult = self.scanResult else {
+                return
+            }
+            if let index = scanResult.recongItems.firstIndex(where: { $0.cardId == newFoodCard.cardId }) {
+                scanResult.recongItems[index] = newFoodCard
+                self.scanResult = scanResult
+                
+                let indexPath = IndexPath(item: index, section: 0)
+                self.recongCollectionView.reloadItems(at: [indexPath])
+            }
+        }
+        self.navigationController?.pushViewController(foodCardVC, animated: true)
 
     }
 }

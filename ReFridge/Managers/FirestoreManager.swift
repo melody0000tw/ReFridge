@@ -44,6 +44,27 @@ class FirestoreManager {
         
     }
     
+    func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = foodTypesRef.document(String(foodType.typeId))
+            try docRef.setData(from: foodType)
+            print("default data was written!")
+            completion(.success(nil))
+        } catch {
+            print("error: \(error)")
+            completion(.failure(error))
+        }
+    }
+    
+    func deleteUserFoodTypes(typeId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try await foodTypesRef.document(typeId).delete()
+            completion(.success(nil))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
     func fetchFoodType(completion: (Result<[FoodType], Error>) -> Void) async {
         do {
             let querySnapshot = try await foodTypesRef.getDocuments()
@@ -58,7 +79,7 @@ class FirestoreManager {
         }
     }
     
-    func queryFoodType(typeId: Int, completion: (Result< FoodType, Error>) -> Void) async {
+    func queryFoodType(typeId: String, completion: (Result< FoodType, Error>) -> Void) async {
         do {
             let querySnapshot = try await foodTypesRef.document(String(describing: typeId)).getDocument()
             let foodType = try querySnapshot.data(as: FoodType.self)
@@ -86,21 +107,22 @@ class FirestoreManager {
     func saveFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {
             let docRef = foodCardsRef.document(foodCard.cardId)
-            let data: [String: Any] = [
-                "cardId": foodCard.cardId,
-                "name": foodCard.name,
-                "categoryId": foodCard.categoryId,
-                "typeId": foodCard.typeId,
-                "iconName": foodCard.iconName,
-                "qty": foodCard.qty,
-                "createDate": foodCard.createDate,
-                "expireDate": foodCard.expireDate,
-                "notificationTime": foodCard.notificationTime,
-                "barCode": foodCard.barCode,
-                "storageType": foodCard.storageType,
-                "notes": foodCard.notes
-            ]
-            try await docRef.setData(data)
+//            let docRef
+//            let data: [String: Any] = [
+//                "cardId": foodCard.cardId,
+//                "name": foodCard.name,
+//                "categoryId": foodCard.categoryId,
+//                "typeId": foodCard.typeId,
+//                "iconName": foodCard.iconName,
+//                "qty": foodCard.qty,
+//                "createDate": foodCard.createDate,
+//                "expireDate": foodCard.expireDate,
+//                "notificationTime": foodCard.notificationTime,
+//                "barCode": foodCard.barCode,
+//                "storageType": foodCard.storageType,
+//                "notes": foodCard.notes
+//            ]
+            try docRef.setData(from: foodCard)
             completion(.success(foodCard))
         } catch {
             completion(.failure(error))
@@ -116,7 +138,7 @@ class FirestoreManager {
         }
     }
     
-    func queryFoodCard(by typeId: Int, completion: (Result<[FoodCard], Error>) -> Void) async {
+    func queryFoodCard(by typeId: String, completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
             let querySnapshot = try await foodCardsRef.whereField("typeId", isEqualTo: typeId).getDocuments()
             var foodCards = [FoodCard]()
@@ -143,6 +165,24 @@ class FirestoreManager {
             
             let scores = Scores(consumed: consumedNum, thrown: thrownNum)
             completion(.success(scores))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func changeScores(deleteWay: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            
+            let docRef = scoresRef.document(deleteWay)
+            let number = try await docRef.getDocument().get("number")
+            guard let oldScore = number as? Int else {
+                print("cannot get the score number")
+                return
+            }
+            let newScore = oldScore + 1
+            let data: [String: Any] = [ "number": newScore ]
+            try await docRef.setData(data)
+            completion(.success(newScore))
         } catch {
             completion(.failure(error))
         }
@@ -200,17 +240,19 @@ class FirestoreManager {
     // MARK: - Shopping List
     func addListItem(_ item: ListItem, completion: (Result<Any?, Error>) -> Void) async {
         do {
-            let docRef = shoppingListRef.document()
-            let data: [String: Any] = [
-                "itemId": docRef.documentID,
-                "typeId": item.typeId,
-                "qty": item.qty,
-                "checkStatus": item.checkStatus,
-                "isRoutineItem": item.isRoutineItem,
-                "routinePeriod": item.routinePeriod,
-                "routineStartTime": item.routineStartTime
-            ]
-            try await docRef.setData(data)
+//            let docRef = shoppingListRef.document()
+            let docRef = shoppingListRef.document(item.itemId)
+//            let data: [String: Any] = [
+//                "itemId": docRef.documentID,
+//                "typeId": item.typeId,
+//                "qty": item.qty,
+//                "checkStatus": item.checkStatus,
+//                "isRoutineItem": item.isRoutineItem,
+//                "routinePeriod": item.routinePeriod,
+//                "routineStartTime": item.routineStartTime
+//            ]
+//            try await docRef.setData(data)
+            try docRef.setData(from: item)
             completion(.success(nil))
         } catch {
             completion(.failure(error))

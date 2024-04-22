@@ -104,7 +104,7 @@ class FoodCardViewController: UIViewController {
             barcodeTextField.text = foodCard.barCode == "" ? nil : foodCard.barCode
             expireTimeTextField.text = formatter.string(from: foodCard.expireDate)
             qtyTextField.text = String(foodCard.qty)
-            notificationTimeTextField.text = foodCard.notificationTime == 0 ? nil : String(foodCard.notificationTime)
+//            notificationTimeTextField.text = foodCard.notificationTime == 0 ? nil : String(foodCard.notificationTime)
             noteTextField.text = foodCard.notes
             storageSegment.selectedSegmentIndex = foodCard.storageType
         }
@@ -129,7 +129,7 @@ class FoodCardViewController: UIViewController {
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
         foodCard.qty = Int(qty) ?? 1
         foodCard.barCode = barCode
-        foodCard.notificationTime = Int(notificationTime) ?? 0
+//        foodCard.notificationTime = Int(notificationTime) ?? 0
         foodCard.storageType = storageSegment.selectedSegmentIndex
         foodCard.notes = noteTextField.text ?? ""
 

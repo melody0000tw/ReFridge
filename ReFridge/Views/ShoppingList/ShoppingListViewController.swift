@@ -36,6 +36,7 @@ class ShoppingListViewController: UIViewController {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.RF_registerCellWithNib(identifier: ShoppingListCell.reuseIdentifier, bundle: nil)
     }
     
     private func fetchList() {
@@ -61,50 +62,38 @@ class ShoppingListViewController: UIViewController {
         // create card
         for item in checkItems {
             dispatchGroup.enter()
+            
+            let foodCard = FoodCard(
+                cardId: UUID().uuidString,
+                name: item.name,
+                categoryId: item.categoryId,
+                typeId: item.typeId,
+                iconName: item.iconName,
+                qty: item.qty,
+                mesureWord: item.mesureWord,
+                createDate: Date(),
+                expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
+                isRoutineItem: item.isRoutineItem,
+                barCode: "",
+                storageType: 0,
+                notes: "")
+            
+            // post card
             Task {
-                await firestoreManager.queryFoodType(typeId: item.typeId) { result in
+                await firestoreManager.saveFoodCard(foodCard) { result in
                     switch result {
-                    case .success(let foodType):
-                        print("取得foodType 資料: \(foodType.typeName)")
-                        createFoodCard(foodType: foodType, item: item, group: dispatchGroup)
+                    case .success:
+                        print("成功新增小卡 \(foodCard.name)")
+                        // delete card
+                        deleteItem(item: item, group: dispatchGroup)
                     case .failure(let error):
-                        print("error: \(error)")
+                        print("Error adding document: \(error)")
                     }
                 }
             }
         }
         dispatchGroup.notify(queue: .main) { [self] in
             fetchList()
-        }
-    }
-    
-    private func createFoodCard(foodType: FoodType, item: ListItem, group: DispatchGroup) {
-        // make food card
-        let foodCard = FoodCard(
-            cardId: UUID().uuidString,
-            name: foodType.typeName,
-            categoryId: foodType.categoryId,
-            typeId: foodType.typeId,
-            iconName: foodType.typeIcon,
-            qty: item.qty,
-            createDate: Date(),
-            expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-            notificationTime: 3,
-            barCode: "",
-            storageType: 2, // default 值常溫？
-            notes: "")
-        
-        // post card
-        Task {
-            await firestoreManager.saveFoodCard(foodCard) { result in
-                switch result {
-                case .success:
-                    print("成功新增小卡 \(foodCard.name)")
-                    deleteItem(item: item, group: group)
-                case .failure(let error):
-                    print("Error adding document: \(error)")
-                }
-            }
         }
     }
     
@@ -124,23 +113,21 @@ class ShoppingListViewController: UIViewController {
         
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ListCell.reuseIdentifier, for: indexPath) as? ListCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ShoppingListCell.reuseIdentifier, for: indexPath) as? ShoppingListCell
         else {
             return UITableViewCell()
         }
-        
         cell.delegate = self
         let item = list[indexPath.row]
-        guard let foodType = FoodTypeData.share.queryFoodType(typeId: item.typeId) else {
-            return cell
-        }
-        cell.itemLabel.text = foodType.typeName
+        cell.itemLabel.text = item.name
+        cell.qtyLabel.text = "\(String(item.qty))\(item.mesureWord)"
         cell.toggleStyle(checkStatus: item.checkStatus)
         
         return cell
@@ -164,7 +151,23 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
 }
 
 // MARK: - ListCellDelegate
-extension ShoppingListViewController: ListCellDelegate {
+extension ShoppingListViewController: ShoppingListCellDelegate {
+    func edit(cell: UITableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            return
+        }
+        let itemToEdit = list[indexPath.row]
+        
+        guard let addItemVC = storyboard?.instantiateViewController(withIdentifier: "AddItemViewController") as? AddItemViewController else {
+            print("can not get addItemVC")
+            return
+        }
+        
+        addItemVC.listItem = itemToEdit
+        navigationController?.pushViewController(addItemVC, animated: true)
+        
+    }
+    
     func delete(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return

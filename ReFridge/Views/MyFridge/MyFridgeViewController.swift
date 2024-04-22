@@ -52,18 +52,6 @@ class MyFridgeViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if sender == nil, let foodCardVC = segue.destination as? FoodCardViewController {
-            foodCardVC.isAddingMode = true
-            return
-        }
-        
-        if let foodCard = sender as? FoodCard,
-           let foodCardVC = segue.destination as? FoodCardViewController {
-            print("foodcard: \(foodCard)")
-            foodCardVC.foodCard = foodCard
-            return
-        }
-        
         if let scanResult = sender as? ScanResult,
            let scanResultVC = segue.destination as? ScanResultViewController {
             scanResultVC.scanResult = scanResult
@@ -214,10 +202,12 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.iconImage.image = UIImage(systemName: "plus")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "新增食物"
+            cell.setupDefaultCell()
         case 1:
             cell.iconImage.image = UIImage(systemName: "doc.viewfinder")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "掃描收據"
+            cell.setupDefaultCell()
         default:
             let foodCard = showCards[indexPath.item - 2]
             cell.foodCard = foodCard
@@ -230,12 +220,25 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.item {
         case 0:
-            performSegue(withIdentifier: "showFoodCardVC", sender: nil)
+            guard let foodCardVC =
+                    storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
+                        print("cannot find foodCardVC")
+                        return
+                    }
+            foodCardVC.mode = .adding
+            self.navigationController?.pushViewController(foodCardVC, animated: true)
         case 1:
             presentImagePicker()
         default:
             let selectedFoodCard = showCards[indexPath.item - 2]
-            performSegue(withIdentifier: "showFoodCardVC", sender: selectedFoodCard)
+            guard let foodCardVC =
+                    storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
+                        print("cannot find foodCardVC")
+                        return
+                    }
+            foodCardVC.mode = .editing
+            foodCardVC.foodCard = selectedFoodCard
+            self.navigationController?.pushViewController(foodCardVC, animated: true)
         }
         
     }

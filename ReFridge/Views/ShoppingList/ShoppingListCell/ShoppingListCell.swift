@@ -1,26 +1,34 @@
 //
-//  ListCell.swift
+//  ShoppngListCell.swift
 //  ReFridge
 //
-//  Created by Melody Lee on 2024/4/14.
+//  Created by Melody Lee on 2024/4/21.
 //
 
 import UIKit
 import SnapKit
 
-protocol ListCellDelegate: AnyObject {
+protocol ShoppingListCellDelegate: AnyObject {
     func delete(cell: UITableViewCell)
+    func edit(cell: UITableViewCell)
 }
 
-class ListCell: UITableViewCell {
-    weak var delegate: ListCellDelegate?
-    static let reuseIdentifier = String(describing: ListCell.self)
+class ShoppingListCell: UITableViewCell {
+
+    weak var delegate: ShoppingListCellDelegate?
+    static let reuseIdentifier = String(describing: ShoppingListCell.self)
     
     lazy var squareView = UIView(frame: CGRect())
     lazy var checkView = UIImageView(frame: CGRect())
     
+    @IBOutlet weak var qtyLabel: UILabel!
     @IBOutlet weak var itemLabel: UILabel!
+    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var deleteButton: UIButton!
+    
+    @IBAction func didTappedEditBtn(_ sender: Any) {
+        delegate?.edit(cell: self)
+    }
     
     @IBAction func didTappedDeleteBtn(_ sender: Any) {
         delegate?.delete(cell: self)
@@ -64,5 +72,5 @@ class ListCell: UITableViewCell {
             checkView.isHidden = false
         }
     }
-
+    
 }
