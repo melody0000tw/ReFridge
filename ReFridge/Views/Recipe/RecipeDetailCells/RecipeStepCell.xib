@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="138" id="F75-v1-Ety" customClass="RecipeStepCell" customModule="ReFridge" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="138"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="F75-v1-Ety" id="JIR-Ed-HzU">
+                <rect key="frame" x="0.0" y="0.0" width="393" height="138"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Rri-bB-43j">
+                        <rect key="frame" x="16" y="16" width="361" height="106"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sa7-sA-DgC">
+                                <rect key="frame" x="0.0" y="38" width="30" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXO-0r-l5w">
+                                        <rect key="frame" x="11" y="5" width="8.3333333333333357" height="20.333333333333332"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="sXO-0r-l5w" firstAttribute="centerX" secondItem="sa7-sA-DgC" secondAttribute="centerX" id="LSa-eb-xAw"/>
+                                    <constraint firstAttribute="height" constant="30" id="RIU-m8-eHH"/>
+                                    <constraint firstItem="sXO-0r-l5w" firstAttribute="centerY" secondItem="sa7-sA-DgC" secondAttribute="centerY" id="xvx-uC-mdf"/>
+                                    <constraint firstAttribute="width" constant="30" id="yG3-jl-W42"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="把東西丟到鍋子裡煮把東西丟到鍋子裡煮把東西丟到鍋子裡煮把東西丟到鍋子裡煮" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7e-LV-1UV">
+                                <rect key="frame" x="46" y="22.666666666666664" width="279" height="60.999999999999993"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Be-qa-7U7">
+                                <rect key="frame" x="341" y="43" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="3Yx-Xn-g2d"/>
+                                    <constraint firstAttribute="width" constant="20" id="rVs-hf-n6k"/>
+                                </constraints>
+                                <color key="tintColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button">
+                                    <imageReference key="image" image="circle" catalog="system" symbolScale="large"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTappedCheckBtn:" destination="F75-v1-Ety" eventType="touchUpInside" id="4lo-aG-Cnz"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Rri-bB-43j" secondAttribute="trailing" constant="16" id="4iT-Qb-sVQ"/>
+                    <constraint firstAttribute="bottom" secondItem="Rri-bB-43j" secondAttribute="bottom" constant="16" id="KbC-C5-xIq"/>
+                    <constraint firstItem="Rri-bB-43j" firstAttribute="top" secondItem="JIR-Ed-HzU" secondAttribute="top" constant="16" id="OnO-xa-fX3"/>
+                    <constraint firstItem="Rri-bB-43j" firstAttribute="leading" secondItem="JIR-Ed-HzU" secondAttribute="leading" constant="16" id="Ua4-za-dHN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="checkButton" destination="0Be-qa-7U7" id="fNc-Ym-eCK"/>
+                <outlet property="numberBGView" destination="sa7-sA-DgC" id="oTu-Wo-J0e"/>
+                <outlet property="numberLabel" destination="sXO-0r-l5w" id="Yya-tZ-I51"/>
+                <outlet property="stepTextLabel" destination="x7e-LV-1UV" id="3Z6-2f-2T1"/>
+            </connections>
+            <point key="canvasLocation" x="-92.36641221374046" y="82.394366197183103"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="circle" catalog="system" width="128" height="123"/>
+    </resources>
+</document>

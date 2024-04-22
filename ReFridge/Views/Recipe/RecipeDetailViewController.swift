@@ -14,6 +14,7 @@ class RecipeDetailViewController: UIViewController {
     var recipe: Recipe?
     var ingredientStatus: IngredientStatus?
     var isLiked = false
+    private lazy var backBtn = UIButton(type: .system)
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -21,6 +22,17 @@ class RecipeDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        setupBackBtn()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.navigationBar.isHidden = false
     }
     
     private func setupTableView() {
@@ -29,13 +41,35 @@ class RecipeDetailViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.RF_registerCellWithNib(identifier: RecipeIngredientCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeAddToListCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeStepCell.reuseIdentifier, bundle: nil)
         
         // gallery header
         let galleryView = RecipeGalleryView()
         guard let recipe = self.recipe else { return }
         galleryView.images = [recipe.image]
         tableView.tableHeaderView = galleryView
-        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 300)
+        tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 500)
+    }
+    
+    private func setupBackBtn() {
+        backBtn.setImage(UIImage(systemName: "chevron.backward.circle.fill"), for: .normal)
+        backBtn.addTarget(self, action: #selector(backAction), for: .touchUpInside)
+        backBtn.alpha = 0.8
+        backBtn.contentVerticalAlignment = .fill
+        backBtn.contentHorizontalAlignment = .fill
+        backBtn.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 48), forImageIn: .normal)
+        backBtn.tintColor = .C1
+        view.addSubview(backBtn)
+        backBtn.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).offset(40)
+            make.leading.equalTo(view.snp.leading).offset(16)
+            make.height.width.equalTo(48)
+        }
+        
+    }
+    
+    @objc func backAction() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func addToList() {

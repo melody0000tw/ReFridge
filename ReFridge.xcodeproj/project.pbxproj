@@ -15,6 +15,7 @@
 		EB0DD7BC2BD6695E002147CC /* RecipeIngredientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0DD7BA2BD6695E002147CC /* RecipeIngredientCell.xib */; };
 		EB0DD7BF2BD679AF002147CC /* RecipeAddToListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0DD7BD2BD679AF002147CC /* RecipeAddToListCell.swift */; };
 		EB0DD7C02BD679AF002147CC /* RecipeAddToListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0DD7BE2BD679AF002147CC /* RecipeAddToListCell.xib */; };
+		EB0DD7C22BD6B312002147CC /* RecipeStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0DD7C12BD6B312002147CC /* RecipeStepCell.xib */; };
 		EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */; };
 		EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */; };
 		EB2F1D8D2BCE1C58000C9295 /* Double+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */; };
@@ -87,6 +88,7 @@
 		EB0DD7BA2BD6695E002147CC /* RecipeIngredientCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeIngredientCell.xib; sourceTree = "<group>"; };
 		EB0DD7BD2BD679AF002147CC /* RecipeAddToListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeAddToListCell.swift; sourceTree = "<group>"; };
 		EB0DD7BE2BD679AF002147CC /* RecipeAddToListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeAddToListCell.xib; sourceTree = "<group>"; };
+		EB0DD7C12BD6B312002147CC /* RecipeStepCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeStepCell.xib; sourceTree = "<group>"; };
 		EB2F0C642BCB74AB00FFBED5 /* AddItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemViewController.swift; sourceTree = "<group>"; };
 		EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterManager.swift; sourceTree = "<group>"; };
 		EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Ext.swift"; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 				EBCC79592BCA73A10029B754 /* RecipeTitleCell.swift */,
 				EBCC795B2BCA73B90029B754 /* RecipeDescriptionCell.swift */,
 				EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */,
+				EB0DD7C12BD6B312002147CC /* RecipeStepCell.xib */,
 				EB0DD7B92BD6695E002147CC /* RecipeIngredientCell.swift */,
 				EB0DD7BA2BD6695E002147CC /* RecipeIngredientCell.xib */,
 				EB0DD7BD2BD679AF002147CC /* RecipeAddToListCell.swift */,
@@ -498,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBF88E3D2BC5704200DEF2FA /* LaunchScreen.storyboard in Resources */,
+				EB0DD7C22BD6B312002147CC /* RecipeStepCell.xib in Resources */,
 				EBFF62C42BC78FD50013F50F /* GoogleService-Info.plist in Resources */,
 				EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */,
 				EB84D4412BD29AA7008E274C /* TypeImageCell.xib in Resources */,
