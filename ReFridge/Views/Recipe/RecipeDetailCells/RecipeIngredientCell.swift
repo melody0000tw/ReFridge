@@ -49,7 +49,7 @@ class RecipeIngredientCell: UITableViewCell {
             statusView.tintColor = .C2
         case false:
             statusView.image = UIImage(systemName: "bag.badge.plus")
-            statusView.tintColor = .C4
+            statusView.tintColor = .C5
         }
     }
     

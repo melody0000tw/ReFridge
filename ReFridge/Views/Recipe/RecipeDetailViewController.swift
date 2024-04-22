@@ -28,6 +28,7 @@ class RecipeDetailViewController: UIViewController {
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.RF_registerCellWithNib(identifier: RecipeIngredientCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeAddToListCell.reuseIdentifier, bundle: nil)
         
         // gallery header
         let galleryView = RecipeGalleryView()
@@ -35,6 +36,51 @@ class RecipeDetailViewController: UIViewController {
         galleryView.images = [recipe.image]
         tableView.tableHeaderView = galleryView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 300)
+    }
+    
+    private func addToList() {
+        print("addToShoppingList")
+        guard let ingredientStatus = ingredientStatus else {
+            print("cannot get ingredient status")
+            return
+        }
+        
+        for type in ingredientStatus.lackTypes {
+            
+            guard let recipe = recipe else {
+                print("cannot get recipe")
+                return
+            }
+            let ingredient = recipe.ingredients.first { ingredient in
+                ingredient.typeId == type.typeId
+            }
+            
+            guard let ingredient = ingredient else {
+                print("cannot get recipe ingredient")
+                return
+            }
+            var item = ListItem()
+            
+            item.typeId = type.typeId
+            item.categoryId = type.categoryId
+            item.name = type.typeName
+            item.iconName = type.typeIcon
+            item.checkStatus = 0
+            item.mesureWord = ingredient.mesureWord
+            item.qty = ingredient.qty
+            item.isRoutineItem = false
+            
+            Task {
+                await firestoreManager.addListItem(item, completion: { result in
+                    switch result {
+                    case .success:
+                        print("adding type: \(item.typeId) successed!")
+                    case .failure(let error):
+                        print("error: \(error)")
+                    }
+                })
+            }
+        }
     }
 }
 
@@ -48,7 +94,7 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
         switch section {
         case 2:
             if let recipe = recipe {
-                return recipe.ingredients.count
+                return recipe.ingredients.count + 1
             }
             return 1
         case 3:
@@ -90,6 +136,16 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             return cell
             
         case 2:
+            if indexPath.row == recipe.ingredients.count {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeAddToListCell.reuseIdentifier, for: indexPath) as? RecipeAddToListCell else {
+                    return UITableViewCell()
+                }
+                cell.onClickAddToList = {
+                    self.addToList()
+                }
+                return cell
+            }
+            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeIngredientCell.reuseIdentifier, for: indexPath) as? RecipeIngredientCell else {
                 return UITableViewCell()
             }
@@ -107,18 +163,6 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             cell.setupData()
             
             return cell
-            
-            
-            
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeIngredientsCell.reuseIdentifier, for: indexPath) as? RecipeIngredientsCell else {
-//                return UITableViewCell()
-//            }
-//            
-//            guard let ingredientStatus = ingredientStatus else { return cell }
-//            cell.ingredientStatus = ingredientStatus
-//            cell.setupCell()
-//            
-//            return cell
             
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeStepCell.reuseIdentifier, for: indexPath) as? RecipeStepCell else {

@@ -61,7 +61,7 @@ class RecipeCell: UITableViewCell {
                 let join = stringAry.joined(separator: "、")
                 ingredientIcon.image = UIImage(systemName: "bag.badge.plus")
                 ingredientLabel.text = join
-                ingredientIcon.tintColor = .C4
+                ingredientIcon.tintColor = .C5
             }
         }
     }
