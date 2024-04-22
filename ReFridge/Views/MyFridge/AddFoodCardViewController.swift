@@ -111,6 +111,8 @@ class AddFoodCardViewController: UIViewController {
             return
         }
         typeCell.nameLabel.text = foodCard.name
+//        typeCell.typeViewIsOpen = false
+        typeCell.toggleTypeView()
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
@@ -154,6 +156,7 @@ class AddFoodCardViewController: UIViewController {
     
     // edit or adding
     private func saveFoodCard() {
+        view.endEditing(true)
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
         
         Task {
@@ -290,6 +293,7 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     
     func didToggleTypeView() {
         print("didToggle")
+        tableView.reloadData()
     }
 }
 

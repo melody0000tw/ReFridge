@@ -101,6 +101,7 @@ class AddItemViewController: UIViewController {
             return
         }
         
+        view.endEditing(true)
         print(listItem)
 
         Task {
@@ -117,6 +118,8 @@ class AddItemViewController: UIViewController {
             }
         }
     }
+    
+    
 }
 
 extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {

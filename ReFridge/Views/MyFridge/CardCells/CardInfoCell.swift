@@ -32,6 +32,7 @@ class CardInfoCell: UITableViewCell {
     
     @IBOutlet weak var iconBgView: UIView!
     @IBOutlet weak var qtyTextField: UITextField!
+    @IBOutlet weak var mesureWordTextField: UITextField!
     @IBOutlet weak var noteTextView: UITextView!
     @IBOutlet weak var storageSegment: UISegmentedControl!
     @IBOutlet weak var barcodeBtn: UIButton!
@@ -51,6 +52,7 @@ class CardInfoCell: UITableViewCell {
     
     private func setups() {
         qtyTextField.delegate = self
+        mesureWordTextField.delegate = self
         noteTextView.delegate = self
         storageSegment.addTarget(self, action: #selector(onChangeStorageType(sender:)), for: .valueChanged)
 //        storageSegment.backgroundColor = .clear
@@ -74,6 +76,7 @@ class CardInfoCell: UITableViewCell {
         if foodCard.cardId != "" {
             // editing
             qtyTextField.text = String(describing: foodCard.qty)
+            mesureWordTextField.text = foodCard.mesureWord
             noteTextView.text = foodCard.notes == "" ? nil : String(describing: foodCard.notes)
             storageSegment.selectedSegmentIndex = foodCard.storageType
             barcodeTextField.text = foodCard.barCode == "" ? nil : String(describing: foodCard.barCode)
@@ -134,9 +137,12 @@ extension CardInfoCell: UITextFieldDelegate, UITextViewDelegate {
             print("已輸入選取數量：\(qty)")
             foodCard.qty = Int(qty) ?? 1
             
-        } else if textField == barcodeTextField, let barcode = textField.text{
+        } else if textField == barcodeTextField, let barcode = textField.text {
             print("已輸入 bar code: \(barcode)")
             foodCard.barCode = barcode
+        } else if textField == mesureWordTextField, let mesureWord = textField.text {
+            print("已輸入量詞: \(mesureWord)")
+            foodCard.mesureWord = mesureWord
         }
     }
     

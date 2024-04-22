@@ -85,6 +85,7 @@ class FoodTypeViewController: UIViewController {
             button.tag = category.categoryId
             button.backgroundColor = .C1
             button.addTarget(self, action: #selector(onChangeCategory(sender: )), for: .touchUpInside)
+            button.clipsToBounds = true
             buttons.append(button)
             stackView.addArrangedSubview(button)
         }
@@ -112,11 +113,13 @@ class FoodTypeViewController: UIViewController {
         deleteTypeBtn.tintColor = .darkGray
         deleteTypeBtn.backgroundColor = .clear
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
+        deleteTypeBtn.clipsToBounds = true
         view.addSubview(deleteTypeBtn)
         deleteTypeBtn.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom)
+            make.height.equalTo(view.snp.height).multipliedBy(0.15)
             make.trailing.equalTo(view.snp.trailing).offset(-16)
-            make.bottom.equalTo(view.snp.bottom)
+//            make.bottom.equalTo(view.snp.bottom)
         }
     }
     

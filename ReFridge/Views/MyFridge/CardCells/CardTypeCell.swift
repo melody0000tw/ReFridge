@@ -46,18 +46,8 @@ class CardTypeCell: UITableViewCell {
     
     @objc func toggleTypeView() {
         typeViewIsOpen = typeViewIsOpen ? false : true
-//        containerHeightConstraint.constant = typeViewIsOpen ? 300 : 0
+        containerHeightConstraint.constant = typeViewIsOpen ? 300 : 0
         delegate?.didToggleTypeView()
-        
-//        containerHeightConstraint.isActive = false
-//        switch typeViewIsOpen {
-//        case true:
-//            containerHeightConstraint.constant = 300
-//            containerHeightConstraint.isActive = true
-//        case false:
-//            containerHeightConstraint.constant = 0
-//            containerHeightConstraint.isActive = true
-//        }
         
     }
 }
