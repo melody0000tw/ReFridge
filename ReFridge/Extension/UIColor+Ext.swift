@@ -10,13 +10,14 @@ import UIKit
 
 private enum RFColor: String {
     // swiftlint:disable identifier_name
-    case C1 = "D6DAC8"
-    case C2 = "627254"
-    case C3 = "FBF3D5"
-    case C4 = "EFBC9B"
-    case T1 = "31363F"
-    case T2 = "FEFBF6"
-    case B1 = "FCF5ED"
+    case C1 = "D6DAC8" // 淺綠
+    case C2 = "638889" // 深綠
+    case C3 = "FFC470" // 黃
+    case C4 = "EFBC9B" // 橘紅
+    case C5 = "ED9455" // 深橘
+    case T1 = "31363F" // 深灰
+    case T2 = "FEFBF6" // 米白
+    case B1 = "FCF5ED" //
     // swiftlint:enable identifier_name
 }
 
@@ -27,6 +28,7 @@ extension UIColor {
     static let C2 = RFColor(.C2)
     static let C3 = RFColor(.C3)
     static let C4 = RFColor(.C4)
+    static let C5 = RFColor(.C5)
     static let T1 = RFColor(.T1)
     static let T2 = RFColor(.T2)
     static let B1 = RFColor(.B1)

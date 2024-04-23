@@ -21,6 +21,14 @@ class RecipeCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        setupViews()
+    }
+    
+    private func setupViews() {
+        recipeImage.layer.cornerRadius = 5
+        recipeImage.clipsToBounds = true
+        recipeImage.contentMode = .scaleAspectFill
+        
     }
     
     func toggleLikeBtn(isLiked: Bool) {
@@ -37,12 +45,14 @@ class RecipeCell: UITableViewCell {
         }
         titleLabel.text = recipe.title
         cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
+        recipeImage.loadImage(recipe.image)
         
         if let ingredientStatus = ingredientStatus {
             var stringAry = [String]()
             if ingredientStatus.lackTypes.count == 0 {
                 ingredientIcon.image = UIImage(systemName: "checkmark.circle.fill")
                 ingredientLabel.text = "食材已準備就緒"
+                ingredientIcon.tintColor = .C2
                 return
             } else {
                 for type in ingredientStatus.lackTypes {
@@ -51,6 +61,7 @@ class RecipeCell: UITableViewCell {
                 let join = stringAry.joined(separator: "、")
                 ingredientIcon.image = UIImage(systemName: "bag.badge.plus")
                 ingredientLabel.text = join
+                ingredientIcon.tintColor = .C5
             }
         }
     }
