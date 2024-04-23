@@ -13,6 +13,9 @@ class ScanResultViewController: UIViewController {
     
     var scanResult: ScanResult?
     
+    let saveBtn = UIBarButtonItem()
+    let closeBtn = UIBarButtonItem()
+    
     @IBOutlet weak var notRecongCollectionView: UICollectionView!
     @IBOutlet weak var recongCollectionView: UICollectionView!
     @IBAction func createCards(_ sender: Any) {
@@ -23,24 +26,51 @@ class ScanResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectionViews()
+        setupNavigationView()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Setup
+    private func setupNavigationView() {
+        saveBtn.tintColor = .C2
+        saveBtn.image = UIImage(systemName: "checkmark")
+        saveBtn.target = self
+        saveBtn.action = #selector(saveData)
+        navigationItem.rightBarButtonItem = saveBtn
+        closeBtn.tintColor = .C2
+        closeBtn.image = UIImage(systemName: "xmark")
+        closeBtn.target = self
+        closeBtn.action = #selector(closePage)
+        navigationItem.backBarButtonItem?.isHidden = true
+        navigationItem.leftBarButtonItem = closeBtn
+    }
+    
     private func setupCollectionViews() {
         recongCollectionView.dataSource = self
         recongCollectionView.delegate = self
+        recongCollectionView.RF_registerCellWithNib(identifier: RecongCell.reuseIdentifier, bundle: nil)
         recongCollectionView.collectionViewLayout = configureRecogLayout()
+        
         notRecongCollectionView.dataSource = self
         notRecongCollectionView.delegate = self
+        notRecongCollectionView.RF_registerCellWithNib(identifier: NotRecongCell.reuseIdentifier, bundle: nil)
         notRecongCollectionView.collectionViewLayout = configureNotRecogLayout()
     }
     
     private func configureRecogLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.4))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(160))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 0, trailing: 8)
+        group.contentInsets = NSDirectionalEdgeInsets.zero
         let section = NSCollectionLayoutSection(group: group)
         return UICollectionViewCompositionalLayout(section: section)
     }
@@ -57,7 +87,7 @@ class ScanResultViewController: UIViewController {
     }
     
     // MARK: - Data
-    private func saveData() {
+    @objc func saveData() {
         print("save data")
         guard let scanResult = scanResult else {
             return
@@ -83,6 +113,10 @@ class ScanResultViewController: UIViewController {
             print("所有小卡都已新增完畢！")
             self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    @objc func closePage() {
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

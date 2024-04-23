@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="82c-QF-Zp9" customClass="NotRecongCell" customModule="ReFridge" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="137" height="133"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="qQV-oe-MSD">
+                <rect key="frame" x="0.0" y="0.0" width="137" height="133"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YfH-YQ-r8L">
+                        <rect key="frame" x="8" y="8" width="121" height="117"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LabelLaLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelbelLabelLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gs0-zM-XiG">
+                                <rect key="frame" x="8" y="8.0000000000000036" width="105" height="57.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="seg-Kw-TEw">
+                                <rect key="frame" x="8" y="79" width="105" height="30"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="yhj-Qx-7eP"/>
+                                </constraints>
+                                <color key="tintColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="新增小卡">
+                                    <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="addAction:" destination="82c-QF-Zp9" eventType="touchUpInside" id="kkG-QG-l2Y"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="seg-Kw-TEw" secondAttribute="trailing" constant="8" id="3RS-5M-5I5"/>
+                            <constraint firstItem="seg-Kw-TEw" firstAttribute="leading" secondItem="YfH-YQ-r8L" secondAttribute="leading" constant="8" id="5Ww-dE-9o4"/>
+                            <constraint firstItem="seg-Kw-TEw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gs0-zM-XiG" secondAttribute="bottom" constant="8" id="K7W-7x-HsE"/>
+                            <constraint firstItem="gs0-zM-XiG" firstAttribute="leading" secondItem="YfH-YQ-r8L" secondAttribute="leading" constant="8" id="N7d-8d-eUe"/>
+                            <constraint firstItem="gs0-zM-XiG" firstAttribute="top" secondItem="YfH-YQ-r8L" secondAttribute="top" constant="8" id="Y1Y-LL-OUT"/>
+                            <constraint firstAttribute="bottom" secondItem="seg-Kw-TEw" secondAttribute="bottom" constant="8" id="aCn-gN-Jmz"/>
+                            <constraint firstAttribute="trailing" secondItem="gs0-zM-XiG" secondAttribute="trailing" constant="8" id="tKs-jv-h8k"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="YfH-YQ-r8L" secondAttribute="bottom" constant="8" id="8Cb-Ql-Xrq"/>
+                    <constraint firstAttribute="trailing" secondItem="YfH-YQ-r8L" secondAttribute="trailing" constant="8" id="Gdx-RU-CRm"/>
+                    <constraint firstItem="YfH-YQ-r8L" firstAttribute="leading" secondItem="qQV-oe-MSD" secondAttribute="leading" constant="8" id="S4Y-Mj-Jww"/>
+                    <constraint firstItem="YfH-YQ-r8L" firstAttribute="top" secondItem="qQV-oe-MSD" secondAttribute="top" constant="8" id="gjS-eC-cCo"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <size key="customSize" width="137" height="133"/>
+            <connections>
+                <outlet property="bgView" destination="YfH-YQ-r8L" id="PTr-B8-fHJ"/>
+                <outlet property="scanTextLabel" destination="gs0-zM-XiG" id="zLp-lV-R2P"/>
+            </connections>
+            <point key="canvasLocation" x="176.33587786259542" y="15.140845070422536"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

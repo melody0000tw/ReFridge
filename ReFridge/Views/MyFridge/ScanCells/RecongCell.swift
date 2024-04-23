@@ -26,12 +26,19 @@ class RecongCell: UICollectionViewCell {
         delegate?.editRecongCell(cell: self)
     }
     
+    @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var expireDateLabel: UILabel!
     @IBOutlet weak var qtyLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var iconImage: UIImageView!
     @IBOutlet weak var scanTextLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        bgView.layer.cornerRadius = 10
+        bgView.dropShadow()
+        bgView.backgroundColor = .C1
+    }
     
     
 }
