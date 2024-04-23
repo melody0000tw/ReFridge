@@ -16,6 +16,12 @@ class ScanResultViewController: UIViewController {
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
+    
+    @IBOutlet weak var notRecongViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var recongView: UIView!
+    
+    @IBOutlet weak var notRecongLabel: UILabel!
+    @IBOutlet weak var notRecongView: UIView!
     @IBOutlet weak var notRecongCollectionView: UICollectionView!
     @IBOutlet weak var recongCollectionView: UICollectionView!
     @IBAction func createCards(_ sender: Any) {
@@ -27,6 +33,7 @@ class ScanResultViewController: UIViewController {
         super.viewDidLoad()
         setupCollectionViews()
         setupNavigationView()
+        setupViews()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -51,6 +58,46 @@ class ScanResultViewController: UIViewController {
         closeBtn.action = #selector(closePage)
         navigationItem.backBarButtonItem?.isHidden = true
         navigationItem.leftBarButtonItem = closeBtn
+    }
+    
+    private func setupViews() {
+//        recongView.layer.cornerRadius = 10
+        notRecongView.layer.cornerRadius = 24
+        notRecongView.dropShadow(scale: true, radius: 5)
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(toggleNotRecongView(_:)))
+        swipeUp.direction = .up
+        swipeUp.numberOfTouchesRequired = 1
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(toggleNotRecongView(_:)))
+        swipeDown.direction = .down
+        swipeDown.numberOfTouchesRequired = 1
+        
+        notRecongView.addGestureRecognizer(swipeUp)
+        notRecongView.addGestureRecognizer(swipeDown)
+        notRecongViewTopConstraint.constant = -120
+        notRecongLabel.text = "上滑顯示更多單詞"
+    }
+    
+    @objc func toggleNotRecongView(_ sender: UISwipeGestureRecognizer) {
+        print("toggleNotRecongView")
+        if sender.direction == .up {
+            notRecongViewTopConstraint.constant = -280
+            notRecongLabel.text = "下滑隱藏單詞"
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+                
+            }
+            
+        } else if sender.direction == .down {
+            notRecongViewTopConstraint.constant = -120
+            notRecongLabel.text = "上滑顯示更多單詞"
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+           
+        }
+            
     }
     
     private func setupCollectionViews() {

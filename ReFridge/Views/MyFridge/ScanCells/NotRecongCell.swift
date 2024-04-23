@@ -26,7 +26,7 @@ class NotRecongCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         bgView.layer.cornerRadius = 5
-        bgView.backgroundColor = .C6
+        bgView.backgroundColor = .white
         bgView.dropShadow()
     }
 }

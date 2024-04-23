@@ -27,14 +27,6 @@ class CardTypeCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         setups()
-//        toggleTypeView()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     private func setups() {
@@ -47,6 +39,9 @@ class CardTypeCell: UITableViewCell {
     @objc func toggleTypeView() {
         typeViewIsOpen = typeViewIsOpen ? false : true
         containerHeightConstraint.constant = typeViewIsOpen ? 300 : 0
+        UIView.animate(withDuration: 0.5) {
+            self.layoutIfNeeded()
+        }
         delegate?.didToggleTypeView()
         
     }
