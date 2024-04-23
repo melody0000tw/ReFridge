@@ -21,9 +21,6 @@ class CardInfoCell: UITableViewCell {
         didSet {
             print("=============== cardInfo 已更改 foodCard: \(foodCard)")
             delegate?.didChangeCardInfo(foodCard: foodCard)
-//            barcodeTextField.text = foodCard.barCode
-//            iconImage.image = UIImage(named: foodCard.iconName)
-            
         }
     }
     
@@ -55,9 +52,6 @@ class CardInfoCell: UITableViewCell {
         mesureWordTextField.delegate = self
         noteTextView.delegate = self
         storageSegment.addTarget(self, action: #selector(onChangeStorageType(sender:)), for: .valueChanged)
-//        storageSegment.backgroundColor = .clear
-//        storageSegment.
-//        storageSegment.selectedSegmentTintColor = .C1
         routineItemSwitch.addTarget(self, action: #selector(onChangeRoutineStatus(sender:)), for: .valueChanged)
         barcodeTextField.delegate = self
         barcodeBtn.backgroundColor = .clear
@@ -69,7 +63,6 @@ class CardInfoCell: UITableViewCell {
         dateBtn.tintColor = .C2
         expireDateTextField.delegate = self
         iconBgView.backgroundColor = .C1
-//        iconBgView.layer.cornerRadius = 5
     }
     
     func setupData() {
@@ -85,7 +78,8 @@ class CardInfoCell: UITableViewCell {
             routineItemSwitch.setOn(foodCard.isRoutineItem, animated: false)
         } else {
             // adding
-            qtyTextField.text = String(describing: foodCard.qty)
+            qtyTextField.text = nil
+            mesureWordTextField.text = nil
             noteTextView.text = nil
             barcodeTextField.text = nil
             expireDateTextField.text = nil

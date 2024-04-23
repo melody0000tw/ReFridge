@@ -12,7 +12,6 @@ class AddItemViewController: UIViewController {
     
     var listItem = ListItem()
     
-    
     @IBOutlet weak var tableView: UITableView!
     
     let typeVC = FoodTypeViewController()
@@ -68,7 +67,6 @@ class AddItemViewController: UIViewController {
     }
     
 
-    
     // MARK: - Data
     
     private func updateCardInfoCell() {
@@ -81,16 +79,6 @@ class AddItemViewController: UIViewController {
         qtyCell.iconImage.image = UIImage(named: listItem.iconName)
         qtyCell.nameLabel.text = listItem.name
     }
-    
-//    private func resetData() {
-//        DispatchQueue.main.async { [self] in
-//            nameLabel.text = "請選取食物種類"
-//            iconImage.image = UIImage(systemName: "fork.knife.circle")
-//            qtyTextField.text = String(listItem.qty)
-//            routinePeriodTextField.text = nil
-//            routineStartTimeTextField.text = nil
-//        }
-//    }
     
     @objc func closePage() {
         self.navigationController?.popViewController(animated: true)
@@ -119,7 +107,6 @@ class AddItemViewController: UIViewController {
             }
         }
     }
-    
     
 }
 

@@ -56,7 +56,6 @@ class ChartViewController: UIViewController {
             make.top.equalTo(view.snp.top)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(150)
-//            make.height.equalTo(240)
         }
         
         let headerView = UIView()

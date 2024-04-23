@@ -15,6 +15,7 @@ private enum RFColor: String {
     case C3 = "FFC470" // 黃
     case C4 = "EFBC9B" // 橘紅
     case C5 = "ED9455" // 深橘
+    case C6 = "FBF3D5" // 淺黃
     case T1 = "31363F" // 深灰
     case T2 = "FEFBF6" // 米白
     case B1 = "FCF5ED" //
@@ -29,6 +30,7 @@ extension UIColor {
     static let C3 = RFColor(.C3)
     static let C4 = RFColor(.C4)
     static let C5 = RFColor(.C5)
+    static let C6 = RFColor(.C6)
     static let T1 = RFColor(.T1)
     static let T2 = RFColor(.T2)
     static let B1 = RFColor(.B1)

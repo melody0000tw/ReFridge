@@ -59,6 +59,8 @@
 		EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199522BD75AC700594CCE /* UIView+Ext.swift */; };
 		EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199542BD768E400594CCE /* RecipeHeaderView.swift */; };
 		EBF199572BD7691300594CCE /* RecipeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF199562BD7691300594CCE /* RecipeHeaderView.xib */; };
+		EBF199592BD791BF00594CCE /* RecongCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF199582BD791BF00594CCE /* RecongCell.xib */; };
+		EBF1995B2BD7A05600594CCE /* NotRecongCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF1995A2BD7A05600594CCE /* NotRecongCell.xib */; };
 		EBF484CA2BD7530100B37580 /* RecipeInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF484C82BD7530100B37580 /* RecipeInfoCell.swift */; };
 		EBF484CB2BD7530100B37580 /* RecipeInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF484C92BD7530100B37580 /* RecipeInfoCell.xib */; };
 		EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */; };
@@ -133,6 +135,8 @@
 		EBF199522BD75AC700594CCE /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		EBF199542BD768E400594CCE /* RecipeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeHeaderView.swift; sourceTree = "<group>"; };
 		EBF199562BD7691300594CCE /* RecipeHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeHeaderView.xib; sourceTree = "<group>"; };
+		EBF199582BD791BF00594CCE /* RecongCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecongCell.xib; sourceTree = "<group>"; };
+		EBF1995A2BD7A05600594CCE /* NotRecongCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotRecongCell.xib; sourceTree = "<group>"; };
 		EBF484C82BD7530100B37580 /* RecipeInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeInfoCell.swift; sourceTree = "<group>"; };
 		EBF484C92BD7530100B37580 /* RecipeInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeInfoCell.xib; sourceTree = "<group>"; };
 		EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReFridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,7 +272,9 @@
 			isa = PBXGroup;
 			children = (
 				EBAD131F2BCCF75000F40A71 /* RecongCell.swift */,
+				EBF199582BD791BF00594CCE /* RecongCell.xib */,
 				EBAD13212BCCF78200F40A71 /* NotRecongCell.swift */,
+				EBF1995A2BD7A05600594CCE /* NotRecongCell.xib */,
 			);
 			path = ScanCells;
 			sourceTree = "<group>";
@@ -512,8 +518,10 @@
 				EBF88E3D2BC5704200DEF2FA /* LaunchScreen.storyboard in Resources */,
 				EBF199572BD7691300594CCE /* RecipeHeaderView.xib in Resources */,
 				EB0DD7C22BD6B312002147CC /* RecipeStepCell.xib in Resources */,
+				EBF1995B2BD7A05600594CCE /* NotRecongCell.xib in Resources */,
 				EBFF62C42BC78FD50013F50F /* GoogleService-Info.plist in Resources */,
 				EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */,
+				EBF199592BD791BF00594CCE /* RecongCell.xib in Resources */,
 				EB84D4412BD29AA7008E274C /* TypeImageCell.xib in Resources */,
 				EBB9714D2BD4FBF000F5D1DB /* CardQtyCell.xib in Resources */,
 				EBFF62DE2BC8197A0013F50F /* FoodCardCell.xib in Resources */,

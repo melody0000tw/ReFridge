@@ -21,7 +21,7 @@ class FirestoreManager {
         database = Firestore.firestore()
     }
     
-    //MARK: - Food Type
+    // MARK: - Food Type
     // 剛註冊時加入即可
     func addDefaultTypes() async {
         let types: [FoodType] = FoodTypeData.share.data

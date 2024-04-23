@@ -160,13 +160,6 @@ class FoodTypeViewController: UIViewController {
         }
     }
     
-//    @objc func selectType() {
-//        print("selectType: \(selectedType)")
-//        if let onSelectFoodType = onSelectFoodType {
-//            onSelectFoodType(selectedType)
-//        }
-//    }
-    
     func fetchUserFoodTypes() {
         Task {
             await firestoreManager.fetchFoodType { result in
@@ -181,9 +174,6 @@ class FoodTypeViewController: UIViewController {
                     })
                     allFoodTypes = defaultFoodTpyes + userFoodTypes
                     filterTypes()
-//                    typesOfSelectedCategory = allFoodTypes.filter({ type in
-//                        type.categoryId == 1
-//                    })
                     print("已取得所有 foodTypes")
                 case .failure(let error):
                     print(error)

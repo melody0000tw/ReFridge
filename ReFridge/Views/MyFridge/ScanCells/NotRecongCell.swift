@@ -21,4 +21,12 @@ class NotRecongCell: UICollectionViewCell {
         delegate?.addRecongCell(cell: self)
     }
     @IBOutlet weak var scanTextLabel: UILabel!
+    @IBOutlet weak var bgView: UIView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        bgView.layer.cornerRadius = 5
+        bgView.backgroundColor = .white
+        bgView.dropShadow()
+    }
 }

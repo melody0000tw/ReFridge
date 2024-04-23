@@ -58,7 +58,6 @@ class AddFoodCardViewController: UIViewController {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
             print("card vc knows the selected foodtype: \(foodType)")
-            // 選擇完 foodType 後
             foodCard.categoryId = foodType.categoryId
             foodCard.typeId = foodType.typeId
             foodCard.name = foodType.typeName
@@ -258,6 +257,9 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = foodCard.name == "" ? "請選取食物種類" : foodCard.name
+                if mode == .editing {
+                    cell.containerHeightConstraint.constant = 0
+                }
                 return cell
             }
         }
@@ -336,6 +338,3 @@ extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
             }
     }
 }
-
-
-
