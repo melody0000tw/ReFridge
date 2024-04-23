@@ -257,9 +257,6 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = foodCard.name == "" ? "請選取食物種類" : foodCard.name
-                if mode == .editing {
-                    cell.containerHeightConstraint.constant = 0
-                }
                 return cell
             }
         }
