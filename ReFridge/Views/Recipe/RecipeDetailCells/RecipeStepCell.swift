@@ -8,24 +8,37 @@
 import UIKit
 
 class RecipeStepCell: UITableViewCell {
+    var isDone = false
+    
     static let reuseIdentifier = String(describing: RecipeStepCell.self)
     
-    @IBOutlet weak var checkButton: UIButton!
+    @IBOutlet weak var numberBGView: UIView!
+    @IBOutlet weak var checkmarkView: UIImageView!
     @IBOutlet weak var stepTextLabel: UILabel!
     @IBOutlet weak var numberLabel: UILabel!
     
-    @IBAction func didTappedCheckBtn(_ sender: Any) {
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectionStyle = .none
+        setupCell()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    private func setupCell() {
+        numberBGView.layer.cornerRadius = 15
+        checkmarkView.alpha = 0
     }
-
+    
+    func toggleButton() {
+        isDone =  isDone ? false : true
+        switch isDone {
+        case true:
+            stepTextLabel.alpha = 0.5
+            numberBGView.alpha = 0.5
+            checkmarkView.alpha = 0.5
+        case false:
+            stepTextLabel.alpha = 1
+            numberBGView.alpha = 1
+            checkmarkView.alpha = 0
+        }
+    }
 }

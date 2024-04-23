@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import VisionKit
+import Vision
 
 class MyFridgeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var allCards = [FoodCard]()
-    
     var showCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async {
@@ -20,7 +21,22 @@ class MyFridgeViewController: UIViewController {
         }
     }
     
+    var cardFilter = CardFilter(categoryId: nil, sortBy: .remainingDay) {
+        didSet {
+            filterFoodCards()
+        }
+    }
+    
+    @IBOutlet weak var filterBarButton: UIBarButtonItem!
+    
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBAction func searchByBarCode(_ sender: Any) {
+        print("search by bar code")
+        let documentCameraViewController = VNDocumentCameraViewController()
+        documentCameraViewController.delegate = self
+        present(documentCameraViewController, animated: true)
+    }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -28,6 +44,7 @@ class MyFridgeViewController: UIViewController {
         print("123")
         setupCollectionView()
         setupSearchBar()
+        setupFilterBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,18 +52,6 @@ class MyFridgeViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if sender == nil, let foodCardVC = segue.destination as? FoodCardViewController {
-            foodCardVC.isAddingMode = true
-            return
-        }
-        
-        if let foodCard = sender as? FoodCard,
-           let foodCardVC = segue.destination as? FoodCardViewController {
-            print("foodcard: \(foodCard)")
-            foodCardVC.foodCard = foodCard
-            return
-        }
-        
         if let scanResult = sender as? ScanResult,
            let scanResultVC = segue.destination as? ScanResultViewController {
             scanResultVC.scanResult = scanResult
@@ -74,6 +79,48 @@ class MyFridgeViewController: UIViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
+    private func setupFilterBtn() {
+        filterBarButton.primaryAction = nil
+        let filterMenu = UIMenu(title: "食物類型", options: .singleSelection, children: [
+            UIAction(title: "全部", handler: { _ in
+                self.cardFilter.categoryId = nil
+            }),
+            UIAction(title: "蔬菜", handler: { _ in
+                self.cardFilter.categoryId = 1
+            }),
+            UIAction(title: "水果", handler: { _ in
+                self.cardFilter.categoryId = 2
+            }),
+            UIAction(title: "蛋白質", handler: { _ in
+                self.cardFilter.categoryId = 3
+            }),
+            UIAction(title: "穀物", handler: { _ in
+                self.cardFilter.categoryId = 4
+            }),
+            UIAction(title: "其他", handler: { _ in
+                self.cardFilter.categoryId = 5
+            })
+        ])
+        
+        let arrangeMenu = UIMenu(title: "排序方式", options: .singleSelection, children: [
+            UIAction(title: "依照剩餘天數", handler: { _ in
+                self.cardFilter.sortBy = .remainingDay
+            }),
+            UIAction(title: "依照加入日期", handler: { _ in
+                self.cardFilter.sortBy = .createDay
+            }),
+            UIAction(title: "依照種類", handler: { _ in
+                self.cardFilter.sortBy = .category
+            })
+        ])
+        
+        filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
+    }
+    
+    private func searchBarCode() {
+        
+    }
+    
     // MARK: - Data
     private func fetchData() {
         Task {
@@ -82,12 +129,51 @@ class MyFridgeViewController: UIViewController {
                 case .success(let foodCards):
                     print("got food cards!")
                     self.allCards = foodCards
-                    self.showCards = foodCards
+                    filterFoodCards()
                 case .failure(let error):
                     print("error: \(error)")
                 }
             }
         }
+    }
+    
+    private func filterFoodCards() {
+        // filter
+        var filteredCards = [FoodCard]()
+        if let categoryId = cardFilter.categoryId {
+            filteredCards = allCards.filter { card in
+                card.categoryId == categoryId
+            }
+        } else {
+            filteredCards = allCards
+        }
+        
+        // sort
+        let sortBy = cardFilter.sortBy
+        switch sortBy {
+        case .remainingDay:
+            filteredCards.sort { lhs, rhs in
+                lhs.expireDate.calculateRemainingDays() ?? 0 <= rhs.expireDate.calculateRemainingDays() ?? 0
+            }
+        case .createDay:
+            filteredCards.sort { lhs, rhs in
+                lhs.createDate >= rhs.createDate
+            }
+        case .category:
+            filteredCards.sort { lhs, rhs in
+                lhs.categoryId <= rhs.categoryId
+            }
+        }
+        
+        showCards = filteredCards
+    }
+    
+    private func searchFoodCard(barCode: String) {
+        let filteredFoodCards = allCards.filter { foodCard in
+            foodCard.barCode == barCode
+        }
+        showCards = filteredFoodCards
+        
     }
     
     // MARK: - imagePicker
@@ -116,10 +202,12 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.iconImage.image = UIImage(systemName: "plus")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "新增食物"
+            cell.setupDefaultCell()
         case 1:
             cell.iconImage.image = UIImage(systemName: "doc.viewfinder")
             cell.remainDayLabel.isHidden = true
             cell.nameLabel.text = "掃描收據"
+            cell.setupDefaultCell()
         default:
             let foodCard = showCards[indexPath.item - 2]
             cell.foodCard = foodCard
@@ -132,12 +220,25 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.item {
         case 0:
-            performSegue(withIdentifier: "showFoodCardVC", sender: nil)
+            guard let foodCardVC =
+                    storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
+                        print("cannot find foodCardVC")
+                        return
+                    }
+            foodCardVC.mode = .adding
+            self.navigationController?.pushViewController(foodCardVC, animated: true)
         case 1:
             presentImagePicker()
         default:
             let selectedFoodCard = showCards[indexPath.item - 2]
-            performSegue(withIdentifier: "showFoodCardVC", sender: selectedFoodCard)
+            guard let foodCardVC =
+                    storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
+                        print("cannot find foodCardVC")
+                        return
+                    }
+            foodCardVC.mode = .editing
+            foodCardVC.foodCard = selectedFoodCard
+            self.navigationController?.pushViewController(foodCardVC, animated: true)
         }
         
     }
@@ -180,3 +281,34 @@ extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
     }
 }
 
+// MARK: - BarCode
+extension MyFridgeViewController: VNDocumentCameraViewControllerDelegate {
+    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            let image = scan.imageOfPage(at: scan.pageCount - 1)
+            dismiss(animated: true, completion: {
+                self.processImage(image: image)
+        })
+    }
+    
+    func processImage(image: UIImage) {
+            guard let cgImage = image.cgImage else {
+                print("Failed to get cgimage from input image")
+                return
+            }
+            let handler = VNImageRequestHandler(cgImage: cgImage)
+            let request = VNDetectBarcodesRequest { request, error in
+                if let observation = request.results?.first as? VNBarcodeObservation,
+                   observation.symbology == .ean13 {
+                    guard let barcode = observation.payloadStringValue else {
+                        return
+                    }
+                    self.searchFoodCard(barCode: barcode)
+                }
+            }
+            do {
+                try handler.perform([request])
+            } catch {
+                print(error)
+            }
+    }
+}

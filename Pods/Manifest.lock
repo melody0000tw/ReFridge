@@ -1,24 +1,38 @@
 PODS:
+  - Charts (4.1.0):
+    - Charts/Core (= 4.1.0)
+  - Charts/Core (4.1.0):
+    - SwiftAlgorithms (~> 1.0)
   - IQKeyboardManagerSwift (7.0.1)
+  - Kingfisher (7.11.0)
   - SnapKit (5.7.1)
+  - SwiftAlgorithms (1.0.0)
   - SwiftLint (0.54.0)
 
 DEPENDENCIES:
+  - Charts (= 4.1.0)
   - IQKeyboardManagerSwift
+  - Kingfisher (~> 7.0)
   - SnapKit (~> 5.7.0)
   - SwiftLint
 
 SPEC REPOS:
   trunk:
+    - Charts
     - IQKeyboardManagerSwift
+    - Kingfisher
     - SnapKit
+    - SwiftAlgorithms
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Charts: ce0768268078eee0336f122c3c4ca248e4e204c5
   IQKeyboardManagerSwift: 7f6b1b1d1497855d2beea7f2f10ffcc6978525b1
+  Kingfisher: b9c985d864d43515f404f1ef4a8ce7d802ace3ac
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
 
-PODFILE CHECKSUM: aa7a0a2372a37120ed4e1dd8b2d5fd563d866f0d
+PODFILE CHECKSUM: b5b4ea7cebabf76de429a8a7e63a7517138025ce
 
 COCOAPODS: 1.15.2

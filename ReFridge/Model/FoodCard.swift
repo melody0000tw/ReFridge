@@ -11,13 +11,14 @@ struct FoodCard: Codable {
     var cardId: String = ""
     var name: String = ""
     var categoryId: Int = 5
-    var typeId: Int = 501
+    var typeId: String = "501"
     var iconName: String = "other"
     var qty: Int = 1
+    var mesureWord: String = "個"
     var createDate: Date = Date()
     var expireDate: Date = Date().createExpiredDate(afterDays: 7) ?? Date()
-    var notificationTime: Int = 0
-    var barCode: Int = 0
+    var isRoutineItem: Bool = false
+    var barCode: String = ""
     var storageType: Int = 0
     var notes: String = ""
     
