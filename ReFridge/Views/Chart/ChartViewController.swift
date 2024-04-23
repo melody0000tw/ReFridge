@@ -23,6 +23,7 @@ class ChartViewController: UIViewController {
         }
     }
     
+    lazy var colorView = UIView()
     lazy var imageView = UIImageView()
     lazy var nameLabel = UILabel()
     lazy var cherishLabel = UILabel()
@@ -47,14 +48,15 @@ class ChartViewController: UIViewController {
     
     // MARK: - setups
     private func setupHeaderView() {
-        let colorView = UIView()
+        
         view.addSubview(colorView)
         colorView.backgroundColor = UIColor(hex: "638889")
         colorView.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.top.equalTo(view.snp.top)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            make.height.equalTo(240)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(150)
+//            make.height.equalTo(240)
         }
         
         let headerView = UIView()
@@ -64,7 +66,7 @@ class ChartViewController: UIViewController {
             make.leading.equalTo(colorView.snp.leading)
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.trailing.equalTo(colorView.snp.trailing)
-            make.bottom.equalTo(colorView.snp.bottom)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(150)
         }
         
         imageView.image = UIImage(named: "placeholder")
@@ -127,7 +129,7 @@ class ChartViewController: UIViewController {
         view.addSubview(stackView)
         
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(140)
+            make.top.equalTo(colorView.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             make.height.equalTo(60)
@@ -168,7 +170,7 @@ class ChartViewController: UIViewController {
     private func setupChartViews() {
         view.addSubview(pieChartView)
         pieChartView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(200)
+            make.top.equalTo(colorView.snp.bottom).offset(60)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
@@ -176,7 +178,7 @@ class ChartViewController: UIViewController {
         
         view.addSubview(barChartView)
         barChartView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(200)
+            make.top.equalTo(colorView.snp.bottom).offset(60)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
