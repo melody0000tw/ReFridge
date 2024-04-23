@@ -22,6 +22,8 @@ class RecipeAddToListCell: UITableViewCell {
     }
     
     private func setupBtn() {
+        addToListBtn.layer.borderColor = UIColor.C2.cgColor
+        addToListBtn.layer.borderWidth = 1
         addToListBtn.layer.cornerRadius = 5
         addToListBtn.addTarget(self, action: #selector(addToListAction), for: .touchUpInside)
     }

@@ -39,6 +39,8 @@ class RecipeDetailViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.RF_registerHeaderWithNib(identifier: RecipeHeaderView.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeInfoCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeIngredientCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeAddToListCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeStepCell.reuseIdentifier, bundle: nil)
@@ -121,17 +123,17 @@ class RecipeDetailViewController: UIViewController {
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        4
+        3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 2:
+        case 1:
             if let recipe = recipe {
                 return recipe.ingredients.count + 1
             }
             return 1
-        case 3:
+        case 2:
             if let recipe = recipe {
                 return recipe.steps.count
             }
@@ -148,9 +150,10 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
         
         switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeTitleCell.reuseIdentifier, for: indexPath) as? RecipeTitleCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeInfoCell.reuseIdentifier, for: indexPath) as? RecipeInfoCell else {
                 return UITableViewCell()
             }
+            
             
             cell.delegate = self
             cell.titleLabel.text = recipe.title
@@ -158,18 +161,11 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             cell.servingLabel.text = "\(String(recipe.servings))人份"
             cell.caloriesLabel.text = "\(String(recipe.calories))大卡"
             cell.toggleLikeBtn(isLiked: isLiked)
+            cell.descriptionLabel.text = recipe.description
             
             return cell
             
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeDescriptionCell.reuseIdentifier, for: indexPath) as? RecipeDescriptionCell else {
-                return UITableViewCell()
-            }
-            
-            cell.descriptionLabel.text = recipe.description
-            return cell
-            
-        case 2:
             if indexPath.row == recipe.ingredients.count {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeAddToListCell.reuseIdentifier, for: indexPath) as? RecipeAddToListCell else {
                     return UITableViewCell()
@@ -211,34 +207,43 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sections = ["料理介紹", "食材", "料理步驟"]
+        let sections = ["所需食材", "料理步驟"]
         if section != 0 {
-            let view = UIView()
-            let label = UILabel()
-            label.text = sections[section - 1]
-            label.font = UIFont(name: "PingFangHK-Medium", size: 20)
-            label.textColor = .darkGray
-            view.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.top.equalTo(view.snp.top)
-                make.leading.equalTo(view.snp.leading).offset(16)
+            guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: RecipeHeaderView.reuseIdentifier) as? RecipeHeaderView else {
+                print("cannot get tableview section header")
+                return nil
             }
-            
-            return view
+            header.titleLabel.text = sections[section - 1]
+            return header
         }
         return nil
     }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? 0 : 80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 2 {
+            guard let cell = tableView.cellForRow(at: indexPath) as? RecipeStepCell else {
+                print("cannot get recipe step cell")
+                return
+            }
+            
+            cell.toggleButton()
+        }
+    }
 }
 
-extension RecipeDetailViewController: RecipeTitleCellDelegate {
+extension RecipeDetailViewController: RecipeInfoCellDelegate {
     func didTappedLikeBtn() {
         // 確認現在狀態
         isLiked = isLiked ? false : true
-        guard let recipeTitleCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? RecipeTitleCell else {
+        guard let recipeInfoCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? RecipeInfoCell else {
             print("cannot find the cell")
             return
         }
-        recipeTitleCell.toggleLikeBtn(isLiked: isLiked)
+        recipeInfoCell.toggleLikeBtn(isLiked: isLiked)
         
         Task {
             guard let recipe = recipe else { return }

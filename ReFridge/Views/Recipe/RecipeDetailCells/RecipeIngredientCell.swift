@@ -14,6 +14,7 @@ class RecipeIngredientCell: UITableViewCell {
     var ingredient: Ingredient?
     var status: Bool?
     
+    @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var statusView: UIImageView!
     @IBOutlet weak var ingredientLabel: UILabel!
     @IBOutlet weak var iconImage: UIImageView!
@@ -28,6 +29,10 @@ class RecipeIngredientCell: UITableViewCell {
 
     private func setupCell() {
         iconBgView.layer.cornerRadius = 25
+        bgView.layer.cornerRadius = 10
+        bgView.dropShadow()
+        bgView.backgroundColor = .white
+        
     }
     
     func setupData() {

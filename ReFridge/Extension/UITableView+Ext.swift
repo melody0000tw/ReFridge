@@ -13,4 +13,9 @@ extension UITableView {
         let nib = UINib(nibName: identifier, bundle: bundle)
         register(nib, forCellReuseIdentifier: identifier)
     }
+    
+    func RF_registerHeaderWithNib(identifier: String, bundle: Bundle?) {
+        let nib: UINib = UINib(nibName: identifier, bundle: nil)
+       register(nib, forHeaderFooterViewReuseIdentifier: identifier)
+    }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipeHeaderView" customModule="ReFridge" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="RecipeHeaderView" customModule="ReFridge" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="591" height="154"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wGN-0i-nZS">
+                    <rect key="frame" x="-50" y="67" width="180" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="料理步驟" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dul-PI-hRg">
+                            <rect key="frame" x="82" y="8" width="82" height="24"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.83921568629999999" green="0.85490196080000003" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="9ZX-N8-8Up"/>
+                        <constraint firstAttribute="bottom" secondItem="dul-PI-hRg" secondAttribute="bottom" constant="8" id="Gi0-y2-kAz"/>
+                        <constraint firstAttribute="width" constant="180" id="MlT-Rl-F5p"/>
+                        <constraint firstItem="dul-PI-hRg" firstAttribute="top" secondItem="wGN-0i-nZS" secondAttribute="top" constant="8" id="heK-Sd-A6q"/>
+                        <constraint firstAttribute="trailing" secondItem="dul-PI-hRg" secondAttribute="trailing" constant="16" id="vvl-FU-6hG"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="wGN-0i-nZS" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-50" id="VNI-hk-Dys"/>
+                <constraint firstItem="wGN-0i-nZS" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="stn-Tl-CLq"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bgView" destination="wGN-0i-nZS" id="klf-ig-mS6"/>
+                <outlet property="titleLabel" destination="dul-PI-hRg" id="Lfw-w3-vh0"/>
+            </connections>
+            <point key="canvasLocation" x="291.5625" y="7.394366197183099"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
