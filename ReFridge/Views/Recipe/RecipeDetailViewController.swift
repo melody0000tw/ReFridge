@@ -48,7 +48,7 @@ class RecipeDetailViewController: UIViewController {
         // gallery header
         let galleryView = RecipeGalleryView()
         guard let recipe = self.recipe else { return }
-        galleryView.images = [recipe.image]
+        galleryView.images = recipe.images
         tableView.tableHeaderView = galleryView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 500)
     }
