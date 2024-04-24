@@ -46,7 +46,6 @@ class FoodTypeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(animated)
         print(" viewWillAppear")
         fetchUserFoodTypes()
@@ -92,6 +91,7 @@ class FoodTypeViewController: UIViewController {
     }
     
     private func setupCollectionView() {
+        collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.RF_registerCellWithNib(identifier: String(describing: FoodTypeCell.self), bundle: nil)
@@ -100,7 +100,6 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(stackView.snp.bottom)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-//            make.height.equalTo(view.snp.height).multipliedBy(0.7)
             make.bottom.equalTo(view.snp.bottom).offset(-40)
         }
     }
@@ -109,7 +108,6 @@ class FoodTypeViewController: UIViewController {
         deleteTypeBtn.setTitle(" 刪除類型", for: .normal)
         deleteTypeBtn.setTitleColor(.darkGray, for: .normal)
         deleteTypeBtn.setTitleColor(.clear, for: .disabled)
-//        deleteTypeBtn.setImage(UIImage(systemName: "trash"), for: .normal)
         deleteTypeBtn.tintColor = .darkGray
         deleteTypeBtn.backgroundColor = .clear
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
@@ -119,7 +117,6 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(collectionView.snp.bottom)
             make.height.equalTo(view.snp.height).multipliedBy(0.15)
             make.trailing.equalTo(view.snp.trailing).offset(-16)
-//            make.bottom.equalTo(view.snp.bottom)
         }
     }
     

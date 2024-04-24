@@ -16,7 +16,9 @@ class CardTypeCell: UITableViewCell {
     
     static let reuseIdentifier = String(describing: CardTypeCell.self)
     
+    var mode: FoodCardMode?
     var typeViewIsOpen = true
+    
     
     @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bgView: UIView!
@@ -33,16 +35,22 @@ class CardTypeCell: UITableViewCell {
         selectionStyle = .none
         bgView.backgroundColor = .C1
         typeContainerView.backgroundColor = .clear
+        editBtn.setImage(UIImage(systemName: "chevron.up"), for: .normal)
         editBtn.addTarget(self, action: #selector(toggleTypeView), for: .touchUpInside)
     }
     
     @objc func toggleTypeView() {
         typeViewIsOpen = typeViewIsOpen ? false : true
-        containerHeightConstraint.constant = typeViewIsOpen ? 300 : 0
-        UIView.animate(withDuration: 0.5) {
-            self.layoutIfNeeded()
+        if self.typeViewIsOpen {
+            self.editBtn.setImage(UIImage(systemName: "chevron.up"), for: .normal)
+        } else {
+            self.editBtn.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         }
-        delegate?.didToggleTypeView()
         
+        containerHeightConstraint.constant = typeViewIsOpen ? 300 : 0
+        UIView.animate(withDuration: 0.5, delay: 0.2) {
+            self.typeContainerView.layer.opacity = self.typeViewIsOpen ? 1 : 0
+            self.delegate?.didToggleTypeView()
+        }
     }
 }

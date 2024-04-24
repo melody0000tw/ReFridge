@@ -17,12 +17,7 @@ class CardInfoCell: UITableViewCell {
     weak var delegate: CardInfoCellDelegate?
     static let reuseIdentifier = String(describing: CardInfoCell.self)
     
-    var foodCard = FoodCard() {
-        didSet {
-            print("=============== cardInfo 已更改 foodCard: \(foodCard)")
-            delegate?.didChangeCardInfo(foodCard: foodCard)
-        }
-    }
+    var foodCard = FoodCard()
     
     let datePicker = UIDatePicker()
     let formatter = FormatterManager.share.formatter
@@ -111,12 +106,14 @@ class CardInfoCell: UITableViewCell {
         let index = sender.selectedSegmentIndex
         print("已選取儲存方式：\(index)")
         foodCard.storageType = index
+        delegate?.didChangeCardInfo(foodCard: foodCard)
         
     }
     
     @objc func onChangeRoutineStatus(sender: UISwitch) {
         let isRoutineItem = sender.isOn
         foodCard.isRoutineItem = isRoutineItem
+        delegate?.didChangeCardInfo(foodCard: foodCard)
     }
     
     @objc func didTappedBarcodeBtn() {
@@ -138,11 +135,13 @@ extension CardInfoCell: UITextFieldDelegate, UITextViewDelegate {
             print("已輸入量詞: \(mesureWord)")
             foodCard.mesureWord = mesureWord
         }
+        delegate?.didChangeCardInfo(foodCard: foodCard)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView == noteTextView, let notes = noteTextView.text {
             foodCard.notes = notes
+            delegate?.didChangeCardInfo(foodCard: foodCard)
         }
     }
 }

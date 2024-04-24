@@ -22,19 +22,15 @@ class AddFoodCardViewController: UIViewController {
     @IBOutlet weak var deleteByConsumedBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
-//    @IBAction func deleteByThrown(_ sender: Any) {
-//        changeScore(deleteWay: .thrown)
-//        deleteData()
-//    }
-//    @IBAction func deleteByFinished(_ sender: Any) {
-//        changeScore(deleteWay: .consumed)
-//        deleteData()
-//    }
-    
     let typeVC = FoodTypeViewController()
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
+    var foodCard = FoodCard()
+    var mode = FoodCardMode.adding
+    var onChangeFoodCard: ((FoodCard) -> Void)?
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -50,10 +46,7 @@ class AddFoodCardViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    var foodCard = FoodCard()
-    var mode = FoodCardMode.adding
-    var onChangeFoodCard: ((FoodCard) -> Void)?
-    
+    // MARK: - Setups
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
@@ -110,24 +103,9 @@ class AddFoodCardViewController: UIViewController {
             return
         }
         typeCell.nameLabel.text = foodCard.name
-//        typeCell.typeViewIsOpen = false
-        typeCell.toggleTypeView()
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
-    
-    // 應該要在點擊save之後重新更新表單
-//    private func updateFoodCard() {
-//        guard let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardInfoCell
-//        else {
-//            print("update Food Card failed")
-//            return
-//        }
-//        
-//        let barcode = cell.barcodeTextField.text
-//        let expiredDate  = cell.foodCard.expireDate
-//        let qty = Int(cell.qtyTextField.text) ?? 1
-//    }
     
     // MARK: - Data
     @objc func saveData() {
@@ -282,6 +260,7 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     }
     
     func didChangeCardInfo(foodCard: FoodCard) {
+        
         self.foodCard.qty = foodCard.qty
         self.foodCard.mesureWord = foodCard.mesureWord
         self.foodCard.expireDate = foodCard.expireDate
@@ -289,11 +268,15 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         self.foodCard.storageType = foodCard.storageType
         self.foodCard.isRoutineItem = foodCard.isRoutineItem
         self.foodCard.notes = foodCard.notes
+        print("=============== vc didChangeCardInfo foodCard: \(self.foodCard)")
     }
     
     func didToggleTypeView() {
         print("didToggle")
-        tableView.reloadData()
+//        tableView.reloadData()
+        tableView.performBatchUpdates(nil)
+//        tableView.layoutIfNeeded()
+//        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
 }
 
