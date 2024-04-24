@@ -50,6 +50,12 @@ class RecipeGalleryView: UIView {
     }
     
     private func setupCollectionView() {
+        let placeholder = UIImageView(image: UIImage(named: "placeholder"))
+        addSubview(placeholder)
+        placeholder.snp.makeConstraints { make in
+            make.edges.equalTo(self.snp.edges)
+        }
+        collectionView.backgroundColor = .clear
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(GalleryCell.self, forCellWithReuseIdentifier: GalleryCell.reuseIdentifier)
