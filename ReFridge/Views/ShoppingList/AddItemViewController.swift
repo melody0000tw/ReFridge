@@ -63,7 +63,7 @@ class AddItemViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.RF_registerCellWithNib(identifier: CardTypeCell.reuseIdentifier, bundle: nil)
-        tableView.RF_registerCellWithNib(identifier: CardQtyCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: ItemInfoCell.reuseIdentifier, bundle: nil)
     }
     
 
@@ -71,7 +71,7 @@ class AddItemViewController: UIViewController {
     
     private func updateCardInfoCell() {
         guard let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell,
-            let qtyCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardQtyCell
+            let qtyCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? ItemInfoCell
         else {
             return
         }
@@ -125,7 +125,7 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: CardQtyCell.reuseIdentifier, for: indexPath) as? CardQtyCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: ItemInfoCell.reuseIdentifier, for: indexPath) as? ItemInfoCell {
             cell.delegate = self
             cell.iconImage.image = UIImage(named: listItem.iconName)
             cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
@@ -138,7 +138,7 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension  AddItemViewController: CardQtyCellDelegate {
+extension  AddItemViewController: ItemInfoCellDelegate {
     func didChangeQty(qty: Int, mesureWord: String) {
         listItem.qty = qty
         listItem.mesureWord = mesureWord

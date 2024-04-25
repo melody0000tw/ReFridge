@@ -7,6 +7,8 @@
 
 import Foundation
 
-enum MesureWord: String {
-    case bottles
+struct MesureWordData {
+    static let shared = MesureWordData()
+    
+    let data = ["個", "顆", "根", "塊", "串", "朵", "把", "盒", "袋", "包", "罐", "克", "台斤", "公斤"]
 }
