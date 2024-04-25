@@ -55,6 +55,7 @@ class CardInfoCell: UITableViewCell {
         barcodeBtn.addTarget(self, action: #selector(didTappedBarcodeBtn), for: .touchUpInside)
         dateBtn.backgroundColor = .clear
         dateBtn.setImage(UIImage(systemName: "calendar"), for: .normal)
+        dateBtn.addTarget(self, action: #selector(didTappedDateBtn), for: .touchUpInside)
         dateBtn.tintColor = .C2
         expireDateTextField.delegate = self
         iconBgView.backgroundColor = .C1
@@ -119,6 +120,11 @@ class CardInfoCell: UITableViewCell {
     @objc func didTappedBarcodeBtn() {
         print("didTappedBarcode")
         delegate?.didTappedBarcodeBtn()
+    }
+    
+    @objc func didTappedDateBtn() {
+        print("didTappedDate")
+        expireDateTextField.becomeFirstResponder()
     }
 }
 
