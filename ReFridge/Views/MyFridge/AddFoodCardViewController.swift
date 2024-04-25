@@ -126,7 +126,7 @@ class AddFoodCardViewController: UIViewController {
                 print("did not set closure")
                 return
             }
-            
+            view.endEditing(true)
             onChangeFoodCard(foodCard)
             self.navigationController?.popViewController(animated: true)
             

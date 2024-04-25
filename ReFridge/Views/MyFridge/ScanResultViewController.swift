@@ -16,7 +16,6 @@ class ScanResultViewController: UIViewController {
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
-    
     @IBOutlet weak var notRecongViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var recongView: UIView!
     
@@ -192,15 +191,10 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             }
             cell.delegate = self
             let foodCard = scanResult.recongItems[indexPath.item]
-//            let item = scanResult.recongItems[indexPath.item]
             cell.scanTextLabel.text = foodCard.name
-            
-            guard let foodType = FoodTypeData.share.queryFoodType(typeId: foodCard.typeId) else {
-                return cell
-            }
-            cell.iconImage.image = UIImage(named: foodType.typeIcon)
-            cell.typeLabel.text = foodType.typeName
-            cell.qtyLabel.text = String(foodCard.qty)
+            cell.iconImage.image = UIImage(named: foodCard.iconName)
+            cell.typeLabel.text = CategoryData.share.queryFoodCategory(categoryId: foodCard.categoryId)?.categoryName
+            cell.qtyLabel.text = "\(String(foodCard.qty))\(foodCard.mesureWord)"
             cell.expireDateLabel.text = formatter.string(from: foodCard.expireDate)
             return cell
         } else {

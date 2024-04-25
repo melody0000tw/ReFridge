@@ -142,7 +142,7 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension  AddItemViewController : CardTypeCellDelegate, ItemInfoCellDelegate {
+extension  AddItemViewController: CardTypeCellDelegate, ItemInfoCellDelegate {
     func didToggleTypeView() {
         print("didToggle")
         typeViewIsOpen = !typeViewIsOpen
