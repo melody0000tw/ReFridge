@@ -28,6 +28,7 @@ class AddFoodCardViewController: UIViewController {
     
     var foodCard = FoodCard()
     var mode = FoodCardMode.adding
+    var typeViewIsOpen = true
     var onChangeFoodCard: ((FoodCard) -> Void)?
     
     // MARK: - Life Cycle
@@ -235,6 +236,7 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = foodCard.name == "" ? "請選取食物種類" : foodCard.name
+                cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
             }
         }
@@ -273,10 +275,8 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     
     func didToggleTypeView() {
         print("didToggle")
-//        tableView.reloadData()
-        tableView.performBatchUpdates(nil)
-//        tableView.layoutIfNeeded()
-//        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
 }
 
