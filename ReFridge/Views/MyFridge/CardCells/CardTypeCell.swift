@@ -47,8 +47,9 @@ class CardTypeCell: UITableViewCell {
         }
         
         containerHeightConstraint.constant = shouldOpen ? 300 : 0
-        UIView.animate(withDuration: 0.5, delay: 0.2) {
-            self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
-        }
+        self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
+//        UIView.animate(withDuration: 0.1, delay: 0.2) {
+//            self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
+//        }
     }
 }

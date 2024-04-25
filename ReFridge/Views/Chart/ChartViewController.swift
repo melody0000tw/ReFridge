@@ -23,14 +23,16 @@ class ChartViewController: UIViewController {
         }
     }
     
-    lazy var colorView = UIView()
-    lazy var imageView = UIImageView()
-    lazy var nameLabel = UILabel()
-    lazy var cherishLabel = UILabel()
-    lazy var progressView = UIProgressView(progressViewStyle: .bar)
-    lazy var buttons = [UIButton]()
-    lazy var pieChartView = FridgePieChartView()
-    lazy var barChartView = FridgeBarChartView()
+    private lazy var colorView = UIView()
+    private lazy var imageView = UIImageView()
+    private lazy var nameLabel = UILabel()
+    private lazy var cherishLabel = UILabel()
+    private lazy var progressView = UIProgressView(progressViewStyle: .bar)
+    private lazy var stackView = UIStackView()
+    private lazy var buttons = [UIButton]()
+    private lazy var barView = UIView()
+    private lazy var pieChartView = FridgePieChartView()
+    private lazy var barChartView = FridgeBarChartView()
     
     // MARK: Life Cycle
     override func viewDidLoad() {
@@ -121,7 +123,6 @@ class ChartViewController: UIViewController {
     
     private func setupButtons() {
         let titles = ["食物類型", "保存期限"]
-        let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 0
@@ -147,6 +148,31 @@ class ChartViewController: UIViewController {
         }
         
         buttons[0].isSelected = true
+        
+        barView.backgroundColor = .C2
+        barView.layer.cornerRadius = 1.5
+        view.addSubview(barView)
+        let btnWidth = Int(view.bounds.size.width) / stackView.subviews.count
+        barView.snp.makeConstraints { make in
+            make.bottom.equalTo(stackView)
+            make.height.equalTo(3)
+            make.width.equalTo(Double(btnWidth) * 0.6)
+            make.centerX.equalTo((btnWidth / 2))
+        }
+    }
+    
+    private func animateBarView(tag: Int) {
+        let btnWidth = Int(stackView.bounds.size.width) / stackView.subviews.count
+        barView.snp.remakeConstraints { make in
+            make.bottom.equalTo(stackView)
+            make.height.equalTo(3)
+            make.width.equalTo(Double(btnWidth) * 0.6)
+            make.centerX.equalTo(btnWidth * tag + (btnWidth / 2))
+        }
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+        
     }
     
     @objc func changeChart(sender: UIButton) {
@@ -155,6 +181,7 @@ class ChartViewController: UIViewController {
             button.isSelected = false
         }
         sender.isSelected = true
+        animateBarView(tag: sender.tag)
         
         pieChartView.isHidden = true
         barChartView.isHidden = true

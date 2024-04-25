@@ -40,6 +40,9 @@ class AddFoodCardViewController: UIViewController {
         setupDeleteBtns()
         toggleDeleteBtns()
         self.tabBarController?.tabBar.isHidden = true
+        if mode == .editing {
+            typeViewIsOpen = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,6 +60,8 @@ class AddFoodCardViewController: UIViewController {
             foodCard.name = foodType.typeName
             foodCard.iconName = foodType.typeIcon
             updateCardInfoCell()
+            typeViewIsOpen = !typeViewIsOpen
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
     }
     
