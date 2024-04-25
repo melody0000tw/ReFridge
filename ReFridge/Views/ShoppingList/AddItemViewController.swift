@@ -11,13 +11,14 @@ class AddItemViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var listItem = ListItem()
+    var typeViewIsOpen = true
     
     @IBOutlet weak var tableView: UITableView!
-    
     let typeVC = FoodTypeViewController()
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -42,6 +43,8 @@ class AddItemViewController: UIViewController {
             listItem.name = foodType.typeName
             listItem.iconName = foodType.typeIcon
             updateCardInfoCell()
+            typeViewIsOpen = !typeViewIsOpen
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
     }
     
@@ -71,13 +74,12 @@ class AddItemViewController: UIViewController {
     
     private func updateCardInfoCell() {
         guard let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell,
-            let qtyCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? ItemInfoCell
+            let infoCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? ItemInfoCell
         else {
             return
         }
         typeCell.nameLabel.text = listItem.name
-        qtyCell.iconImage.image = UIImage(named: listItem.iconName)
-        qtyCell.nameLabel.text = listItem.name
+        infoCell.iconImage.image = UIImage(named: listItem.iconName)
     }
     
     @objc func closePage() {
@@ -118,9 +120,11 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             if let cell = tableView.dequeueReusableCell(withIdentifier: CardTypeCell.reuseIdentifier, for: indexPath) as? CardTypeCell {
+                cell.delegate = self
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
+                cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
             }
         }
@@ -128,9 +132,9 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
         if let cell = tableView.dequeueReusableCell(withIdentifier: ItemInfoCell.reuseIdentifier, for: indexPath) as? ItemInfoCell {
             cell.delegate = self
             cell.iconImage.image = UIImage(named: listItem.iconName)
-            cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
             cell.qtyTextField.text = listItem.qty == 1 ? "1" : String(listItem.qty)
             cell.mesureWordTextField.text = listItem.mesureWord
+            cell.noteTextField.text = listItem.notes == "" ? nil : listItem.notes
             return cell
         }
         return UITableViewCell()
@@ -138,9 +142,16 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
-extension  AddItemViewController: ItemInfoCellDelegate {
-    func didChangeQty(qty: Int, mesureWord: String) {
+extension  AddItemViewController : CardTypeCellDelegate, ItemInfoCellDelegate {
+    func didToggleTypeView() {
+        print("didToggle")
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
+    func didChangeQty(qty: Int, mesureWord: String, notes: String) {
         listItem.qty = qty
         listItem.mesureWord = mesureWord
+        listItem.notes = notes
     }
 }

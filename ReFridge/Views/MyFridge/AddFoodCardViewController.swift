@@ -29,7 +29,7 @@ class AddFoodCardViewController: UIViewController {
     var foodCard = FoodCard()
     var mode = FoodCardMode.adding
     var typeViewIsOpen = true
-    var onChangeFoodCard: ((FoodCard) -> Void)?
+    var onChangeFoodCard: ((FoodCard) -> Void)? // for editingBatch
     
     // MARK: - Life Cycle
     override func viewDidLoad() {

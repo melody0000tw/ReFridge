@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ItemInfoCellDelegate: AnyObject {
-    func didChangeQty(qty: Int, mesureWord: String)
+    func didChangeQty(qty: Int, mesureWord: String, notes: String)
 }
 
 class ItemInfoCell: UITableViewCell {
@@ -17,11 +17,12 @@ class ItemInfoCell: UITableViewCell {
     
     var qty = 1
     var mesureWord = "個"
+    var notes = ""
     
     @IBOutlet weak var mesureWordTextField: UITextField!
     @IBOutlet weak var qtyTextField: UITextField!
-    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var iconImage: UIImageView!
+    @IBOutlet weak var noteTextField: UITextField!
     
     let mesureWordPicker = UIPickerView()
     let mesureWords = MesureWordData.shared.data
@@ -31,8 +32,10 @@ class ItemInfoCell: UITableViewCell {
         selectionStyle = .none
         qtyTextField.delegate = self
         mesureWordTextField.delegate = self
+        noteTextField.delegate = self
         qtyTextField.text = String(qty)
         mesureWordTextField.text = mesureWord
+        noteTextField.text = notes
         setupMesureWordPicker()
         
         // Initialization code
@@ -57,10 +60,11 @@ class ItemInfoCell: UITableViewCell {
 // MARK: - UITextFieldDelegate
 extension ItemInfoCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if let mesureWord = mesureWordTextField.text, let qtyString = qtyTextField.text {
+        if let mesureWord = mesureWordTextField.text, let qtyString = qtyTextField.text, let notes = noteTextField.text {
             self.qty = Int(qtyString) ?? 1
             self.mesureWord = mesureWord
-            delegate?.didChangeQty(qty: qty, mesureWord: mesureWord)
+            self.notes = notes
+            delegate?.didChangeQty(qty: qty, mesureWord: mesureWord, notes: notes)
         }
     }
 }
