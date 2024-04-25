@@ -73,8 +73,9 @@ class RecipeGalleryView: UIView {
         pageControl.currentPageIndicatorTintColor = .white
         addSubview(pageControl)
         pageControl.snp.makeConstraints { make in
-            make.bottom.equalTo(self.snp.bottom).offset(-16)
-            make.leading.equalTo(self.snp.leading).offset(16)
+            make.centerX.equalTo(self.snp.centerX)
+            make.bottom.equalTo(self.snp.bottom).offset(-32)
+//            make.leading.equalTo(self.snp.leading).offset(16)
         }
     }
     

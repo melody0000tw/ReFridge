@@ -23,17 +23,13 @@ class RecipeIngredientCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        setupCell()
+//        setupCell()
         // Initialization code
     }
 
-    private func setupCell() {
-        iconBgView.layer.cornerRadius = 25
-        bgView.layer.cornerRadius = 10
-        bgView.dropShadow()
-        bgView.backgroundColor = .white
-        
-    }
+//    private func setupCell() {
+//        iconBgView.layer.cornerRadius = 25
+//    }
     
     func setupData() {
         guard let ingredient = ingredient, let status = status else {

@@ -46,10 +46,33 @@ class RecipeDetailViewController: UIViewController {
         tableView.RF_registerCellWithNib(identifier: RecipeStepCell.reuseIdentifier, bundle: nil)
         
         // gallery header
+        
         let galleryView = RecipeGalleryView()
         guard let recipe = self.recipe else { return }
         galleryView.images = recipe.images
-        tableView.tableHeaderView = galleryView
+        
+        let headerView = UIView()
+        headerView.addSubview(galleryView)
+        galleryView.snp.makeConstraints { make in
+            make.edges.equalTo(headerView.snp.edges)
+        }
+        
+        let cardView = UIView()
+        cardView.backgroundColor = .white
+        cardView.layer.cornerRadius = 24
+        cardView.dropShadow(radius: 5)
+        headerView.clipsToBounds = true
+        headerView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.width.equalTo(headerView.snp.width)
+            make.top.equalTo(headerView.snp.bottom).offset(-24)
+            make.height.equalTo(40)
+        }
+        
+        
+        
+//        tableView.tableHeaderView = galleryView
+        tableView.tableHeaderView = headerView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 500)
     }
     
@@ -170,9 +193,9 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeAddToListCell.reuseIdentifier, for: indexPath) as? RecipeAddToListCell else {
                     return UITableViewCell()
                 }
-                cell.onClickAddToList = {
-                    self.addToList()
-                }
+//                cell.onClickAddToList = {
+//                    self.addToList()
+//                }
                 return cell
             }
             
@@ -213,6 +236,10 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 print("cannot get tableview section header")
                 return nil
             }
+            if section != 1 {
+                header.addToListBtn.isHidden = true
+            }
+            header.delegate = self
             header.titleLabel.text = sections[section - 1]
             return header
         }
@@ -220,7 +247,7 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0 : 80
+        return section == 0 ? 0 : 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -235,7 +262,11 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
-extension RecipeDetailViewController: RecipeInfoCellDelegate {
+extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate {
+    func didTappedAddToList() {
+        addToList()
+    }
+    
     func didTappedLikeBtn() {
         // 確認現在狀態
         isLiked = isLiked ? false : true
@@ -269,6 +300,4 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate {
             }
         }
     }
-    
-    
 }
