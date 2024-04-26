@@ -14,6 +14,7 @@ class ShoppingListViewController: UIViewController {
             DispatchQueue.main.async {
                 print("new list count: \(self.list.count)")
                 self.tableView.reloadData()
+                self.emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
             }
         }
     }
@@ -23,6 +24,9 @@ class ShoppingListViewController: UIViewController {
         addCheckItemToFridge()
     }
     
+    lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚未建立購物清單")
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -39,6 +43,7 @@ class ShoppingListViewController: UIViewController {
         tableView.RF_registerCellWithNib(identifier: ShoppingListCell.reuseIdentifier, bundle: nil)
     }
     
+    // MARK: - Datas
     private func fetchList() {
         Task {
             await firestoreManager.fetchListItems { result in

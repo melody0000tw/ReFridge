@@ -17,6 +17,7 @@ class MyFridgeViewController: UIViewController {
         didSet {
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
+                self.emptyDataManager.toggleLabel(shouldShow: (self.showCards.count == 0))
             }
         }
     }
@@ -30,6 +31,8 @@ class MyFridgeViewController: UIViewController {
     @IBOutlet weak var filterBarButton: UIBarButtonItem!
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關資料")
     
     @IBAction func searchByBarCode(_ sender: Any) {
         print("search by bar code")
@@ -49,13 +52,6 @@ class MyFridgeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scanResult = sender as? ScanResult,
-           let scanResultVC = segue.destination as? ScanResultViewController {
-            scanResultVC.scanResult = scanResult
-        }
     }
     
     // MARK: - Setups
@@ -117,9 +113,24 @@ class MyFridgeViewController: UIViewController {
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
     
-    private func searchBarCode() {
+//    private func searchBarCode() {
+//        
+//    }
+    
+    private func presentScanResult(scanResult: ScanResult) {
+        guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
+            print("cannot get scanresult vc")
+            return
+        }
+        
+//        navigationController?.present(scanVC, animated: true, completion: {
+//            scanVC.scanResult = scanResult
+//        })
+        scanVC.scanResult = scanResult
+        navigationController?.pushViewController(scanVC, animated: true)
         
     }
+    
     
     // MARK: - Data
     private func fetchData() {
@@ -256,7 +267,7 @@ extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationC
                     print("無法辨識圖片")
                     return
                 }
-                self.performSegue(withIdentifier: "showScanResultVC", sender: scanResult)
+                self.presentScanResult(scanResult: scanResult)
                 
             })
         }

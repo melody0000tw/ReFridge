@@ -7,8 +7,19 @@
 
 import UIKit
 
-class RecipeButtonCell: UITableViewCell {
+protocol RecipeButtonCellDelegate: AnyObject {
+    func didTappedFinishBtn()
+}
 
+class RecipeButtonCell: UITableViewCell {
+    weak var delegate: RecipeButtonCellDelegate?
+    static let reuseIdentifier = String(describing: RecipeButtonCell.self)
+    
+    @IBAction func didTappedFinished(_ sender: Any) {
+        print("did tapped finished")
+        delegate?.didTappedFinishBtn()
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

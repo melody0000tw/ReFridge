@@ -12,6 +12,8 @@ import Charts
 
 class FridgeBarChartView: BarChartView {
     
+    lazy var emptyDataManager = EmptyDataManager(view: self, emptyMessage: "尚無保存期限資料")
+    
     private func createEntries(foodCards: [FoodCard]) -> [BarChartDataEntry] {
   
         var count1 = RemainingDayCount(remainingDay: .expired, cardCounts: 0)
@@ -49,11 +51,16 @@ class FridgeBarChartView: BarChartView {
     }
     
     func configurePieCart(foodCards: [FoodCard]) {
+        guard !foodCards.isEmpty else {
+            noDataText = ""
+            self.emptyDataManager.toggleLabel(shouldShow: true)
+            return
+        }
+        
         let entries = createEntries(foodCards: foodCards)
         
         let dataSet = BarChartDataSet(entries: entries, label: "食物數量")
         dataSet.colors = [UIColor(hex: "EFBC9B"), UIColor(hex: "EBD9B4"), UIColor(hex: "9DBC98"), UIColor(hex: "638889"), UIColor(hex: "9CAFAA")]
-//        dataSet.highlightEnabled = false
         dataSet.valueFont = UIFont.systemFont(ofSize: 13)
         
         let formatter = NumberFormatter()

@@ -8,6 +8,7 @@
 import UIKit
 
 class RecipeViewController: UIViewController {
+    
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
     
@@ -18,6 +19,7 @@ class RecipeViewController: UIViewController {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.emptyDataManager.toggleLabel(shouldShow: (self.showRecipes.count == 0))
             }
         }
     }
@@ -37,6 +39,9 @@ class RecipeViewController: UIViewController {
     }
     
     var likedRecipeId = [String]()
+    var finishedRecipeId = [String]()
+    
+    lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關食譜")
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -50,6 +55,7 @@ class RecipeViewController: UIViewController {
         super.viewWillAppear(animated)
         fetchRecipes()
         fetchLikedRecipeId()
+        fetchFinishedRecipeId()
     }
     
     // MARK: - Setups
@@ -70,14 +76,17 @@ class RecipeViewController: UIViewController {
         filterBtn.primaryAction = nil
         
         filterBtn.menu = UIMenu(title: "篩選方式", options: .singleSelection, children: [
-            UIAction(title: "顯示全部", handler: { _ in
+            UIAction(title: "顯示全部食譜", handler: { _ in
                 self.recipeFilter = .all
-            }),
-            UIAction(title: "顯示收藏食譜", handler: { _ in
-                self.recipeFilter = .favorite
             }),
             UIAction(title: "推薦清冰箱食譜", handler: { _ in
                 self.recipeFilter = .fit
+            }),
+            UIAction(title: "已收藏食譜", handler: { _ in
+                self.recipeFilter = .favorite
+            }),
+            UIAction(title: "已完成食譜", handler: { _ in
+                self.recipeFilter = .finished
             })
         ])
     }
@@ -90,7 +99,7 @@ class RecipeViewController: UIViewController {
                 case .success(let recipes):
                     print("got recipes! \(recipes)")
                     self.allRecipes = recipes
-                    self.showRecipes = recipes
+//                    self.showRecipes = recipes
                     checkAllStatus(recipes: self.allRecipes) { dict in
                         self.ingredientsDict = dict
                         print("ingredientsDicts fetch 成功")
@@ -110,6 +119,21 @@ class RecipeViewController: UIViewController {
                 case .success(let ids):
                     print("got id: \(ids.count)")
                     likedRecipeId = ids
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+                
+            }
+        }
+    }
+    
+    private func fetchFinishedRecipeId() {
+        Task {
+            await firestoreManager.fetchFinishedRecipeId { result in
+                switch result {
+                case .success(let ids):
+                    print("got id: \(ids.count)")
+                    finishedRecipeId = ids
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -199,6 +223,8 @@ class RecipeViewController: UIViewController {
             getLikedRecipes()
         case .fit:
             getFitRecipes(over: 0.5)
+        case .finished:
+            getFinishedRecipes()
         }
     }
     
@@ -226,6 +252,19 @@ class RecipeViewController: UIViewController {
         
         let filteredRecipes = allRecipes.filter { recipe in
             likedRecipeId.contains([recipe.recipeId])
+        }
+        
+        showRecipes = filteredRecipes
+    }
+    
+    private func getFinishedRecipes() {
+        guard allRecipes.count != 0 else {
+            print("all recipe is empty")
+            return
+        }
+        
+        let filteredRecipes = allRecipes.filter { recipe in
+            finishedRecipeId.contains([recipe.recipeId])
         }
         
         showRecipes = filteredRecipes

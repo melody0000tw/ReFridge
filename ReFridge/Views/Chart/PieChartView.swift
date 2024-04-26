@@ -11,6 +11,8 @@ import Charts
 
 class FridgePieChartView: PieChartView {
     
+    lazy var emptyDataManager = EmptyDataManager(view: self, emptyMessage: "尚無食物類型資料")
+    
     func createEntries(foodCards: [FoodCard]) -> [PieChartDataEntry] {
         var count1 = CategoryCardCount(categoryId: 1, cardCounts: 0)
         var count2 = CategoryCardCount(categoryId: 2, cardCounts: 0)
@@ -47,6 +49,11 @@ class FridgePieChartView: PieChartView {
     }
 
     func configurePieCart(foodCards: [FoodCard]) {
+        guard !foodCards.isEmpty else {
+            noDataText = ""
+            self.emptyDataManager.toggleLabel(shouldShow: true)
+            return
+        }
         let entries = createEntries(foodCards: foodCards)
         
         let dataSet = PieChartDataSet(entries: entries, label: "")
@@ -69,5 +76,4 @@ class FridgePieChartView: PieChartView {
         legend.enabled = false
        
     }
-
 }

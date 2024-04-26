@@ -27,6 +27,9 @@ class ScanResultViewController: UIViewController {
         saveData()
     }
     
+    lazy var recongEmptyDataManager = EmptyDataManager(view: recongView, emptyMessage: "未偵測到食物相關單詞")
+    lazy var notRecongEmptyDataManager = EmptyDataManager(view: notRecongView, emptyMessage: "未偵測到其他單詞")
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +40,7 @@ class ScanResultViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        toggleEmptyLabels()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,6 +133,15 @@ class ScanResultViewController: UIViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
         return UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    private func toggleEmptyLabels() {
+        guard let scanResult = scanResult else {
+            print("scan result is nil")
+            return
+        }
+        recongEmptyDataManager.toggleLabel(shouldShow: (scanResult.recongItems.count == 0))
+        notRecongEmptyDataManager.toggleLabel(shouldShow: (scanResult.notRecongItems.count == 0))
     }
     
     // MARK: - Data
@@ -233,6 +246,8 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
         self.scanResult = scanResult
         notRecongCollectionView.reloadData()
         recongCollectionView.reloadData()
+        toggleEmptyLabels()
+        
     }
     
     func deleteRecongCell(cell: UICollectionViewCell) {
@@ -244,6 +259,7 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
         scanResult.recongItems.remove(at: indexPath.item)
         self.scanResult = scanResult
         recongCollectionView.reloadData()
+        toggleEmptyLabels()
     }
     
     func editRecongCell(cell: UICollectionViewCell) {
@@ -271,6 +287,7 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
                 
                 let indexPath = IndexPath(item: index, section: 0)
                 self.recongCollectionView.reloadItems(at: [indexPath])
+                self.toggleEmptyLabels()
             }
         }
         self.navigationController?.pushViewController(foodCardVC, animated: true)

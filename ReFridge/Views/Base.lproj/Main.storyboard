@@ -60,7 +60,6 @@
                     <connections>
                         <outlet property="collectionView" destination="OxU-Ai-va3" id="pKj-nc-uNa"/>
                         <outlet property="filterBarButton" destination="ZVk-pf-1Bk" id="TsF-wp-uuk"/>
-                        <segue destination="kTv-O8-Tw4" kind="show" identifier="showScanResultVC" id="kFJ-3L-ueE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -358,13 +357,13 @@
         <!--Scan Result View Controller-->
         <scene sceneID="0kp-Fa-A5l">
             <objects>
-                <viewController id="kTv-O8-Tw4" customClass="ScanResultViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ScanResultViewController" id="kTv-O8-Tw4" customClass="ScanResultViewController" customModule="ReFridge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nox-AY-Yat">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DR0-zI-KYm" userLabel="Recong">
-                                <rect key="frame" x="16" y="80" width="288" height="423"/>
+                                <rect key="frame" x="16" y="36" width="288" height="516"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可辨識單詞" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7S-T0-Fmg">
                                         <rect key="frame" x="98" y="8" width="92" height="21.5"/>
@@ -382,7 +381,7 @@
                                         </constraints>
                                     </view>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="GHf-Se-2N6" userLabel="可辨識 Collection View">
-                                        <rect key="frame" x="0.0" y="47.5" width="288" height="359.5"/>
+                                        <rect key="frame" x="0.0" y="47.5" width="288" height="452.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="uAb-Ah-SLF">
                                             <size key="itemSize" width="326" height="153"/>
@@ -482,7 +481,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vra-Ca-LKn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2825.625" y="-986.61971830985919"/>
+            <point key="canvasLocation" x="2882" y="-997"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="6k1-Ku-RTH">
@@ -520,10 +519,11 @@
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SU9-fa-xnf">
                                 <rect key="frame" x="16" y="463" width="288" height="40"/>
-                                <color key="backgroundColor" red="0.38823529410000002" green="0.53333333329999999" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" name="C2"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="fq0-R6-ecY"/>
                                 </constraints>
+                                <color key="tintColor" name="C2"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="將完成項目清除並放入冰箱">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

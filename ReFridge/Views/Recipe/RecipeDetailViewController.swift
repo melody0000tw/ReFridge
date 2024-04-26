@@ -35,6 +35,7 @@ class RecipeDetailViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
+    // MARK: - Setups
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -42,8 +43,9 @@ class RecipeDetailViewController: UIViewController {
         tableView.RF_registerHeaderWithNib(identifier: RecipeHeaderView.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeInfoCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeIngredientCell.reuseIdentifier, bundle: nil)
-        tableView.RF_registerCellWithNib(identifier: RecipeAddToListCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeHintLabelCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeStepCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeButtonCell.reuseIdentifier, bundle: nil)
         
         // gallery header
         
@@ -158,7 +160,7 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             return 1
         case 2:
             if let recipe = recipe {
-                return recipe.steps.count
+                return recipe.steps.count + 1
             }
             return 1
         default:
@@ -189,12 +191,9 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             
         case 1:
             if indexPath.row == recipe.ingredients.count {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeAddToListCell.reuseIdentifier, for: indexPath) as? RecipeAddToListCell else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeHintLabelCell.reuseIdentifier, for: indexPath) as? RecipeHintLabelCell else {
                     return UITableViewCell()
                 }
-//                cell.onClickAddToList = {
-//                    self.addToList()
-//                }
                 return cell
             }
             
@@ -217,6 +216,13 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             return cell
             
         default:
+            if indexPath.row == recipe.steps.count {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeButtonCell.reuseIdentifier, for: indexPath) as? RecipeButtonCell else {
+                    return UITableViewCell()
+                }
+                cell.delegate = self
+                return cell
+            }
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeStepCell.reuseIdentifier, for: indexPath) as? RecipeStepCell else {
                 return UITableViewCell()
             }
@@ -261,7 +267,22 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
-extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate {
+extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate, RecipeButtonCellDelegate {
+    func didTappedFinishBtn() {
+        print("finished")
+        Task {
+            guard let recipe = recipe else { return }
+            await firestoreManager.addFinishedRecipe(by: recipe.recipeId) { result in
+                switch result {
+                case .success:
+                    print("成功加入完成食譜清單")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
     func didTappedAddToList() {
         addToList()
     }

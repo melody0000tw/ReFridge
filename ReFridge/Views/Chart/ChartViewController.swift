@@ -34,7 +34,8 @@ class ChartViewController: UIViewController {
     private lazy var pieChartView = FridgePieChartView()
     private lazy var barChartView = FridgeBarChartView()
     
-    // MARK: Life Cycle
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderView()
@@ -211,9 +212,9 @@ class ChartViewController: UIViewController {
         }
     }
     
-    private func configureBarChart(entries: [BarChartDataEntry]) {
-        
-    }
+//    private func configureBarChart(entries: [BarChartDataEntry]) {
+//        
+//    }
     
     // MARK: - Data
     private func fetchData() {
