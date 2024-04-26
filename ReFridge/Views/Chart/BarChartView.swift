@@ -68,7 +68,7 @@ class FridgeBarChartView: BarChartView {
         xAxis.drawAxisLineEnabled = true
         xAxis.centerAxisLabelsEnabled = true
         xAxis.labelPosition = .bottom
-        xAxis.labelFont = UIFont.systemFont(ofSize: 13)
+        xAxis.labelFont = UIFont.systemFont(ofSize: 12)
         
         leftAxis.drawGridLinesEnabled = false
         leftAxis.enabled = false

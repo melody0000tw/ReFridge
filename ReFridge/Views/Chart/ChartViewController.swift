@@ -40,6 +40,7 @@ class ChartViewController: UIViewController {
     private lazy var chartsContainerView = UIView()
     private lazy var pieChartView = FridgePieChartView()
     private lazy var barChartView = FridgeBarChartView()
+    private lazy var infoLabel = UILabel()
     
     lazy var emptyDataManager = EmptyDataManager(view: view, emptyMessage: "尚無相關資料")
     
@@ -132,16 +133,6 @@ class ChartViewController: UIViewController {
         }
     }
     
-//    private func setupChartsContainerView() {
-//        view.addSubview(chartsContainerView)
-//        chartsContainerView.snp.makeConstraints { make in
-//            make.top.equalTo(colorView.snp.bottom).offset(60)
-//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
-//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
-//        }
-//    }
-    
     private func setupButtons() {
         let titles = ["食物類型", "保存期限"]
         stackView.axis = .horizontal
@@ -207,8 +198,10 @@ class ChartViewController: UIViewController {
         pieChartView.isHidden = true
         barChartView.isHidden = true
         if sender.tag == 0 {
+            infoLabel.text = "冰箱中食物種類百分比例"
             pieChartView.isHidden = false
         } else {
+            infoLabel.text = "剩餘效期區間內的食物數量"
             barChartView.isHidden = false
         }
     }
@@ -218,42 +211,38 @@ class ChartViewController: UIViewController {
         view.addSubview(chartsContainerView)
         chartsContainerView.snp.makeConstraints { make in
             make.top.equalTo(colorView.snp.bottom).offset(60)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
         chartsContainerView.addSubview(pieChartView)
         pieChartView.snp.makeConstraints { make in
-            make.edges.equalTo(chartsContainerView.snp.edges)
+            make.top.equalTo(chartsContainerView.snp.top)
+            make.leading.equalTo(chartsContainerView.snp.leading).offset(24)
+            make.trailing.equalTo(chartsContainerView.snp.trailing).offset(-24)
+            make.bottom.equalTo(chartsContainerView.snp.bottom).offset(-60)
         }
         
         chartsContainerView.addSubview(barChartView)
         barChartView.snp.makeConstraints { make in
-            make.edges.equalTo(chartsContainerView.snp.edges)
+            make.top.equalTo(chartsContainerView.snp.top)
+            make.leading.equalTo(chartsContainerView.snp.leading).offset(24)
+            make.trailing.equalTo(chartsContainerView.snp.trailing).offset(-24)
+            make.bottom.equalTo(chartsContainerView.snp.bottom).offset(-60)
         }
         
-        
-//        view.addSubview(pieChartView)
-//        pieChartView.snp.makeConstraints { make in
-//            make.top.equalTo(colorView.snp.bottom).offset(60)
-//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
-//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
-//        }
-//        
-//        view.addSubview(barChartView)
-//        barChartView.snp.makeConstraints { make in
-//            make.top.equalTo(colorView.snp.bottom).offset(60)
-//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
-//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
-//        }
+        infoLabel.text = "冰箱中食物種類百分比例"
+        infoLabel.font = UIFont(name: "PingFangTC-Regular", size: 16)
+        infoLabel.textAlignment = .center
+        infoLabel.textColor = .darkGray
+        nameLabel.sizeToFit()
+        chartsContainerView.addSubview(infoLabel)
+        infoLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(chartsContainerView.snp.centerX)
+            make.bottom.equalTo(chartsContainerView.snp.bottom).offset(-24)
+        }
     }
-    
-//    private func configureBarChart(entries: [BarChartDataEntry]) {
-//        
-//    }
     
     // MARK: - Data
     private func fetchData() {
