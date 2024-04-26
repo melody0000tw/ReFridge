@@ -7,8 +7,8 @@
 
 import UIKit
 
-class RecipeAddToListCell: UITableViewCell {
-    static let reuseIdentifier = String(describing: RecipeAddToListCell.self)
+class RecipeHintLabelCell: UITableViewCell {
+    static let reuseIdentifier = String(describing: RecipeHintLabelCell.self)
     
     override func awakeFromNib() {
         super.awakeFromNib()
