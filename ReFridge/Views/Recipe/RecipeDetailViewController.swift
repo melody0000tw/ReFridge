@@ -66,7 +66,7 @@ class RecipeDetailViewController: UIViewController {
         cardView.snp.makeConstraints { make in
             make.width.equalTo(headerView.snp.width)
             make.top.equalTo(headerView.snp.bottom).offset(-24)
-            make.height.equalTo(40)
+            make.height.equalTo(60)
         }
         
         
@@ -176,7 +176,6 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeInfoCell.reuseIdentifier, for: indexPath) as? RecipeInfoCell else {
                 return UITableViewCell()
             }
-            
             
             cell.delegate = self
             cell.titleLabel.text = recipe.title

@@ -25,7 +25,7 @@ class RecipeStepCell: UITableViewCell {
 
     private func setupCell() {
         numberBGView.layer.cornerRadius = 15
-        checkmarkView.alpha = 0
+        checkmarkView.image = UIImage(systemName: "square")
     }
     
     func toggleButton() {
@@ -34,11 +34,13 @@ class RecipeStepCell: UITableViewCell {
         case true:
             stepTextLabel.alpha = 0.5
             numberBGView.alpha = 0.5
+            checkmarkView.image = UIImage(systemName: "checkmark")
             checkmarkView.alpha = 0.5
         case false:
             stepTextLabel.alpha = 1
             numberBGView.alpha = 1
-            checkmarkView.alpha = 0
+            checkmarkView.image = UIImage(systemName: "square")
+            checkmarkView.alpha = 1
         }
     }
 }

@@ -60,7 +60,6 @@ class ScanResultViewController: UIViewController {
     }
     
     private func setupViews() {
-//        recongView.layer.cornerRadius = 10
         notRecongView.layer.cornerRadius = 24
         notRecongView.dropShadow(scale: true, radius: 5)
         

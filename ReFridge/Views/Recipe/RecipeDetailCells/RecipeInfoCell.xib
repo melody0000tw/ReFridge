@@ -12,24 +12,24 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="246" id="KGk-i7-Jjw" customClass="RecipeInfoCell" customModule="ReFridge" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="426" height="246"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="270" id="KGk-i7-Jjw" customClass="RecipeInfoCell" customModule="ReFridge" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="426" height="270"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="426" height="246"/>
+                <rect key="frame" x="0.0" y="0.0" width="426" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOk-sC-39I">
-                        <rect key="frame" x="0.0" y="0.0" width="426" height="246"/>
+                        <rect key="frame" x="0.0" y="0.0" width="426" height="270"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="南瓜濃湯" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xwe-xs-x8e">
-                                <rect key="frame" x="16" y="8" width="97.5" height="29"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="南瓜濃湯南瓜 濃湯南瓜 濃湯南瓜 濃湯南瓜濃湯南瓜濃湯" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xwe-xs-x8e">
+                                <rect key="frame" x="16" y="8" width="346" height="57.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="me2-z1-VKF">
-                                <rect key="frame" x="370" y="8" width="40" height="40"/>
+                                <rect key="frame" x="370" y="4" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="HbL-fM-hoX"/>
                                     <constraint firstAttribute="width" constant="40" id="PyL-7I-Yw8"/>
@@ -38,6 +38,7 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal">
                                     <imageReference key="image" image="heart" catalog="system" symbolScale="large"/>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="24" weight="regular"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="RFCornerRadius">
@@ -49,7 +50,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="7gY-pB-ItG">
-                                <rect key="frame" x="16" y="63" width="394" height="100"/>
+                                <rect key="frame" x="16" y="89.5" width="394" height="100"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="61L-Kg-PSx">
                                         <rect key="frame" x="0.0" y="0.0" width="115.5" height="100"/>
@@ -165,7 +166,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" verticalCompressionResistancePriority="250" text="LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A1N-gU-xxD">
-                                <rect key="frame" x="16" y="187" width="394" height="43"/>
+                                <rect key="frame" x="16" y="213.5" width="394" height="40.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -174,14 +175,15 @@
                         <constraints>
                             <constraint firstItem="A1N-gU-xxD" firstAttribute="leading" secondItem="WOk-sC-39I" secondAttribute="leading" constant="16" id="1Gq-8l-hTb"/>
                             <constraint firstAttribute="bottom" secondItem="A1N-gU-xxD" secondAttribute="bottom" constant="16" id="A7E-mC-a3v"/>
-                            <constraint firstItem="7gY-pB-ItG" firstAttribute="top" secondItem="Xwe-xs-x8e" secondAttribute="bottom" constant="26" id="OQs-zg-j9B"/>
+                            <constraint firstItem="me2-z1-VKF" firstAttribute="leading" secondItem="Xwe-xs-x8e" secondAttribute="trailing" constant="8" id="N17-wQ-haC"/>
+                            <constraint firstItem="7gY-pB-ItG" firstAttribute="top" secondItem="Xwe-xs-x8e" secondAttribute="bottom" constant="24" id="OQs-zg-j9B"/>
                             <constraint firstItem="A1N-gU-xxD" firstAttribute="top" secondItem="7gY-pB-ItG" secondAttribute="bottom" constant="24" id="R7T-zK-Yvs"/>
                             <constraint firstItem="Xwe-xs-x8e" firstAttribute="top" secondItem="WOk-sC-39I" secondAttribute="top" constant="8" id="Rwo-Eb-ryt"/>
                             <constraint firstItem="7gY-pB-ItG" firstAttribute="leading" secondItem="WOk-sC-39I" secondAttribute="leading" constant="16" id="WMH-Yz-8JQ"/>
                             <constraint firstAttribute="trailing" secondItem="me2-z1-VKF" secondAttribute="trailing" constant="16" id="bkT-7Q-NiH"/>
                             <constraint firstAttribute="trailing" secondItem="A1N-gU-xxD" secondAttribute="trailing" constant="16" id="eBY-by-brc"/>
                             <constraint firstAttribute="trailing" secondItem="7gY-pB-ItG" secondAttribute="trailing" constant="16" id="f1A-6X-nzi"/>
-                            <constraint firstItem="me2-z1-VKF" firstAttribute="top" secondItem="WOk-sC-39I" secondAttribute="top" constant="8" id="vzZ-i5-mLZ"/>
+                            <constraint firstItem="me2-z1-VKF" firstAttribute="top" secondItem="WOk-sC-39I" secondAttribute="top" constant="4" id="vzZ-i5-mLZ"/>
                             <constraint firstItem="Xwe-xs-x8e" firstAttribute="leading" secondItem="WOk-sC-39I" secondAttribute="leading" constant="16" id="wwj-e7-vJR"/>
                         </constraints>
                     </view>
@@ -203,7 +205,7 @@
                 <outlet property="servingLabel" destination="Mgp-90-ema" id="Ret-cQ-9kV"/>
                 <outlet property="titleLabel" destination="Xwe-xs-x8e" id="4wq-8M-Sk5"/>
             </connections>
-            <point key="canvasLocation" x="120" y="47.535211267605632"/>
+            <point key="canvasLocation" x="120" y="59.154929577464792"/>
         </tableViewCell>
     </objects>
     <resources>
@@ -212,7 +214,7 @@
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="person.2.fill" catalog="system" width="128" height="86"/>
         <namedColor name="B2">
-            <color red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
