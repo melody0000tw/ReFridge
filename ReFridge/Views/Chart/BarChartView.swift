@@ -12,8 +12,6 @@ import Charts
 
 class FridgeBarChartView: BarChartView {
     
-    lazy var emptyDataManager = EmptyDataManager(view: self, emptyMessage: "尚無保存期限資料")
-    
     private func createEntries(foodCards: [FoodCard]) -> [BarChartDataEntry] {
   
         var count1 = RemainingDayCount(remainingDay: .expired, cardCounts: 0)
@@ -50,13 +48,7 @@ class FridgeBarChartView: BarChartView {
         return entries
     }
     
-    func configurePieCart(foodCards: [FoodCard]) {
-        guard !foodCards.isEmpty else {
-            noDataText = ""
-            self.emptyDataManager.toggleLabel(shouldShow: true)
-            return
-        }
-        
+    func configureBarCart(foodCards: [FoodCard]) {
         let entries = createEntries(foodCards: foodCards)
         
         let dataSet = BarChartDataSet(entries: entries, label: "食物數量")
@@ -88,6 +80,7 @@ class FridgeBarChartView: BarChartView {
         doubleTapToZoomEnabled = false
         
         legend.enabled = false
+        
     }
 
 }

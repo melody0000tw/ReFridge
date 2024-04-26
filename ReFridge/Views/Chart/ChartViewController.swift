@@ -13,12 +13,18 @@ class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     private var foodCards = [FoodCard]() {
         didSet {
-            DispatchQueue.main.async {
-                // pie chart
-                self.pieChartView.configurePieCart(foodCards: self.foodCards)
-                // bar chart
-                self.barChartView.configurePieCart(foodCards: self.foodCards)
-                self.setupChartViews()
+            DispatchQueue.main.async { [self] in
+                
+                self.emptyDataManager.toggleLabel(shouldShow: (foodCards.count == 0))
+                if foodCards.isEmpty {
+                    chartsContainerView.isHidden = true
+                } else {
+                    // pie chart
+                    chartsContainerView.isHidden = false
+                    pieChartView.configurePieCart(foodCards: foodCards)
+                    // bar chart
+                    barChartView.configureBarCart(foodCards: foodCards)
+                }
             }
         }
     }
@@ -31,15 +37,19 @@ class ChartViewController: UIViewController {
     private lazy var stackView = UIStackView()
     private lazy var buttons = [UIButton]()
     private lazy var barView = UIView()
+    private lazy var chartsContainerView = UIView()
     private lazy var pieChartView = FridgePieChartView()
     private lazy var barChartView = FridgeBarChartView()
     
+    lazy var emptyDataManager = EmptyDataManager(view: view, emptyMessage: "尚無相關資料")
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderView()
         setupButtons()
+//        setupChartsContainerView()
+        setupChartViews()
         barChartView.isHidden = true
     }
     
@@ -122,6 +132,16 @@ class ChartViewController: UIViewController {
         }
     }
     
+//    private func setupChartsContainerView() {
+//        view.addSubview(chartsContainerView)
+//        chartsContainerView.snp.makeConstraints { make in
+//            make.top.equalTo(colorView.snp.bottom).offset(60)
+//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+//        }
+//    }
+    
     private func setupButtons() {
         let titles = ["食物類型", "保存期限"]
         stackView.axis = .horizontal
@@ -195,21 +215,40 @@ class ChartViewController: UIViewController {
     
     // MARK: - Food Chart
     private func setupChartViews() {
-        view.addSubview(pieChartView)
-        pieChartView.snp.makeConstraints { make in
+        view.addSubview(chartsContainerView)
+        chartsContainerView.snp.makeConstraints { make in
             make.top.equalTo(colorView.snp.bottom).offset(60)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
         }
         
-        view.addSubview(barChartView)
-        barChartView.snp.makeConstraints { make in
-            make.top.equalTo(colorView.snp.bottom).offset(60)
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+        chartsContainerView.addSubview(pieChartView)
+        pieChartView.snp.makeConstraints { make in
+            make.edges.equalTo(chartsContainerView.snp.edges)
         }
+        
+        chartsContainerView.addSubview(barChartView)
+        barChartView.snp.makeConstraints { make in
+            make.edges.equalTo(chartsContainerView.snp.edges)
+        }
+        
+        
+//        view.addSubview(pieChartView)
+//        pieChartView.snp.makeConstraints { make in
+//            make.top.equalTo(colorView.snp.bottom).offset(60)
+//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+//        }
+//        
+//        view.addSubview(barChartView)
+//        barChartView.snp.makeConstraints { make in
+//            make.top.equalTo(colorView.snp.bottom).offset(60)
+//            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+//            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+//            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+//        }
     }
     
 //    private func configureBarChart(entries: [BarChartDataEntry]) {
