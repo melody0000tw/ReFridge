@@ -11,10 +11,11 @@ class ShoppingListViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     var list = [ListItem]() {
         didSet {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 print("new list count: \(self.list.count)")
-                self.tableView.reloadData()
-                self.emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
+                tableView.isHidden = false
+                tableView.reloadData()
+                emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
             }
         }
     }
@@ -37,6 +38,11 @@ class ShoppingListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchList()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        tableView.isHidden = true
     }
     
     private func setupTableView() {
@@ -160,6 +166,14 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
             }
         }
     }
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        cell.transform = CGAffineTransform(translationX: 0, y: cell.contentView.frame.height)
+//        
+//        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+//            cell.transform = CGAffineTransform(translationX: cell.contentView.frame.width, y: cell.contentView.frame.height)
+//        }
+//    }
 }
 
 // MARK: - ListCellDelegate

@@ -18,6 +18,7 @@ class RecipeViewController: UIViewController {
     var showRecipes: [Recipe] = [] {
         didSet {
             DispatchQueue.main.async {
+                self.tableView.isHidden = false
                 self.tableView.reloadData()
                 self.emptyDataManager.toggleLabel(shouldShow: (self.showRecipes.count == 0))
             }
@@ -58,6 +59,12 @@ class RecipeViewController: UIViewController {
         fetchRecipes()
         fetchLikedRecipeId()
         fetchFinishedRecipeId()
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        tableView.isHidden = true
     }
     
     // MARK: - Setups
@@ -104,14 +111,15 @@ class RecipeViewController: UIViewController {
                 switch result {
                 case .success(let recipes):
                     print("got recipes! \(recipes)")
+                    refreshControl.endRefresh()
                     self.allRecipes = recipes
 //                    self.showRecipes = recipes
                     checkAllStatus(recipes: self.allRecipes) { dict in
                         self.ingredientsDict = dict
                         print("ingredientsDicts fetch 成功")
+                        self.filterRecipes()
                     }
-                    filterRecipes()
-                    refreshControl.endRefresh()
+                    
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -311,6 +319,14 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recipe = showRecipes[indexPath.row]
         performSegue(withIdentifier: "showRecipeDetailVC", sender: recipe)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.transform = CGAffineTransform(translationX: 0, y: cell.contentView.frame.height)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.transform = CGAffineTransform(translationX: cell.contentView.frame.width, y: cell.contentView.frame.height)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

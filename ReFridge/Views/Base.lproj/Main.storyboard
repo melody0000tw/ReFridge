@@ -180,7 +180,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="52o-O1-h1J"/>
-                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="mge-UC-beV" firstAttribute="top" secondItem="52o-O1-h1J" secondAttribute="top" id="bVJ-fC-I0T"/>
                             <constraint firstItem="52o-O1-h1J" firstAttribute="bottom" secondItem="mge-UC-beV" secondAttribute="bottom" id="j2h-YY-a6M"/>

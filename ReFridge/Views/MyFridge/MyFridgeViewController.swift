@@ -16,9 +16,10 @@ class MyFridgeViewController: UIViewController {
     var allCards = [FoodCard]()
     var showCards = [FoodCard]() {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
-                self.emptyDataManager.toggleLabel(shouldShow: (self.showCards.count == 0))
+            DispatchQueue.main.async { [self] in
+                collectionView.isHidden = false
+                collectionView.reloadData()
+                emptyDataManager.toggleLabel(shouldShow: (self.showCards.count == 0))
             }
         }
     }
@@ -54,7 +55,18 @@ class MyFridgeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        collectionView.isHidden = true
         fetchData()
+    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        collectionView.refreshControl?.beginRefreshing()
+//        fetchData()
+//    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        collectionView.isHidden = true
     }
     
     // MARK: - Setups
@@ -251,6 +263,14 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             self.navigationController?.pushViewController(foodCardVC, animated: true)
         }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.transform = CGAffineTransform(scaleX: 0, y: 0)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
     }
 }
 

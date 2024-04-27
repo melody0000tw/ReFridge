@@ -39,19 +39,19 @@ class RefresherManager: UIRefreshControl {
     }
     
     func startRefresh() {
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.3) {
             self.animationView.alpha = 1
             self.animationView.play()
         }
     }
     
     func endRefresh() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
-            UIView.animate(withDuration: 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
+            UIView.animate(withDuration: 0.3) {
                 self.animationView.alpha = 0
                 self.animationView.stop()
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 self.endRefreshing()
             }
             

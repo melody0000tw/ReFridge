@@ -265,6 +265,13 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             cell.toggleButton()
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0.1 * Double(indexPath.row)) {
+            cell.alpha = 1
+        }
+    }
 }
 
 extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate, RecipeButtonCellDelegate {
