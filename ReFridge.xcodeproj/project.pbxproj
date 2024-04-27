@@ -52,6 +52,7 @@
 		EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */; };
 		EBB971512BD5088200F5D1DB /* ShoppingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB9714F2BD5088200F5D1DB /* ShoppingListCell.swift */; };
 		EBB971522BD5088200F5D1DB /* ShoppingListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */; };
+		EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */; };
 		EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */; };
 		EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */; };
 		EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */; };
@@ -131,6 +132,7 @@
 		EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemInfoCell.xib; sourceTree = "<group>"; };
 		EBB9714F2BD5088200F5D1DB /* ShoppingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCell.swift; sourceTree = "<group>"; };
 		EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShoppingListCell.xib; sourceTree = "<group>"; };
+		EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
 		EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				EB425BDD2BD0DEF8000C75A6 /* ChartViewController.swift */,
+				EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */,
 				EB425BE12BD12FDA000C75A6 /* PieChartView.swift */,
 				EB425BE32BD1354D000C75A6 /* BarChartView.swift */,
 			);
@@ -614,6 +617,7 @@
 			files = (
 				EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */,
 				EB425BE42BD1354D000C75A6 /* BarChartView.swift in Sources */,
+				EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */,
 				EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */,
 				EBF484CA2BD7530100B37580 /* RecipeInfoCell.swift in Sources */,
 				EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */,
