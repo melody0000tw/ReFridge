@@ -26,6 +26,8 @@ class ShoppingListViewController: UIViewController {
     
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚未建立購物清單")
     
+    private lazy var refreshControl = RefresherManager()
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,16 +43,27 @@ class ShoppingListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.RF_registerCellWithNib(identifier: ShoppingListCell.reuseIdentifier, bundle: nil)
+        refreshControl.addTarget(self, action: #selector(fetchList), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        tableView.refreshControl?.tintColor = .clear
     }
     
     // MARK: - Datas
-    private func fetchList() {
+    @objc private func fetchList() {
+        refreshControl.fadeInAnimation()
         Task {
             await firestoreManager.fetchListItems { result in
                 switch result {
                 case .success(let list):
                     print("did get list")
                     self.list = list
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+                        refreshControl.fadeOutAnimation()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            self.refreshControl.endRefreshing()
+                        }
+                        
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }

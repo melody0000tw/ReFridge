@@ -53,6 +53,7 @@
 		EBB971512BD5088200F5D1DB /* ShoppingListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB9714F2BD5088200F5D1DB /* ShoppingListCell.swift */; };
 		EBB971522BD5088200F5D1DB /* ShoppingListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */; };
 		EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */; };
+		EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */; };
 		EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */; };
 		EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */; };
 		EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */; };
@@ -133,6 +134,7 @@
 		EBB9714F2BD5088200F5D1DB /* ShoppingListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListCell.swift; sourceTree = "<group>"; };
 		EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShoppingListCell.xib; sourceTree = "<group>"; };
 		EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefresherManager.swift; sourceTree = "<group>"; };
 		EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
 		EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 				EB2F0C662BCB7C3700FFBED5 /* FormatterManager.swift */,
 				EBAD131C2BCCDEB000F40A71 /* TextScanManager.swift */,
 				EB1698CC2BDB893300B972D0 /* EmptyDataManager.swift */,
+				EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -625,6 +628,7 @@
 				EB493AF22BD35E41006204D8 /* AddFoodCardViewController.swift in Sources */,
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
 				EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */,
+				EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */,
 				EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */,
 				EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */,
 				EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */,

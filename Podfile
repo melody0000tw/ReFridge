@@ -11,5 +11,6 @@ target 'ReFridge' do
   pod 'IQKeyboardManagerSwift'
   pod 'Charts', '4.1.0'
   pod 'Kingfisher', '~> 7.0'
+  pod 'lottie-ios'
 
 end

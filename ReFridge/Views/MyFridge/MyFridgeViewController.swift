@@ -8,6 +8,7 @@
 import UIKit
 import VisionKit
 import Vision
+import Lottie
 
 class MyFridgeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
@@ -33,6 +34,8 @@ class MyFridgeViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關資料")
+    private lazy var refreshControl = RefresherManager()
+    
     
     @IBAction func searchByBarCode(_ sender: Any) {
         print("search by bar code")
@@ -65,6 +68,10 @@ class MyFridgeViewController: UIViewController {
         layout.minimumInteritemSpacing = 8
         layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         collectionView.collectionViewLayout = layout
+        
+        refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        collectionView.refreshControl?.tintColor = .clear
     }
     
     private func setupSearchBar() {
@@ -112,28 +119,19 @@ class MyFridgeViewController: UIViewController {
         
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
-    
-//    private func searchBarCode() {
-//        
-//    }
-    
     private func presentScanResult(scanResult: ScanResult) {
         guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
             print("cannot get scanresult vc")
             return
         }
-        
-//        navigationController?.present(scanVC, animated: true, completion: {
-//            scanVC.scanResult = scanResult
-//        })
         scanVC.scanResult = scanResult
         navigationController?.pushViewController(scanVC, animated: true)
         
     }
     
-    
     // MARK: - Data
-    private func fetchData() {
+    @objc private func fetchData() {
+        refreshControl.fadeInAnimation()
         Task {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
@@ -141,6 +139,13 @@ class MyFridgeViewController: UIViewController {
                     print("got food cards!")
                     self.allCards = foodCards
                     filterFoodCards()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+                        refreshControl.fadeOutAnimation()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            self.refreshControl.endRefreshing()
+                        }
+                        
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }

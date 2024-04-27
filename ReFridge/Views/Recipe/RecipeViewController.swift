@@ -43,6 +43,8 @@ class RecipeViewController: UIViewController {
     
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關食譜")
     
+    private lazy var refreshControl = RefresherManager()
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,6 +64,9 @@ class RecipeViewController: UIViewController {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        refreshControl.addTarget(self, action: #selector(fetchRecipes), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        tableView.refreshControl?.tintColor = .clear
     }
     
     private func setupSearchBar() {
@@ -92,7 +97,8 @@ class RecipeViewController: UIViewController {
     }
     
     // MARK: - Data
-    private func fetchRecipes() {
+    @objc private func fetchRecipes() {
+        refreshControl.fadeInAnimation()
         Task {
             await firestoreManager.fetchRecipes { result in
                 switch result {
@@ -105,6 +111,13 @@ class RecipeViewController: UIViewController {
                         print("ingredientsDicts fetch 成功")
                     }
                     filterRecipes()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+                        refreshControl.fadeOutAnimation()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            self.refreshControl.endRefreshing()
+                        }
+                        
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }
