@@ -18,6 +18,8 @@ enum FoodCardMode {
 class AddFoodCardViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
+    @IBOutlet weak var btnViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsView: UIView!
     @IBOutlet weak var deleteByThrownBtn: UIButton!
     @IBOutlet weak var deleteByConsumedBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
@@ -38,7 +40,7 @@ class AddFoodCardViewController: UIViewController {
         setupTypeView()
         setupNavigationView()
         setupDeleteBtns()
-        toggleDeleteBtns()
+        toggleBtnView()
         self.tabBarController?.tabBar.isHidden = true
         if mode == .editing {
             typeViewIsOpen = false
@@ -93,12 +95,12 @@ class AddFoodCardViewController: UIViewController {
         deleteByConsumedBtn.addTarget(self, action: #selector(didTappedDelete(sender:)), for: .touchUpInside)
     }
     
-    private func toggleDeleteBtns() {
-        deleteByThrownBtn.isEnabled = false
-        deleteByConsumedBtn.isEnabled = false
+    private func toggleBtnView() {
+        btnViewHeightConstraint.constant = 0
+        buttonsView.isHidden = true
         if mode == .editing {
-            deleteByThrownBtn.isEnabled = true
-            deleteByConsumedBtn.isEnabled = true
+            btnViewHeightConstraint.constant = 60
+            buttonsView.isHidden = false
         }
     }
     
