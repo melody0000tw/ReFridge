@@ -98,7 +98,7 @@ class RecipeViewController: UIViewController {
     
     // MARK: - Data
     @objc private func fetchRecipes() {
-        refreshControl.fadeInAnimation()
+        refreshControl.startRefresh()
         Task {
             await firestoreManager.fetchRecipes { result in
                 switch result {
@@ -111,13 +111,7 @@ class RecipeViewController: UIViewController {
                         print("ingredientsDicts fetch 成功")
                     }
                     filterRecipes()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
-                        refreshControl.fadeOutAnimation()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            self.refreshControl.endRefreshing()
-                        }
-                        
-                    }
+                    refreshControl.endRefresh()
                 case .failure(let error):
                     print("error: \(error)")
                 }

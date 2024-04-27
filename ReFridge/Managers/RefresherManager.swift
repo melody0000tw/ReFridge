@@ -38,19 +38,23 @@ class RefresherManager: UIRefreshControl {
         }
     }
     
-    func fadeInAnimation() {
+    func startRefresh() {
         UIView.animate(withDuration: 0.5) {
             self.animationView.alpha = 1
             self.animationView.play()
         }
-        
     }
     
-    func fadeOutAnimation() {
-        UIView.animate(withDuration: 0.5) {
-            self.animationView.alpha = 0
-            self.animationView.stop()
+    func endRefresh() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+            UIView.animate(withDuration: 0.5) {
+                self.animationView.alpha = 0
+                self.animationView.stop()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.endRefreshing()
+            }
+            
         }
-        
     }
 }

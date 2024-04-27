@@ -131,7 +131,7 @@ class MyFridgeViewController: UIViewController {
     
     // MARK: - Data
     @objc private func fetchData() {
-        refreshControl.fadeInAnimation()
+        refreshControl.startRefresh()
         Task {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
@@ -139,13 +139,7 @@ class MyFridgeViewController: UIViewController {
                     print("got food cards!")
                     self.allCards = foodCards
                     filterFoodCards()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
-                        refreshControl.fadeOutAnimation()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            self.refreshControl.endRefreshing()
-                        }
-                        
-                    }
+                    refreshControl.endRefresh()
                 case .failure(let error):
                     print("error: \(error)")
                 }

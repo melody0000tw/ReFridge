@@ -50,20 +50,14 @@ class ShoppingListViewController: UIViewController {
     
     // MARK: - Datas
     @objc private func fetchList() {
-        refreshControl.fadeInAnimation()
+        refreshControl.startRefresh()
         Task {
             await firestoreManager.fetchListItems { result in
                 switch result {
                 case .success(let list):
                     print("did get list")
                     self.list = list
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
-                        refreshControl.fadeOutAnimation()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            self.refreshControl.endRefreshing()
-                        }
-                        
-                    }
+                    refreshControl.endRefresh()
                 case .failure(let error):
                     print("error: \(error)")
                 }
