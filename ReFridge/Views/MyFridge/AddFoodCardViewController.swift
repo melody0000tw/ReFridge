@@ -140,6 +140,11 @@ class AddFoodCardViewController: UIViewController {
     // edit or adding
     private func saveFoodCard() {
         view.endEditing(true)
+        guard foodCard.name != "" else {
+            print("尚未建立卡卡")
+            return
+        }
+        
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
         
         Task {
