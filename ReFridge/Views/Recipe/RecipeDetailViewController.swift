@@ -136,6 +136,7 @@ class RecipeDetailViewController: UIViewController {
                     switch result {
                     case .success:
                         print("adding type: \(item.typeId) successed!")
+                        presentAlert(title: "加入成功", description: "已將缺少食材加入購物清單", image: UIImage(systemName: "checkmark.circle"))
                     case .failure(let error):
                         print("error: \(error)")
                     }
@@ -283,6 +284,7 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
                 switch result {
                 case .success:
                     print("成功加入完成食譜清單")
+                    presentAlert(title: "加入成功", description: "已將食譜加入完成清單", image: UIImage(systemName: "checkmark.circle"))
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

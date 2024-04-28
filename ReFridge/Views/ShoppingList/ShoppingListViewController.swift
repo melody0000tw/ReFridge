@@ -103,6 +103,7 @@ class ShoppingListViewController: UIViewController {
                     switch result {
                     case .success:
                         print("成功新增小卡 \(foodCard.name)")
+                        presentAlert(title: "加入成功", description: "已將完成項目加入我的冰箱", image: UIImage(systemName: "checkmark.circle"))
                         // delete card
                         deleteItem(item: item, group: dispatchGroup)
                     case .failure(let error):

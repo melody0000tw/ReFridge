@@ -186,6 +186,7 @@ class AddFoodCardViewController: UIViewController {
                     switch result {
                     case .success:
                         print("Document successfully delete!")
+                        presentAlert(title: "刪除成功", description: "已將小卡從冰箱中刪除", image: UIImage(systemName: "checkmark.circle"))
                         DispatchQueue.main.async {
                             self.navigationController?.popViewController(animated: true)
                         }
