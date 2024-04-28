@@ -54,6 +54,8 @@
 		EBB971522BD5088200F5D1DB /* ShoppingListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */; };
 		EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */; };
 		EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */; };
+		EBC154BD2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */; };
+		EBC154BF2BDE501500F9AFF8 /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BE2BDE501500F9AFF8 /* PopUpView.swift */; };
 		EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */; };
 		EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */; };
 		EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */; };
@@ -135,6 +137,8 @@
 		EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShoppingListCell.xib; sourceTree = "<group>"; };
 		EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefresherManager.swift; sourceTree = "<group>"; };
+		EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEntryKitWrapper.swift; sourceTree = "<group>"; };
+		EBC154BE2BDE501500F9AFF8 /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
 		EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
@@ -214,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				EB0DD7B72BD64CA2002147CC /* KingFisherWrapper.swift */,
+				EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */,
 			);
 			path = ThirdPartyWrappers;
 			sourceTree = "<group>";
@@ -264,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				EB9B2C4C2BC954D5004CB435 /* FoodTypeViewController */,
+				EBC154BE2BDE501500F9AFF8 /* PopUpView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -639,6 +645,7 @@
 				EBAD13202BCCF75000F40A71 /* RecongCell.swift in Sources */,
 				EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */,
 				EB84D43C2BD2862A008E274C /* AddFoodTypeViewController.swift in Sources */,
+				EBC154BF2BDE501500F9AFF8 /* PopUpView.swift in Sources */,
 				EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */,
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
 				EBAD13262BCCFDCB00F40A71 /* ScanTextItem.swift in Sources */,
@@ -651,6 +658,7 @@
 				EB84D43A2BD24661008E274C /* Scores.swift in Sources */,
 				EB0DD7B82BD64CA2002147CC /* KingFisherWrapper.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
+				EBC154BD2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift in Sources */,
 				EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */,
 				EB425BE62BD145DD000C75A6 /* ChartCounts.swift in Sources */,
 				EBCC79552BCA5D920029B754 /* IngredientStatus.swift in Sources */,

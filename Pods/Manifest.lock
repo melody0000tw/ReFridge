@@ -8,6 +8,7 @@ PODS:
   - lottie-ios (4.4.1)
   - SnapKit (5.7.1)
   - SwiftAlgorithms (1.0.0)
+  - SwiftEntryKit (2.0.0)
   - SwiftLint (0.54.0)
 
 DEPENDENCIES:
@@ -16,6 +17,7 @@ DEPENDENCIES:
   - Kingfisher (~> 7.0)
   - lottie-ios
   - SnapKit (~> 5.7.0)
+  - SwiftEntryKit (= 2.0.0)
   - SwiftLint
 
 SPEC REPOS:
@@ -26,6 +28,7 @@ SPEC REPOS:
     - lottie-ios
     - SnapKit
     - SwiftAlgorithms
+    - SwiftEntryKit
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -35,8 +38,9 @@ SPEC CHECKSUMS:
   lottie-ios: e047b1d2e6239b787cc5e9755b988869cf190494
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   SwiftAlgorithms: 38dda4731d19027fdeee1125f973111bf3386b53
+  SwiftEntryKit: 61b5fa36f34a97dd8013e48a7345bc4c4720be9a
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
 
-PODFILE CHECKSUM: 2ae3379afdf8e9930db39a74f72c6c3901c8553b
+PODFILE CHECKSUM: cb8a97108c3d85d8045fac03680a284d13342498
 
 COCOAPODS: 1.15.2
