@@ -21,7 +21,8 @@ class ShoppingListViewController: UIViewController {
     }
     
     @IBOutlet weak var tableView: UITableView!
-    @IBAction func addToFridge(_ sender: Any) {
+    @IBAction func addToFridge(_ sender: UIButton) {
+        sender.clickBounce()
         addCheckItemToFridge()
     }
     

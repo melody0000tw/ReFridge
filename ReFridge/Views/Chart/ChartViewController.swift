@@ -135,10 +135,13 @@ class ChartViewController: UIViewController {
         if sender.tag == 0 {
             infoLabel.text = "冰箱中食物種類百分比例"
             pieChartView.isHidden = false
+            pieChartView.clickBounce()
         } else {
             infoLabel.text = "剩餘效期區間內的食物數量"
             barChartView.isHidden = false
+            barChartView.clickBounce()
         }
+        
     }
     
     // MARK: - Food Chart

@@ -50,4 +50,39 @@ extension UIView {
         layer.shadowOffset = CGSize(width: 1, height: 1)
         layer.shadowRadius = radius
     }
+    
+    func clickBounce() {
+        self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        UIView.animate(withDuration: 0.2) {
+            self.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.transform = CGAffineTransform.identity
+            }
+        }
+    }
+    
+    func clickBounceForSmallitem() {
+        self.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        UIView.animate(withDuration: 0.2) {
+            self.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.transform = CGAffineTransform.identity
+            }
+        }
+    }
+    
+    func clickBounce(action: @escaping (() -> ())) {
+        self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        UIView.animate(withDuration: 0.2) {
+            self.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.transform = CGAffineTransform.identity
+            } completion: { _ in
+                action()
+            }
+        }
+    }
 }

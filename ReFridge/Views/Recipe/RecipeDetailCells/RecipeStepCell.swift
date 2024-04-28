@@ -29,6 +29,7 @@ class RecipeStepCell: UITableViewCell {
     }
     
     func toggleButton() {
+        self.clickBounce()
         isDone =  isDone ? false : true
         switch isDone {
         case true:

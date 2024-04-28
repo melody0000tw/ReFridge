@@ -17,7 +17,9 @@ class RecipeHeaderView: UITableViewHeaderFooterView {
     @IBOutlet weak var titleLabel: UILabel!
 
     @IBOutlet weak var addToListBtn: UIButton!
-    @IBAction func addToList(_ sender: Any) {
+    
+    @IBAction func addToList(_ sender: UIButton) {
+        sender.clickBounce()
         delegate?.didTappedAddToList()
     }
 }

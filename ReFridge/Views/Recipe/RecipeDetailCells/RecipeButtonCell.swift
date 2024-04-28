@@ -15,8 +15,9 @@ class RecipeButtonCell: UITableViewCell {
     weak var delegate: RecipeButtonCellDelegate?
     static let reuseIdentifier = String(describing: RecipeButtonCell.self)
     
-    @IBAction func didTappedFinished(_ sender: Any) {
+    @IBAction func didTappedFinished(_ sender: UIButton) {
         print("did tapped finished")
+        sender.clickBounce()
         delegate?.didTappedFinishBtn()
     }
     

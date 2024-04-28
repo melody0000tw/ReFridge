@@ -240,6 +240,9 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.clickBounce()
+        
         switch indexPath.item {
         case 0:
             guard let foodCardVC =
