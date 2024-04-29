@@ -22,4 +22,19 @@ class RecipeHeaderView: UITableViewHeaderFooterView {
         sender.clickBounce()
         delegate?.didTappedAddToList()
     }
+    
+    func toggleAddToListBtn(isAllSet: Bool) {
+        if isAllSet {
+            addToListBtn.isEnabled = false
+            addToListBtn.setTitle("食材已準備就緒", for: .disabled)
+            addToListBtn.setTitleColor(.C2, for: .disabled)
+            addToListBtn.layer.borderColor = UIColor.C2.cgColor
+            
+        } else {
+            addToListBtn.isEnabled = true
+            addToListBtn.setTitle("將缺少食材加入購物清單", for: .normal)
+            addToListBtn.setTitleColor(.C5, for: .normal)
+            addToListBtn.layer.borderColor = UIColor.C5.cgColor
+        }
+    }
 }

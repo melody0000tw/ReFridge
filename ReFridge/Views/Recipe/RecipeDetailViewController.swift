@@ -247,6 +247,10 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             }
             header.delegate = self
             header.titleLabel.text = sections[section - 1]
+            if let ingredientStatus = ingredientStatus {
+                header.toggleAddToListBtn(isAllSet: ingredientStatus.lackTypes.isEmpty)
+            }
+            
             return header
         }
         return nil

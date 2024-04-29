@@ -30,12 +30,10 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jjM-0p-jON">
-                    <rect key="frame" x="395" y="72.5" width="180" height="29"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="180" id="b5u-Cb-gaY"/>
-                    </constraints>
+                    <rect key="frame" x="385" y="70.5" width="190" height="33"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="tintColor" name="C2"/>
+                    <inset key="contentEdgeInsets" minX="16" minY="8" maxX="16" maxY="8"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="將缺少食材加入購物清單"/>
                     <userDefinedRuntimeAttributes>
