@@ -14,7 +14,6 @@ class ShoppingListViewController: UIViewController {
             DispatchQueue.main.async { [self] in
                 print("new list count: \(self.list.count)")
                 tableView.isHidden = false
-                tableView.reloadData()
                 emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
             }
         }
@@ -49,6 +48,7 @@ class ShoppingListViewController: UIViewController {
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
         tableView.RF_registerCellWithNib(identifier: ShoppingListCell.reuseIdentifier, bundle: nil)
         refreshControl.addTarget(self, action: #selector(fetchList), for: .valueChanged)
         tableView.refreshControl = refreshControl
@@ -64,7 +64,10 @@ class ShoppingListViewController: UIViewController {
                 case .success(let list):
                     print("did get list")
                     self.list = list
-                    refreshControl.endRefresh()
+                    DispatchQueue.main.async { [self] in
+                        tableView.reloadData()
+                        refreshControl.endRefresh()
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -154,31 +157,38 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath)
-        cell?.clickBounce(action: { [self] in
-            let originalStatus = list[indexPath.row].checkStatus
-            list[indexPath.row].checkStatus = originalStatus == 0 ? 1 : 0 // tableView.reloadData
-            let newItem = list[indexPath.row]
-            Task {
-                await firestoreManager.updateCheckStatus(newItem: newItem) { result in
-                    switch result {
-                    case .success:
-                        print("did update checkStatus for \(newItem.itemId)")
-                    case .failure(let error):
-                        print("error: \(error)")
-                    }
+        guard let cell = tableView.cellForRow(at: indexPath) as? ShoppingListCell else {
+            return
+        }
+        cell.clickBounce()
+        let originalStatus = list[indexPath.row].checkStatus
+        let newStatus = originalStatus == 0 ? 1 : 0
+        
+        // 更改本地端資料 & UI
+        cell.toggleStyle(checkStatus: newStatus)
+        list[indexPath.row].checkStatus =  newStatus
+        let newItem = list[indexPath.row]
+        
+        // 更新資料庫
+        Task {
+            await firestoreManager.updateCheckStatus(newItem: newItem) { result in
+                switch result {
+                case .success:
+                    print("did update checkStatus for \(newItem.itemId)")
+                case .failure(let error):
+                    print("error: \(error)")
                 }
             }
-        })
+        }
     }
     
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.transform = CGAffineTransform(translationX: 0, y: cell.contentView.frame.height)
-//        
-//        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
-//            cell.transform = CGAffineTransform(translationX: cell.contentView.frame.width, y: cell.contentView.frame.height)
-//        }
-//    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.alpha = 1
+        }
+    }
 }
 
 // MARK: - ListCellDelegate
@@ -205,6 +215,7 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
         }
         // 要刪除的 item
         let itemToDelete = list.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
         
         // 將刪除更新到資料庫
         Task {
