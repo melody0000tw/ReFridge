@@ -28,6 +28,4 @@ class FoodTypeCell: UICollectionViewCell {
             }
         }
     }
-    
-
 }

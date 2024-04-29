@@ -262,9 +262,7 @@ class FirestoreManager {
             completion(.failure(error))
         }
     }
-    
-    
-    
+
     // MARK: - Shopping List
     func addListItem(_ item: ListItem, completion: (Result<Any?, Error>) -> Void) async {
         do {

@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 protocol CardInfoCellDelegate: AnyObject {
     func didTappedBarcodeBtn()
     func didChangeCardInfo(foodCard: FoodCard)
@@ -45,7 +44,6 @@ class CardInfoCell: UITableViewCell {
         setupMesureWordPicker()
     }
 
-    
     private func setups() {
         qtyTextField.delegate = self
         mesureWordTextField.delegate = self

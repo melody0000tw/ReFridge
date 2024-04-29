@@ -8,9 +8,12 @@
 import UIKit
 import SnapKit
 import Charts
+import FirebaseAuth
 
 class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
+    private let accountManager = AccountManager.share
+    
     private var foodCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async { [self] in
@@ -38,8 +41,6 @@ class ChartViewController: UIViewController {
     private lazy var barChartView = FridgeBarChartView()
     private lazy var infoLabel = UILabel()
     
-    
-    
     lazy var emptyDataManager = EmptyDataManager(view: view, emptyMessage: "尚無相關資料")
     
     // MARK: - Life Cycle
@@ -59,6 +60,7 @@ class ChartViewController: UIViewController {
     
     // MARK: - setups
     private func setupPofileView() {
+        headerView.delegate = self
         view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -183,6 +185,23 @@ class ChartViewController: UIViewController {
         }
     }
     
+    private func presentSettingSheet() {
+        let controller = UIAlertController(title: "帳號設定", message: nil, preferredStyle: .actionSheet)
+        let signOutAction = UIAlertAction(title: "登出", style: .default) { action in
+            self.signoutFireBase()
+        }
+        let deleteAccountAction = UIAlertAction(title: "刪除帳號", style: .destructive) { action in
+            print("我要刪除帳號！！！")
+        }
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        
+        controller.addAction(signOutAction)
+        controller.addAction(deleteAccountAction)
+        controller.addAction(cancelAction)
+        
+        present(controller, animated: true)
+    }
+    
     // MARK: - Data
     private func fetchData() {
         Task {
@@ -209,12 +228,9 @@ class ChartViewController: UIViewController {
                     print("consume: \(score.consumed), thrown: \(score.thrown)")
                     print("score: \(scoreInt)%")
                     DispatchQueue.main.async { [self] in
-//                        headerView.cherishLabel.text = "完食分數: \(scoreInt)%"
                         headerView.finishedLabel.text = String(score.consumed)
                         headerView.thrownLabel.text = String(score.thrown)
                         headerView.progressView.setProgress(Float(scoreDouble), animated: true)
-//                        self.cherishLabel.text = "完食分數: \(scoreInt)%"
-//                        self.progressView.setProgress(Float(scoreDouble), animated: true)
                     }
                     
                 case .failure(let error):
@@ -223,5 +239,26 @@ class ChartViewController: UIViewController {
                 
             }
         }
+    }
+    
+    private func signoutFireBase() {
+        accountManager.signoutFireBase { result in
+            switch result {
+            case .success:
+                print("didSignOut")
+                guard let tabBar = self.tabBarController as? TabBarController else {
+                    return
+                }
+                tabBar.checkLoginStatus()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+}
+
+extension ChartViewController: ProfileHeaderViewDelegate {
+    func didTappedSettingBtn() {
+        presentSettingSheet()
     }
 }
