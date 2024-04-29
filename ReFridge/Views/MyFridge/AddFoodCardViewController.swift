@@ -144,6 +144,17 @@ class AddFoodCardViewController: UIViewController {
         view.endEditing(true)
         guard foodCard.name != "" else {
             print("尚未建立卡卡")
+            typeViewIsOpen = true
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
+                return
+            }
+            cell.nameLabel.text = "尚未選取食物種類"
+            cell.nameLabel.textColor = .red
+//            typeVC.selectTypeBtn.backgroundColor = .red
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.typeVC.selectTypeBtn.clickBounce()
+            }
             return
         }
         
@@ -249,6 +260,7 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = foodCard.name == "" ? "請選取食物種類" : foodCard.name
+                cell.nameLabel.textColor = .darkGray
                 cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
             }

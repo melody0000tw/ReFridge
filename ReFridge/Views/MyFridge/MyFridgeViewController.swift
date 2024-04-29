@@ -37,7 +37,6 @@ class MyFridgeViewController: UIViewController {
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關資料")
     private lazy var refreshControl = RefresherManager()
     
-    
     @IBAction func searchByBarCode(_ sender: Any) {
         print("search by bar code")
         let documentCameraViewController = VNDocumentCameraViewController()

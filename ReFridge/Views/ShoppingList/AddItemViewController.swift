@@ -89,6 +89,16 @@ class AddItemViewController: UIViewController {
     @objc func saveData() {
         guard listItem.name != "" else {
             print("沒有選擇 type")
+            typeViewIsOpen = true
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
+                return
+            }
+            cell.nameLabel.text = "尚未選取食物種類"
+            cell.nameLabel.textColor = .red
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.typeVC.selectTypeBtn.clickBounce()
+            }
             return
         }
         
@@ -124,6 +134,7 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
+                cell.nameLabel.textColor = .darkGray
                 cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
             }

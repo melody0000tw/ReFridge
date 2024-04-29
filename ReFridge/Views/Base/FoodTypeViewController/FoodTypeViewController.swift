@@ -37,7 +37,7 @@ class FoodTypeViewController: UIViewController {
     private lazy var barView = UIView()
     
     private lazy var deleteTypeBtn = UIButton(type: .system)
-    private lazy var selectTypeBtn = UIButton(type: .system)
+    lazy var selectTypeBtn = UIButton(type: .system)
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -159,7 +159,8 @@ class FoodTypeViewController: UIViewController {
         selectTypeBtn.setTitle("選擇類型", for: .normal)
         selectTypeBtn.setTitleColor(.white, for: .normal)
         selectTypeBtn.tintColor = .clear
-        selectTypeBtn.backgroundColor = .C2
+        selectTypeBtn.isEnabled = false
+        selectTypeBtn.backgroundColor = .lightGray
         selectTypeBtn.layer.cornerRadius = 5
         selectTypeBtn.addTarget(self, action: #selector(selectType), for: .touchUpInside)
         selectTypeBtn.clipsToBounds = true
@@ -273,6 +274,8 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             addTypeVC.foodTypeVCdelegate = self
             self.parent?.present(addTypeVC, animated: true)
         } else {
+            selectTypeBtn.isEnabled = true
+            selectTypeBtn.backgroundColor = .C2
             let foodType = typesOfSelectedCategory[indexPath.item]
             selectedType = foodType
             toggleDeleteBtn()
