@@ -22,4 +22,5 @@ enum RecipeFilter {
     case all
     case favorite
     case fit
+    case finished
 }

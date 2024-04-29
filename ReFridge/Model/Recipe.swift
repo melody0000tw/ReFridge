@@ -16,12 +16,11 @@ struct Recipe: Codable {
     let description: String
     let ingredients: [Ingredient]
     let steps: [String]
-    let image: String
+    let images: [String]
 }
 
 struct Ingredient: Codable {
     let typeId: String
     let qty: Int
     let mesureWord: String
-//    let mesureWord: String
 }

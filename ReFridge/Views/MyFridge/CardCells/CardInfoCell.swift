@@ -17,15 +17,13 @@ class CardInfoCell: UITableViewCell {
     weak var delegate: CardInfoCellDelegate?
     static let reuseIdentifier = String(describing: CardInfoCell.self)
     
-    var foodCard = FoodCard() {
-        didSet {
-            print("=============== cardInfo 已更改 foodCard: \(foodCard)")
-            delegate?.didChangeCardInfo(foodCard: foodCard)
-        }
-    }
+    var foodCard = FoodCard()
     
     let datePicker = UIDatePicker()
     let formatter = FormatterManager.share.formatter
+    
+    let mesureWordPicker = UIPickerView()
+    let mesureWords = MesureWordData.shared.data
     
     @IBOutlet weak var iconBgView: UIView!
     @IBOutlet weak var qtyTextField: UITextField!
@@ -44,6 +42,7 @@ class CardInfoCell: UITableViewCell {
         selectionStyle = .none
         setups()
         setupDatePicker()
+        setupMesureWordPicker()
     }
 
     
@@ -60,6 +59,7 @@ class CardInfoCell: UITableViewCell {
         barcodeBtn.addTarget(self, action: #selector(didTappedBarcodeBtn), for: .touchUpInside)
         dateBtn.backgroundColor = .clear
         dateBtn.setImage(UIImage(systemName: "calendar"), for: .normal)
+        dateBtn.addTarget(self, action: #selector(didTappedDateBtn), for: .touchUpInside)
         dateBtn.tintColor = .C2
         expireDateTextField.delegate = self
         iconBgView.backgroundColor = .C1
@@ -87,44 +87,65 @@ class CardInfoCell: UITableViewCell {
         }
     }
     
+    // MARK: - DatePicker
     private func setupDatePicker() {
         datePicker.preferredDatePickerStyle = .inline
         datePicker.datePickerMode = .date
         expireDateTextField.inputView = datePicker
-        
-        // Toolbar
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
-        toolbar.setItems([doneButton], animated: true)
-        expireDateTextField.inputAccessoryView = toolbar
+        expireDateTextField.iq.addDone(target: self, action: #selector(donePickingDate))
     }
     
-    @objc func doneAction() {
+    @objc func donePickingDate() {
         let expiredDate = datePicker.date
         foodCard.expireDate = expiredDate
         expireDateTextField.text = formatter.string(from: expiredDate)
         expireDateTextField.resignFirstResponder()
     }
     
+    // MARK: - MesureWordPicker
+    private func setupMesureWordPicker() {
+        mesureWordTextField.inputView = mesureWordPicker
+        mesureWordPicker.delegate = self
+        mesureWordPicker.dataSource = self
+        mesureWordTextField.iq.addDone(target: self, action: #selector(donePickingMesureWord))
+    }
+    
+    @objc func donePickingMesureWord() {
+        let row = mesureWordPicker.selectedRow(inComponent: 0)
+        let mesureWord = mesureWords[row]
+        
+        foodCard.mesureWord = mesureWord
+        mesureWordTextField.text = foodCard.mesureWord
+        mesureWordTextField.resignFirstResponder()
+    }
+    
+    // MARK: - Storge & Routine
     @objc func onChangeStorageType(sender: UISegmentedControl) {
         let index = sender.selectedSegmentIndex
         print("已選取儲存方式：\(index)")
         foodCard.storageType = index
+        delegate?.didChangeCardInfo(foodCard: foodCard)
         
     }
     
     @objc func onChangeRoutineStatus(sender: UISwitch) {
         let isRoutineItem = sender.isOn
         foodCard.isRoutineItem = isRoutineItem
+        delegate?.didChangeCardInfo(foodCard: foodCard)
     }
     
     @objc func didTappedBarcodeBtn() {
         print("didTappedBarcode")
         delegate?.didTappedBarcodeBtn()
     }
+    
+    @objc func didTappedDateBtn() {
+        print("didTappedDate")
+        expireDateTextField.becomeFirstResponder()
+    }
 }
 
+// MARK: - UITextFieldDelegate, UITextViewDelegate
 extension CardInfoCell: UITextFieldDelegate, UITextViewDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == qtyTextField, let qty = textField.text {
@@ -138,11 +159,28 @@ extension CardInfoCell: UITextFieldDelegate, UITextViewDelegate {
             print("已輸入量詞: \(mesureWord)")
             foodCard.mesureWord = mesureWord
         }
+        delegate?.didChangeCardInfo(foodCard: foodCard)
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView == noteTextView, let notes = noteTextView.text {
             foodCard.notes = notes
+            delegate?.didChangeCardInfo(foodCard: foodCard)
         }
+    }
+}
+
+// MARK: - UIPickerViewDataSource, UIPickerViewDelegate
+extension CardInfoCell: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        mesureWords.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return mesureWords[row]
     }
 }

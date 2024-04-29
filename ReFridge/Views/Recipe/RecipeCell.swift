@@ -45,7 +45,7 @@ class RecipeCell: UITableViewCell {
         }
         titleLabel.text = recipe.title
         cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
-        recipeImage.loadImage(recipe.image)
+        recipeImage.loadImage(recipe.images.first)
         
         if let ingredientStatus = ingredientStatus {
             var stringAry = [String]()

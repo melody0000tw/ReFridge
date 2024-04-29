@@ -35,6 +35,7 @@ class RecipeDetailViewController: UIViewController {
         navigationController?.navigationBar.isHidden = false
     }
     
+    // MARK: - Setups
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
@@ -42,14 +43,38 @@ class RecipeDetailViewController: UIViewController {
         tableView.RF_registerHeaderWithNib(identifier: RecipeHeaderView.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeInfoCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeIngredientCell.reuseIdentifier, bundle: nil)
-        tableView.RF_registerCellWithNib(identifier: RecipeAddToListCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeHintLabelCell.reuseIdentifier, bundle: nil)
         tableView.RF_registerCellWithNib(identifier: RecipeStepCell.reuseIdentifier, bundle: nil)
+        tableView.RF_registerCellWithNib(identifier: RecipeButtonCell.reuseIdentifier, bundle: nil)
         
         // gallery header
+        
         let galleryView = RecipeGalleryView()
         guard let recipe = self.recipe else { return }
-        galleryView.images = [recipe.image]
-        tableView.tableHeaderView = galleryView
+        galleryView.images = recipe.images
+        
+        let headerView = UIView()
+        headerView.addSubview(galleryView)
+        galleryView.snp.makeConstraints { make in
+            make.edges.equalTo(headerView.snp.edges)
+        }
+        
+        let cardView = UIView()
+        cardView.backgroundColor = .white
+        cardView.layer.cornerRadius = 24
+        cardView.dropShadow(radius: 5)
+        headerView.clipsToBounds = true
+        headerView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.width.equalTo(headerView.snp.width)
+            make.top.equalTo(headerView.snp.bottom).offset(-24)
+            make.height.equalTo(60)
+        }
+        
+        
+        
+//        tableView.tableHeaderView = galleryView
+        tableView.tableHeaderView = headerView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 500)
     }
     
@@ -111,6 +136,7 @@ class RecipeDetailViewController: UIViewController {
                     switch result {
                     case .success:
                         print("adding type: \(item.typeId) successed!")
+                        presentAlert(title: "加入成功", description: "已將缺少食材加入購物清單", image: UIImage(systemName: "checkmark.circle"))
                     case .failure(let error):
                         print("error: \(error)")
                     }
@@ -135,7 +161,7 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             return 1
         case 2:
             if let recipe = recipe {
-                return recipe.steps.count
+                return recipe.steps.count + 1
             }
             return 1
         default:
@@ -154,7 +180,6 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 return UITableViewCell()
             }
             
-            
             cell.delegate = self
             cell.titleLabel.text = recipe.title
             cell.cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
@@ -167,11 +192,8 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             
         case 1:
             if indexPath.row == recipe.ingredients.count {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeAddToListCell.reuseIdentifier, for: indexPath) as? RecipeAddToListCell else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeHintLabelCell.reuseIdentifier, for: indexPath) as? RecipeHintLabelCell else {
                     return UITableViewCell()
-                }
-                cell.onClickAddToList = {
-                    self.addToList()
                 }
                 return cell
             }
@@ -195,6 +217,13 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             return cell
             
         default:
+            if indexPath.row == recipe.steps.count {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeButtonCell.reuseIdentifier, for: indexPath) as? RecipeButtonCell else {
+                    return UITableViewCell()
+                }
+                cell.delegate = self
+                return cell
+            }
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeStepCell.reuseIdentifier, for: indexPath) as? RecipeStepCell else {
                 return UITableViewCell()
             }
@@ -213,14 +242,22 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
                 print("cannot get tableview section header")
                 return nil
             }
+            if section != 1 {
+                header.addToListBtn.isHidden = true
+            }
+            header.delegate = self
             header.titleLabel.text = sections[section - 1]
+            if let ingredientStatus = ingredientStatus {
+                header.toggleAddToListBtn(isAllSet: ingredientStatus.lackTypes.isEmpty)
+            }
+            
             return header
         }
         return nil
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0 : 80
+        return section == 0 ? 0 : 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -233,9 +270,36 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             cell.toggleButton()
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0.1 * Double(indexPath.row)) {
+            cell.alpha = 1
+        }
+    }
 }
 
-extension RecipeDetailViewController: RecipeInfoCellDelegate {
+extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate, RecipeButtonCellDelegate {
+    func didTappedFinishBtn() {
+        print("finished")
+        Task {
+            guard let recipe = recipe else { return }
+            await firestoreManager.addFinishedRecipe(by: recipe.recipeId) { result in
+                switch result {
+                case .success:
+                    print("成功加入完成食譜清單")
+                    presentAlert(title: "加入成功", description: "已將食譜加入完成清單", image: UIImage(systemName: "checkmark.circle"))
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func didTappedAddToList() {
+        addToList()
+    }
+    
     func didTappedLikeBtn() {
         // 確認現在狀態
         isLiked = isLiked ? false : true
@@ -269,6 +333,4 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate {
             }
         }
     }
-    
-    
 }

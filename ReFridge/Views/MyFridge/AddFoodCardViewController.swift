@@ -18,31 +18,33 @@ enum FoodCardMode {
 class AddFoodCardViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
+    @IBOutlet weak var btnViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonsView: UIView!
     @IBOutlet weak var deleteByThrownBtn: UIButton!
     @IBOutlet weak var deleteByConsumedBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    
-//    @IBAction func deleteByThrown(_ sender: Any) {
-//        changeScore(deleteWay: .thrown)
-//        deleteData()
-//    }
-//    @IBAction func deleteByFinished(_ sender: Any) {
-//        changeScore(deleteWay: .consumed)
-//        deleteData()
-//    }
     
     let typeVC = FoodTypeViewController()
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
+    var foodCard = FoodCard()
+    var mode = FoodCardMode.adding
+    var typeViewIsOpen = true
+    var onChangeFoodCard: ((FoodCard) -> Void)? // for editingBatch
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
         setupTypeView()
         setupNavigationView()
         setupDeleteBtns()
-        toggleDeleteBtns()
+        toggleBtnView()
         self.tabBarController?.tabBar.isHidden = true
+        if mode == .editing {
+            typeViewIsOpen = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,10 +52,7 @@ class AddFoodCardViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    var foodCard = FoodCard()
-    var mode = FoodCardMode.adding
-    var onChangeFoodCard: ((FoodCard) -> Void)?
-    
+    // MARK: - Setups
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
@@ -63,6 +62,8 @@ class AddFoodCardViewController: UIViewController {
             foodCard.name = foodType.typeName
             foodCard.iconName = foodType.typeIcon
             updateCardInfoCell()
+            typeViewIsOpen = !typeViewIsOpen
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
     }
     
@@ -94,12 +95,12 @@ class AddFoodCardViewController: UIViewController {
         deleteByConsumedBtn.addTarget(self, action: #selector(didTappedDelete(sender:)), for: .touchUpInside)
     }
     
-    private func toggleDeleteBtns() {
-        deleteByThrownBtn.isEnabled = false
-        deleteByConsumedBtn.isEnabled = false
+    private func toggleBtnView() {
+        btnViewHeightConstraint.constant = 0
+        buttonsView.isHidden = true
         if mode == .editing {
-            deleteByThrownBtn.isEnabled = true
-            deleteByConsumedBtn.isEnabled = true
+            btnViewHeightConstraint.constant = 60
+            buttonsView.isHidden = false
         }
     }
     
@@ -110,24 +111,9 @@ class AddFoodCardViewController: UIViewController {
             return
         }
         typeCell.nameLabel.text = foodCard.name
-//        typeCell.typeViewIsOpen = false
-        typeCell.toggleTypeView()
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
-    
-    // 應該要在點擊save之後重新更新表單
-//    private func updateFoodCard() {
-//        guard let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardInfoCell
-//        else {
-//            print("update Food Card failed")
-//            return
-//        }
-//        
-//        let barcode = cell.barcodeTextField.text
-//        let expiredDate  = cell.foodCard.expireDate
-//        let qty = Int(cell.qtyTextField.text) ?? 1
-//    }
     
     // MARK: - Data
     @objc func saveData() {
@@ -142,7 +128,7 @@ class AddFoodCardViewController: UIViewController {
                 print("did not set closure")
                 return
             }
-            
+            view.endEditing(true)
             onChangeFoodCard(foodCard)
             self.navigationController?.popViewController(animated: true)
             
@@ -156,6 +142,22 @@ class AddFoodCardViewController: UIViewController {
     // edit or adding
     private func saveFoodCard() {
         view.endEditing(true)
+        guard foodCard.name != "" else {
+            print("尚未建立卡卡")
+            typeViewIsOpen = true
+            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
+                return
+            }
+            cell.nameLabel.text = "尚未選取食物種類"
+            cell.nameLabel.textColor = .red
+//            typeVC.selectTypeBtn.backgroundColor = .red
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.typeVC.selectTypeBtn.clickBounce()
+            }
+            return
+        }
+        
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
         
         Task {
@@ -195,6 +197,7 @@ class AddFoodCardViewController: UIViewController {
                     switch result {
                     case .success:
                         print("Document successfully delete!")
+                        presentAlert(title: "刪除成功", description: "已將小卡從冰箱中刪除", image: UIImage(systemName: "checkmark.circle"))
                         DispatchQueue.main.async {
                             self.navigationController?.popViewController(animated: true)
                         }
@@ -257,6 +260,8 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
                 cell.nameLabel.text = foodCard.name == "" ? "請選取食物種類" : foodCard.name
+                cell.nameLabel.textColor = .darkGray
+                cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
             }
         }
@@ -282,6 +287,7 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     }
     
     func didChangeCardInfo(foodCard: FoodCard) {
+        
         self.foodCard.qty = foodCard.qty
         self.foodCard.mesureWord = foodCard.mesureWord
         self.foodCard.expireDate = foodCard.expireDate
@@ -289,11 +295,13 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         self.foodCard.storageType = foodCard.storageType
         self.foodCard.isRoutineItem = foodCard.isRoutineItem
         self.foodCard.notes = foodCard.notes
+        print("=============== vc didChangeCardInfo foodCard: \(self.foodCard)")
     }
     
     func didToggleTypeView() {
         print("didToggle")
-        tableView.reloadData()
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
 }
 

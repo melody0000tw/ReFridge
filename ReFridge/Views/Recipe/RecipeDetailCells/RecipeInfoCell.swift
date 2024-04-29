@@ -24,7 +24,8 @@ class RecipeInfoCell: UITableViewCell {
     @IBOutlet weak var cookingTimeLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    @IBAction func didTappedLikeBtn(_ sender: Any) {
+    @IBAction func didTappedLikeBtn(_ sender: UIButton) {
+        sender.clickBounceForSmallitem()
         delegate?.didTappedLikeBtn()
     }
     

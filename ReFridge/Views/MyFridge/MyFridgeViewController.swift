@@ -8,6 +8,7 @@
 import UIKit
 import VisionKit
 import Vision
+import Lottie
 
 class MyFridgeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
@@ -15,8 +16,10 @@ class MyFridgeViewController: UIViewController {
     var allCards = [FoodCard]()
     var showCards = [FoodCard]() {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+            DispatchQueue.main.async { [self] in
+                collectionView.isHidden = false
+                collectionView.reloadData()
+                emptyDataManager.toggleLabel(shouldShow: (self.showCards.count == 0))
             }
         }
     }
@@ -30,6 +33,9 @@ class MyFridgeViewController: UIViewController {
     @IBOutlet weak var filterBarButton: UIBarButtonItem!
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關資料")
+    private lazy var refreshControl = RefresherManager()
     
     @IBAction func searchByBarCode(_ sender: Any) {
         print("search by bar code")
@@ -48,14 +54,18 @@ class MyFridgeViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        collectionView.isHidden = true
         fetchData()
     }
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        collectionView.refreshControl?.beginRefreshing()
+//        fetchData()
+//    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scanResult = sender as? ScanResult,
-           let scanResultVC = segue.destination as? ScanResultViewController {
-            scanResultVC.scanResult = scanResult
-        }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        collectionView.isHidden = true
     }
     
     // MARK: - Setups
@@ -69,6 +79,10 @@ class MyFridgeViewController: UIViewController {
         layout.minimumInteritemSpacing = 8
         layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         collectionView.collectionViewLayout = layout
+        
+        refreshControl.addTarget(self, action: #selector(fetchData), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        collectionView.refreshControl?.tintColor = .clear
     }
     
     private func setupSearchBar() {
@@ -116,13 +130,19 @@ class MyFridgeViewController: UIViewController {
         
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
-    
-    private func searchBarCode() {
+    private func presentScanResult(scanResult: ScanResult) {
+        guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
+            print("cannot get scanresult vc")
+            return
+        }
+        scanVC.scanResult = scanResult
+        navigationController?.pushViewController(scanVC, animated: true)
         
     }
     
     // MARK: - Data
-    private func fetchData() {
+    @objc private func fetchData() {
+        refreshControl.startRefresh()
         Task {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
@@ -130,6 +150,7 @@ class MyFridgeViewController: UIViewController {
                     print("got food cards!")
                     self.allCards = foodCards
                     filterFoodCards()
+                    refreshControl.endRefresh()
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -218,6 +239,9 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.clickBounce()
+        
         switch indexPath.item {
         case 0:
             guard let foodCardVC =
@@ -242,6 +266,14 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
         }
         
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.transform = CGAffineTransform(scaleX: 0, y: 0)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.transform = CGAffineTransform(scaleX: 1, y: 1)
+        }
+    }
 }
 
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
@@ -256,7 +288,7 @@ extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationC
                     print("無法辨識圖片")
                     return
                 }
-                self.performSegue(withIdentifier: "showScanResultVC", sender: scanResult)
+                self.presentScanResult(scanResult: scanResult)
                 
             })
         }

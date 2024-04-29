@@ -8,6 +8,7 @@
 import UIKit
 
 class RecipeViewController: UIViewController {
+    
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
     
@@ -17,7 +18,9 @@ class RecipeViewController: UIViewController {
     var showRecipes: [Recipe] = [] {
         didSet {
             DispatchQueue.main.async {
+                self.tableView.isHidden = false
                 self.tableView.reloadData()
+                self.emptyDataManager.toggleLabel(shouldShow: (self.showRecipes.count == 0))
             }
         }
     }
@@ -37,6 +40,11 @@ class RecipeViewController: UIViewController {
     }
     
     var likedRecipeId = [String]()
+    var finishedRecipeId = [String]()
+    
+    lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關食譜")
+    
+    private lazy var refreshControl = RefresherManager()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
@@ -50,12 +58,22 @@ class RecipeViewController: UIViewController {
         super.viewWillAppear(animated)
         fetchRecipes()
         fetchLikedRecipeId()
+        fetchFinishedRecipeId()
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        tableView.isHidden = true
     }
     
     // MARK: - Setups
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        refreshControl.addTarget(self, action: #selector(fetchRecipes), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        tableView.refreshControl?.tintColor = .clear
     }
     
     private func setupSearchBar() {
@@ -70,32 +88,38 @@ class RecipeViewController: UIViewController {
         filterBtn.primaryAction = nil
         
         filterBtn.menu = UIMenu(title: "篩選方式", options: .singleSelection, children: [
-            UIAction(title: "顯示全部", handler: { _ in
+            UIAction(title: "顯示全部食譜", handler: { _ in
                 self.recipeFilter = .all
-            }),
-            UIAction(title: "顯示收藏食譜", handler: { _ in
-                self.recipeFilter = .favorite
             }),
             UIAction(title: "推薦清冰箱食譜", handler: { _ in
                 self.recipeFilter = .fit
+            }),
+            UIAction(title: "已收藏食譜", handler: { _ in
+                self.recipeFilter = .favorite
+            }),
+            UIAction(title: "已完成食譜", handler: { _ in
+                self.recipeFilter = .finished
             })
         ])
     }
     
     // MARK: - Data
-    private func fetchRecipes() {
+    @objc private func fetchRecipes() {
+        refreshControl.startRefresh()
         Task {
             await firestoreManager.fetchRecipes { result in
                 switch result {
                 case .success(let recipes):
                     print("got recipes! \(recipes)")
+                    refreshControl.endRefresh()
                     self.allRecipes = recipes
-                    self.showRecipes = recipes
+//                    self.showRecipes = recipes
                     checkAllStatus(recipes: self.allRecipes) { dict in
                         self.ingredientsDict = dict
                         print("ingredientsDicts fetch 成功")
+                        self.filterRecipes()
                     }
-                    filterRecipes()
+                    
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -110,6 +134,21 @@ class RecipeViewController: UIViewController {
                 case .success(let ids):
                     print("got id: \(ids.count)")
                     likedRecipeId = ids
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+                
+            }
+        }
+    }
+    
+    private func fetchFinishedRecipeId() {
+        Task {
+            await firestoreManager.fetchFinishedRecipeId { result in
+                switch result {
+                case .success(let ids):
+                    print("got id: \(ids.count)")
+                    finishedRecipeId = ids
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -199,6 +238,8 @@ class RecipeViewController: UIViewController {
             getLikedRecipes()
         case .fit:
             getFitRecipes(over: 0.5)
+        case .finished:
+            getFinishedRecipes()
         }
     }
     
@@ -226,6 +267,19 @@ class RecipeViewController: UIViewController {
         
         let filteredRecipes = allRecipes.filter { recipe in
             likedRecipeId.contains([recipe.recipeId])
+        }
+        
+        showRecipes = filteredRecipes
+    }
+    
+    private func getFinishedRecipes() {
+        guard allRecipes.count != 0 else {
+            print("all recipe is empty")
+            return
+        }
+        
+        let filteredRecipes = allRecipes.filter { recipe in
+            finishedRecipeId.contains([recipe.recipeId])
         }
         
         showRecipes = filteredRecipes
@@ -265,6 +319,14 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recipe = showRecipes[indexPath.row]
         performSegue(withIdentifier: "showRecipeDetailVC", sender: recipe)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.transform = CGAffineTransform(translationX: 0, y: cell.contentView.frame.height)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.transform = CGAffineTransform(translationX: cell.contentView.frame.width, y: cell.contentView.frame.height)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

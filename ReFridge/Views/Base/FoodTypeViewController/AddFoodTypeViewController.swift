@@ -10,7 +10,6 @@ import UIKit
 class AddFoodTypeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
-    
     let images = ["carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other"]
     
     lazy var containerView = UIView()

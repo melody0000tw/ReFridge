@@ -48,12 +48,11 @@ class FridgeBarChartView: BarChartView {
         return entries
     }
     
-    func configurePieCart(foodCards: [FoodCard]) {
+    func configureBarCart(foodCards: [FoodCard]) {
         let entries = createEntries(foodCards: foodCards)
         
         let dataSet = BarChartDataSet(entries: entries, label: "食物數量")
         dataSet.colors = [UIColor(hex: "EFBC9B"), UIColor(hex: "EBD9B4"), UIColor(hex: "9DBC98"), UIColor(hex: "638889"), UIColor(hex: "9CAFAA")]
-//        dataSet.highlightEnabled = false
         dataSet.valueFont = UIFont.systemFont(ofSize: 13)
         
         let formatter = NumberFormatter()
@@ -69,7 +68,7 @@ class FridgeBarChartView: BarChartView {
         xAxis.drawAxisLineEnabled = true
         xAxis.centerAxisLabelsEnabled = true
         xAxis.labelPosition = .bottom
-        xAxis.labelFont = UIFont.systemFont(ofSize: 13)
+        xAxis.labelFont = UIFont.systemFont(ofSize: 12)
         
         leftAxis.drawGridLinesEnabled = false
         leftAxis.enabled = false
@@ -81,6 +80,7 @@ class FridgeBarChartView: BarChartView {
         doubleTapToZoomEnabled = false
         
         legend.enabled = false
+        
     }
 
 }

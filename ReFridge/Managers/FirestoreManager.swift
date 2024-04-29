@@ -15,6 +15,7 @@ class FirestoreManager {
     lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
     lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
     lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
+    lazy var finishedRecipesRef = database.collection("users").document("userId").collection("finishedRecipes")
     lazy var scoresRef = database.collection("users").document("userId").collection("cherishScores")
 
     private init() {
@@ -237,21 +238,37 @@ class FirestoreManager {
         }
     }
     
+    func addFinishedRecipe(by recipeId: String, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            let docRef = finishedRecipesRef.document(recipeId)
+            let data: [String: Any] = [ "recipeId": recipeId ]
+            try await docRef.setData(data)
+            completion(.success(recipeId))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func fetchFinishedRecipeId(completion: (Result<[String], Error>) -> Void ) async {
+        do {
+            let querySnapshot = try await finishedRecipesRef.getDocuments()
+            var finishedRecipes = [String]()
+            for document in querySnapshot.documents {
+                let recipeid = document.documentID
+                finishedRecipes.append(recipeid)
+            }
+            completion(.success(finishedRecipes))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    
+    
     // MARK: - Shopping List
     func addListItem(_ item: ListItem, completion: (Result<Any?, Error>) -> Void) async {
         do {
-//            let docRef = shoppingListRef.document()
             let docRef = shoppingListRef.document(item.itemId)
-//            let data: [String: Any] = [
-//                "itemId": docRef.documentID,
-//                "typeId": item.typeId,
-//                "qty": item.qty,
-//                "checkStatus": item.checkStatus,
-//                "isRoutineItem": item.isRoutineItem,
-//                "routinePeriod": item.routinePeriod,
-//                "routineStartTime": item.routineStartTime
-//            ]
-//            try await docRef.setData(data)
             try docRef.setData(from: item)
             completion(.success(nil))
         } catch {
