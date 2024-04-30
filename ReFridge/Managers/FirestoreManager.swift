@@ -17,6 +17,7 @@ class FirestoreManager {
     
     private lazy var uid = accountManager.user?.uid
     
+    lazy var userInfoRef = database.collection("users").document(uid!).collection("userInfo").document("data")
     lazy var foodCardsRef = database.collection("users").document(uid!).collection("foodCards")
     lazy var foodTypesRef = database.collection("users").document(uid!).collection("foodTypes")
     lazy var shoppingListRef = database.collection("users").document(uid!).collection("shoppingList")
@@ -26,6 +27,37 @@ class FirestoreManager {
 
     private init() {
         database = Firestore.firestore()
+    }
+    
+    // MARK: - UserInfo
+    func fetchUserInfo(completion: (Result<UserInfo, Error>) -> Void) async {
+        guard let uid = uid, let user = accountManager.user else {
+            return
+        }
+        do {
+            let querySnapshot = try await userInfoRef.getDocument()
+            if querySnapshot.exists {
+                print("document exsist")
+                let userInfo = try querySnapshot.data(as: UserInfo.self)
+                completion(.success(userInfo))
+            } else {
+                print("document not exxist, createing a default user Info...")
+                let defaultUserInfo = UserInfo(uid: uid, name: user.displayName ?? "unkown", email: user.email ?? "unknown", avatar: "avocadoAvatar") // Customize with default values
+                try userInfoRef.setData(from: defaultUserInfo)
+                completion(.success(defaultUserInfo))
+            }
+            
+//            guard let userInfo = try await userInfoRef.getDocument(as: UserInfo.self)
+//            if let userInfo = userInfo {
+//                completion(.success(userInfo))
+//            } else {
+//                let defaultUserInfo = UserInfo(uid: uid, name: user.displayName ?? "unkown", email: user.email ?? "unknown", avatar: "avocadoAvatar") // Customize with default values
+//                try userInfoRef.setData(from: defaultUserInfo)
+//                completion(.success(defaultUserInfo))
+//            }
+        } catch {
+            completion(.failure(error))
+        }
     }
     
     // MARK: - Food Type

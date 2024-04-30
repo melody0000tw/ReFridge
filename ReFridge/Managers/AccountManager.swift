@@ -15,7 +15,7 @@ class AccountManager {
     
     var user: User?
     let firebaseAuth = Auth.auth()
-    var currentNonce: String?
+    private var currentNonce: String?
     
     private init() {}
     

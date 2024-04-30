@@ -36,6 +36,7 @@
 		EB5A31252BDF88C30002DFE6 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5A31242BDF88C30002DFE6 /* TabBarController.swift */; };
 		EB5A31272BDF89CC0002DFE6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5A31262BDF89CC0002DFE6 /* LoginViewController.swift */; };
 		EB5A312A2BDFAE7E0002DFE6 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */; };
+		EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */; };
 		EB84D43A2BD24661008E274C /* Scores.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB84D4392BD24661008E274C /* Scores.swift */; };
 		EB84D43C2BD2862A008E274C /* AddFoodTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB84D43B2BD2862A008E274C /* AddFoodTypeViewController.swift */; };
 		EB84D4402BD29AA7008E274C /* TypeImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB84D43E2BD29AA7008E274C /* TypeImageCell.swift */; };
@@ -125,6 +126,7 @@
 		EB5A31262BDF89CC0002DFE6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EB5A31282BDF8C230002DFE6 /* ReFridge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReFridge.entitlements; sourceTree = "<group>"; };
 		EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		EB84D4392BD24661008E274C /* Scores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scores.swift; sourceTree = "<group>"; };
 		EB84D43B2BD2862A008E274C /* AddFoodTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodTypeViewController.swift; sourceTree = "<group>"; };
 		EB84D43E2BD29AA7008E274C /* TypeImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeImageCell.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 				EB425BE52BD145DD000C75A6 /* ChartCounts.swift */,
 				EB84D4392BD24661008E274C /* Scores.swift */,
 				EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */,
+				EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -647,6 +650,7 @@
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
 				EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */,
 				EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */,
+				EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */,
 				EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */,
 				EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */,
 				EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */,

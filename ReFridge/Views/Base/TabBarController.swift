@@ -37,9 +37,17 @@ class TabBarController: UITabBarController {
             }
         }
         
-        
         // fetch 看看有沒有 user Name or avatar 資料，沒有的話就顯示要選擇的內容！
-        
+        Task {
+            await firestoreManager.fetchUserInfo { result in
+                switch result {
+                case .success(let userInfo):
+                    print("已取得 userInfo : \(userInfo)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
 
     private func presentLoginPage() {

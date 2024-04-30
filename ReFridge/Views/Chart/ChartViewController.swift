@@ -50,7 +50,7 @@ class ChartViewController: UIViewController {
         setupButtons()
         setupChartViews()
         barChartView.isHidden = true
-        fetchUserData()
+        fetchUserInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -204,18 +204,19 @@ class ChartViewController: UIViewController {
     }
     
     // MARK: - Data
-    private func fetchUserData() {
-        guard let user = accountManager.user else {
-            return
+    private func fetchUserInfo() {
+        Task {
+            await firestoreManager.fetchUserInfo { result in
+                switch result {
+                case .success(let userInfo):
+                    DispatchQueue.main.async {
+                        self.headerView.nameLabel.text = "Hello, \(userInfo.name)!"
+                    }
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            }
         }
-        headerView.nameLabel.text = "Hello, \(user.displayName ?? "stranger")!"
-//        accountManager.getCurrentUser { user in
-//            guard let user = user else {
-//                print("cannot find current user") // 網路連線錯誤
-//                return
-//            }
-//            headerView.nameLabel.text = "Hello, \(user.displayName ?? "stranger")!"
-//        }
     }
     
     private func fetchData() {
