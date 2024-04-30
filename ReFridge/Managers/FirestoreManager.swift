@@ -9,14 +9,20 @@ import Foundation
 import FirebaseFirestore
 
 class FirestoreManager {
+    
     static let shared = FirestoreManager()
+    private let accountManager = AccountManager.share
+    
     let database: Firestore
-    lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
-    lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
-    lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
-    lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
-    lazy var finishedRecipesRef = database.collection("users").document("userId").collection("finishedRecipes")
-    lazy var scoresRef = database.collection("users").document("userId").collection("cherishScores")
+    
+    private lazy var uid = accountManager.user?.uid
+    
+    lazy var foodCardsRef = database.collection("users").document(uid!).collection("foodCards")
+    lazy var foodTypesRef = database.collection("users").document(uid!).collection("foodTypes")
+    lazy var shoppingListRef = database.collection("users").document(uid!).collection("shoppingList")
+    lazy var likedRecipesRef = database.collection("users").document(uid!).collection("likedRecipes")
+    lazy var finishedRecipesRef = database.collection("users").document(uid!).collection("finishedRecipes")
+    lazy var scoresRef = database.collection("users").document(uid!).collection("scores")
 
     private init() {
         database = Firestore.firestore()
@@ -92,6 +98,10 @@ class FirestoreManager {
     
     // MARK: - Food Card
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
+        guard let uid = uid else {
+            print("cannot get uid")
+            return
+        }
         do {
             let querySnapshot = try await foodCardsRef.getDocuments()
             var foodCards = [FoodCard]()
@@ -108,21 +118,6 @@ class FirestoreManager {
     func saveFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {
             let docRef = foodCardsRef.document(foodCard.cardId)
-//            let docRef
-//            let data: [String: Any] = [
-//                "cardId": foodCard.cardId,
-//                "name": foodCard.name,
-//                "categoryId": foodCard.categoryId,
-//                "typeId": foodCard.typeId,
-//                "iconName": foodCard.iconName,
-//                "qty": foodCard.qty,
-//                "createDate": foodCard.createDate,
-//                "expireDate": foodCard.expireDate,
-//                "notificationTime": foodCard.notificationTime,
-//                "barCode": foodCard.barCode,
-//                "storageType": foodCard.storageType,
-//                "notes": foodCard.notes
-//            ]
             try docRef.setData(from: foodCard)
             completion(.success(foodCard))
         } catch {
@@ -160,12 +155,39 @@ class FirestoreManager {
             let consumedNum = try await scoresRef.document("consumed").getDocument().get("number")
             let thrownNum = try await scoresRef.document("thrown").getDocument().get("number")
             guard let consumedNum = consumedNum as? Int, let thrownNum = thrownNum as? Int else {
-                print("cannot get the score number")
+                // set up initial store 0:0
+                print("setting up initial score...")
+                await setupInitialScores { result in
+                    switch result {
+                    case .success(let scores):
+                        completion(.success(scores))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                }
                 return
             }
             
             let scores = Scores(consumed: consumedNum, thrown: thrownNum)
             completion(.success(scores))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func setupInitialScores(completion: (Result<Scores, Error>) -> Void) async {
+        do {
+            let initialScore = Scores(consumed: 0, thrown: 0)
+            let consumedRef = scoresRef.document("consumed")
+            let consumedData: [String: Any] = ["number": initialScore.consumed]
+            
+            let thrownRef = scoresRef.document("thrown")
+            let thrownData: [String: Any] = ["number": initialScore.thrown]
+            
+            try await consumedRef.setData(consumedData)
+            try await thrownRef.setData(thrownData)
+            
+            completion(.success(initialScore))
         } catch {
             completion(.failure(error))
         }

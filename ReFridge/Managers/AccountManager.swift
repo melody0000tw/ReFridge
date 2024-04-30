@@ -13,17 +13,18 @@ import AuthenticationServices
 class AccountManager {
     static let share = AccountManager()
     
+    var user: User?
     let firebaseAuth = Auth.auth()
     var currentNonce: String?
     
     private init() {}
     
-    func getCurrentUser(user: (User?) -> Void ) {
+    func getCurrentUser() -> User? {
         guard let currentUser = firebaseAuth.currentUser else {
-            user(nil)
-            return
+            return nil
         }
-        user(currentUser)
+        self.user = currentUser
+        return currentUser
     }
     
     func signoutFireBase(completion: (Result<Any?, Error>) -> Void) {
@@ -118,7 +119,4 @@ class AccountManager {
 
       return hashString
     }
-
-    
-    
 }

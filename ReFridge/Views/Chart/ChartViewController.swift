@@ -205,13 +205,17 @@ class ChartViewController: UIViewController {
     
     // MARK: - Data
     private func fetchUserData() {
-        accountManager.getCurrentUser { user in
-            guard let user = user else {
-                print("cannot find current user") // 網路連線錯誤
-                return
-            }
-            headerView.nameLabel.text = "Hello, \(user.displayName ?? "stranger")!"
+        guard let user = accountManager.user else {
+            return
         }
+        headerView.nameLabel.text = "Hello, \(user.displayName ?? "stranger")!"
+//        accountManager.getCurrentUser { user in
+//            guard let user = user else {
+//                print("cannot find current user") // 網路連線錯誤
+//                return
+//            }
+//            headerView.nameLabel.text = "Hello, \(user.displayName ?? "stranger")!"
+//        }
     }
     
     private func fetchData() {
@@ -234,16 +238,17 @@ class ChartViewController: UIViewController {
                 switch result {
                 case .success(let score):
                     let total = score.consumed + score.thrown
-                    let scoreDouble = (Double(score.consumed) / Double(total)).rounding(toDecimal: 2)
-                    let scoreInt = Int(scoreDouble * 100)
+                    var scoreDouble = 0.0
+                    
+                    if total != 0 {
+                        scoreDouble = (Double(score.consumed) / Double(total)).rounding(toDecimal: 2)
+                    }
                     print("consume: \(score.consumed), thrown: \(score.thrown)")
-                    print("score: \(scoreInt)%")
                     DispatchQueue.main.async { [self] in
                         headerView.finishedLabel.text = String(score.consumed)
                         headerView.thrownLabel.text = String(score.thrown)
                         headerView.progressView.setProgress(Float(scoreDouble), animated: true)
                     }
-                    
                 case .failure(let error):
                     print("error: \(error)")
                 }

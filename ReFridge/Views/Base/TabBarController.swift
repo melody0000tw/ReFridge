@@ -12,28 +12,37 @@ import FirebaseAuth
 
 class TabBarController: UITabBarController {
     private let accountManager = AccountManager.share
+    private let firestoreManager = FirestoreManager.shared
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         checkLoginStatus()
     }
     
     func checkLoginStatus() {
-        accountManager.getCurrentUser { user in
-            guard let user = user else {
-                presentLoginPage()
-                return
-            }
-            print("Welcome! \(user.displayName ?? "stranger!")")
+        guard let currentUser = accountManager.getCurrentUser() else {
+            presentLoginPage()
+            return
         }
+        print("Welcome! \(currentUser.displayName ?? "stranger!")")
+        //  fetch 看看有沒有 score，沒有的話就建立
+        Task {
+            await firestoreManager.fetchScores { result in
+                switch result {
+                case .success(let scores):
+                    print("已取得使用者分數 score: \(scores)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+        
+        // fetch 看看有沒有 user Name or avatar 資料，沒有的話就顯示要選擇的內容！
+        
     }
 
-    
     private func presentLoginPage() {
-//        guard let loginVC = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") else {
-//            return
-//        }
         let loginVC = LoginViewController()
         loginVC.modalPresentationStyle = .fullScreen
         self.present(loginVC, animated: true)
