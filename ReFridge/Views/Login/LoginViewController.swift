@@ -67,7 +67,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
 
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
       
-      accountManager.didCompleteWithAppleAuth(controller: controller, authorization: authorization) { result in
+      accountManager.appleSignIn(controller: controller, authorization: authorization) { result in
           switch result {
           case .success(let user):
               print("UID: \(user.uid), user name: \(user.displayName ?? "unknown"), email: \(user.email ?? "unknown")")
