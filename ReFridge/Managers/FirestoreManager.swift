@@ -15,13 +15,22 @@ class FirestoreManager {
     
     let database: Firestore
     
-    private lazy var uid = accountManager.user?.uid
+    var uid: String? {
+        didSet {
+            if let uid = uid {
+                // Update all references when UID is set
+                updateDatabaseReferences(uid: uid)
+            }
+        }
+    }
     
-    lazy var userInfoRef = database.collection("users").document(uid!).collection("userInfo").document("data")
-    lazy var foodCardsRef = database.collection("users").document(uid!).collection("foodCards")
-    lazy var foodTypesRef = database.collection("users").document(uid!).collection("foodTypes")
-    lazy var shoppingListRef = database.collection("users").document(uid!).collection("shoppingList")
-    lazy var likedRecipesRef = database.collection("users").document(uid!).collection("likedRecipes")
+//    private lazy var uid = accountManager.user?.uid
+    
+    lazy var userInfoRef = database.collection("users").document("userId").collection("userInfo").document("data")
+    lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
+    lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
+    lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
+    lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
     lazy var finishedRecipesRef = database.collection("users").document(uid!).collection("finishedRecipes")
     lazy var scoresRef = database.collection("users").document(uid!).collection("scores")
 
@@ -30,10 +39,25 @@ class FirestoreManager {
     }
     
     // MARK: - UserInfo
-    func fetchUserInfo(completion: (Result<UserInfo, Error>) -> Void) async {
-        guard let uid = uid, let user = accountManager.user else {
-            return
+    func updateDatabaseReferences(uid: String) {
+            userInfoRef = database.collection("users").document(uid).collection("userInfo").document("data")
+            foodCardsRef = database.collection("users").document(uid).collection("foodCards")
+            foodTypesRef = database.collection("users").document(uid).collection("foodTypes")
+            shoppingListRef = database.collection("users").document(uid).collection("shoppingList")
+            likedRecipesRef = database.collection("users").document(uid).collection("likedRecipes")
+            finishedRecipesRef = database.collection("users").document(uid).collection("finishedRecipes")
+            scoresRef = database.collection("users").document(uid).collection("scores")
         }
+        
+    func configure(withUID uid: String) {
+        self.uid = uid
+    }
+    
+    
+    func fetchUserInfo(completion: (Result<UserInfo, Error>) -> Void) async {
+//        guard let uid = uid, let user = accountManager.user else {
+//            return
+//        }
         do {
             let querySnapshot = try await userInfoRef.getDocument()
             if querySnapshot.exists {
@@ -42,7 +66,12 @@ class FirestoreManager {
                 completion(.success(userInfo))
             } else {
                 print("document not exxist, createing a default user Info...")
-                let defaultUserInfo = UserInfo(uid: uid, name: user.displayName ?? "unkown", email: user.email ?? "unknown", avatar: "avocadoAvatar") // Customize with default values
+                guard let user = AccountManager.share.getCurrentUser() else {
+                    print("cannot get user")
+                    return
+                }
+                
+                let defaultUserInfo = UserInfo(uid: user.uid, name: user.displayName ?? "unkown", email: user.email ?? "unknown", avatar: "avocadoAvatar") // Customize with default values
                 try userInfoRef.setData(from: defaultUserInfo)
                 completion(.success(defaultUserInfo))
             }

@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  ReFridge
 //
-//  Created by Melody Lee on 2024/4/29.
+//  Created by Melody Lee on 2024/5/1.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import CryptoKit
 import FirebaseAuth
 
 class LoginViewController: UIViewController {
-    
+    let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
 
     override func viewDidLoad() {
@@ -45,12 +45,39 @@ class LoginViewController: UIViewController {
         }
     }
     
+    private func configureUserInfo(user: User) {
+        firestoreManager.configure(withUID: user.uid)
+        Task {
+            await firestoreManager.fetchScores { result in
+                switch result {
+                case .success(let scores):
+                    print("已取得使用者分數 score: \(scores)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        Task {
+            await firestoreManager.fetchUserInfo { result in
+                switch result {
+                case .success(let userInfo):
+                    print("已取得 userInfo : \(userInfo)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+        }
+        
+    }
     
-//    @IBAction func didTappedSignInWithApple(_ sender: Any) {
-//        print("sign in with apple")
-//        performAppleSignIn()
-//        
-//    }
+    
+    private func presentMyFridgeVC() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let initialViewController = storyboard.instantiateInitialViewController() {
+            initialViewController.modalPresentationStyle = .fullScreen
+            present(initialViewController, animated: true)
+        }
+    }
     
     @objc func performAppleSignIn() {
         let request = accountManager.createAppleIdRequest()
@@ -67,11 +94,13 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
 
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
       
-      accountManager.appleSignIn(controller: controller, authorization: authorization) { result in
+      accountManager.signInWithApple(controller: controller, authorization: authorization) { result in
           switch result {
           case .success(let user):
-              print("UID: \(user.uid), user name: \(user.displayName ?? "unknown"), email: \(user.email ?? "unknown")")
-              self.presentingViewController?.dismiss(animated: true)
+              print(" 已成功登入，UID: \(user.uid)")
+              self.configureUserInfo(user: user)
+              self.presentMyFridgeVC()
+              
           case .failure(let error):
               print(error.localizedDescription)
           }

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import Charts
 import FirebaseAuth
+import AuthenticationServices
 
 class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
@@ -193,6 +194,7 @@ class ChartViewController: UIViewController {
         }
         let deleteAccountAction = UIAlertAction(title: "刪除帳號", style: .destructive) { action in
             print("我要刪除帳號！！！")
+            self.presentDeletionAlert()
         }
         let cancelAction = UIAlertAction(title: "取消", style: .cancel)
         
@@ -201,6 +203,36 @@ class ChartViewController: UIViewController {
         controller.addAction(cancelAction)
         
         present(controller, animated: true)
+    }
+    
+    private func presentDeletionAlert() {
+        let controller = UIAlertController(title: "確認刪除帳戶？", message: "刪除帳戶後將無法再存取所有儲存的資料", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "確認刪除", style: .destructive) { _ in
+            self.performAccountDeletion()
+        }
+        controller.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        controller.addAction(cancelAction)
+        present(controller, animated: true)
+    }
+    
+    private func performAccountDeletion() {
+        let request = accountManager.createAppleIdRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    private func presentLoginPage() {
+        DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            if let initialViewController = storyboard.instantiateInitialViewController() {
+                initialViewController.modalPresentationStyle = .fullScreen
+                self.present(initialViewController, animated: true)
+            }
+        }
+        
     }
     
     // MARK: - Data
@@ -263,10 +295,7 @@ class ChartViewController: UIViewController {
             switch result {
             case .success:
                 print("didSignOut")
-                guard let tabBar = self.tabBarController as? TabBarController else {
-                    return
-                }
-                tabBar.checkLoginStatus()
+                self.presentLoginPage()
             case .failure(let error):
                 print(error.localizedDescription)
             }
@@ -277,5 +306,34 @@ class ChartViewController: UIViewController {
 extension ChartViewController: ProfileHeaderViewDelegate {
     func didTappedSettingBtn() {
         presentSettingSheet()
+    }
+}
+
+// MARK: - SignInWithApple
+@available(iOS 13.0, *)
+extension ChartViewController: ASAuthorizationControllerDelegate {
+
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+      
+      accountManager.deleteAppleSignInAccount(controller: controller, didCompleteWithAuthorization: authorization) { result in
+          switch result {
+          case .success:
+              print(" 已成功刪除帳戶")
+              self.presentLoginPage()
+          case .failure(let error):
+              print(error.localizedDescription)
+          }
+      }
+  }
+
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    print("Sign in with Apple errored: \(error)")
+  }
+
+}
+
+extension ChartViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
 }

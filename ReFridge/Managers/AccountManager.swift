@@ -50,7 +50,7 @@ class AccountManager {
         return request
     }
     
-    func didCompleteWithAppleAuth(controller: ASAuthorizationController, authorization: ASAuthorization, completion: @escaping (Result<User, Error>) -> Void) {
+    func signInWithApple(controller: ASAuthorizationController, authorization: ASAuthorization, completion: @escaping (Result<User, Error>) -> Void) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
@@ -84,6 +84,39 @@ class AccountManager {
                 completion(.success(user))
                 }
         }
+        
+    }
+    
+    func deleteAppleSignInAccount(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization, completion: @escaping (Result<Any?, Error>) -> Void) {
+        guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential
+          else {
+            print("Unable to retrieve AppleIDCredential")
+            return
+          }
+
+          guard let _ = currentNonce else {
+            fatalError("Invalid state: A login callback was received, but no login request was sent.")
+          }
+
+          guard let appleAuthCode = appleIDCredential.authorizationCode else {
+            print("Unable to fetch authorization code")
+            return
+          }
+
+          guard let authCodeString = String(data: appleAuthCode, encoding: .utf8) else {
+            print("Unable to serialize auth code string from data: \(appleAuthCode.debugDescription)")
+            return
+          }
+
+          Task {
+            do {
+              try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
+                try await Auth.auth().currentUser?.delete()
+                completion(.success(nil))
+            } catch {
+                completion(.failure(error))
+            }
+          }
         
     }
 
