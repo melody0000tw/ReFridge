@@ -18,13 +18,10 @@ class FirestoreManager {
     var uid: String? {
         didSet {
             if let uid = uid {
-                // Update all references when UID is set
                 updateDatabaseReferences(uid: uid)
             }
         }
     }
-    
-//    private lazy var uid = accountManager.user?.uid
     
     lazy var userInfoRef = database.collection("users").document("userId").collection("userInfo").document("data")
     lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
@@ -55,9 +52,6 @@ class FirestoreManager {
     
     
     func fetchUserInfo(completion: (Result<UserInfo, Error>) -> Void) async {
-//        guard let uid = uid, let user = accountManager.user else {
-//            return
-//        }
         do {
             let querySnapshot = try await userInfoRef.getDocument()
             if querySnapshot.exists {
@@ -71,19 +65,25 @@ class FirestoreManager {
                     return
                 }
                 
-                let defaultUserInfo = UserInfo(uid: user.uid, name: user.displayName ?? "unkown", email: user.email ?? "unknown", avatar: "avocadoAvatar") // Customize with default values
+                let defaultUserInfo = UserInfo(
+                    uid: user.uid,
+                    name: user.displayName ?? "unkown",
+                    email: user.email ?? "unknown",
+                    avatar: "avocadoAvatar",
+                    accountStatus: 1
+                )
                 try userInfoRef.setData(from: defaultUserInfo)
                 completion(.success(defaultUserInfo))
             }
-            
-//            guard let userInfo = try await userInfoRef.getDocument(as: UserInfo.self)
-//            if let userInfo = userInfo {
-//                completion(.success(userInfo))
-//            } else {
-//                let defaultUserInfo = UserInfo(uid: uid, name: user.displayName ?? "unkown", email: user.email ?? "unknown", avatar: "avocadoAvatar") // Customize with default values
-//                try userInfoRef.setData(from: defaultUserInfo)
-//                completion(.success(defaultUserInfo))
-//            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func updateUserInfo(userInfo: UserInfo, completion: (Result<Any?, Error>) -> Void) async {
+        do {
+            try userInfoRef.setData(from: userInfo)
+            completion(.success(nil))
         } catch {
             completion(.failure(error))
         }

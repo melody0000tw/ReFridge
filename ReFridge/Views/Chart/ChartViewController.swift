@@ -15,6 +15,8 @@ class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
     
+    private var userInfo: UserInfo?
+    
     private var foodCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async { [self] in
@@ -187,6 +189,7 @@ class ChartViewController: UIViewController {
         }
     }
     
+    // MARK: - Account Settings
     private func presentSettingSheet() {
         let controller = UIAlertController(title: "帳號設定", message: nil, preferredStyle: .actionSheet)
         let signOutAction = UIAlertAction(title: "登出", style: .default) { action in
@@ -232,7 +235,6 @@ class ChartViewController: UIViewController {
                 self.present(initialViewController, animated: true)
             }
         }
-        
     }
     
     // MARK: - Data
@@ -241,6 +243,7 @@ class ChartViewController: UIViewController {
             await firestoreManager.fetchUserInfo { result in
                 switch result {
                 case .success(let userInfo):
+                    self.userInfo = userInfo
                     DispatchQueue.main.async {
                         self.headerView.nameLabel.text = "Hello, \(userInfo.name)!"
                     }
@@ -301,8 +304,29 @@ class ChartViewController: UIViewController {
             }
         }
     }
+    
+    private func updateUserInfo() {
+        guard let userInfo = userInfo else {
+            print("cannot get userInfo")
+            return
+        }
+        Task {
+            await firestoreManager.updateUserInfo(userInfo: userInfo) { result in
+                switch result {
+                case .success:
+                    print("userInfo is updated: \(userInfo)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                
+            }
+        }
+    }
 }
 
+
+
+// MARK: -
 extension ChartViewController: ProfileHeaderViewDelegate {
     func didTappedSettingBtn() {
         presentSettingSheet()
@@ -314,12 +338,14 @@ extension ChartViewController: ProfileHeaderViewDelegate {
 extension ChartViewController: ASAuthorizationControllerDelegate {
 
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+      userInfo?.accountStatus = 0
+      updateUserInfo()
+      presentLoginPage()
       
       accountManager.deleteAppleSignInAccount(controller: controller, didCompleteWithAuthorization: authorization) { result in
           switch result {
           case .success:
-              print(" 已成功刪除帳戶")
-              self.presentLoginPage()
+              print("已成功刪除帳戶")
           case .failure(let error):
               print(error.localizedDescription)
           }

@@ -110,8 +110,8 @@ class AccountManager {
 
           Task {
             do {
-              try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
                 try await Auth.auth().currentUser?.delete()
+                try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
                 completion(.success(nil))
             } catch {
                 completion(.failure(error))

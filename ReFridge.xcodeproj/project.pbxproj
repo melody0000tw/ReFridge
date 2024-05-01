@@ -415,7 +415,6 @@
 		EBFF62C52BC797DA0013F50F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EB65EA052BE1559400FB9EF7 /* Login */,
 				EB65EA012BE14D8600FB9EF7 /* Login.storyboard */,
 				EBF88E362BC5703E00DEF2FA /* Main.storyboard */,
 				EB9B2C4B2BC954C3004CB435 /* Base */,
@@ -423,6 +422,7 @@
 				EBCC794D2BCA2C950029B754 /* Recipe */,
 				EB88937E2BCAE79F00189B7C /* ShoppingList */,
 				EB425BDC2BD0DE8C000C75A6 /* Chart */,
+				EB65EA052BE1559400FB9EF7 /* Login */,
 			);
 			path = Views;
 			sourceTree = "<group>";
