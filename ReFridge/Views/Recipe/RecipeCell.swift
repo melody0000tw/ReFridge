@@ -25,7 +25,7 @@ class RecipeCell: UITableViewCell {
     }
     
     private func setupViews() {
-        recipeImage.layer.cornerRadius = 5
+        recipeImage.layer.cornerRadius = 16
         recipeImage.clipsToBounds = true
         recipeImage.contentMode = .scaleAspectFill
         

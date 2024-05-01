@@ -10,7 +10,7 @@ import UIKit
 class AddFoodTypeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
-    let images = ["carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other", "carrot", "broccoli", "strawberry", "onion", "drink", "lemon", "other"]
+    let images = ["apple", "asparagus", "avocado", "bags", "banana", "cabbage", "carrot", "cheese", "cherry", "chicken", "chili-pepper", "croissant", "cupcake", "donut", "drink", "egg", "eggplant", "fish", "fries", "green-pepper", "hamburger", "icecream", "lemon", "mashroom", "meat", "milk", "noodles", "pizza", "popcorn", "popsicle", "sandwich", "onion", "soup", "spinach", "taco", "toast", "other", "cookie", "sausage", "shrimp", "broccoli", "cake"]
     
     lazy var containerView = UIView()
     lazy var imageView = UIImageView()
@@ -67,7 +67,7 @@ class AddFoodTypeViewController: UIViewController {
     
     private func setupViews() {
         containerView.backgroundColor = .C1
-        containerView.layer.cornerRadius = 5
+        containerView.layer.cornerRadius = 16
         view.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).offset(40)
@@ -76,7 +76,7 @@ class AddFoodTypeViewController: UIViewController {
         }
         
         imageView.image = UIImage(named: "carrot")
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         containerView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
@@ -103,8 +103,7 @@ class AddFoodTypeViewController: UIViewController {
         nameTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         containerView.addSubview(nameTextField)
         nameTextField.snp.makeConstraints { make in
-
-            make.leading.equalTo(nameLabel.snp.trailing).offset(8)
+            make.leading.equalTo(nameLabel.snp.trailing).offset(16)
             make.trailing.equalTo(containerView.snp.trailing).offset(-16)
             make.centerY.equalTo(nameLabel.snp.centerY)
         }
@@ -144,18 +143,27 @@ class AddFoodTypeViewController: UIViewController {
         cancelBtn.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
         view.addSubview(cancelBtn)
         cancelBtn.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(16)
             make.leading.equalTo(view.snp.leading).offset(40)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-40)
+            make.width.equalTo(80)
+            make.height.equalTo(40)
         }
         
         createBtn.setTitle("建立", for: .normal)
+        createBtn.setTitleColor(.darkGray, for: .normal)
         createBtn.setImage(UIImage(systemName: "plus"), for: .normal)
+        createBtn.backgroundColor = .C1
         createBtn.tintColor = .darkGray
+        createBtn.layer.cornerRadius = 8
+//        createBtn.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         createBtn.addTarget(self, action: #selector(createType), for: .touchUpInside)
         view.addSubview(createBtn)
         createBtn.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(16)
             make.trailing.equalTo(view.snp.trailing).offset(-40)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-40)
+            make.width.equalTo(80)
+            make.height.equalTo(40)
+            
         }
     }
     

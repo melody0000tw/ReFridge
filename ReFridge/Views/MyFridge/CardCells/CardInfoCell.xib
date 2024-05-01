@@ -37,6 +37,11 @@
                             <constraint firstAttribute="width" constant="136" id="SMX-mV-yPj"/>
                             <constraint firstAttribute="height" constant="136" id="U1P-AP-sUd"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="RFCornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="LsA-6R-RKW">
                         <rect key="frame" x="168" y="16" width="136" height="136"/>

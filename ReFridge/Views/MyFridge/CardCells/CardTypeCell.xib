@@ -42,6 +42,11 @@
                             <constraint firstAttribute="trailing" secondItem="wEG-jf-qx8" secondAttribute="trailing" constant="8" id="Ys3-Dc-M46"/>
                             <constraint firstItem="wEG-jf-qx8" firstAttribute="centerY" secondItem="Wa4-YG-N4c" secondAttribute="centerY" id="bDj-8m-iMN"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="RFCornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk7-HR-A2u">
                         <rect key="frame" x="16" y="64" width="288" height="300"/>
