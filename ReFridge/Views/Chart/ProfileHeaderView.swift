@@ -7,12 +7,18 @@
 
 import UIKit
 
+protocol ProfileHeaderViewDelegate: AnyObject {
+    func didTappedSettingBtn()
+}
+
 class ProfileHeaderView: UIView {
+    weak var delegate: ProfileHeaderViewDelegate?
     
     lazy var colorView = UIView()
     lazy var containerView = UIView()
     lazy var imageView = UIImageView()
     lazy var nameLabel = UILabel()
+    lazy var settingBtn = UIButton(type: .system)
     lazy var finishedImg = UIImageView(image: UIImage(systemName: "face.smiling"))
     lazy var finishedLabel = UILabel()
     lazy var thrownImg = UIImageView(image: UIImage(systemName: "trash"))
@@ -73,6 +79,21 @@ class ProfileHeaderView: UIView {
             make.top.equalTo(imageView.snp.top)
             make.leading.equalTo(imageView.snp.trailing).offset(16)
         }
+        
+        settingBtn.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
+        settingBtn.tintColor = .white
+        containerView.addSubview(settingBtn)
+        settingBtn.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.top)
+            make.trailing.equalTo(containerView.snp.trailing).offset(-16)
+            make.leading.greaterThanOrEqualTo(nameLabel.snp.trailing).offset(8)
+        }
+        settingBtn.addTarget(self, action: #selector(didTappedSettingBtn), for: .touchUpInside)
+    }
+    
+    @objc func didTappedSettingBtn() {
+        delegate?.didTappedSettingBtn()
+        print("did Tapped sign out")
     }
     
     private func setupScoreView() {

@@ -15,7 +15,6 @@ class CardTypeCell: UITableViewCell {
     weak var delegate: CardTypeCellDelegate?
     static let reuseIdentifier = String(describing: CardTypeCell.self)
     
-    
     @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var typeContainerView: UIView!

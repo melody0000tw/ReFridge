@@ -8,9 +8,15 @@
 import UIKit
 import SnapKit
 import Charts
+import FirebaseAuth
+import AuthenticationServices
 
 class ChartViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
+    private let accountManager = AccountManager.share
+    
+    private var userInfo: UserInfo?
+    
     private var foodCards = [FoodCard]() {
         didSet {
             DispatchQueue.main.async { [self] in
@@ -38,8 +44,6 @@ class ChartViewController: UIViewController {
     private lazy var barChartView = FridgeBarChartView()
     private lazy var infoLabel = UILabel()
     
-    
-    
     lazy var emptyDataManager = EmptyDataManager(view: view, emptyMessage: "尚無相關資料")
     
     // MARK: - Life Cycle
@@ -49,6 +53,7 @@ class ChartViewController: UIViewController {
         setupButtons()
         setupChartViews()
         barChartView.isHidden = true
+        fetchUserInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +64,7 @@ class ChartViewController: UIViewController {
     
     // MARK: - setups
     private func setupPofileView() {
+        headerView.delegate = self
         view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
@@ -183,7 +189,71 @@ class ChartViewController: UIViewController {
         }
     }
     
+    // MARK: - Account Settings
+    private func presentSettingSheet() {
+        let controller = UIAlertController(title: "帳號設定", message: nil, preferredStyle: .actionSheet)
+        let signOutAction = UIAlertAction(title: "登出", style: .default) { action in
+            self.signoutFireBase()
+        }
+        let deleteAccountAction = UIAlertAction(title: "刪除帳號", style: .destructive) { action in
+            print("我要刪除帳號！！！")
+            self.presentDeletionAlert()
+        }
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        
+        controller.addAction(signOutAction)
+        controller.addAction(deleteAccountAction)
+        controller.addAction(cancelAction)
+        
+        present(controller, animated: true)
+    }
+    
+    private func presentDeletionAlert() {
+        let controller = UIAlertController(title: "確認刪除帳戶？", message: "刪除帳戶後將無法再存取所有儲存的資料", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "確認刪除", style: .destructive) { _ in
+            self.performAccountDeletion()
+        }
+        controller.addAction(okAction)
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        controller.addAction(cancelAction)
+        present(controller, animated: true)
+    }
+    
+    private func performAccountDeletion() {
+        let request = accountManager.createAppleIdRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    private func presentLoginPage() {
+        DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            if let initialViewController = storyboard.instantiateInitialViewController() {
+                initialViewController.modalPresentationStyle = .fullScreen
+                self.present(initialViewController, animated: true)
+            }
+        }
+    }
+    
     // MARK: - Data
+    private func fetchUserInfo() {
+        Task {
+            await firestoreManager.fetchUserInfo { result in
+                switch result {
+                case .success(let userInfo):
+                    self.userInfo = userInfo
+                    DispatchQueue.main.async {
+                        self.headerView.nameLabel.text = "Hello, \(userInfo.name)!"
+                    }
+                case .failure(let error):
+                    print("error: \(error)")
+                }
+            }
+        }
+    }
+    
     private func fetchData() {
         Task {
             await firestoreManager.fetchFoodCard { result in
@@ -204,24 +274,92 @@ class ChartViewController: UIViewController {
                 switch result {
                 case .success(let score):
                     let total = score.consumed + score.thrown
-                    let scoreDouble = (Double(score.consumed) / Double(total)).rounding(toDecimal: 2)
-                    let scoreInt = Int(scoreDouble * 100)
+                    var scoreDouble = 0.0
+                    
+                    if total != 0 {
+                        scoreDouble = (Double(score.consumed) / Double(total)).rounding(toDecimal: 2)
+                    }
                     print("consume: \(score.consumed), thrown: \(score.thrown)")
-                    print("score: \(scoreInt)%")
                     DispatchQueue.main.async { [self] in
-//                        headerView.cherishLabel.text = "完食分數: \(scoreInt)%"
                         headerView.finishedLabel.text = String(score.consumed)
                         headerView.thrownLabel.text = String(score.thrown)
                         headerView.progressView.setProgress(Float(scoreDouble), animated: true)
-//                        self.cherishLabel.text = "完食分數: \(scoreInt)%"
-//                        self.progressView.setProgress(Float(scoreDouble), animated: true)
                     }
-                    
                 case .failure(let error):
                     print("error: \(error)")
                 }
                 
             }
         }
+    }
+    
+    private func signoutFireBase() {
+        accountManager.signoutFireBase { result in
+            switch result {
+            case .success:
+                print("didSignOut")
+                self.presentLoginPage()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func updateUserInfo() {
+        guard let userInfo = userInfo else {
+            print("cannot get userInfo")
+            return
+        }
+        Task {
+            await firestoreManager.updateUserInfo(userInfo: userInfo) { result in
+                switch result {
+                case .success:
+                    print("userInfo is updated: \(userInfo)")
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+                
+            }
+        }
+    }
+}
+
+
+
+// MARK: -
+extension ChartViewController: ProfileHeaderViewDelegate {
+    func didTappedSettingBtn() {
+        presentSettingSheet()
+    }
+}
+
+// MARK: - SignInWithApple
+@available(iOS 13.0, *)
+extension ChartViewController: ASAuthorizationControllerDelegate {
+
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+      userInfo?.accountStatus = 0
+      updateUserInfo()
+      presentLoginPage()
+      
+      accountManager.deleteAppleSignInAccount(controller: controller, didCompleteWithAuthorization: authorization) { result in
+          switch result {
+          case .success:
+              print("已成功刪除帳戶")
+          case .failure(let error):
+              print(error.localizedDescription)
+          }
+      }
+  }
+
+  func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    print("Sign in with Apple errored: \(error)")
+  }
+
+}
+
+extension ChartViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
 }

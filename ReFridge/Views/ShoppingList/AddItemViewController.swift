@@ -69,7 +69,6 @@ class AddItemViewController: UIViewController {
         tableView.RF_registerCellWithNib(identifier: ItemInfoCell.reuseIdentifier, bundle: nil)
     }
     
-
     // MARK: - Data
     
     private func updateCardInfoCell() {
