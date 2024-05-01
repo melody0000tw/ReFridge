@@ -17,6 +17,7 @@ struct ListItem: Codable {
     var isRoutineItem: Bool = false
     var name: String = ""
     var iconName: String = "other"
+    var notes: String = ""
 //    var routinePeriod: Int
 //    var routineStartTime: Date
     

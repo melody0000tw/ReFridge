@@ -13,10 +13,7 @@ protocol CardTypeCellDelegate: AnyObject {
 
 class CardTypeCell: UITableViewCell {
     weak var delegate: CardTypeCellDelegate?
-    
     static let reuseIdentifier = String(describing: CardTypeCell.self)
-    
-    var typeViewIsOpen = true
     
     @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var bgView: UIView!
@@ -33,16 +30,25 @@ class CardTypeCell: UITableViewCell {
         selectionStyle = .none
         bgView.backgroundColor = .C1
         typeContainerView.backgroundColor = .clear
-        editBtn.addTarget(self, action: #selector(toggleTypeView), for: .touchUpInside)
+        editBtn.setImage(UIImage(systemName: "chevron.up"), for: .normal)
+        editBtn.addTarget(self, action: #selector(didTappedEditBtn), for: .touchUpInside)
     }
     
-    @objc func toggleTypeView() {
-        typeViewIsOpen = typeViewIsOpen ? false : true
-        containerHeightConstraint.constant = typeViewIsOpen ? 300 : 0
-        UIView.animate(withDuration: 0.5) {
-            self.layoutIfNeeded()
+    @objc func didTappedEditBtn() {
+        self.delegate?.didToggleTypeView()
+    }
+    
+    func toggleTypeView(shouldOpen: Bool) {
+        if shouldOpen {
+            self.editBtn.setImage(UIImage(systemName: "chevron.up"), for: .normal)
+        } else {
+            self.editBtn.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         }
-        delegate?.didToggleTypeView()
         
+        containerHeightConstraint.constant = shouldOpen ? 300 : 0
+        self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
+//        UIView.animate(withDuration: 0.1, delay: 0.2) {
+//            self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
+//        }
     }
 }

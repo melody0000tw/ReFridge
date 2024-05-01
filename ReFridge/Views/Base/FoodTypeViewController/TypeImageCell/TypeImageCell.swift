@@ -14,9 +14,10 @@ class TypeImageCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
+        imageView.contentMode = .scaleAspectFit
         hightlightView.layer.borderColor = UIColor.darkGray.cgColor
         hightlightView.layer.borderWidth = 1
-        hightlightView.layer.cornerRadius = 5
+        hightlightView.layer.cornerRadius = 16
         hightlightView.isHidden = true
         // Initialization code
     }

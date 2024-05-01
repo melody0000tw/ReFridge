@@ -28,14 +28,16 @@ class FoodTypeViewController: UIViewController {
     
     var onSelectFoodType: ((FoodType) -> Void)?
     
-    var selectedCategoryId = 1
-    lazy var selectedType: FoodType = allFoodTypes[0]
+    private var selectedCategoryId = 1
+    private lazy var selectedType: FoodType = allFoodTypes[0]
     
-    lazy var stackView = UIStackView()
-    lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
-    lazy var buttons = [UIButton]()
+    private lazy var stackView = UIStackView()
+    private lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
+    private lazy var buttons = [UIButton]()
+    private lazy var barView = UIView()
     
-    lazy var deleteTypeBtn = UIButton(type: .system)
+    private lazy var deleteTypeBtn = UIButton(type: .system)
+    lazy var selectTypeBtn = UIButton(type: .system)
 
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -43,10 +45,10 @@ class FoodTypeViewController: UIViewController {
         setupButtons()
         setupCollectionView()
         setupDeleteBtn()
+        setupSelectedBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewWillAppear(animated)
         print(" viewWillAppear")
         fetchUserFoodTypes()
@@ -74,24 +76,56 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(view.snp.top)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-//            make.height.equalTo(40)
             make.height.equalTo(view.snp.height).multipliedBy(0.15)
         }
         
         for category in categories {
             let button = UIButton(type: .system)
             button.setTitle(category.categoryName, for: .normal)
-            button.tintColor = .T1
+            button.setTitleColor(.gray, for: .normal)
+            button.setTitleColor(.black, for: .selected)
             button.tag = category.categoryId
-            button.backgroundColor = .C1
+            button.tintColor = .clear
+            button.backgroundColor = .clear
             button.addTarget(self, action: #selector(onChangeCategory(sender: )), for: .touchUpInside)
             button.clipsToBounds = true
             buttons.append(button)
             stackView.addArrangedSubview(button)
         }
+        
+        if let btn = buttons.first, btn.tag == 1 {
+            btn.isSelected = true
+        }
+        
+        // indicator bar
+        barView.backgroundColor = .C2
+        barView.layer.cornerRadius = 1.5
+        view.addSubview(barView)
+        let btnWidth = Int(view.bounds.size.width) / stackView.subviews.count
+        barView.snp.makeConstraints { make in
+            make.bottom.equalTo(stackView)
+            make.height.equalTo(3)
+            make.width.equalTo(Double(btnWidth) * 0.8)
+            make.centerX.equalTo(btnWidth * (selectedCategoryId - 1) + (btnWidth / 2))
+        }
+    }
+    
+    private func animateBarView() {
+        let btnWidth = Int(stackView.bounds.size.width) / stackView.subviews.count
+        barView.snp.remakeConstraints { make in
+            make.bottom.equalTo(stackView)
+            make.height.equalTo(3)
+            make.width.equalTo(Double(btnWidth) * 0.8)
+            make.centerX.equalTo(btnWidth * (selectedCategoryId - 1) + (btnWidth / 2))
+        }
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+        
     }
     
     private func setupCollectionView() {
+        collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.RF_registerCellWithNib(identifier: String(describing: FoodTypeCell.self), bundle: nil)
@@ -100,16 +134,14 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(stackView.snp.bottom)
             make.leading.equalTo(view.snp.leading)
             make.trailing.equalTo(view.snp.trailing)
-//            make.height.equalTo(view.snp.height).multipliedBy(0.7)
             make.bottom.equalTo(view.snp.bottom).offset(-40)
         }
     }
     
     private func setupDeleteBtn() {
-        deleteTypeBtn.setTitle(" 刪除類型", for: .normal)
+        deleteTypeBtn.setTitle("刪除類型", for: .normal)
         deleteTypeBtn.setTitleColor(.darkGray, for: .normal)
         deleteTypeBtn.setTitleColor(.clear, for: .disabled)
-//        deleteTypeBtn.setImage(UIImage(systemName: "trash"), for: .normal)
         deleteTypeBtn.tintColor = .darkGray
         deleteTypeBtn.backgroundColor = .clear
         deleteTypeBtn.addTarget(self, action: #selector(deleteType), for: .touchUpInside)
@@ -117,16 +149,39 @@ class FoodTypeViewController: UIViewController {
         view.addSubview(deleteTypeBtn)
         deleteTypeBtn.snp.makeConstraints { make in
             make.top.equalTo(collectionView.snp.bottom)
-            make.height.equalTo(view.snp.height).multipliedBy(0.15)
-            make.trailing.equalTo(view.snp.trailing).offset(-16)
-//            make.bottom.equalTo(view.snp.bottom)
+            make.height.equalTo(40)
+            make.width.equalTo(80)
+            make.leading.equalTo(view.snp.leading)
+        }
+    }
+    
+    private func setupSelectedBtn() {
+        selectTypeBtn.setTitle("選擇類型", for: .normal)
+        selectTypeBtn.setTitleColor(.white, for: .normal)
+        selectTypeBtn.tintColor = .clear
+        selectTypeBtn.isEnabled = false
+        selectTypeBtn.backgroundColor = .lightGray
+        selectTypeBtn.layer.cornerRadius = 5
+        selectTypeBtn.addTarget(self, action: #selector(selectType), for: .touchUpInside)
+        selectTypeBtn.clipsToBounds = true
+        view.addSubview(selectTypeBtn)
+        selectTypeBtn.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom)
+            make.height.equalTo(40)
+            make.width.equalTo(80)
+            make.trailing.equalTo(view.snp.trailing)
         }
     }
     
     // MARK: - Data
     @objc func onChangeCategory(sender: UIButton) {
         print("did tapped category id: \(sender.tag)")
+        for button in buttons {
+            button.isSelected = false
+        }
+        sender.isSelected = true
         selectedCategoryId = sender.tag
+        animateBarView()
         filterTypes()
     }
     
@@ -144,7 +199,6 @@ class FoodTypeViewController: UIViewController {
     }
     
     @objc func deleteType() {
-        print("deleteType tapped")
         if selectedType.isDeletable {
             Task {
                 await firestoreManager.deleteUserFoodTypes(typeId: selectedType.typeId) { result in
@@ -157,6 +211,12 @@ class FoodTypeViewController: UIViewController {
                     }
                 }
             }
+        }
+    }
+    
+    @objc func selectType() {
+        if let onSelectFoodType = onSelectFoodType {
+            onSelectFoodType(selectedType)
         }
     }
     
@@ -214,12 +274,14 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             addTypeVC.foodTypeVCdelegate = self
             self.parent?.present(addTypeVC, animated: true)
         } else {
+            selectTypeBtn.isEnabled = true
+            selectTypeBtn.backgroundColor = .C2
             let foodType = typesOfSelectedCategory[indexPath.item]
             selectedType = foodType
             toggleDeleteBtn()
-            if let onSelectFoodType = onSelectFoodType {
-                onSelectFoodType(foodType)
-            }
+//            if let onSelectFoodType = onSelectFoodType {
+//                onSelectFoodType(foodType)
+//            }
         }
     }
 }

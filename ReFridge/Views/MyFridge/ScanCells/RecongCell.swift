@@ -36,7 +36,6 @@ class RecongCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         bgView.layer.cornerRadius = 10
-        bgView.dropShadow()
         bgView.backgroundColor = .C1
     }
     

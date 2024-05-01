@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -15,7 +16,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions) {
-        guard let _ = (scene as? UIWindowScene) else { return }
+            guard let windowScene = (scene as? UIWindowScene) else { return }
+            // Create a new UIWindow using the windowScene constructor which takes in a window scene.
+            let window = UIWindow(windowScene: windowScene)
+
+            // Check if the user is logged in
+            if let currentUser = Auth.auth().currentUser {
+                print("已經登入 uid:\(currentUser.uid)")
+                let firestoreManager = FirestoreManager.shared
+                firestoreManager.configure(withUID: currentUser.uid)
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                if let initialViewController = storyboard.instantiateInitialViewController() {
+                    window.rootViewController = initialViewController
+                }
+            } else {
+                // User is not logged in, use the login storyboard
+                let storyboard = UIStoryboard(name: "Login", bundle: nil)
+                if let initialViewController = storyboard.instantiateInitialViewController() {
+                    window.rootViewController = initialViewController
+                }
+            }
+
+            self.window = window
+            window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

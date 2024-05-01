@@ -25,7 +25,7 @@ class RecipeCell: UITableViewCell {
     }
     
     private func setupViews() {
-        recipeImage.layer.cornerRadius = 5
+        recipeImage.layer.cornerRadius = 16
         recipeImage.clipsToBounds = true
         recipeImage.contentMode = .scaleAspectFill
         
@@ -45,7 +45,7 @@ class RecipeCell: UITableViewCell {
         }
         titleLabel.text = recipe.title
         cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
-        recipeImage.loadImage(recipe.image)
+        recipeImage.loadImage(recipe.images.first)
         
         if let ingredientStatus = ingredientStatus {
             var stringAry = [String]()

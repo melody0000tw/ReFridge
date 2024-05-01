@@ -11,18 +11,25 @@ class ShoppingListViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     var list = [ListItem]() {
         didSet {
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 print("new list count: \(self.list.count)")
-                self.tableView.reloadData()
+                tableView.isHidden = false
+                emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
             }
         }
     }
     
     @IBOutlet weak var tableView: UITableView!
-    @IBAction func addToFridge(_ sender: Any) {
+    @IBAction func addToFridge(_ sender: UIButton) {
+        sender.clickBounce()
         addCheckItemToFridge()
     }
     
+    lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚未建立購物清單")
+    
+    private lazy var refreshControl = RefresherManager()
+    
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
@@ -33,19 +40,34 @@ class ShoppingListViewController: UIViewController {
         fetchList()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        tableView.isHidden = true
+    }
+    
     private func setupTableView() {
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
         tableView.RF_registerCellWithNib(identifier: ShoppingListCell.reuseIdentifier, bundle: nil)
+        refreshControl.addTarget(self, action: #selector(fetchList), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+        tableView.refreshControl?.tintColor = .clear
     }
     
-    private func fetchList() {
+    // MARK: - Datas
+    @objc private func fetchList() {
+        refreshControl.startRefresh()
         Task {
             await firestoreManager.fetchListItems { result in
                 switch result {
                 case .success(let list):
                     print("did get list")
                     self.list = list
+                    DispatchQueue.main.async { [self] in
+                        tableView.reloadData()
+                        refreshControl.endRefresh()
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }
@@ -84,6 +106,7 @@ class ShoppingListViewController: UIViewController {
                     switch result {
                     case .success:
                         print("成功新增小卡 \(foodCard.name)")
+                        presentAlert(title: "加入成功", description: "已將完成項目加入我的冰箱", image: UIImage(systemName: "checkmark.circle"))
                         // delete card
                         deleteItem(item: item, group: dispatchGroup)
                     case .failure(let error):
@@ -134,9 +157,19 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? ShoppingListCell else {
+            return
+        }
+        cell.clickBounce()
         let originalStatus = list[indexPath.row].checkStatus
-        list[indexPath.row].checkStatus = originalStatus == 0 ? 1 : 0 // tableView.reloadData
+        let newStatus = originalStatus == 0 ? 1 : 0
+        
+        // 更改本地端資料 & UI
+        cell.toggleStyle(checkStatus: newStatus)
+        list[indexPath.row].checkStatus =  newStatus
         let newItem = list[indexPath.row]
+        
+        // 更新資料庫
         Task {
             await firestoreManager.updateCheckStatus(newItem: newItem) { result in
                 switch result {
@@ -146,6 +179,14 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
                     print("error: \(error)")
                 }
             }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.alpha = 0
+        
+        UIView.animate(withDuration: 0.5, delay: 0.05 * Double(indexPath.row)) {
+            cell.alpha = 1
         }
     }
 }
@@ -174,6 +215,7 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
         }
         // 要刪除的 item
         let itemToDelete = list.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
         
         // 將刪除更新到資料庫
         Task {

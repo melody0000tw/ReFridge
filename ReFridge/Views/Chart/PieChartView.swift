@@ -67,7 +67,6 @@ class FridgePieChartView: PieChartView {
         legend.form = .circle
         usePercentValuesEnabled = true // 可顯示 % 數
         legend.enabled = false
-       
+        noDataText = ""
     }
-
 }

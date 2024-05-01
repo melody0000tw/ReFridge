@@ -16,7 +16,6 @@ class ScanResultViewController: UIViewController {
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
-    
     @IBOutlet weak var notRecongViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var recongView: UIView!
     
@@ -28,6 +27,9 @@ class ScanResultViewController: UIViewController {
         saveData()
     }
     
+    lazy var recongEmptyDataManager = EmptyDataManager(view: recongView, emptyMessage: "未偵測到食物相關單詞")
+    lazy var notRecongEmptyDataManager = EmptyDataManager(view: notRecongView, emptyMessage: "未偵測到其他單詞")
+    
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,7 @@ class ScanResultViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+        toggleEmptyLabels()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -61,7 +64,6 @@ class ScanResultViewController: UIViewController {
     }
     
     private func setupViews() {
-//        recongView.layer.cornerRadius = 10
         notRecongView.layer.cornerRadius = 24
         notRecongView.dropShadow(scale: true, radius: 5)
         
@@ -133,6 +135,15 @@ class ScanResultViewController: UIViewController {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
+    private func toggleEmptyLabels() {
+        guard let scanResult = scanResult else {
+            print("scan result is nil")
+            return
+        }
+        recongEmptyDataManager.toggleLabel(shouldShow: (scanResult.recongItems.count == 0))
+        notRecongEmptyDataManager.toggleLabel(shouldShow: (scanResult.notRecongItems.count == 0))
+    }
+    
     // MARK: - Data
     @objc func saveData() {
         print("save data")
@@ -192,15 +203,10 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
             }
             cell.delegate = self
             let foodCard = scanResult.recongItems[indexPath.item]
-//            let item = scanResult.recongItems[indexPath.item]
             cell.scanTextLabel.text = foodCard.name
-            
-            guard let foodType = FoodTypeData.share.queryFoodType(typeId: foodCard.typeId) else {
-                return cell
-            }
-            cell.iconImage.image = UIImage(named: foodType.typeIcon)
-            cell.typeLabel.text = foodType.typeName
-            cell.qtyLabel.text = String(foodCard.qty)
+            cell.iconImage.image = UIImage(named: foodCard.iconName)
+            cell.typeLabel.text = CategoryData.share.queryFoodCategory(categoryId: foodCard.categoryId)?.categoryName
+            cell.qtyLabel.text = "\(String(foodCard.qty))\(foodCard.mesureWord)"
             cell.expireDateLabel.text = formatter.string(from: foodCard.expireDate)
             return cell
         } else {
@@ -240,6 +246,8 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
         self.scanResult = scanResult
         notRecongCollectionView.reloadData()
         recongCollectionView.reloadData()
+        toggleEmptyLabels()
+        
     }
     
     func deleteRecongCell(cell: UICollectionViewCell) {
@@ -251,6 +259,7 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
         scanResult.recongItems.remove(at: indexPath.item)
         self.scanResult = scanResult
         recongCollectionView.reloadData()
+        toggleEmptyLabels()
     }
     
     func editRecongCell(cell: UICollectionViewCell) {
@@ -278,6 +287,7 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
                 
                 let indexPath = IndexPath(item: index, section: 0)
                 self.recongCollectionView.reloadItems(at: [indexPath])
+                self.toggleEmptyLabels()
             }
         }
         self.navigationController?.pushViewController(foodCardVC, animated: true)
