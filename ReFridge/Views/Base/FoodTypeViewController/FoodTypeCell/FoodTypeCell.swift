@@ -16,7 +16,7 @@ class FoodTypeCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         bgView.backgroundColor = .clear
-        bgView.layer.cornerRadius = 25
+        bgView.layer.cornerRadius = 30
     }
     
     override var isSelected: Bool {

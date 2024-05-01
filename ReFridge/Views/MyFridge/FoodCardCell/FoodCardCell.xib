@@ -47,7 +47,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="花椰菜" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sxy-ha-XzT">
-                        <rect key="frame" x="0.0" y="76" width="128" height="18"/>
+                        <rect key="frame" x="4" y="76" width="120" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -64,9 +64,9 @@
                 <constraint firstItem="Sxy-ha-XzT" firstAttribute="top" secondItem="rFK-rH-IRy" secondAttribute="bottom" constant="8" id="PFT-0R-hqq"/>
                 <constraint firstItem="7rp-9K-3S0" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="4" id="SGb-lB-hHz"/>
                 <constraint firstItem="rFK-rH-IRy" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Ted-lL-Z77"/>
-                <constraint firstItem="Sxy-ha-XzT" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="ev5-jM-W20"/>
+                <constraint firstItem="Sxy-ha-XzT" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="4" id="ev5-jM-W20"/>
                 <constraint firstAttribute="bottom" secondItem="Kaz-Tb-qCp" secondAttribute="bottom" id="hcM-88-VgJ"/>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="Sxy-ha-XzT" secondAttribute="trailing" id="pvE-2t-j4U"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="Sxy-ha-XzT" secondAttribute="trailing" constant="4" id="pvE-2t-j4U"/>
                 <constraint firstItem="7rp-9K-3S0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="qt4-U0-9Fg"/>
                 <constraint firstAttribute="trailing" secondItem="Kaz-Tb-qCp" secondAttribute="trailing" id="rCz-jw-vCN"/>
             </constraints>
@@ -82,12 +82,12 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="broccoli" width="144" height="144"/>
+        <image name="broccoli" width="49.666667938232422" height="62"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

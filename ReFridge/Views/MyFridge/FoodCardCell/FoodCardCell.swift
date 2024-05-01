@@ -26,7 +26,7 @@ class FoodCardCell: UICollectionViewCell {
         remainDayBgView.backgroundColor = .clear
         iconImage.tintColor = .T1
         bgView.backgroundColor = .clear
-        bgView.layer.cornerRadius = 5
+        bgView.layer.cornerRadius = 16
         bgView.layer.borderColor = UIColor.C1.cgColor
         bgView.layer.borderWidth = 1
     }
@@ -37,9 +37,9 @@ class FoodCardCell: UICollectionViewCell {
         iconImage.image = UIImage(named: foodCard.iconName)
         iconImage.tintColor = .T1
         remainDayLabel.text = getRemainingDayText(expireDate: foodCard.expireDate)
-        bgView.layer.cornerRadius = 5
+        bgView.layer.cornerRadius = 16
         bgView.layer.borderWidth = 0
-        remainDayBgView.layer.cornerRadius = 3
+        remainDayBgView.layer.cornerRadius = 10
         remainDayBgView.backgroundColor = .white
         guard let category = CategoryData.share.queryFoodCategory(categoryId: foodCard.categoryId) else {
             return
