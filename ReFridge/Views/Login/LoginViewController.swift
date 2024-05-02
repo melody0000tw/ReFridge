@@ -70,6 +70,12 @@ class LoginViewController: UIViewController {
         
     }
     
+    private func presentAvatarVC() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController")
+        navigationController?.pushViewController(avatarVC, animated: true)
+    }
+    
     
     private func presentMyFridgeVC() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -99,7 +105,8 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
           case .success(let user):
               print(" 已成功登入，UID: \(user.uid)")
               self.configureUserInfo(user: user)
-              self.presentMyFridgeVC()
+              self.presentAvatarVC()
+//              self.presentMyFridgeVC()
               
           case .failure(let error):
               print(error.localizedDescription)
