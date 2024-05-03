@@ -24,8 +24,14 @@ class AvatarCell: UICollectionViewCell {
         didSet {
             if isSelected {
                 hightlightView.isHidden = false
+                UIView.animate(withDuration: 0.2) {
+                    self.imageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                }
             } else {
                 hightlightView.isHidden = true
+                UIView.animate(withDuration: 0.2) {
+                    self.imageView.transform = .identity
+                }
             }
             
         }

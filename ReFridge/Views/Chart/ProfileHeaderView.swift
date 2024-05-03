@@ -7,18 +7,13 @@
 
 import UIKit
 
-protocol ProfileHeaderViewDelegate: AnyObject {
-    func didTappedSettingBtn()
-}
-
 class ProfileHeaderView: UIView {
-    weak var delegate: ProfileHeaderViewDelegate?
     
     lazy var colorView = UIView()
     lazy var containerView = UIView()
+    lazy var imageContainerView = UIView()
     lazy var imageView = UIImageView()
     lazy var nameLabel = UILabel()
-    lazy var settingBtn = UIButton(type: .system)
     lazy var finishedImg = UIImageView(image: UIImage(systemName: "face.smiling"))
     lazy var finishedLabel = UILabel()
     lazy var thrownImg = UIImageView(image: UIImage(systemName: "trash"))
@@ -45,7 +40,7 @@ class ProfileHeaderView: UIView {
             make.leading.equalTo(safeAreaLayoutGuide.snp.leading)
             make.top.equalTo(self.snp.top)
             make.trailing.equalTo(safeAreaLayoutGuide.snp.trailing)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(150)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(120)
         }
         
         addSubview(containerView)
@@ -54,14 +49,14 @@ class ProfileHeaderView: UIView {
             make.leading.equalTo(colorView.snp.leading)
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
             make.trailing.equalTo(colorView.snp.trailing)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(150)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(120)
         }
         
-        let imageContainerView = UIView()
         imageContainerView.backgroundColor = .white
         imageContainerView.layer.borderColor = UIColor.C1.cgColor
         imageContainerView.layer.borderWidth = 2
         imageContainerView.layer.cornerRadius = 40
+        imageContainerView.clipsToBounds = true
         containerView.addSubview(imageContainerView)
         imageContainerView.snp.makeConstraints { make in
             make.centerY.equalTo(containerView.snp.centerY)
@@ -69,10 +64,10 @@ class ProfileHeaderView: UIView {
             make.height.width.equalTo(80)
         }
         
-        
         imageView.image = UIImage(named: "placeholder")
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         imageContainerView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.centerY.equalTo(imageContainerView.snp.centerY)
@@ -81,31 +76,17 @@ class ProfileHeaderView: UIView {
         }
         
         nameLabel.text = "Melody"
-        nameLabel.font = UIFont(name: "PingFangTC-Semibold", size: 24)
+        nameLabel.font = UIFont(name: "PingFangTC-Semibold", size: 20)
         nameLabel.textAlignment = .left
         nameLabel.textColor = .white
         nameLabel.numberOfLines = 1
         nameLabel.sizeToFit()
         containerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.top)
-            make.leading.equalTo(imageView.snp.trailing).offset(16)
-        }
-        
-        settingBtn.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-        settingBtn.tintColor = .white
-        containerView.addSubview(settingBtn)
-        settingBtn.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.top)
+            make.top.equalTo(imageContainerView.snp.top)
+            make.leading.equalTo(imageContainerView.snp.trailing).offset(16)
             make.trailing.equalTo(containerView.snp.trailing).offset(-16)
-            make.leading.greaterThanOrEqualTo(nameLabel.snp.trailing).offset(8)
         }
-        settingBtn.addTarget(self, action: #selector(didTappedSettingBtn), for: .touchUpInside)
-    }
-    
-    @objc func didTappedSettingBtn() {
-        delegate?.didTappedSettingBtn()
-        print("did Tapped sign out")
     }
     
     private func setupScoreView() {
@@ -113,7 +94,7 @@ class ProfileHeaderView: UIView {
         containerView.addSubview(view)
         view.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(8)
-            make.leading.equalTo(imageView.snp.trailing).offset(16)
+            make.leading.equalTo(imageContainerView.snp.trailing).offset(16)
             make.trailing.equalTo(containerView.snp.trailing).offset(-16)
             make.height.equalTo(24)
         }
@@ -173,7 +154,7 @@ class ProfileHeaderView: UIView {
         containerView.addSubview(progressView)
         progressView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.bottom).offset(8)
-            make.leading.equalTo(imageView.snp.trailing).offset(16)
+            make.leading.equalTo(imageContainerView.snp.trailing).offset(16)
             make.trailing.equalTo(containerView.snp.trailing).offset(-16)
             make.height.equalTo(8)
         }

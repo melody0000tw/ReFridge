@@ -253,7 +253,7 @@
                         <segue destination="5y0-yn-TDP" kind="relationship" relationship="viewControllers" id="yxz-yP-aTh"/>
                         <segue destination="tdU-yV-oF9" kind="relationship" relationship="viewControllers" id="MtB-cF-MHb"/>
                         <segue destination="98u-R0-314" kind="relationship" relationship="viewControllers" id="NdA-Ns-uzT"/>
-                        <segue destination="HDx-mK-5xi" kind="relationship" relationship="viewControllers" id="noX-lG-CJG"/>
+                        <segue destination="Zig-Gd-S0M" kind="relationship" relationship="viewControllers" id="noX-lG-CJG"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Y5-10-VYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -587,12 +587,11 @@
                         <viewLayoutGuide key="safeArea" id="39n-aV-Bbs"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" image="chart.bar.xaxis" catalog="system" id="JA7-8i-c7Q"/>
                     <navigationItem key="navigationItem" id="sbL-B1-qFs"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SeM-Yw-abz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1052" y="2221"/>
+            <point key="canvasLocation" x="1977.8625954198471" y="2220.4225352112676"/>
         </scene>
         <!--Add Item View Controller-->
         <scene sceneID="g5G-Hx-Kyo">
@@ -663,6 +662,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NzY-17-x6l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3660" y="-259"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="LOV-PB-sE1">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Zig-Gd-S0M" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="chart.bar.xaxis" catalog="system" id="JA7-8i-c7Q"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FxP-zd-JLw">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="HDx-mK-5xi" kind="relationship" relationship="rootViewController" id="pSi-ma-ye1"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k15-Kq-zBy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1051.145038167939" y="2220.4225352112676"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.38823529411764707" green="0.53333333333333333" blue="0.53725490196078429" alpha="1" colorSpace="calibratedRGB"/>
