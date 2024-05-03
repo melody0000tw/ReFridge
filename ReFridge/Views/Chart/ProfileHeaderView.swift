@@ -57,15 +57,27 @@ class ProfileHeaderView: UIView {
             make.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(150)
         }
         
-        imageView.image = UIImage(named: "placeholder")
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 40
-        imageView.clipsToBounds = true
-        containerView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
+        let imageContainerView = UIView()
+        imageContainerView.backgroundColor = .white
+        imageContainerView.layer.borderColor = UIColor.C1.cgColor
+        imageContainerView.layer.borderWidth = 2
+        imageContainerView.layer.cornerRadius = 40
+        containerView.addSubview(imageContainerView)
+        imageContainerView.snp.makeConstraints { make in
             make.centerY.equalTo(containerView.snp.centerY)
             make.leading.equalTo(containerView.snp.leading).offset(16)
             make.height.width.equalTo(80)
+        }
+        
+        
+        imageView.image = UIImage(named: "placeholder")
+        imageView.backgroundColor = .clear
+        imageView.contentMode = .scaleAspectFit
+        imageContainerView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.centerY.equalTo(imageContainerView.snp.centerY)
+            make.centerX.equalTo(imageContainerView.snp.centerX)
+            make.height.width.equalTo(60)
         }
         
         nameLabel.text = "Melody"

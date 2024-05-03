@@ -53,11 +53,11 @@ class ChartViewController: UIViewController {
         setupButtons()
         setupChartViews()
         barChartView.isHidden = true
-        fetchUserInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchUserInfo()
         fetchData()
         fetchScores()
     }
@@ -192,6 +192,9 @@ class ChartViewController: UIViewController {
     // MARK: - Account Settings
     private func presentSettingSheet() {
         let controller = UIAlertController(title: "帳號設定", message: nil, preferredStyle: .actionSheet)
+        let updateProfileAction = UIAlertAction(title: "編輯個人資料", style: .default) { action in
+            self.presentAvatarVC()
+        }
         let signOutAction = UIAlertAction(title: "登出", style: .default) { action in
             self.signoutFireBase()
         }
@@ -201,11 +204,27 @@ class ChartViewController: UIViewController {
         }
         let cancelAction = UIAlertAction(title: "取消", style: .cancel)
         
+        controller.addAction(updateProfileAction)
         controller.addAction(signOutAction)
         controller.addAction(deleteAccountAction)
         controller.addAction(cancelAction)
         
         present(controller, animated: true)
+    }
+    
+    private func presentAvatarVC() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
+            return
+        }
+        avatarVC.mode = .edit
+        if let userInfo = userInfo {
+            avatarVC.userInfo = userInfo
+        }
+        
+        
+        avatarVC.modalPresentationStyle = .fullScreen
+        present(avatarVC, animated: true)
     }
     
     private func presentDeletionAlert() {
@@ -244,8 +263,11 @@ class ChartViewController: UIViewController {
                 switch result {
                 case .success(let userInfo):
                     self.userInfo = userInfo
-                    DispatchQueue.main.async {
-                        self.headerView.nameLabel.text = "Hello, \(userInfo.name)!"
+                    if let user = userInfo {
+                        DispatchQueue.main.async {
+                            self.headerView.nameLabel.text = "Hello, \(user.name)!"
+                            self.headerView.imageView.image = UIImage(named: user.avatar)
+                        }
                     }
                 case .failure(let error):
                     print("error: \(error)")

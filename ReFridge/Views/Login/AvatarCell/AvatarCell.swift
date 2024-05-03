@@ -8,10 +8,27 @@
 import UIKit
 
 class AvatarCell: UICollectionViewCell {
+    static let reusableIdentifier = String(describing: AvatarCell.self)
 
+    @IBOutlet weak var hightlightView: UIView!
+    
+    @IBOutlet weak var imageView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        imageView.contentMode = .scaleAspectFit
+        hightlightView.isHidden = true
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                hightlightView.isHidden = false
+            } else {
+                hightlightView.isHidden = true
+            }
+            
+        }
     }
 
 }

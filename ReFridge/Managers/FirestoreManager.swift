@@ -51,7 +51,7 @@ class FirestoreManager {
     }
     
     
-    func fetchUserInfo(completion: (Result<UserInfo, Error>) -> Void) async {
+    func fetchUserInfo(completion: (Result<UserInfo?, Error>) -> Void) async {
         do {
             let querySnapshot = try await userInfoRef.getDocument()
             if querySnapshot.exists {
@@ -60,20 +60,7 @@ class FirestoreManager {
                 completion(.success(userInfo))
             } else {
                 print("document not exxist, createing a default user Info...")
-                guard let user = AccountManager.share.getCurrentUser() else {
-                    print("cannot get user")
-                    return
-                }
-                
-                let defaultUserInfo = UserInfo(
-                    uid: user.uid,
-                    name: user.displayName ?? "unkown",
-                    email: user.email ?? "unknown",
-                    avatar: "avocadoAvatar",
-                    accountStatus: 1
-                )
-                try userInfoRef.setData(from: defaultUserInfo)
-                completion(.success(defaultUserInfo))
+                completion(.success(nil))
             }
         } catch {
             completion(.failure(error))
