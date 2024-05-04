@@ -61,7 +61,13 @@ class LoginViewController: UIViewController {
             await firestoreManager.fetchUserInfo { result in
                 switch result {
                 case .success(let userInfo):
-                    print("已取得 userInfo : \(userInfo)")
+                    guard userInfo != nil else {
+                        print("沒有 user Info！建立 userInfo")
+                        presentAvatarVC()
+                        return
+                    }
+                    print("已取得 userInfo : \(String(describing: userInfo))")
+                    presentMyFridgeVC()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -70,12 +76,41 @@ class LoginViewController: UIViewController {
         
     }
     
+    private func presentAvatarVC() {
+        DispatchQueue.main.async { [self] in
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
+                print("cannot get avatar vc")
+                return
+            }
+            
+            guard let currentUser = accountManager.getCurrentUser() else {
+                print("cannot get current user")
+                return
+            }
+            
+            let userInfo = UserInfo(
+                uid: currentUser.uid,
+                name: currentUser.displayName ?? "unkown",
+                email: currentUser.email ?? "unknown",
+                avatar: "avatar-avocado",
+                accountStatus: 1
+            )
+            
+            avatarVC.mode = .setup
+            avatarVC.userInfo = userInfo
+            navigationController?.pushViewController(avatarVC, animated: true)
+        }
+    }
+    
     
     private func presentMyFridgeVC() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let initialViewController = storyboard.instantiateInitialViewController() {
-            initialViewController.modalPresentationStyle = .fullScreen
-            present(initialViewController, animated: true)
+        DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let initialViewController = storyboard.instantiateInitialViewController() {
+                initialViewController.modalPresentationStyle = .fullScreen
+                self.present(initialViewController, animated: true)
+            }
         }
     }
     
@@ -99,7 +134,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
           case .success(let user):
               print(" 已成功登入，UID: \(user.uid)")
               self.configureUserInfo(user: user)
-              self.presentMyFridgeVC()
               
           case .failure(let error):
               print(error.localizedDescription)

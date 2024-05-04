@@ -61,6 +61,9 @@
 		EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */; };
 		EBC154BD2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */; };
 		EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */; };
+		EBCBBDC72BE3C48C0034246A /* AvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCBBDC62BE3C48C0034246A /* AvatarViewController.swift */; };
+		EBCBBDCB2BE3CCE50034246A /* AvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCBBDC92BE3CCE50034246A /* AvatarCell.swift */; };
+		EBCBBDCC2BE3CCE50034246A /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBCBBDCA2BE3CCE50034246A /* AvatarCell.xib */; };
 		EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */; };
 		EBCC79512BCA2CD50029B754 /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */; };
 		EBCC79532BCA345A0029B754 /* Recipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79522BCA345A0029B754 /* Recipe.swift */; };
@@ -149,6 +152,9 @@
 		EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefresherManager.swift; sourceTree = "<group>"; };
 		EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEntryKitWrapper.swift; sourceTree = "<group>"; };
 		EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
+		EBCBBDC62BE3C48C0034246A /* AvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewController.swift; sourceTree = "<group>"; };
+		EBCBBDC92BE3CCE50034246A /* AvatarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCell.swift; sourceTree = "<group>"; };
+		EBCBBDCA2BE3CCE50034246A /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		EBCC794E2BCA2CB90029B754 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
 		EBCC79502BCA2CD50029B754 /* RecipeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewController.swift; sourceTree = "<group>"; };
 		EBCC79522BCA345A0029B754 /* Recipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipe.swift; sourceTree = "<group>"; };
@@ -257,7 +263,9 @@
 		EB65EA052BE1559400FB9EF7 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				EBCBBDC82BE3CCBF0034246A /* AvatarCell */,
 				EB65EA062BE155A700FB9EF7 /* LoginViewController.swift */,
+				EBCBBDC62BE3C48C0034246A /* AvatarViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -329,6 +337,15 @@
 				EBB971502BD5088200F5D1DB /* ShoppingListCell.xib */,
 			);
 			path = ShoppingListCell;
+			sourceTree = "<group>";
+		};
+		EBCBBDC82BE3CCBF0034246A /* AvatarCell */ = {
+			isa = PBXGroup;
+			children = (
+				EBCBBDC92BE3CCE50034246A /* AvatarCell.swift */,
+				EBCBBDCA2BE3CCE50034246A /* AvatarCell.xib */,
+			);
+			path = AvatarCell;
 			sourceTree = "<group>";
 		};
 		EBCC794D2BCA2C950029B754 /* Recipe */ = {
@@ -565,6 +582,7 @@
 				EBFF62C42BC78FD50013F50F /* GoogleService-Info.plist in Resources */,
 				EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */,
 				EBF199592BD791BF00594CCE /* RecongCell.xib in Resources */,
+				EBCBBDCC2BE3CCE50034246A /* AvatarCell.xib in Resources */,
 				EB84D4412BD29AA7008E274C /* TypeImageCell.xib in Resources */,
 				EB65EA022BE14D8600FB9EF7 /* Login.storyboard in Resources */,
 				EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */,
@@ -684,10 +702,12 @@
 				EB0DD7B82BD64CA2002147CC /* KingFisherWrapper.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
 				EBC154BD2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift in Sources */,
+				EBCBBDCB2BE3CCE50034246A /* AvatarCell.swift in Sources */,
 				EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */,
 				EB425BE62BD145DD000C75A6 /* ChartCounts.swift in Sources */,
 				EBCC79552BCA5D920029B754 /* IngredientStatus.swift in Sources */,
 				EBAC18902BC98325002BB6E7 /* FoodTypeViewController.swift in Sources */,
+				EBCBBDC72BE3C48C0034246A /* AvatarViewController.swift in Sources */,
 				EB425BE22BD12FDA000C75A6 /* PieChartView.swift in Sources */,
 				EBFF62CC2BC79D650013F50F /* FoodTypeCell.swift in Sources */,
 				EB84D4402BD29AA7008E274C /* TypeImageCell.swift in Sources */,

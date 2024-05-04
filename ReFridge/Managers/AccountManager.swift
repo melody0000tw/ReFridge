@@ -30,7 +30,7 @@ class AccountManager {
     func signoutFireBase(completion: (Result<Any?, Error>) -> Void) {
         do {
           try firebaseAuth.signOut()
-            guard let currentUser = firebaseAuth.currentUser else {
+            guard firebaseAuth.currentUser != nil else {
                 completion(.success(nil))
                 return
             }

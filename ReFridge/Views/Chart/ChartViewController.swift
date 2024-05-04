@@ -35,6 +35,7 @@ class ChartViewController: UIViewController {
         }
     }
     
+    private lazy var settingBtn = UIBarButtonItem()
     private lazy var headerView = ProfileHeaderView(frame: CGRect())
     private lazy var stackView = UIStackView()
     private lazy var buttons = [UIButton]()
@@ -53,24 +54,32 @@ class ChartViewController: UIViewController {
         setupButtons()
         setupChartViews()
         barChartView.isHidden = true
-        fetchUserInfo()
+        setupNavigationView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchUserInfo()
         fetchData()
         fetchScores()
     }
     
     // MARK: - setups
+    private func setupNavigationView() {
+        settingBtn.image = UIImage(systemName: "gearshape.fill")
+        settingBtn.tintColor = .white
+        settingBtn.target = self
+        settingBtn.action = #selector(presentSettingSheet)
+        navigationItem.rightBarButtonItem = settingBtn
+    }
+    
     private func setupPofileView() {
-        headerView.delegate = self
         view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.top.equalTo(view.snp.top)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(150)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(120)
         }
     }
     
@@ -190,22 +199,39 @@ class ChartViewController: UIViewController {
     }
     
     // MARK: - Account Settings
-    private func presentSettingSheet() {
+    @objc private func presentSettingSheet() {
         let controller = UIAlertController(title: "帳號設定", message: nil, preferredStyle: .actionSheet)
-        let signOutAction = UIAlertAction(title: "登出", style: .default) { action in
+        let updateProfileAction = UIAlertAction(title: "編輯個人資料", style: .default) { _ in
+            self.presentAvatarVC()
+        }
+        let signOutAction = UIAlertAction(title: "登出", style: .default) { _ in
             self.signoutFireBase()
         }
-        let deleteAccountAction = UIAlertAction(title: "刪除帳號", style: .destructive) { action in
+        let deleteAccountAction = UIAlertAction(title: "刪除帳號", style: .destructive) { _ in
             print("我要刪除帳號！！！")
             self.presentDeletionAlert()
         }
         let cancelAction = UIAlertAction(title: "取消", style: .cancel)
         
+        controller.addAction(updateProfileAction)
         controller.addAction(signOutAction)
         controller.addAction(deleteAccountAction)
         controller.addAction(cancelAction)
         
         present(controller, animated: true)
+    }
+    
+    private func presentAvatarVC() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
+            return
+        }
+        avatarVC.mode = .edit
+        if let userInfo = userInfo {
+            avatarVC.userInfo = userInfo
+        }
+        avatarVC.modalPresentationStyle = .fullScreen
+        present(avatarVC, animated: true)
     }
     
     private func presentDeletionAlert() {
@@ -244,8 +270,11 @@ class ChartViewController: UIViewController {
                 switch result {
                 case .success(let userInfo):
                     self.userInfo = userInfo
-                    DispatchQueue.main.async {
-                        self.headerView.nameLabel.text = "Hello, \(userInfo.name)!"
+                    if let user = userInfo {
+                        DispatchQueue.main.async {
+                            self.headerView.nameLabel.text = "Hello, \(user.name)!"
+                            self.headerView.imageView.image = UIImage(named: user.avatar)
+                        }
                     }
                 case .failure(let error):
                     print("error: \(error)")
@@ -324,14 +353,6 @@ class ChartViewController: UIViewController {
     }
 }
 
-
-
-// MARK: -
-extension ChartViewController: ProfileHeaderViewDelegate {
-    func didTappedSettingBtn() {
-        presentSettingSheet()
-    }
-}
 
 // MARK: - SignInWithApple
 @available(iOS 13.0, *)
