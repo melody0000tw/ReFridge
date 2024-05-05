@@ -55,6 +55,8 @@
 		EBAF18F22BE6354000442BA0 /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */; };
 		EBAF18F52BE639D900442BA0 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = EBAF18F42BE639D900442BA0 /* OpenAI */; };
 		EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F72BE733EF00442BA0 /* Secrets.swift */; };
+		EBAF18FA2BE73E7100442BA0 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F92BE73E7100442BA0 /* UIViewController+Ext.swift */; };
+		EBAF18FC2BE7400F00442BA0 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18FB2BE7400F00442BA0 /* LoadingView.swift */; };
 		EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */; };
 		EBB9714C2BD4FBF000F5D1DB /* ItemInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */; };
 		EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */; };
@@ -148,6 +150,8 @@
 		EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextItem.swift; sourceTree = "<group>"; };
 		EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
 		EBAF18F72BE733EF00442BA0 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		EBAF18F92BE73E7100442BA0 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
+		EBAF18FB2BE7400F00442BA0 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesureWord.swift; sourceTree = "<group>"; };
 		EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoCell.swift; sourceTree = "<group>"; };
 		EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemInfoCell.xib; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 			children = (
 				EB9B2C4C2BC954D5004CB435 /* FoodTypeViewController */,
 				EB5A31242BDF88C30002DFE6 /* TabBarController.swift */,
+				EBAF18FB2BE7400F00442BA0 /* LoadingView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -492,6 +497,7 @@
 				EB2F1D8C2BCE1C58000C9295 /* Double+Ext.swift */,
 				EB425BDF2BD0F873000C75A6 /* UIColor+Ext.swift */,
 				EBF199522BD75AC700594CCE /* UIView+Ext.swift */,
+				EBAF18F92BE73E7100442BA0 /* UIViewController+Ext.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -697,6 +703,7 @@
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
 				EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */,
 				EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */,
+				EBAF18FA2BE73E7100442BA0 /* UIViewController+Ext.swift in Sources */,
 				EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */,
 				EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */,
 				EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */,
@@ -737,6 +744,7 @@
 				EB5A312A2BDFAE7E0002DFE6 /* AccountManager.swift in Sources */,
 				EB1698C72BDB632C00B972D0 /* RecipeButtonCell.swift in Sources */,
 				EBCC79532BCA345A0029B754 /* Recipe.swift in Sources */,
+				EBAF18FC2BE7400F00442BA0 /* LoadingView.swift in Sources */,
 				EB0DD7B22BD637BC002147CC /* RecipeGalleryView.swift in Sources */,
 				EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */,
 				EB493AF62BD35EA2006204D8 /* CardTypeCell.swift in Sources */,

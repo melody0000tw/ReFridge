@@ -95,7 +95,6 @@ class TextScanManager {
         
     }
     
-    
 //    func filterFoodTypeText(from texts: [String]) -> ScanResult {
 //        let foodKeywords = ["菇", "豆", "火腿", "菜", "肉", "萵苣", "大陸妹", "吐司", "蘿美"] // Example keywords
 //        var recongTexts = [String]()

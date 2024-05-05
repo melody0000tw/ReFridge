@@ -22,7 +22,6 @@ class OpenAIManager {
     static let shared = OpenAIManager()
     private init() {}
     
-    
     func filterArrays(inputArray: [String], completion: @escaping (Result<AIFoodReplay, Error>) -> Void) {
         let token = Secrets.shared.openaiApiToken
         let openAI = OpenAI(apiToken: token)
