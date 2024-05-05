@@ -56,6 +56,7 @@
 		EBAF18F52BE639D900442BA0 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = EBAF18F42BE639D900442BA0 /* OpenAI */; };
 		EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F72BE733EF00442BA0 /* Secrets.swift */; };
 		EBAF18FA2BE73E7100442BA0 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F92BE73E7100442BA0 /* UIViewController+Ext.swift */; };
+		EBAF18FF2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBAF18FE2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf */; };
 		EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */; };
 		EBB9714C2BD4FBF000F5D1DB /* ItemInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */; };
 		EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */; };
@@ -150,6 +151,7 @@
 		EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
 		EBAF18F72BE733EF00442BA0 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		EBAF18F92BE73E7100442BA0 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
+		EBAF18FE2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NothingYouCouldDo-Regular.ttf"; sourceTree = "<group>"; };
 		EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesureWord.swift; sourceTree = "<group>"; };
 		EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoCell.swift; sourceTree = "<group>"; };
 		EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemInfoCell.xib; sourceTree = "<group>"; };
@@ -337,6 +339,14 @@
 			path = Secrets;
 			sourceTree = "<group>";
 		};
+		EBAF18FD2BE7711700442BA0 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				EBAF18FE2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		EBB971492BD4FB9300F5D1DB /* ItemInfoCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +433,7 @@
 				EBFF62C02BC787DC0013F50F /* Managers */,
 				EBFF62D12BC7C9C60013F50F /* Model */,
 				EBAF18F62BE733DA00442BA0 /* Secrets */,
+				EBAF18FD2BE7711700442BA0 /* Fonts */,
 				EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */,
 				EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */,
 				EBF88E392BC5704200DEF2FA /* Assets.xcassets */,
@@ -604,6 +615,7 @@
 				EBF88E3A2BC5704200DEF2FA /* Assets.xcassets in Resources */,
 				EBF199592BD791BF00594CCE /* RecongCell.xib in Resources */,
 				EBCBBDCC2BE3CCE50034246A /* AvatarCell.xib in Resources */,
+				EBAF18FF2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf in Resources */,
 				EB84D4412BD29AA7008E274C /* TypeImageCell.xib in Resources */,
 				EB65EA022BE14D8600FB9EF7 /* Login.storyboard in Resources */,
 				EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */,

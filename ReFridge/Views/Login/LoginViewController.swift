@@ -13,34 +13,79 @@ import FirebaseAuth
 class LoginViewController: UIViewController {
     let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
+    
+    private lazy var logoImageView = UIImageView(image: UIImage(named: "appIcon"))
+    private lazy var titleLabel = UILabel()
+    private lazy var sloganLabel = UILabel()
+    private lazy var button = ASAuthorizationAppleIDButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
+        logoImageView.alpha = 0
+        titleLabel.alpha = 0
+        sloganLabel.alpha = 0
+        button.alpha = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 1, delay: 1) { [self] in
+            logoImageView.alpha = 1
+        }
+        UIView.animate(withDuration: 1, delay: 2) { [self] in
+            titleLabel.alpha = 1
+        }
+        UIView.animate(withDuration: 1, delay: 3) { [self] in
+            sloganLabel.alpha = 1
+        }
+        UIView.animate(withDuration: 1, delay: 4) { [self] in
+            button.alpha = 1
+        }
     }
     
     private func setupViews() {
-        let label = UILabel()
-        label.text = "請先登入帳戶"
-        label.font = UIFont(name: "PingFangTC-Regular", size: 20)
-        label.textAlignment = .left
-        label.textColor = .darkGray
-        label.numberOfLines = 1
-        label.sizeToFit()
-        view.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(250)
+        view.backgroundColor = UIColor(hex: "CBD2A4")
+        view.addSubview(logoImageView)
+        logoImageView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
+            make.width.height.equalTo(view.snp.width).multipliedBy(0.8)
             make.centerX.equalTo(view.snp.centerX)
         }
         
-        let button = ASAuthorizationAppleIDButton()
+        titleLabel.text = "ReFridge"
+        titleLabel.font = UIFont(name: "NothingYouCouldDo", size: 40)
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .darkGray
+        titleLabel.numberOfLines = 1
+        titleLabel.sizeToFit()
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(48)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
+        sloganLabel.text = "Rebuilding the relationship with your fridge."
+        sloganLabel.font = UIFont(name: "NothingYouCouldDo", size: 24)
+        sloganLabel.textAlignment = .center
+        sloganLabel.textColor = .darkGray
+        sloganLabel.numberOfLines = 0
+        sloganLabel.sizeToFit()
+        view.addSubview(sloganLabel)
+        sloganLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
         button.addTarget(self, action: #selector(performAppleSignIn), for: .touchUpInside)
         view.addSubview(button)
         button.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.centerY.equalTo(view.snp.centerY)
-            make.width.equalTo(180)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
             make.height.equalTo(40)
         }
     }
@@ -103,13 +148,12 @@ class LoginViewController: UIViewController {
         }
     }
     
-    
     private func presentMyFridgeVC() {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if let initialViewController = storyboard.instantiateInitialViewController() {
                 initialViewController.modalPresentationStyle = .fullScreen
-                self.present(initialViewController, animated: true)
+                self.present(initialViewController, animated: false)
             }
         }
     }
