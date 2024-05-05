@@ -48,7 +48,9 @@ class OpenAIManager {
             .init(role: .system, content: systemRole)!,
             .init(role: .user, content: String(describing: exampleInput))!,
             .init(role: .assistant, content: outputJsonString)!,
-            .init(role: .user, content: prompt)!], model: .gpt4)
+            .init(role: .user, content: prompt)!],
+                              model: .gpt3_5Turbo_0125
+        )
         
         openAI.chats(query: query) { result in
             print("open AI result ========\(result)")

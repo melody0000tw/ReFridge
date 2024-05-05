@@ -19,7 +19,7 @@ extension UIViewController {
                 return
             }
             
-            loadingView.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+            loadingView.backgroundColor = UIColor(white: 1, alpha: 0.5)
             let indicator = UIActivityIndicatorView(style: .large)
             indicator.startAnimating()
             loadingView.addSubview(indicator)
