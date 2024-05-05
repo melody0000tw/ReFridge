@@ -131,13 +131,14 @@ class MyFridgeViewController: UIViewController {
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
     private func presentScanResult(scanResult: ScanResult) {
-        guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
-            print("cannot get scanresult vc")
-            return
+        DispatchQueue.main.async { [self] in
+            guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
+                print("cannot get scanresult vc")
+                return
+            }
+            scanVC.scanResult = scanResult
+            navigationController?.pushViewController(scanVC, animated: true)
         }
-        scanVC.scanResult = scanResult
-        navigationController?.pushViewController(scanVC, animated: true)
-        
     }
     
     // MARK: - Data

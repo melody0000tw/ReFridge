@@ -52,6 +52,9 @@
 		EBAD13222BCCF78200F40A71 /* NotRecongCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13212BCCF78200F40A71 /* NotRecongCell.swift */; };
 		EBAD13242BCCF7A800F40A71 /* ScanResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13232BCCF7A800F40A71 /* ScanResultViewController.swift */; };
 		EBAD13262BCCFDCB00F40A71 /* ScanTextItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */; };
+		EBAF18F22BE6354000442BA0 /* OpenAIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */; };
+		EBAF18F52BE639D900442BA0 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = EBAF18F42BE639D900442BA0 /* OpenAI */; };
+		EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F72BE733EF00442BA0 /* Secrets.swift */; };
 		EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */; };
 		EBB9714C2BD4FBF000F5D1DB /* ItemInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */; };
 		EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */; };
@@ -143,6 +146,8 @@
 		EBAD13212BCCF78200F40A71 /* NotRecongCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotRecongCell.swift; sourceTree = "<group>"; };
 		EBAD13232BCCF7A800F40A71 /* ScanResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewController.swift; sourceTree = "<group>"; };
 		EBAD13252BCCFDCB00F40A71 /* ScanTextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanTextItem.swift; sourceTree = "<group>"; };
+		EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
+		EBAF18F72BE733EF00442BA0 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesureWord.swift; sourceTree = "<group>"; };
 		EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoCell.swift; sourceTree = "<group>"; };
 		EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemInfoCell.xib; sourceTree = "<group>"; };
@@ -196,6 +201,7 @@
 			files = (
 				09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */,
 				EBAC18932BCA22F0002BB6E7 /* FirebaseAuth in Frameworks */,
+				EBAF18F52BE639D900442BA0 /* OpenAI in Frameworks */,
 				EBAC18952BCA22F0002BB6E7 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -321,6 +327,14 @@
 			path = ScanCells;
 			sourceTree = "<group>";
 		};
+		EBAF18F62BE733DA00442BA0 /* Secrets */ = {
+			isa = PBXGroup;
+			children = (
+				EBAF18F72BE733EF00442BA0 /* Secrets.swift */,
+			);
+			path = Secrets;
+			sourceTree = "<group>";
+		};
 		EBB971492BD4FB9300F5D1DB /* ItemInfoCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,6 +420,7 @@
 				EBFF62C52BC797DA0013F50F /* Views */,
 				EBFF62C02BC787DC0013F50F /* Managers */,
 				EBFF62D12BC7C9C60013F50F /* Model */,
+				EBAF18F62BE733DA00442BA0 /* Secrets */,
 				EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */,
 				EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */,
 				EBF88E392BC5704200DEF2FA /* Assets.xcassets */,
@@ -425,6 +440,7 @@
 				EB1698CC2BDB893300B972D0 /* EmptyDataManager.swift */,
 				EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */,
 				EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */,
+				EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -529,6 +545,7 @@
 			packageProductDependencies = (
 				EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */,
 				EBAC18942BCA22F0002BB6E7 /* FirebaseFirestore */,
+				EBAF18F42BE639D900442BA0 /* OpenAI */,
 			);
 			productName = ReFridge;
 			productReference = EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */;
@@ -560,6 +577,7 @@
 			mainGroup = EBF88E242BC5703E00DEF2FA;
 			packageReferences = (
 				EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				EBAF18F32BE639D900442BA0 /* XCRemoteSwiftPackageReference "OpenAI" */,
 			);
 			productRefGroup = EBF88E2E2BC5703E00DEF2FA /* Products */;
 			projectDirPath = "";
@@ -670,10 +688,12 @@
 				EB5A31252BDF88C30002DFE6 /* TabBarController.swift in Sources */,
 				EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */,
 				EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */,
+				EBAF18F22BE6354000442BA0 /* OpenAIManager.swift in Sources */,
 				EBF484CA2BD7530100B37580 /* RecipeInfoCell.swift in Sources */,
 				EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */,
 				EBAD13242BCCF7A800F40A71 /* ScanResultViewController.swift in Sources */,
 				EB493AF22BD35E41006204D8 /* AddFoodCardViewController.swift in Sources */,
+				EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */,
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
 				EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */,
 				EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */,
@@ -966,6 +986,14 @@
 				minimumVersion = 10.24.0;
 			};
 		};
+		EBAF18F32BE639D900442BA0 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -978,6 +1006,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		EBAF18F42BE639D900442BA0 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAF18F32BE639D900442BA0 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
