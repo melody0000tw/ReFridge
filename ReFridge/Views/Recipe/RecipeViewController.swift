@@ -298,6 +298,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         else {
             return UITableViewCell()
         }
+        cell.delegate = self
         
         let recipe = showRecipes[indexPath.row]
         cell.recipe = recipe
@@ -308,10 +309,13 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
             cell.setupRecipeInfo()
         }
         
-        if !likedRecipeId.isEmpty {
-            let isLiked = likedRecipeId.contains([recipe.recipeId])
-            cell.toggleLikeBtn(isLiked: isLiked)
-        }
+        let isLiked = likedRecipeId.contains([recipe.recipeId])
+        cell.toggleLikeBtn(isLiked: isLiked)
+        
+//        if !likedRecipeId.isEmpty {
+//            let isLiked = likedRecipeId.contains([recipe.recipeId])
+//            cell.toggleLikeBtn(isLiked: isLiked)
+//        }
         
         return cell
     }
@@ -340,6 +344,56 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 }
+
+// MARK: - RecipeCellDelegate
+extension RecipeViewController: RecipeCellDelegate {
+    func didTappedLikedBtn(cell: RecipeCell) {
+        
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            print("cannot get indexPath of selected cell")
+            return
+        }
+        let recipe = showRecipes[indexPath.row]
+        print("vc 收到 recipe: \(recipe.title) 的按鈕被點選了！")
+        
+        // 確認 cell 現在的狀態
+        let isLiked = !likedRecipeId.contains([recipe.recipeId])
+        
+        // 改變 cell 的狀態
+        cell.likeBtn.clickBounceForSmallitem()
+        cell.toggleLikeBtn(isLiked: isLiked)
+        
+        // 更新資料庫
+        Task {
+            switch isLiked {
+            case true:
+                await firestoreManager.addLikedRecipe(by: recipe.recipeId) { result in
+                    switch result {
+                    case .success:
+                        print("成功加入收藏清單")
+                        self.fetchLikedRecipeId()
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            case false:
+                await firestoreManager.removeLikedRecipe(by: recipe.recipeId) { result in
+                    switch result {
+                    case .success:
+                        print("成功刪除清單")
+                        self.fetchLikedRecipeId()
+                    case .failure(let error):
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+        }
+    }
+    
+    
+}
+
+
 
 // MARK: - UISearchResultsUpdating, UISearchBarDelegate
 extension RecipeViewController: UISearchResultsUpdating, UISearchBarDelegate {
