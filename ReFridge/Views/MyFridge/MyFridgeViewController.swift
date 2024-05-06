@@ -131,13 +131,14 @@ class MyFridgeViewController: UIViewController {
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
     private func presentScanResult(scanResult: ScanResult) {
-        guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
-            print("cannot get scanresult vc")
-            return
+        DispatchQueue.main.async { [self] in
+            guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
+                print("cannot get scanresult vc")
+                return
+            }
+            scanVC.scanResult = scanResult
+            navigationController?.pushViewController(scanVC, animated: true)
         }
-        scanVC.scanResult = scanResult
-        navigationController?.pushViewController(scanVC, animated: true)
-        
     }
     
     // MARK: - Data
@@ -280,16 +281,18 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
 extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         // 把資料丟給 text scan manager 處理
+        showLoadingIndicator()
         guard let image = info[.originalImage] as? UIImage else { return }
         let scanManager = TextScanManager.shared
         Task {
             scanManager.detectText(in: image, completion: { result in
                 guard let scanResult = result else {
                     print("無法辨識圖片")
+                    self.removeLoadingIndicator()
                     return
                 }
                 self.presentScanResult(scanResult: scanResult)
-                
+                self.removeLoadingIndicator()
             })
         }
         picker.dismiss(animated: true)

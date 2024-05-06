@@ -7,7 +7,12 @@
 
 import UIKit
 
+protocol RecipeCellDelegate: AnyObject {
+    func didTappedLikedBtn(cell: RecipeCell)
+}
+
 class RecipeCell: UITableViewCell {
+    weak var delegate: RecipeCellDelegate?
     
     var recipe: Recipe?
     var ingredientStatus: IngredientStatus?
@@ -28,7 +33,13 @@ class RecipeCell: UITableViewCell {
         recipeImage.layer.cornerRadius = 16
         recipeImage.clipsToBounds = true
         recipeImage.contentMode = .scaleAspectFill
+        likeBtn.addTarget(self, action: #selector(didTappedLikeBtn), for: .touchUpInside)
         
+    }
+    
+    @objc func didTappedLikeBtn() {
+        print("didTappedLikeBtn")
+        delegate?.didTappedLikedBtn(cell: self)
     }
     
     func toggleLikeBtn(isLiked: Bool) {

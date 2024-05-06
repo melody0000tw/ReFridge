@@ -258,7 +258,7 @@ class ChartViewController: UIViewController {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
             if let initialViewController = storyboard.instantiateInitialViewController() {
                 initialViewController.modalPresentationStyle = .fullScreen
-                self.present(initialViewController, animated: true)
+                self.present(initialViewController, animated: false)
             }
         }
     }

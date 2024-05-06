@@ -63,7 +63,8 @@ class ShoppingListViewController: UIViewController {
                 switch result {
                 case .success(let list):
                     print("did get list")
-                    self.list = list
+                    var sortedList = list.sorted { $0.createDate > $1.createDate }
+                    self.list = sortedList
                     DispatchQueue.main.async { [self] in
                         tableView.reloadData()
                         refreshControl.endRefresh()

@@ -18,8 +18,5 @@ struct ListItem: Codable {
     var name: String = ""
     var iconName: String = "other"
     var notes: String = ""
-//    var routinePeriod: Int
-//    var routineStartTime: Date
-    
-//    static let share = ListItem(itemId: "", typeId: "501", qty: 1, checkStatus: 0, isRoutineItem: false, routinePeriod: 0, routineStartTime: Date())
+    var createDate: Date = Date()
 }
