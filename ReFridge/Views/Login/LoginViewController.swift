@@ -31,16 +31,16 @@ class LoginViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UIView.animate(withDuration: 1, delay: 1) { [self] in
+        UIView.animate(withDuration: 0.5, delay: 0.5) { [self] in
             logoImageView.alpha = 1
         }
-        UIView.animate(withDuration: 1, delay: 2) { [self] in
+        UIView.animate(withDuration: 0.5, delay: 1) { [self] in
             titleLabel.alpha = 1
         }
-        UIView.animate(withDuration: 1, delay: 3) { [self] in
+        UIView.animate(withDuration: 0.5, delay: 1.5) { [self] in
             sloganLabel.alpha = 1
         }
-        UIView.animate(withDuration: 1, delay: 4) { [self] in
+        UIView.animate(withDuration: 0.5, delay: 2) { [self] in
             button.alpha = 1
         }
     }

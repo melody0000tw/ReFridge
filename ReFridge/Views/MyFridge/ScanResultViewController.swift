@@ -85,7 +85,7 @@ class ScanResultViewController: UIViewController {
         print("toggleNotRecongView")
         if sender.direction == .up {
             notRecongViewTopConstraint.constant = -280
-            notRecongLabel.text = "下滑隱藏單詞"
+            notRecongLabel.text = "下滑隱藏更多單詞"
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
                 
@@ -121,6 +121,7 @@ class ScanResultViewController: UIViewController {
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         group.contentInsets = NSDirectionalEdgeInsets.zero
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 80, trailing: 0)
         return UICollectionViewCompositionalLayout(section: section)
     }
     
