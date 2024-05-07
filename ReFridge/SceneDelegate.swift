@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
             // Check if the user is logged in
             if let currentUser = Auth.auth().currentUser {
-                print("已經登入 uid:\(currentUser.uid)")
+                print("did sin in with uid:\(currentUser.uid)")
                 let firestoreManager = FirestoreManager.shared
                 firestoreManager.configure(withUID: currentUser.uid)
                 

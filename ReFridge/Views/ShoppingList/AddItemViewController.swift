@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddItemViewController: UIViewController {
+class AddItemViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var listItem = ListItem()
@@ -36,7 +36,6 @@ class AddItemViewController: UIViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            print("card vc knows the selected foodtype: \(foodType)")
             // 選擇完 foodType 後
             listItem.typeId = foodType.typeId
             listItem.categoryId = foodType.categoryId
@@ -87,7 +86,6 @@ class AddItemViewController: UIViewController {
     
     @objc func saveData() {
         guard listItem.name != "" else {
-            print("沒有選擇 type")
             typeViewIsOpen = true
             tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
             guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
@@ -103,17 +101,20 @@ class AddItemViewController: UIViewController {
         
         view.endEditing(true)
         print(listItem)
-
+        showLoadingIndicator()
         Task {
             await firestoreManager.addListItem(listItem) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
                     DispatchQueue.main.async {
+                        self.removeLoadingIndicator()
                         self.navigationController?.popViewController(animated: true)
                     }
                 case .failure(let error):
                     print("Error adding document: \(error)")
+                    self.removeLoadingIndicator()
+                    presentInternetAlert()
                 }
             }
         }
@@ -154,7 +155,6 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension  AddItemViewController: CardTypeCellDelegate, ItemInfoCellDelegate {
     func didToggleTypeView() {
-        print("didToggle")
         typeViewIsOpen = !typeViewIsOpen
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }

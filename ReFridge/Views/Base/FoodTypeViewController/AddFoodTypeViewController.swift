@@ -43,7 +43,6 @@ class AddFoodTypeViewController: UIViewController {
         }
     }
     
-//    var userFoodTypeCount: Int?
     var foodTypeVCdelegate: FoodTypeViewController?
     
     override func viewDidLoad() {
@@ -173,17 +172,15 @@ class AddFoodTypeViewController: UIViewController {
     
     @objc func createType() {
         guard nameTextField.text != "", let typeName = nameTextField.text else {
-            print("名稱不能為空！")
+            presentAlert(title: "未填寫完整", description: "類型名稱未填寫", image: UIImage(systemName: "xmark.circle"))
             return
         }
-        print("type name: \(typeName), image: \(selectedImage)")
         
         guard let categoryId = categoryId else {
             print("cannot get user food type count")
             return
         }
         
-//        let typeId = 1001 + count
         let foodType = FoodType(
             categoryId: categoryId,
             typeId: UUID().uuidString,
@@ -196,7 +193,6 @@ class AddFoodTypeViewController: UIViewController {
             await firestoreManager.addUserFoodTypes(foodType: foodType) { result in
                 switch result {
                 case .success:
-                    print("type新增成功！")
                     foodTypeVCdelegate?.fetchUserFoodTypes()
                     DispatchQueue.main.async {
                         self.presentingViewController?.dismiss(animated: true)

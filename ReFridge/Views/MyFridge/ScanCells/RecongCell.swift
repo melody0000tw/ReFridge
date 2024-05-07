@@ -18,11 +18,9 @@ class RecongCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: RecongCell.self)
     
     @IBAction func deleteAction(_ sender: Any) {
-        print("deleteAction")
         delegate?.deleteRecongCell(cell: self)
     }
     @IBAction func editAction(_ sender: Any) {
-        print("editAction")
         delegate?.editRecongCell(cell: self)
     }
     

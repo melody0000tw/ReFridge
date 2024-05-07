@@ -13,34 +13,79 @@ import FirebaseAuth
 class LoginViewController: UIViewController {
     let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
+    
+    private lazy var logoImageView = UIImageView(image: UIImage(named: "appIcon"))
+    private lazy var titleLabel = UILabel()
+    private lazy var sloganLabel = UILabel()
+    private lazy var button = ASAuthorizationAppleIDButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
+        logoImageView.alpha = 0
+        titleLabel.alpha = 0
+        sloganLabel.alpha = 0
+        button.alpha = 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 0.5, delay: 0.5) { [self] in
+            logoImageView.alpha = 1
+        }
+        UIView.animate(withDuration: 0.5, delay: 1) { [self] in
+            titleLabel.alpha = 1
+        }
+        UIView.animate(withDuration: 0.5, delay: 1.5) { [self] in
+            sloganLabel.alpha = 1
+        }
+        UIView.animate(withDuration: 0.5, delay: 2) { [self] in
+            button.alpha = 1
+        }
     }
     
     private func setupViews() {
-        let label = UILabel()
-        label.text = "請先登入帳戶"
-        label.font = UIFont(name: "PingFangTC-Regular", size: 20)
-        label.textAlignment = .left
-        label.textColor = .darkGray
-        label.numberOfLines = 1
-        label.sizeToFit()
-        view.addSubview(label)
-        label.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top).offset(250)
+        view.backgroundColor = .C7
+        view.addSubview(logoImageView)
+        logoImageView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
+            make.width.height.equalTo(view.snp.width).multipliedBy(0.8)
             make.centerX.equalTo(view.snp.centerX)
         }
         
-        let button = ASAuthorizationAppleIDButton()
+        titleLabel.text = "ReFridge"
+        titleLabel.font = UIFont(name: "NothingYouCouldDo", size: 40)
+        titleLabel.textAlignment = .center
+        titleLabel.textColor = .darkGray
+        titleLabel.numberOfLines = 1
+        titleLabel.sizeToFit()
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(logoImageView.snp.bottom).offset(48)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
+        sloganLabel.text = "Rebuilding the relationship with your fridge."
+        sloganLabel.font = UIFont(name: "NothingYouCouldDo", size: 24)
+        sloganLabel.textAlignment = .center
+        sloganLabel.textColor = .darkGray
+        sloganLabel.numberOfLines = 0
+        sloganLabel.sizeToFit()
+        view.addSubview(sloganLabel)
+        sloganLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(24)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
+            make.centerX.equalTo(view.snp.centerX)
+        }
+        
         button.addTarget(self, action: #selector(performAppleSignIn), for: .touchUpInside)
         view.addSubview(button)
         button.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.centerY.equalTo(view.snp.centerY)
-            make.width.equalTo(180)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-24)
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).offset(24)
+            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).offset(-24)
             make.height.equalTo(40)
         }
     }
@@ -61,7 +106,11 @@ class LoginViewController: UIViewController {
             await firestoreManager.fetchUserInfo { result in
                 switch result {
                 case .success(let userInfo):
-                    print("已取得 userInfo : \(userInfo)")
+                    guard userInfo != nil else {
+                        presentAvatarVC()
+                        return
+                    }
+                    presentMyFridgeVC()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -70,12 +119,40 @@ class LoginViewController: UIViewController {
         
     }
     
+    private func presentAvatarVC() {
+        DispatchQueue.main.async { [self] in
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
+                print("cannot get avatar vc")
+                return
+            }
+            
+            guard let currentUser = accountManager.getCurrentUser() else {
+                print("cannot get current user")
+                return
+            }
+            
+            let userInfo = UserInfo(
+                uid: currentUser.uid,
+                name: currentUser.displayName ?? "unkown",
+                email: currentUser.email ?? "unknown",
+                avatar: "avatar-avocado",
+                accountStatus: 1
+            )
+            
+            avatarVC.mode = .setup
+            avatarVC.userInfo = userInfo
+            navigationController?.pushViewController(avatarVC, animated: true)
+        }
+    }
     
     private func presentMyFridgeVC() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let initialViewController = storyboard.instantiateInitialViewController() {
-            initialViewController.modalPresentationStyle = .fullScreen
-            present(initialViewController, animated: true)
+        DispatchQueue.main.async {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            if let initialViewController = storyboard.instantiateInitialViewController() {
+                initialViewController.modalPresentationStyle = .fullScreen
+                self.present(initialViewController, animated: false)
+            }
         }
     }
     
@@ -97,9 +174,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
       accountManager.signInWithApple(controller: controller, authorization: authorization) { result in
           switch result {
           case .success(let user):
-              print(" 已成功登入，UID: \(user.uid)")
               self.configureUserInfo(user: user)
-              self.presentMyFridgeVC()
               
           case .failure(let error):
               print(error.localizedDescription)

@@ -10,7 +10,7 @@ import VisionKit
 import Vision
 import Lottie
 
-class MyFridgeViewController: UIViewController {
+class MyFridgeViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var allCards = [FoodCard]()
@@ -38,7 +38,6 @@ class MyFridgeViewController: UIViewController {
     private lazy var refreshControl = RefresherManager()
     
     @IBAction func searchByBarCode(_ sender: Any) {
-        print("search by bar code")
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
         present(documentCameraViewController, animated: true)
@@ -47,7 +46,6 @@ class MyFridgeViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("123")
         setupCollectionView()
         setupSearchBar()
         setupFilterBtn()
@@ -57,11 +55,6 @@ class MyFridgeViewController: UIViewController {
         collectionView.isHidden = true
         fetchData()
     }
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        collectionView.refreshControl?.beginRefreshing()
-//        fetchData()
-//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -131,27 +124,32 @@ class MyFridgeViewController: UIViewController {
         filterBarButton.menu = UIMenu(children: [ filterMenu, arrangeMenu ])
     }
     private func presentScanResult(scanResult: ScanResult) {
-        guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
-            print("cannot get scanresult vc")
-            return
+        DispatchQueue.main.async { [self] in
+            guard let scanVC = storyboard?.instantiateViewController(withIdentifier: "ScanResultViewController") as? ScanResultViewController else {
+                    print("cannot get scanresult vc")
+                    return
+            }
+            scanVC.scanResult = scanResult
+            navigationController?.pushViewController(scanVC, animated: true)
         }
-        scanVC.scanResult = scanResult
-        navigationController?.pushViewController(scanVC, animated: true)
-        
     }
     
     // MARK: - Data
     @objc private func fetchData() {
         refreshControl.startRefresh()
+        showLoadingIndicator()
         Task {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
                 case .success(let foodCards):
-                    print("got food cards!")
                     self.allCards = foodCards
                     filterFoodCards()
+                    removeLoadingIndicator()
                     refreshControl.endRefresh()
                 case .failure(let error):
+                    removeLoadingIndicator()
+                    refreshControl.endRefresh()
+                    presentInternetAlert()
                     print("error: \(error)")
                 }
             }
@@ -279,17 +277,18 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        // 把資料丟給 text scan manager 處理
+        showLoadingIndicator()
         guard let image = info[.originalImage] as? UIImage else { return }
         let scanManager = TextScanManager.shared
         Task {
             scanManager.detectText(in: image, completion: { result in
                 guard let scanResult = result else {
-                    print("無法辨識圖片")
+                    self.presentAlert(title: "無法辨識", description: "無法辨識圖片中的文字", image: UIImage(systemName: "xmark.circle"))
+                    self.removeLoadingIndicator()
                     return
                 }
                 self.presentScanResult(scanResult: scanResult)
-                
+                self.removeLoadingIndicator()
             })
         }
         picker.dismiss(animated: true)

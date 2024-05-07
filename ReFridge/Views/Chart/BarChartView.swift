@@ -22,7 +22,6 @@ class FridgeBarChartView: BarChartView {
         
         for foodCard in foodCards {
             guard let remainingDay = foodCard.expireDate.calculateRemainingDays() else {
-                print("無法計算剩餘效期")
                 return [BarChartDataEntry]()
             }
             

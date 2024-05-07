@@ -17,7 +17,6 @@ class NotRecongCell: UICollectionViewCell {
     static let reuseIdentifier = String(describing: NotRecongCell.self)
     
     @IBAction func addAction(_ sender: Any) {
-        print("addAction")
         delegate?.addRecongCell(cell: self)
     }
     @IBOutlet weak var scanTextLabel: UILabel!

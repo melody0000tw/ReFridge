@@ -30,7 +30,7 @@ class AccountManager {
     func signoutFireBase(completion: (Result<Any?, Error>) -> Void) {
         do {
           try firebaseAuth.signOut()
-            guard let currentUser = firebaseAuth.currentUser else {
+            guard firebaseAuth.currentUser != nil else {
                 completion(.success(nil))
                 return
             }
@@ -93,10 +93,25 @@ class AccountManager {
             print("Unable to retrieve AppleIDCredential")
             return
           }
-
-          guard let _ = currentNonce else {
-            fatalError("Invalid state: A login callback was received, but no login request was sent.")
-          }
+        
+        guard let nonce = currentNonce else {
+          fatalError("Invalid state: A login callback was received, but no login request was sent.")
+        }
+        
+        guard let appleIDToken = appleIDCredential.identityToken else {
+            print("Unable to fetch identity token")
+            return
+        }
+        guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+            print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+            return
+        }
+        
+        let credential = OAuthProvider.appleCredential(
+            withIDToken: idTokenString,
+            rawNonce: nonce,
+            fullName: appleIDCredential.fullName
+        )
 
           guard let appleAuthCode = appleIDCredential.authorizationCode else {
             print("Unable to fetch authorization code")
@@ -110,8 +125,10 @@ class AccountManager {
 
           Task {
             do {
-                try await Auth.auth().currentUser?.delete()
                 try await Auth.auth().revokeToken(withAuthorizationCode: authCodeString)
+                try await Auth.auth().currentUser?.reauthenticate(with: credential)
+                try await Auth.auth().currentUser?.delete()
+                
                 completion(.success(nil))
             } catch {
                 completion(.failure(error))

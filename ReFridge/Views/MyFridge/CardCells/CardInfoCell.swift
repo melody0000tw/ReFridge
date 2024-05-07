@@ -120,7 +120,6 @@ class CardInfoCell: UITableViewCell {
     // MARK: - Storge & Routine
     @objc func onChangeStorageType(sender: UISegmentedControl) {
         let index = sender.selectedSegmentIndex
-        print("已選取儲存方式：\(index)")
         foodCard.storageType = index
         delegate?.didChangeCardInfo(foodCard: foodCard)
         
@@ -133,12 +132,10 @@ class CardInfoCell: UITableViewCell {
     }
     
     @objc func didTappedBarcodeBtn() {
-        print("didTappedBarcode")
         delegate?.didTappedBarcodeBtn()
     }
     
     @objc func didTappedDateBtn() {
-        print("didTappedDate")
         expireDateTextField.becomeFirstResponder()
     }
 }
@@ -147,14 +144,11 @@ class CardInfoCell: UITableViewCell {
 extension CardInfoCell: UITextFieldDelegate, UITextViewDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == qtyTextField, let qty = textField.text {
-            print("已輸入選取數量：\(qty)")
             foodCard.qty = Int(qty) ?? 1
             
         } else if textField == barcodeTextField, let barcode = textField.text {
-            print("已輸入 bar code: \(barcode)")
             foodCard.barCode = barcode
         } else if textField == mesureWordTextField, let mesureWord = textField.text {
-            print("已輸入量詞: \(mesureWord)")
             foodCard.mesureWord = mesureWord
         }
         delegate?.didChangeCardInfo(foodCard: foodCard)
