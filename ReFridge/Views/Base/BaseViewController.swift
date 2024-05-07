@@ -25,7 +25,7 @@ class BaseViewController: UIViewController {
     }
     
     func setupLoadingView() {
-        loadingView.backgroundColor = .clear
+        loadingView.backgroundColor = UIColor(white: 1, alpha: 0.5)
         loadingView.addSubview(indicator)
         indicator.snp.makeConstraints { make in
             make.center.equalTo(loadingView.snp.center)

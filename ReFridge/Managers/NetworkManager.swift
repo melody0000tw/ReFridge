@@ -22,8 +22,6 @@ class NetworkManager {
         
     private func startMonitoring() {
         monitor.pathUpdateHandler = { path in
-            // Handle path update if needed
-            print("internet path did update : \(path.status)")
             let isConnected = path.status == .satisfied
             if let onChangeInternetConnection = self.onChangeInternetConnection {
                 onChangeInternetConnection(isConnected)

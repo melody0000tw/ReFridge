@@ -34,12 +34,10 @@ class TextScanManager {
             }
             
             if detectedText.count == 0 {
-                print("沒有可偵測的！")
                 completion(nil)
                 return
             }
             
-            print("detectedText===============\(detectedText)")
             self.openAIManager.filterArrays(inputArray: detectedText) { result in
                 switch result {
                 case .success(let foodReply):

@@ -33,7 +33,6 @@ class AvatarViewController: UIViewController {
     
     @IBOutlet weak var cancelBtn: UIButton!
     @IBAction func didTappedCancelBtn(_ sender: Any) {
-        print("didTappedCancelBtn")
         presentingViewController?.dismiss(animated: true)
     }
     @IBOutlet weak var nameTextField: UITextField!
@@ -72,8 +71,6 @@ class AvatarViewController: UIViewController {
             return
         }
         toggleEmptyLabel(shouldShow: false)
-        print("name\(name), avatar: \(avatar)")
-        
         guard var userInfo = userInfo else {
             print("cannot get userInfo")
             return
@@ -86,7 +83,6 @@ class AvatarViewController: UIViewController {
             await firestoreManager.updateUserInfo(userInfo: userInfo) { result in
                 switch result {
                 case .success:
-                    print("修改成功！")
                     // 判斷模式
                     DispatchQueue.main.async { [self] in
                         if mode == .edit {

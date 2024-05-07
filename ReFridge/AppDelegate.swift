@@ -15,14 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        for family: String in UIFont.familyNames
-        {
-            print(family)
-            for names: String in UIFont.fontNames(forFamilyName: family)
-            {
-                print("== \(names)")
-            }
-        }
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
         return true

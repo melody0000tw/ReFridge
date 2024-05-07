@@ -100,8 +100,7 @@ class RecipeDetailViewController: BaseViewController {
     }
     
     private func addToList() {
-        print("addToShoppingList")
-        guard let ingredientStatus = ingredientStatus else {
+         guard let ingredientStatus = ingredientStatus else {
             print("cannot get ingredient status")
             return
         }
@@ -135,7 +134,6 @@ class RecipeDetailViewController: BaseViewController {
                 await firestoreManager.addListItem(item, completion: { result in
                     switch result {
                     case .success:
-                        print("adding type: \(item.typeId) successed!")
                         presentAlert(title: "加入成功", description: "已將缺少食材加入購物清單", image: UIImage(systemName: "checkmark.circle"))
                     case .failure(let error):
                         print("error: \(error)")

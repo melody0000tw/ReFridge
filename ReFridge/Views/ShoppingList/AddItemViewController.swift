@@ -36,7 +36,6 @@ class AddItemViewController: BaseViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            print("card vc knows the selected foodtype: \(foodType)")
             // 選擇完 foodType 後
             listItem.typeId = foodType.typeId
             listItem.categoryId = foodType.categoryId
@@ -87,7 +86,6 @@ class AddItemViewController: BaseViewController {
     
     @objc func saveData() {
         guard listItem.name != "" else {
-            print("沒有選擇 type")
             typeViewIsOpen = true
             tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
             guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
@@ -157,7 +155,6 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension  AddItemViewController: CardTypeCellDelegate, ItemInfoCellDelegate {
     func didToggleTypeView() {
-        print("didToggle")
         typeViewIsOpen = !typeViewIsOpen
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }

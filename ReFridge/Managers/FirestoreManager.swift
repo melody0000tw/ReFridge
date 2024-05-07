@@ -8,15 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-//enum RFError: Error, Equatable {
-//    static func == (lhs: RFError, rhs: RFError) -> Bool {
-//        lhs.localizedDescription == rhs.localizedDescription
-//    }
-//    
-//    case noInternet
-//    case firebaseError(Error)
-//}
-
 class FirestoreManager {
     
     static let shared = FirestoreManager()
@@ -63,12 +54,10 @@ class FirestoreManager {
         do {
             let querySnapshot = try await userInfoRef.getDocument()
             if querySnapshot.exists {
-                print("document exsist")
                 let userInfo = try querySnapshot.data(as: UserInfo.self)
                 completion(.success(userInfo))
             } else {
-                print("document not exxist, createing a default user Info...")
-                completion(.success(nil))
+                 completion(.success(nil))
             }
         } catch {
             completion(.failure(error))
@@ -85,33 +74,10 @@ class FirestoreManager {
     }
     
     // MARK: - Food Type
-//    // 剛註冊時加入即可
-//    func addDefaultTypes() async {
-//        let types: [FoodType] = FoodTypeData.share.data
-//        
-//        for type in types {
-//            do {
-//                let docRef = foodTypesRef.document(String(type.typeId))
-//                let data: [String: Any] = [
-//                    "categoryId": type.categoryId,
-//                    "typeId": type.typeId,
-//                    "typeName": type.typeName,
-//                    "typeIcon": type.typeIcon
-//                ]
-//                try await docRef.setData(data)
-//                print("default data was written!")
-//            } catch {
-//                print("error: \(error)")
-//            }
-//        }
-//        
-//    }
-    
     func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {
         do {
             let docRef = foodTypesRef.document(String(foodType.typeId))
             try docRef.setData(from: foodType)
-            print("default data was written!")
             completion(.success(nil))
         } catch {
             print("error: \(error)")
@@ -154,11 +120,6 @@ class FirestoreManager {
     
     // MARK: - Food Card
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
-        
-        guard let uid = uid else {
-            print("cannot get uid")
-            return
-        }
         do {
             let querySnapshot = try await foodCardsRef.getDocuments()
             var foodCards = [FoodCard]()
@@ -171,6 +132,8 @@ class FirestoreManager {
             completion(.failure(error))
         }
     }
+    
+    
     
     func saveFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {
@@ -213,7 +176,6 @@ class FirestoreManager {
             let thrownNum = try await scoresRef.document("thrown").getDocument().get("number")
             guard let consumedNum = consumedNum as? Int, let thrownNum = thrownNum as? Int else {
                 // set up initial store 0:0
-                print("setting up initial score...")
                 await setupInitialScores { result in
                     switch result {
                     case .success(let scores):
@@ -269,22 +231,6 @@ class FirestoreManager {
     }
     
     // MARK: - Recipe
-    // 剛註冊時加入即可
-//    func addRecipes() async {
-//        let recipes = RecipeData.share.data
-//        
-//        for recipe in recipes {
-//            do {
-//                let docRef = database.collection("recipes").document()
-//                try docRef.setData(from: recipe)
-//                print("default recipes was written!")
-//            } catch {
-//                print("error: \(error)")
-//            }
-//        }
-//        
-//    }
-    
     func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
         do {
             let querySnapshot = try await database.collection("recipes").getDocuments()

@@ -24,7 +24,6 @@ class TabBarController: UITabBarController {
     
     func setupNetworkManager() {
         networkManager.onChangeInternetConnection = { isConnected in
-            print("======= is connected to internet: \(isConnected)=======")
             DispatchQueue.main.async {
                 if !isConnected {
                     self.presentNoInternetVC()

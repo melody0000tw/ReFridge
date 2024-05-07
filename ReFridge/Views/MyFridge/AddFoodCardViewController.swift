@@ -56,7 +56,6 @@ class AddFoodCardViewController: BaseViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            print("card vc knows the selected foodtype: \(foodType)")
             foodCard.categoryId = foodType.categoryId
             foodCard.typeId = foodType.typeId
             foodCard.name = foodType.typeName
@@ -117,7 +116,6 @@ class AddFoodCardViewController: BaseViewController {
     
     // MARK: - Data
     @objc func saveData() {
-        print("didTapped save data")
         switch mode {
         case .adding:
             saveFoodCard()
@@ -143,7 +141,6 @@ class AddFoodCardViewController: BaseViewController {
     private func saveFoodCard() {
         view.endEditing(true)
         guard foodCard.name != "" else {
-            print("尚未建立卡卡")
             typeViewIsOpen = true
             tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
             guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
@@ -178,7 +175,6 @@ class AddFoodCardViewController: BaseViewController {
     }
     
     @objc func didTappedDelete(sender: UIButton) {
-        // 確認是否加入購物清單
         if foodCard.isRoutineItem {
             addToShoopingList()
         }
@@ -208,7 +204,6 @@ class AddFoodCardViewController: BaseViewController {
                     case .failure(let error):
                         print("Error adding document: \(error)")
                         presentInternetAlert()
-//                        presentAlert(title: "刪除失敗", description: "請檢查網路連線", image: UIImage(systemName: "xmark.circle"))
                     }
                 }
             }
@@ -288,12 +283,9 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
         present(documentCameraViewController, animated: true)
-        
-        print("============ vc 召喚 bar code")
     }
     
     func didChangeCardInfo(foodCard: FoodCard) {
-        
         self.foodCard.qty = foodCard.qty
         self.foodCard.mesureWord = foodCard.mesureWord
         self.foodCard.expireDate = foodCard.expireDate
@@ -301,11 +293,9 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         self.foodCard.storageType = foodCard.storageType
         self.foodCard.isRoutineItem = foodCard.isRoutineItem
         self.foodCard.notes = foodCard.notes
-        print("=============== vc didChangeCardInfo foodCard: \(self.foodCard)")
     }
     
     func didToggleTypeView() {
-        print("didToggle")
         typeViewIsOpen = !typeViewIsOpen
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
@@ -315,7 +305,6 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
 extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
             let image = scan.imageOfPage(at: scan.pageCount - 1)
-            print(image)
             processImage(image: image)
             dismiss(animated: true, completion: nil)
         }
@@ -332,7 +321,6 @@ extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
                     guard let barcode = observation.payloadStringValue else {
                         return
                     }
-                    print("get barcode: \(barcode)")
                     self.foodCard.barCode = barcode
                     
                     DispatchQueue.main.async {
