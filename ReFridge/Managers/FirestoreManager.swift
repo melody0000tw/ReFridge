@@ -85,27 +85,27 @@ class FirestoreManager {
     }
     
     // MARK: - Food Type
-    // 剛註冊時加入即可
-    func addDefaultTypes() async {
-        let types: [FoodType] = FoodTypeData.share.data
-        
-        for type in types {
-            do {
-                let docRef = foodTypesRef.document(String(type.typeId))
-                let data: [String: Any] = [
-                    "categoryId": type.categoryId,
-                    "typeId": type.typeId,
-                    "typeName": type.typeName,
-                    "typeIcon": type.typeIcon
-                ]
-                try await docRef.setData(data)
-                print("default data was written!")
-            } catch {
-                print("error: \(error)")
-            }
-        }
-        
-    }
+//    // 剛註冊時加入即可
+//    func addDefaultTypes() async {
+//        let types: [FoodType] = FoodTypeData.share.data
+//        
+//        for type in types {
+//            do {
+//                let docRef = foodTypesRef.document(String(type.typeId))
+//                let data: [String: Any] = [
+//                    "categoryId": type.categoryId,
+//                    "typeId": type.typeId,
+//                    "typeName": type.typeName,
+//                    "typeIcon": type.typeIcon
+//                ]
+//                try await docRef.setData(data)
+//                print("default data was written!")
+//            } catch {
+//                print("error: \(error)")
+//            }
+//        }
+//        
+//    }
     
     func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {
         do {
@@ -269,6 +269,22 @@ class FirestoreManager {
     }
     
     // MARK: - Recipe
+    // 剛註冊時加入即可
+//    func addRecipes() async {
+//        let recipes = RecipeData.share.data
+//        
+//        for recipe in recipes {
+//            do {
+//                let docRef = database.collection("recipes").document()
+//                try docRef.setData(from: recipe)
+//                print("default recipes was written!")
+//            } catch {
+//                print("error: \(error)")
+//            }
+//        }
+//        
+//    }
+    
     func fetchRecipes(completion: (Result<[Recipe], Error>) -> Void) async {
         do {
             let querySnapshot = try await database.collection("recipes").getDocuments()

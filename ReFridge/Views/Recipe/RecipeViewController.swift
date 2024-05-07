@@ -311,6 +311,7 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         cell.setupRecipeInfo()
         
         if let ingredientStatus = ingredientsDict[recipe.recipeId] {
+            print("===== \(recipe.title) ingredientDict: \(ingredientStatus)")
             cell.ingredientStatus = ingredientStatus
             cell.setupRecipeInfo()
         }
