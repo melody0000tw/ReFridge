@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RecipeViewController: UIViewController {
+class RecipeViewController: BaseViewController {
     
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
@@ -105,23 +105,25 @@ class RecipeViewController: UIViewController {
     
     // MARK: - Data
     @objc private func fetchRecipes() {
-        refreshControl.startRefresh()
+//        refreshControl.startRefresh()
+        showLoadingIndicator()
         Task {
             await firestoreManager.fetchRecipes { result in
                 switch result {
                 case .success(let recipes):
-                    print("got recipes! \(recipes)")
-                    refreshControl.endRefresh()
                     self.allRecipes = recipes
-//                    self.showRecipes = recipes
                     checkAllStatus(recipes: self.allRecipes) { dict in
                         self.ingredientsDict = dict
-                        print("ingredientsDicts fetch 成功")
                         self.filterRecipes()
+                        self.refreshControl.endRefresh()
+                        self.removeLoadingIndicator()
                     }
                     
                 case .failure(let error):
                     print("error: \(error)")
+                    removeLoadingIndicator()
+                    refreshControl.endRefresh()
+                    presentInternetAlert()
                 }
             }
         }
@@ -132,7 +134,6 @@ class RecipeViewController: UIViewController {
             await firestoreManager.fetchLikedRecipeId { result in
                 switch result {
                 case .success(let ids):
-                    print("got id: \(ids.count)")
                     likedRecipeId = ids
                 case .failure(let error):
                     print("error: \(error)")
@@ -147,7 +148,6 @@ class RecipeViewController: UIViewController {
             await firestoreManager.fetchFinishedRecipeId { result in
                 switch result {
                 case .success(let ids):
-                    print("got id: \(ids.count)")
                     finishedRecipeId = ids
                 case .failure(let error):
                     print("error: \(error)")
@@ -162,7 +162,6 @@ class RecipeViewController: UIViewController {
         let dispatchGroup = DispatchGroup()
         for recipe in recipes {
             dispatchGroup.enter()
-            print("Recipe id: \(recipe.recipeId) 小組任務開始")
             checkIngredientStatus(recipe: recipe) { ingredientStatus in
                 ingredientsDict[ingredientStatus.recipeId] = ingredientStatus
                 dispatchGroup.leave()
@@ -170,7 +169,6 @@ class RecipeViewController: UIViewController {
         }
         
         dispatchGroup.notify(queue: .main) {
-            print("全部小組任務結束，回傳 filterd Recipe")
             completion(ingredientsDict)
         }
     }
@@ -185,7 +183,6 @@ class RecipeViewController: UIViewController {
             dispatchGroup.enter() // 小組任務開始
             let typeId = ingredient.typeId
             
-            // 找小卡有沒有，歸類到 lack or check
             Task {
                 await firestoreManager.queryFoodCard(by: typeId, completion: { result in
                     switch result {
@@ -197,7 +194,6 @@ class RecipeViewController: UIViewController {
                                 print("找不到 foodtype")
                                 return
                             }
-                            print("把\(foodType.typeName)放到 lack")
                             lackTypes.append(foodType)
                             allTypes.append(foodType)
                         } else {
@@ -207,7 +203,6 @@ class RecipeViewController: UIViewController {
                                 print("找不到 foodtype")
                                 return
                             }
-                            print("把\(foodType.typeName)放到 check")
                             checkTypes.append(foodType)
                             allTypes.append(foodType)
                         }
@@ -312,11 +307,6 @@ extension RecipeViewController: UITableViewDataSource, UITableViewDelegate {
         let isLiked = likedRecipeId.contains([recipe.recipeId])
         cell.toggleLikeBtn(isLiked: isLiked)
         
-//        if !likedRecipeId.isEmpty {
-//            let isLiked = likedRecipeId.contains([recipe.recipeId])
-//            cell.toggleLikeBtn(isLiked: isLiked)
-//        }
-        
         return cell
     }
     
@@ -354,7 +344,6 @@ extension RecipeViewController: RecipeCellDelegate {
             return
         }
         let recipe = showRecipes[indexPath.row]
-        print("vc 收到 recipe: \(recipe.title) 的按鈕被點選了！")
         
         // 確認 cell 現在的狀態
         let isLiked = !likedRecipeId.contains([recipe.recipeId])
@@ -370,7 +359,6 @@ extension RecipeViewController: RecipeCellDelegate {
                 await firestoreManager.addLikedRecipe(by: recipe.recipeId) { result in
                     switch result {
                     case .success:
-                        print("成功加入收藏清單")
                         self.fetchLikedRecipeId()
                     case .failure(let error):
                         print(error.localizedDescription)
@@ -380,7 +368,6 @@ extension RecipeViewController: RecipeCellDelegate {
                 await firestoreManager.removeLikedRecipe(by: recipe.recipeId) { result in
                     switch result {
                     case .success:
-                        print("成功刪除清單")
                         self.fetchLikedRecipeId()
                     case .failure(let error):
                         print(error.localizedDescription)

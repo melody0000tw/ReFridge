@@ -53,7 +53,6 @@ class OpenAIManager {
         )
         
         openAI.chats(query: query) { result in
-            print("open AI result ========\(result)")
             switch result {
             case .success(let completionResult):
                 if let jsonString = completionResult.choices.first?.message.content?.string,
@@ -64,10 +63,8 @@ class OpenAIManager {
                        let foodAry = jsonDict["food"]
                        let notFoodAry = jsonDict["notFood"]
                     let foodReply = AIFoodReplay(food: foodAry ?? [""], notFood: notFoodAry ?? [""])
-                    print("成功decode成 AIFoodReplay : \(foodReply)")
                     completion(.success(foodReply))
                 } else {
-                    print("Failed to parse JSON")
                     completion(.failure(TextScanError.decodeJsonFailed))
                 }
             case .failure(let error):

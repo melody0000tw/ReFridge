@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.backgroundColor = UIColor(hex: "CBD2A4")
+        view.backgroundColor = .C7
         view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
@@ -107,11 +107,9 @@ class LoginViewController: UIViewController {
                 switch result {
                 case .success(let userInfo):
                     guard userInfo != nil else {
-                        print("沒有 user Info！建立 userInfo")
                         presentAvatarVC()
                         return
                     }
-                    print("已取得 userInfo : \(String(describing: userInfo))")
                     presentMyFridgeVC()
                 case .failure(let error):
                     print(error.localizedDescription)
@@ -176,7 +174,6 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
       accountManager.signInWithApple(controller: controller, authorization: authorization) { result in
           switch result {
           case .success(let user):
-              print(" 已成功登入，UID: \(user.uid)")
               self.configureUserInfo(user: user)
               
           case .failure(let error):

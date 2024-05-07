@@ -7,12 +7,11 @@
 
 import UIKit
 
-class ShoppingListViewController: UIViewController {
+class ShoppingListViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     var list = [ListItem]() {
         didSet {
             DispatchQueue.main.async { [self] in
-                print("new list count: \(self.list.count)")
                 tableView.isHidden = false
                 emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
             }
@@ -57,20 +56,24 @@ class ShoppingListViewController: UIViewController {
     
     // MARK: - Datas
     @objc private func fetchList() {
-        refreshControl.startRefresh()
+//        refreshControl.startRefresh()
+        showLoadingIndicator()
         Task {
             await firestoreManager.fetchListItems { result in
                 switch result {
                 case .success(let list):
-                    print("did get list")
-                    var sortedList = list.sorted { $0.createDate > $1.createDate }
+                     var sortedList = list.sorted { $0.createDate > $1.createDate }
                     self.list = sortedList
+                    removeLoadingIndicator()
                     DispatchQueue.main.async { [self] in
                         tableView.reloadData()
                         refreshControl.endRefresh()
                     }
                 case .failure(let error):
                     print("error: \(error)")
+                    removeLoadingIndicator()
+                    refreshControl.endRefresh()
+                    presentInternetAlert()
                 }
             }
         }
@@ -106,7 +109,6 @@ class ShoppingListViewController: UIViewController {
                 await firestoreManager.saveFoodCard(foodCard) { result in
                     switch result {
                     case .success:
-                        print("成功新增小卡 \(foodCard.name)")
                         presentAlert(title: "加入成功", description: "已將完成項目加入我的冰箱", image: UIImage(systemName: "checkmark.circle"))
                         // delete card
                         deleteItem(item: item, group: dispatchGroup)

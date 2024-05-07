@@ -76,4 +76,11 @@ class RecipeCell: UITableViewCell {
             }
         }
     }
+    
+    override func prepareForReuse() {
+        ingredientIcon.image = nil
+        ingredientLabel.text = nil
+        recipe = nil
+        ingredientStatus = nil
+    }
 }

@@ -50,7 +50,6 @@ class FoodTypeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(" viewWillAppear")
         fetchUserFoodTypes()
         toggleDeleteBtn()
     }
@@ -175,7 +174,6 @@ class FoodTypeViewController: UIViewController {
     
     // MARK: - Data
     @objc func onChangeCategory(sender: UIButton) {
-        print("did tapped category id: \(sender.tag)")
         for button in buttons {
             button.isSelected = false
         }
@@ -205,9 +203,9 @@ class FoodTypeViewController: UIViewController {
                     switch result {
                     case .success(let foodTypes):
                         self.fetchUserFoodTypes()
-                        print("已刪除foodTypes")
+                        return
                     case .failure(let error):
-                        print(error)
+                        print(error.localizedDescription)
                     }
                 }
             }
@@ -234,9 +232,8 @@ class FoodTypeViewController: UIViewController {
                     })
                     allFoodTypes = defaultFoodTpyes + userFoodTypes
                     filterTypes()
-                    print("已取得所有 foodTypes")
                 case .failure(let error):
-                    print(error)
+                    print(error.localizedDescription)
                 }
             }
         }
@@ -254,7 +251,6 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
         }
         
         if indexPath.row == typesOfSelectedCategory.count {
-            // 顯示++
             cell.iconImage.image = UIImage(systemName: "plus")
             cell.titleLabel.text = "新增類型"
         } else {
@@ -267,7 +263,6 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == typesOfSelectedCategory.count {
-            print("以點擊新增種類")
             let addTypeVC = AddFoodTypeViewController()
             addTypeVC.categoryId = selectedCategoryId
             addTypeVC.modalPresentationStyle = .automatic
@@ -279,9 +274,6 @@ extension FoodTypeViewController: UICollectionViewDataSource, UICollectionViewDe
             let foodType = typesOfSelectedCategory[indexPath.item]
             selectedType = foodType
             toggleDeleteBtn()
-//            if let onSelectFoodType = onSelectFoodType {
-//                onSelectFoodType(foodType)
-//            }
         }
     }
 }

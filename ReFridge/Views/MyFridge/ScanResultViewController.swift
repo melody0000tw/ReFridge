@@ -82,7 +82,6 @@ class ScanResultViewController: UIViewController {
     }
     
     @objc func toggleNotRecongView(_ sender: UISwipeGestureRecognizer) {
-        print("toggleNotRecongView")
         if sender.direction == .up {
             notRecongViewTopConstraint.constant = -280
             notRecongLabel.text = "下滑隱藏更多單詞"
@@ -147,7 +146,6 @@ class ScanResultViewController: UIViewController {
     
     // MARK: - Data
     @objc func saveData() {
-        print("save data")
         guard let scanResult = scanResult else {
             return
         }
@@ -169,7 +167,6 @@ class ScanResultViewController: UIViewController {
         }
         
         dispatchGroup.notify(queue: .main) {
-            print("所有小卡都已新增完畢！")
             self.navigationController?.popViewController(animated: true)
         }
     }

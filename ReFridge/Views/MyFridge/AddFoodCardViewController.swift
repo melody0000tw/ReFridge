@@ -15,7 +15,7 @@ enum FoodCardMode {
     case editingBatch
 }
 
-class AddFoodCardViewController: UIViewController {
+class AddFoodCardViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     @IBOutlet weak var btnViewHeightConstraint: NSLayoutConstraint!
@@ -56,7 +56,6 @@ class AddFoodCardViewController: UIViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            print("card vc knows the selected foodtype: \(foodType)")
             foodCard.categoryId = foodType.categoryId
             foodCard.typeId = foodType.typeId
             foodCard.name = foodType.typeName
@@ -117,7 +116,6 @@ class AddFoodCardViewController: UIViewController {
     
     // MARK: - Data
     @objc func saveData() {
-        print("didTapped save data")
         switch mode {
         case .adding:
             saveFoodCard()
@@ -143,7 +141,6 @@ class AddFoodCardViewController: UIViewController {
     private func saveFoodCard() {
         view.endEditing(true)
         guard foodCard.name != "" else {
-            print("尚未建立卡卡")
             typeViewIsOpen = true
             tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
             guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
@@ -151,7 +148,6 @@ class AddFoodCardViewController: UIViewController {
             }
             cell.nameLabel.text = "尚未選取食物種類"
             cell.nameLabel.textColor = .red
-//            typeVC.selectTypeBtn.backgroundColor = .red
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.typeVC.selectTypeBtn.clickBounce()
             }
@@ -159,24 +155,26 @@ class AddFoodCardViewController: UIViewController {
         }
         
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
-        
+        showLoadingIndicator()
         Task {
             await firestoreManager.saveFoodCard(foodCard) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
                     DispatchQueue.main.async {
+                        self.removeLoadingIndicator()
                         self.navigationController?.popViewController(animated: true)
                     }
                 case .failure(let error):
                     print("Error adding document: \(error)")
+                    self.removeLoadingIndicator()
+                    presentInternetAlert()
                 }
             }
         }
     }
     
     @objc func didTappedDelete(sender: UIButton) {
-        // 確認是否加入購物清單
         if foodCard.isRoutineItem {
             addToShoopingList()
         }
@@ -192,6 +190,7 @@ class AddFoodCardViewController: UIViewController {
     
     private func deleteData() {
         if foodCard.cardId != "" {
+            showLoadingIndicator()
             Task {
                 await firestoreManager.deleteFoodCard( foodCard.cardId) { result in
                     switch result {
@@ -199,10 +198,12 @@ class AddFoodCardViewController: UIViewController {
                         print("Document successfully delete!")
                         presentAlert(title: "刪除成功", description: "已將小卡從冰箱中刪除", image: UIImage(systemName: "checkmark.circle"))
                         DispatchQueue.main.async {
+                            self.removeLoadingIndicator()
                             self.navigationController?.popViewController(animated: true)
                         }
                     case .failure(let error):
                         print("Error adding document: \(error)")
+                        presentInternetAlert()
                     }
                 }
             }
@@ -282,12 +283,9 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
         present(documentCameraViewController, animated: true)
-        
-        print("============ vc 召喚 bar code")
     }
     
     func didChangeCardInfo(foodCard: FoodCard) {
-        
         self.foodCard.qty = foodCard.qty
         self.foodCard.mesureWord = foodCard.mesureWord
         self.foodCard.expireDate = foodCard.expireDate
@@ -295,11 +293,9 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
         self.foodCard.storageType = foodCard.storageType
         self.foodCard.isRoutineItem = foodCard.isRoutineItem
         self.foodCard.notes = foodCard.notes
-        print("=============== vc didChangeCardInfo foodCard: \(self.foodCard)")
     }
     
     func didToggleTypeView() {
-        print("didToggle")
         typeViewIsOpen = !typeViewIsOpen
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
     }
@@ -309,7 +305,6 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
 extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
             let image = scan.imageOfPage(at: scan.pageCount - 1)
-            print(image)
             processImage(image: image)
             dismiss(animated: true, completion: nil)
         }
@@ -326,7 +321,6 @@ extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
                     guard let barcode = observation.payloadStringValue else {
                         return
                     }
-                    print("get barcode: \(barcode)")
                     self.foodCard.barCode = barcode
                     
                     DispatchQueue.main.async {

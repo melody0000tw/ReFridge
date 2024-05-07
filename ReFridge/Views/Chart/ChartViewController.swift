@@ -11,7 +11,7 @@ import Charts
 import FirebaseAuth
 import AuthenticationServices
 
-class ChartViewController: UIViewController {
+class ChartViewController: BaseViewController{
     private let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
     
@@ -138,7 +138,6 @@ class ChartViewController: UIViewController {
     }
     
     @objc func changeChart(sender: UIButton) {
-        print("change chart")
         for button in buttons {
             button.isSelected = false
         }
@@ -208,7 +207,6 @@ class ChartViewController: UIViewController {
             self.signoutFireBase()
         }
         let deleteAccountAction = UIAlertAction(title: "刪除帳號", style: .destructive) { _ in
-            print("我要刪除帳號！！！")
             self.presentDeletionAlert()
         }
         let cancelAction = UIAlertAction(title: "取消", style: .cancel)
@@ -277,6 +275,7 @@ class ChartViewController: UIViewController {
                         }
                     }
                 case .failure(let error):
+                    presentInternetAlert()
                     print("error: \(error)")
                 }
             }
@@ -288,7 +287,6 @@ class ChartViewController: UIViewController {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
                 case .success(let foodCards):
-                    print("got food cards!")
                     self.foodCards = foodCards
                 case .failure(let error):
                     print("error: \(error)")
@@ -308,7 +306,6 @@ class ChartViewController: UIViewController {
                     if total != 0 {
                         scoreDouble = (Double(score.consumed) / Double(total)).rounding(toDecimal: 2)
                     }
-                    print("consume: \(score.consumed), thrown: \(score.thrown)")
                     DispatchQueue.main.async { [self] in
                         headerView.finishedLabel.text = String(score.consumed)
                         headerView.thrownLabel.text = String(score.thrown)
@@ -326,7 +323,6 @@ class ChartViewController: UIViewController {
         accountManager.signoutFireBase { result in
             switch result {
             case .success:
-                print("didSignOut")
                 self.presentLoginPage()
             case .failure(let error):
                 print(error.localizedDescription)
@@ -352,7 +348,6 @@ class ChartViewController: UIViewController {
         }
     }
 }
-
 
 // MARK: - SignInWithApple
 @available(iOS 13.0, *)
