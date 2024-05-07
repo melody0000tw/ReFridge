@@ -8,6 +8,15 @@
 import Foundation
 import FirebaseFirestore
 
+//enum RFError: Error, Equatable {
+//    static func == (lhs: RFError, rhs: RFError) -> Bool {
+//        lhs.localizedDescription == rhs.localizedDescription
+//    }
+//    
+//    case noInternet
+//    case firebaseError(Error)
+//}
+
 class FirestoreManager {
     
     static let shared = FirestoreManager()
@@ -28,8 +37,8 @@ class FirestoreManager {
     lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
     lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
     lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
-    lazy var finishedRecipesRef = database.collection("users").document(uid!).collection("finishedRecipes")
-    lazy var scoresRef = database.collection("users").document(uid!).collection("scores")
+    lazy var finishedRecipesRef = database.collection("users").document("userId").collection("finishedRecipes")
+    lazy var scoresRef = database.collection("users").document("userId").collection("scores")
 
     private init() {
         database = Firestore.firestore()
@@ -49,7 +58,6 @@ class FirestoreManager {
     func configure(withUID uid: String) {
         self.uid = uid
     }
-    
     
     func fetchUserInfo(completion: (Result<UserInfo?, Error>) -> Void) async {
         do {
@@ -146,6 +154,7 @@ class FirestoreManager {
     
     // MARK: - Food Card
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
+        
         guard let uid = uid else {
             print("cannot get uid")
             return

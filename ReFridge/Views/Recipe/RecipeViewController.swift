@@ -7,7 +7,7 @@
 
 import UIKit
 
-class RecipeViewController: UIViewController {
+class RecipeViewController: BaseViewController {
     
     private let firestoreManager = FirestoreManager.shared
     @IBOutlet weak var tableView: UITableView!
@@ -49,6 +49,7 @@ class RecipeViewController: UIViewController {
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("=== RecipeViewController viewDidLoad")
         setupTableView()
         setupSearchBar()
         setupFilterBtn()
@@ -105,23 +106,28 @@ class RecipeViewController: UIViewController {
     
     // MARK: - Data
     @objc private func fetchRecipes() {
-        refreshControl.startRefresh()
+//        refreshControl.startRefresh()
+        showLoadingIndicator()
         Task {
             await firestoreManager.fetchRecipes { result in
                 switch result {
                 case .success(let recipes):
                     print("got recipes! \(recipes)")
-                    refreshControl.endRefresh()
                     self.allRecipes = recipes
 //                    self.showRecipes = recipes
                     checkAllStatus(recipes: self.allRecipes) { dict in
                         self.ingredientsDict = dict
                         print("ingredientsDicts fetch 成功")
                         self.filterRecipes()
+                        self.refreshControl.endRefresh()
+                        self.removeLoadingIndicator()
                     }
                     
                 case .failure(let error):
                     print("error: \(error)")
+                    removeLoadingIndicator()
+                    refreshControl.endRefresh()
+                    presentInternetAlert()
                 }
             }
         }

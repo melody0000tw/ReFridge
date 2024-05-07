@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ShoppingListViewController: UIViewController {
+class ShoppingListViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     var list = [ListItem]() {
         didSet {
@@ -32,6 +32,7 @@ class ShoppingListViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("=== ShoppingListViewController viewDidLoad")
         setupTableView()
     }
     
@@ -57,7 +58,8 @@ class ShoppingListViewController: UIViewController {
     
     // MARK: - Datas
     @objc private func fetchList() {
-        refreshControl.startRefresh()
+//        refreshControl.startRefresh()
+        showLoadingIndicator()
         Task {
             await firestoreManager.fetchListItems { result in
                 switch result {
@@ -65,12 +67,16 @@ class ShoppingListViewController: UIViewController {
                     print("did get list")
                     var sortedList = list.sorted { $0.createDate > $1.createDate }
                     self.list = sortedList
+                    removeLoadingIndicator()
                     DispatchQueue.main.async { [self] in
                         tableView.reloadData()
                         refreshControl.endRefresh()
                     }
                 case .failure(let error):
                     print("error: \(error)")
+                    removeLoadingIndicator()
+                    refreshControl.endRefresh()
+                    presentInternetAlert()
                 }
             }
         }

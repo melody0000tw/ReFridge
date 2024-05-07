@@ -10,7 +10,7 @@ import VisionKit
 import Vision
 import Lottie
 
-class MyFridgeViewController: UIViewController {
+class MyFridgeViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var allCards = [FoodCard]()
@@ -48,6 +48,7 @@ class MyFridgeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print("123")
+        print("=== MyFridgeViewController viewDidLoad")
         setupCollectionView()
         setupSearchBar()
         setupFilterBtn()
@@ -57,11 +58,6 @@ class MyFridgeViewController: UIViewController {
         collectionView.isHidden = true
         fetchData()
     }
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        collectionView.refreshControl?.beginRefreshing()
-//        fetchData()
-//    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -144,6 +140,7 @@ class MyFridgeViewController: UIViewController {
     // MARK: - Data
     @objc private func fetchData() {
         refreshControl.startRefresh()
+        showLoadingIndicator()
         Task {
             await firestoreManager.fetchFoodCard { result in
                 switch result {
@@ -151,8 +148,12 @@ class MyFridgeViewController: UIViewController {
                     print("got food cards!")
                     self.allCards = foodCards
                     filterFoodCards()
+                    removeLoadingIndicator()
                     refreshControl.endRefresh()
                 case .failure(let error):
+                    removeLoadingIndicator()
+                    refreshControl.endRefresh()
+                    presentInternetAlert()
                     print("error: \(error)")
                 }
             }

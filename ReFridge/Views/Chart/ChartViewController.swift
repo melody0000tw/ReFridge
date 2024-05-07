@@ -11,7 +11,7 @@ import Charts
 import FirebaseAuth
 import AuthenticationServices
 
-class ChartViewController: UIViewController {
+class ChartViewController: BaseViewController{
     private let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
     
@@ -50,6 +50,7 @@ class ChartViewController: UIViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("=== ChartViewController viewDidLoad")
         setupPofileView()
         setupButtons()
         setupChartViews()
@@ -277,6 +278,7 @@ class ChartViewController: UIViewController {
                         }
                     }
                 case .failure(let error):
+                    presentInternetAlert()
                     print("error: \(error)")
                 }
             }
@@ -352,7 +354,6 @@ class ChartViewController: UIViewController {
         }
     }
 }
-
 
 // MARK: - SignInWithApple
 @available(iOS 13.0, *)

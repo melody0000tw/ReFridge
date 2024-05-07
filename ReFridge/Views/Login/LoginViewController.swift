@@ -46,7 +46,7 @@ class LoginViewController: UIViewController {
     }
     
     private func setupViews() {
-        view.backgroundColor = UIColor(hex: "CBD2A4")
+        view.backgroundColor = .C7
         view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)

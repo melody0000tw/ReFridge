@@ -15,7 +15,7 @@ enum FoodCardMode {
     case editingBatch
 }
 
-class AddFoodCardViewController: UIViewController {
+class AddFoodCardViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     @IBOutlet weak var btnViewHeightConstraint: NSLayoutConstraint!
@@ -151,7 +151,6 @@ class AddFoodCardViewController: UIViewController {
             }
             cell.nameLabel.text = "尚未選取食物種類"
             cell.nameLabel.textColor = .red
-//            typeVC.selectTypeBtn.backgroundColor = .red
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 self.typeVC.selectTypeBtn.clickBounce()
             }
@@ -159,17 +158,20 @@ class AddFoodCardViewController: UIViewController {
         }
         
         foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
-        
+        showLoadingIndicator()
         Task {
             await firestoreManager.saveFoodCard(foodCard) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
                     DispatchQueue.main.async {
+                        self.removeLoadingIndicator()
                         self.navigationController?.popViewController(animated: true)
                     }
                 case .failure(let error):
                     print("Error adding document: \(error)")
+                    self.removeLoadingIndicator()
+                    presentInternetAlert()
                 }
             }
         }
@@ -192,6 +194,7 @@ class AddFoodCardViewController: UIViewController {
     
     private func deleteData() {
         if foodCard.cardId != "" {
+            showLoadingIndicator()
             Task {
                 await firestoreManager.deleteFoodCard( foodCard.cardId) { result in
                     switch result {
@@ -199,10 +202,13 @@ class AddFoodCardViewController: UIViewController {
                         print("Document successfully delete!")
                         presentAlert(title: "刪除成功", description: "已將小卡從冰箱中刪除", image: UIImage(systemName: "checkmark.circle"))
                         DispatchQueue.main.async {
+                            self.removeLoadingIndicator()
                             self.navigationController?.popViewController(animated: true)
                         }
                     case .failure(let error):
                         print("Error adding document: \(error)")
+                        presentInternetAlert()
+//                        presentAlert(title: "刪除失敗", description: "請檢查網路連線", image: UIImage(systemName: "xmark.circle"))
                     }
                 }
             }

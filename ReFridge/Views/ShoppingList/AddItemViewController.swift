@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddItemViewController: UIViewController {
+class AddItemViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var listItem = ListItem()
@@ -103,17 +103,20 @@ class AddItemViewController: UIViewController {
         
         view.endEditing(true)
         print(listItem)
-
+        showLoadingIndicator()
         Task {
             await firestoreManager.addListItem(listItem) { result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
                     DispatchQueue.main.async {
+                        self.removeLoadingIndicator()
                         self.navigationController?.popViewController(animated: true)
                     }
                 case .failure(let error):
                     print("Error adding document: \(error)")
+                    self.removeLoadingIndicator()
+                    presentInternetAlert()
                 }
             }
         }

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class RecipeDetailViewController: UIViewController {
+class RecipeDetailViewController: BaseViewController {
     private let firestoreManager = FirestoreManager.shared
     
     var recipe: Recipe?
@@ -139,6 +139,7 @@ class RecipeDetailViewController: UIViewController {
                         presentAlert(title: "加入成功", description: "已將缺少食材加入購物清單", image: UIImage(systemName: "checkmark.circle"))
                     case .failure(let error):
                         print("error: \(error)")
+                        presentInternetAlert()
                     }
                 })
             }
@@ -291,6 +292,7 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
                     presentAlert(title: "加入成功", description: "已將食譜加入完成清單", image: UIImage(systemName: "checkmark.circle"))
                 case .failure(let error):
                     print(error.localizedDescription)
+                    presentInternetAlert()
                 }
             }
         }
