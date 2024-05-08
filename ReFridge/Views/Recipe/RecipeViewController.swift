@@ -105,7 +105,7 @@ class RecipeViewController: BaseViewController {
     
     // MARK: - Data
     @objc private func fetchRecipes() {
-//        refreshControl.startRefresh()
+        refreshControl.startRefresh()
         showLoadingIndicator()
         Task {
             await firestoreManager.fetchRecipes { result in
@@ -178,38 +178,46 @@ class RecipeViewController: BaseViewController {
         var lackTypes = [FoodType]()
         var checkTypes = [FoodType]()
         
+        let arrayAccessQueue = DispatchQueue(label: "arrayAccessQueue")
+        
         let dispatchGroup = DispatchGroup() // 建立小組任務
         for ingredient in recipe.ingredients {
             dispatchGroup.enter() // 小組任務開始
             let typeId = ingredient.typeId
             
             Task {
-                await firestoreManager.queryFoodCard(by: typeId, completion: { result in
-                    switch result {
-                    case .success(let foodCards):
-                        if foodCards.count == 0 {
-                            // 缺乏的食材，先用id找到type
-                            let foodType = FoodTypeData.share.queryFoodType(typeId: typeId)
-                            guard let foodType = foodType else {
-                                print("找不到 foodtype")
-                                return
-                            }
-                            lackTypes.append(foodType)
-                            allTypes.append(foodType)
-                        } else {
-                            // 冰箱有的，用id找到type
-                            let foodType = FoodTypeData.share.queryFoodType(typeId: typeId)
-                            guard let foodType = foodType else {
-                                print("找不到 foodtype")
-                                return
-                            }
-                            checkTypes.append(foodType)
-                            allTypes.append(foodType)
-                        }
-                    case .failure(let error):
-                        print("error: \(error)")
+                await firestoreManager.queryFoodCard(by: typeId) { [weak self] result in
+                    guard let self = self else {
+                        dispatchGroup.leave()
+                        return
                     }
-                })
+                    arrayAccessQueue.sync {
+                        switch result {
+                        case .success(let foodCards):
+                            if foodCards.count == 0 {
+                                // 缺乏的食材，先用id找到type
+                                let foodType = FoodTypeData.share.queryFoodType(typeId: typeId)
+                                guard let foodType = foodType else {
+                                    print("找不到 foodtype")
+                                    return
+                                }
+                                lackTypes.append(foodType)
+                                allTypes.append(foodType)
+                            } else {
+                                // 冰箱有的，用id找到type
+                                let foodType = FoodTypeData.share.queryFoodType(typeId: typeId)
+                                guard let foodType = foodType else {
+                                    print("找不到 foodtype")
+                                    return
+                                }
+                                checkTypes.append(foodType)
+                                allTypes.append(foodType)
+                            }
+                        case .failure(let error):
+                            print("error: \(error)")
+                        }
+                    }
+                }
                 dispatchGroup.leave()
             }
         }
@@ -376,10 +384,7 @@ extension RecipeViewController: RecipeCellDelegate {
             }
         }
     }
-    
-    
 }
-
 
 
 // MARK: - UISearchResultsUpdating, UISearchBarDelegate
