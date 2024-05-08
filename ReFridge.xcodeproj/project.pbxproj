@@ -46,6 +46,10 @@
 		EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */; };
 		EB9A59562BE8D88400CF5324 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9A59552BE8D88400CF5324 /* NetworkManager.swift */; };
 		EB9A595A2BE8FB4000CF5324 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9A59592BE8FB4000CF5324 /* BaseViewController.swift */; };
+		EBA194552BEBA77600CFEBAC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EBA194542BEBA77600CFEBAC /* FirebaseFirestoreSwift */; };
+		EBA806D42BEB8074001F9A8C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = EBA806D32BEB8074001F9A8C /* FirebaseCrashlytics */; };
+		EBA806D72BEB8BD3001F9A8C /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EBA806D62BEB8BD3001F9A8C /* FirebaseAnalytics */; };
+		EBA806D92BEB8DBB001F9A8C /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EBA806D82BEB8DBB001F9A8C /* FirebaseAnalyticsSwift */; };
 		EBAC18902BC98325002BB6E7 /* FoodTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAC188F2BC98325002BB6E7 /* FoodTypeViewController.swift */; };
 		EBAC18932BCA22F0002BB6E7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */; };
 		EBAC18952BCA22F0002BB6E7 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EBAC18942BCA22F0002BB6E7 /* FirebaseFirestore */; };
@@ -209,8 +213,12 @@
 			files = (
 				09D5F1CE52AAFB32B8B79417 /* Pods_ReFridge.framework in Frameworks */,
 				EBAC18932BCA22F0002BB6E7 /* FirebaseAuth in Frameworks */,
+				EBA806D72BEB8BD3001F9A8C /* FirebaseAnalytics in Frameworks */,
+				EBA806D42BEB8074001F9A8C /* FirebaseCrashlytics in Frameworks */,
+				EBA806D92BEB8DBB001F9A8C /* FirebaseAnalyticsSwift in Frameworks */,
 				EBAF18F52BE639D900442BA0 /* OpenAI in Frameworks */,
 				EBAC18952BCA22F0002BB6E7 /* FirebaseFirestore in Frameworks */,
+				EBA194552BEBA77600CFEBAC /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +564,7 @@
 				EBF88E2B2BC5703E00DEF2FA /* Resources */,
 				EB9F9F302BC6B1C800C5CF76 /* ShellScript */,
 				5F68ED975023633E62A1ADE2 /* [CP] Embed Pods Frameworks */,
+				EBA806D52BEB814D001F9A8C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -566,6 +575,10 @@
 				EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */,
 				EBAC18942BCA22F0002BB6E7 /* FirebaseFirestore */,
 				EBAF18F42BE639D900442BA0 /* OpenAI */,
+				EBA806D32BEB8074001F9A8C /* FirebaseCrashlytics */,
+				EBA806D62BEB8BD3001F9A8C /* FirebaseAnalytics */,
+				EBA806D82BEB8DBB001F9A8C /* FirebaseAnalyticsSwift */,
+				EBA194542BEBA77600CFEBAC /* FirebaseFirestoreSwift */,
 			);
 			productName = ReFridge;
 			productReference = EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */;
@@ -696,6 +709,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		EBA806D52BEB814D001F9A8C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -925,6 +960,7 @@
 				CODE_SIGN_ENTITLEMENTS = ReFridge/ReFridge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 69265F56VU;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ReFridge/Info.plist;
@@ -939,6 +975,41 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.1;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"swiftCoreGraphics\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"Algorithms\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"Charts\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"Lottie\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SwiftEntryKit\"",
+					"-framework",
+					"\"UIKit\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yunChiehLee.ReFridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -970,6 +1041,41 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.1;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"swiftCoreGraphics\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"Algorithms\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"Charts\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"IQKeyboardManagerSwift\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"Lottie\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"SwiftEntryKit\"",
+					"-framework",
+					"\"UIKit\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yunChiehLee.ReFridge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1021,6 +1127,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EBA194542BEBA77600CFEBAC /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		EBA806D32BEB8074001F9A8C /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		EBA806D62BEB8BD3001F9A8C /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		EBA806D82BEB8DBB001F9A8C /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
 		EBAC18922BCA22F0002BB6E7 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EBAC18912BCA21FA002BB6E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
