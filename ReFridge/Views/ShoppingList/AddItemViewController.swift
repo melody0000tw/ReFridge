@@ -12,6 +12,7 @@ class AddItemViewController: BaseViewController {
     
     var listItem = ListItem()
     var typeViewIsOpen = true
+    var mode = FoodCardMode.adding
     
     @IBOutlet weak var tableView: UITableView!
     let typeVC = FoodTypeViewController()
@@ -25,6 +26,18 @@ class AddItemViewController: BaseViewController {
         setupTypeView()
         setupNavigationView()
         self.tabBarController?.tabBar.isHidden = true
+        if mode == .editing {
+            typeViewIsOpen = false
+            typeVC.mode = .editing
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        typeVC.setupInitialFoodType(typeId: listItem.typeId)
+        if mode == .editing {
+            typeVC.setupInitialFoodType(typeId: listItem.typeId)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -32,7 +45,7 @@ class AddItemViewController: BaseViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    // MARK: setups
+    // MARK: - setups
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in

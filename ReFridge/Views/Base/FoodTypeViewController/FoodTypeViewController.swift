@@ -21,7 +21,7 @@ class FoodTypeViewController: UIViewController {
     }) {
         didSet {
             self.collectionView.reloadData()
-            if selectedCategoryId == selectedType.categoryId {
+            if mode == .editing && selectedCategoryId == selectedType.categoryId {
                 let indexPath = IndexPath(item: selectedTypeIndex, section: 0)
                 collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
             }

@@ -206,7 +206,7 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
             print("can not get addItemVC")
             return
         }
-        
+        addItemVC.mode = .editing
         addItemVC.listItem = itemToEdit
         navigationController?.pushViewController(addItemVC, animated: true)
         
