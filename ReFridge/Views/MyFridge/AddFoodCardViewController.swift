@@ -44,12 +44,20 @@ class AddFoodCardViewController: BaseViewController {
         self.tabBarController?.tabBar.isHidden = true
         if mode == .editing {
             typeViewIsOpen = false
+            typeVC.mode = .editing
         }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super .viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .editing {
+            typeVC.setupInitialFoodType(typeId: foodCard.typeId)
+        }
     }
     
     // MARK: - Setups
