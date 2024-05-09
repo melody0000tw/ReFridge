@@ -32,6 +32,11 @@ class CardTypeCell: UITableViewCell {
         typeContainerView.backgroundColor = .clear
         editBtn.setImage(UIImage(systemName: "chevron.up"), for: .normal)
         editBtn.addTarget(self, action: #selector(didTappedEditBtn), for: .touchUpInside)
+        let tapRecongnizer = UITapGestureRecognizer(target: self, action: #selector(didTappedEditBtn))
+        bgView.isUserInteractionEnabled = true
+        bgView.addGestureRecognizer(tapRecongnizer)
+        nameLabel.isUserInteractionEnabled = true
+        nameLabel.addGestureRecognizer(tapRecongnizer)
     }
     
     @objc func didTappedEditBtn() {
@@ -47,8 +52,5 @@ class CardTypeCell: UITableViewCell {
         
         containerHeightConstraint.constant = shouldOpen ? 300 : 0
         self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
-//        UIView.animate(withDuration: 0.1, delay: 0.2) {
-//            self.typeContainerView.layer.opacity = shouldOpen ? 1 : 0
-//        }
     }
 }

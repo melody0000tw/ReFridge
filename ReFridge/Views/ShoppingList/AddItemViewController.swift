@@ -34,7 +34,6 @@ class AddItemViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        typeVC.setupInitialFoodType(typeId: listItem.typeId)
         if mode == .editing {
             typeVC.setupInitialFoodType(typeId: listItem.typeId)
         }
@@ -135,6 +134,7 @@ class AddItemViewController: BaseViewController {
     
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         2
@@ -166,7 +166,13 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
+// MARK: - CardTypeCellDelegate, ItemInfoCellDelegate
 extension  AddItemViewController: CardTypeCellDelegate, ItemInfoCellDelegate {
+    func didTappedIconImg() {
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
     func didToggleTypeView() {
         typeViewIsOpen = !typeViewIsOpen
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
