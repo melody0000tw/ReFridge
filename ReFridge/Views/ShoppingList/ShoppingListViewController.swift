@@ -56,7 +56,7 @@ class ShoppingListViewController: BaseViewController {
     
     // MARK: - Datas
     @objc private func fetchList() {
-//        refreshControl.startRefresh()
+        refreshControl.startRefresh()
         showLoadingIndicator()
         Task {
             await firestoreManager.fetchListItems { result in
