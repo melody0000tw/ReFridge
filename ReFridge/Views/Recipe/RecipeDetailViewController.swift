@@ -99,7 +99,7 @@ class RecipeDetailViewController: BaseViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private func addToList() {
+    private func addAllLackIngredientToList() {
          guard let ingredientStatus = ingredientStatus else {
             print("cannot get ingredient status")
             return
@@ -119,28 +119,36 @@ class RecipeDetailViewController: BaseViewController {
                 print("cannot get recipe ingredient")
                 return
             }
-            var item = ListItem()
-            
-            item.typeId = type.typeId
-            item.categoryId = type.categoryId
-            item.name = type.typeName
-            item.iconName = type.typeIcon
-            item.checkStatus = 0
-            item.mesureWord = ingredient.mesureWord
-            item.qty = ingredient.qty
-            item.isRoutineItem = false
-            
-            Task {
-                await firestoreManager.addListItem(item, completion: { result in
-                    switch result {
-                    case .success:
+            addToList(ingredient: ingredient, type: type, alertMessage: nil)
+        }
+    }
+    
+    private func addToList(ingredient: Ingredient, type: FoodType, alertMessage: String?) {
+        var item = ListItem()
+        
+        item.typeId = type.typeId
+        item.categoryId = type.categoryId
+        item.name = type.typeName
+        item.iconName = type.typeIcon
+        item.checkStatus = 0
+        item.mesureWord = ingredient.mesureWord
+        item.qty = ingredient.qty
+        item.isRoutineItem = false
+        
+        Task {
+            await firestoreManager.addListItem(item, completion: { result in
+                switch result {
+                case .success:
+                    if let alertMessage = alertMessage {
+                        presentAlert(title: "加入成功", description: alertMessage, image: UIImage(systemName: "checkmark.circle"))
+                    } else {
                         presentAlert(title: "加入成功", description: "已將缺少食材加入購物清單", image: UIImage(systemName: "checkmark.circle"))
-                    case .failure(let error):
-                        print("error: \(error)")
-                        presentInternetAlert()
                     }
-                })
-            }
+                case .failure(let error):
+                    print("error: \(error)")
+                    presentInternetAlert()
+                }
+            })
         }
     }
 }
@@ -200,6 +208,7 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
             guard let cell = tableView.dequeueReusableCell(withIdentifier: RecipeIngredientCell.reuseIdentifier, for: indexPath) as? RecipeIngredientCell else {
                 return UITableViewCell()
             }
+            cell.delegate = self
             
             let ingredient = recipe.ingredients[indexPath.row]
             cell.ingredient = ingredient
@@ -278,7 +287,25 @@ extension RecipeDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
-extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate, RecipeButtonCellDelegate {
+// MARK: - Cell Delegates
+extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDelegate, RecipeButtonCellDelegate, RecipeIngredientCellDelegate {
+    func didTappedAddToList(cell: RecipeIngredientCell) {
+        guard let index = tableView.indexPath(for: cell)?.row else {
+            print("cannot get indexPath for cell")
+            return
+        }
+        let ingredient = cell.ingredient
+        let type = ingredientStatus?.allTypes.first(where: { type in
+            type.typeId == ingredient?.typeId
+        })
+        
+        guard let ingredient = ingredient, let type = type else {
+            print("cannot get ingredient or type")
+            return
+        }
+        addToList(ingredient: ingredient, type: type, alertMessage: "已將\(type.typeName)成功加入購物清單")
+    }
+    
     func didTappedFinishBtn() {
         print("finished")
         Task {
@@ -302,7 +329,7 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
     }
     
     func didTappedAddToList() {
-        addToList()
+        addAllLackIngredientToList()
     }
     
     func didTappedLikeBtn() {

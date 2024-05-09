@@ -7,8 +7,12 @@
 
 import UIKit
 
+protocol RecipeIngredientCellDelegate: AnyObject {
+    func didTappedAddToList(cell: RecipeIngredientCell)
+}
+
 class RecipeIngredientCell: UITableViewCell {
-    
+    weak var delegate: RecipeIngredientCellDelegate?
     static let reuseIdentifier = String(describing: RecipeIngredientCell.self)
     
     var ingredient: Ingredient?
@@ -23,6 +27,13 @@ class RecipeIngredientCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTappedAddToList))
+        statusView.isUserInteractionEnabled = true
+        statusView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func didTappedAddToList() {
+        delegate?.didTappedAddToList(cell: self)
     }
     
     func setupData() {
