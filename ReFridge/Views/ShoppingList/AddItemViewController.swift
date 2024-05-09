@@ -155,7 +155,7 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: ItemInfoCell.reuseIdentifier, for: indexPath) as? ItemInfoCell {
             cell.delegate = self
-            cell.iconImage.image = UIImage(named: listItem.iconName)
+            cell.iconImage.image = listItem.name == "" ? UIImage(systemName: "fork.knife.circle") : UIImage(named: listItem.iconName)
             cell.qtyTextField.text = listItem.qty == 1 ? "1" : String(listItem.qty)
             cell.mesureWordTextField.text = listItem.mesureWord
             cell.noteTextField.text = listItem.notes == "" ? nil : listItem.notes
