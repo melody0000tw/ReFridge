@@ -50,7 +50,8 @@ class LoginViewController: UIViewController {
         view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
-            make.width.height.equalTo(view.snp.width).multipliedBy(0.8)
+            make.width.height.equalTo(view.snp.width).multipliedBy(0.7)
+            make.bottom.equalTo(view.snp.centerY).offset(-24)
             make.centerX.equalTo(view.snp.centerX)
         }
         
