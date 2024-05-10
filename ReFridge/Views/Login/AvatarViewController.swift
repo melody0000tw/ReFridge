@@ -33,17 +33,28 @@ class AvatarViewController: UIViewController {
     
     @IBOutlet weak var cancelBtn: UIButton!
     @IBAction func didTappedCancelBtn(_ sender: Any) {
-        presentingViewController?.dismiss(animated: true)
+        if mode == .edit {
+            presentingViewController?.dismiss(animated: true)
+        } else {
+            guard let userInfo = userInfo else {
+                print("cannot get userInfo")
+                return
+            }
+            updateUserInfo(userInfo: userInfo)
+        }
+        
     }
     @IBOutlet weak var nameTextField: UITextField!
     
     @IBOutlet weak var emptyAlertLabel: UILabel!
+    
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCollectonView()
         toggleCancelBtn()
         toggleEmptyLabel(shouldShow: false)
+        navigationController?.navigationBar.isHidden = true
     }
     
     // MARK: - setups
@@ -78,35 +89,45 @@ class AvatarViewController: UIViewController {
         
         userInfo.name = name
         userInfo.avatar = avatar
-        
+        updateUserInfo(userInfo: userInfo)
+    }
+    
+    private func updateUserInfo(userInfo: UserInfo) {
         Task {
             await firestoreManager.updateUserInfo(userInfo: userInfo) { result in
+                DispatchQueue.main.async { [self] in
                 switch result {
                 case .success:
                     // 判斷模式
-                    DispatchQueue.main.async { [self] in
+                    print("did update userInfo successfully")
                         if mode == .edit {
                             presentingViewController?.dismiss(animated: true)
                         } else {
                             presentMyFridgeVC()
                         }
-                    }
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
+                    presentAlert(title: "更新失敗", description: "無法更新使用者資料請稍候嘗試", image: UIImage(systemName: "xmark.circle"))
+                    if mode == .edit {
+                        presentingViewController?.dismiss(animated: true)
+                    } else {
+                        presentMyFridgeVC()
+                    }
                 }
-                
+                }
             }
         }
-        
     }
     
     private func toggleCancelBtn() {
         if mode == .edit {
-            cancelBtn.isHidden = false
+            cancelBtn.setTitle("取消", for: .normal)
         } else {
-            cancelBtn.isHidden = true
+            cancelBtn.setTitle("略過", for: .normal)
         }
     }
+    
     
     private func toggleEmptyLabel(shouldShow: Bool) {
         emptyAlertLabel.isHidden = !shouldShow
@@ -116,7 +137,7 @@ class AvatarViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let initialViewController = storyboard.instantiateInitialViewController() {
             initialViewController.modalPresentationStyle = .fullScreen
-            present(initialViewController, animated: true)
+            present(initialViewController, animated: false)
         }
     }
     
