@@ -64,7 +64,6 @@ class ProfileHeaderView: UIView {
             make.height.width.equalTo(80)
         }
         
-        imageView.image = UIImage(named: "placeholder")
         imageView.backgroundColor = .clear
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
@@ -75,7 +74,7 @@ class ProfileHeaderView: UIView {
             make.height.width.equalTo(60)
         }
         
-        nameLabel.text = "Melody"
+        nameLabel.text = "Unkown"
         nameLabel.font = UIFont(name: "PingFangTC-Semibold", size: 20)
         nameLabel.textAlignment = .left
         nameLabel.textColor = .white

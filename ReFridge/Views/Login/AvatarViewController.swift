@@ -55,6 +55,12 @@ class AvatarViewController: UIViewController {
         toggleCancelBtn()
         toggleEmptyLabel(shouldShow: false)
         navigationController?.navigationBar.isHidden = true
+        selectedAvatar = userInfo?.avatar
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupInitialData()
     }
     
     // MARK: - setups
@@ -74,9 +80,22 @@ class AvatarViewController: UIViewController {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
+    // MARK: - Data
+    private func setupInitialData() {
+        let index = avatars.firstIndex(where: { avatar in
+            avatar == selectedAvatar
+        })
+        guard let index = index else {
+            print("cannot get the avatar")
+            return
+        }
+        collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredHorizontally)
+        if mode == .edit {
+            nameTextField.text = userInfo?.name
+        }
+    }
+    
     private func doneAction() {
-        // update userInfo
-        
         guard let name = nameTextField.text, nameTextField.text != "", let avatar = selectedAvatar  else {
             toggleEmptyLabel(shouldShow: true)
             return
@@ -127,7 +146,6 @@ class AvatarViewController: UIViewController {
             cancelBtn.setTitle("略過", for: .normal)
         }
     }
-    
     
     private func toggleEmptyLabel(shouldShow: Bool) {
         emptyAlertLabel.isHidden = !shouldShow
