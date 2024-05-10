@@ -56,11 +56,12 @@ class TextScanManager {
                 print("Food array is empty, retrying...")
                 self.retryFiltering(detectedText, completion: completion)
             case .success(let foodReply):
-                let scanResult = self.createScanResult(food: foodReply.food, notFood: foodReply.notFood)
+                let scanResult = self.createScanResult(foodReply: foodReply)
                 completion(scanResult)
             case .failure(let error):
                 print(error.localizedDescription)
-                let scanResult = self.createScanResult(food: nil, notFood: detectedText)
+                let foodReply = AIFoodReplay(food: [], notFood: detectedText)
+                let scanResult = self.createScanResult(foodReply: foodReply)
                 completion(scanResult)
             }
         }
@@ -70,38 +71,37 @@ class TextScanManager {
         openAIManager.filterArrays(inputArray: detectedText) { secondResult in
             switch secondResult {
             case .success(let foodReply):
-                let scanResult = self.createScanResult(food: foodReply.food, notFood: foodReply.notFood)
+                let scanResult = self.createScanResult(foodReply: foodReply)
                 completion(scanResult)
             case .failure(let error):
                 print("Retry failed: \(error.localizedDescription)")
-                let scanResult = self.createScanResult(food: nil, notFood: detectedText)
+                let foodReply = AIFoodReplay(food: [], notFood: detectedText)
+                let scanResult = self.createScanResult(foodReply: foodReply)
                 completion(scanResult)
             }
         }
     }
     
-    func createScanResult(food: [String]?, notFood: [String]) -> ScanResult {
+    func createScanResult(foodReply: AIFoodReplay) -> ScanResult {
         var recogResult = [FoodCard]()
-        if let food = food {
-            for text in food {
-                let result = FoodCard(
-                    cardId: UUID().uuidString,
-                    name: text,
-                    categoryId: 5,
-                    typeId: "501",
-                    iconName: "other",
-                    qty: 1, createDate: Date(),
-                    expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-                    isRoutineItem: false,
-                    barCode: "",
-                    storageType: 0,
-                    notes: "")
-                recogResult.append(result)
-            }
+        for text in foodReply.food {
+            let result = FoodCard(
+                cardId: UUID().uuidString,
+                name: text,
+                categoryId: 5,
+                typeId: "501",
+                iconName: "other",
+                qty: 1, createDate: Date(),
+                expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
+                isRoutineItem: false,
+                barCode: "",
+                storageType: 0,
+                notes: "")
+            recogResult.append(result)
         }
         
         var notRecogResult = [String]()
-        for text in notFood {
+        for text in foodReply.notFood {
             notRecogResult.append(text)
         }
         let result = ScanResult(recongItems: recogResult, notRecongItems: notRecogResult)
