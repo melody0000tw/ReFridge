@@ -336,31 +336,34 @@ extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
 // MARK: - BarCode
 extension MyFridgeViewController: VNDocumentCameraViewControllerDelegate {
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
-            let image = scan.imageOfPage(at: scan.pageCount - 1)
-            dismiss(animated: true, completion: {
-                self.processImage(image: image)
+        isScaning = true
+        let image = scan.imageOfPage(at: scan.pageCount - 1)
+        dismiss(animated: true, completion: {
+            self.processImage(image: image)
         })
     }
     
     func processImage(image: UIImage) {
-            guard let cgImage = image.cgImage else {
-                print("Failed to get cgimage from input image")
-                return
-            }
-            let handler = VNImageRequestHandler(cgImage: cgImage)
-            let request = VNDetectBarcodesRequest { request, error in
-                if let observation = request.results?.first as? VNBarcodeObservation,
-                   observation.symbology == .ean13 {
-                    guard let barcode = observation.payloadStringValue else {
-                        return
-                    }
-                    self.searchFoodCard(barCode: barcode)
+        guard let cgImage = image.cgImage else {
+            print("Failed to get cgimage from input image")
+            isScaning = false
+            return
+        }
+        let handler = VNImageRequestHandler(cgImage: cgImage)
+        let request = VNDetectBarcodesRequest { request, _ in
+            if let observation = request.results?.first as? VNBarcodeObservation,
+               observation.symbology == .ean13 {
+                guard let barcode = observation.payloadStringValue else {
+                    return
                 }
+                self.searchFoodCard(barCode: barcode)
             }
-            do {
-                try handler.perform([request])
-            } catch {
-                print(error)
-            }
+        }
+        do {
+            try handler.perform([request])
+        } catch {
+            print(error)
+        }
+        self.isScaning = false
     }
 }
