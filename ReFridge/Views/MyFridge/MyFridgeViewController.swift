@@ -188,11 +188,16 @@ class MyFridgeViewController: BaseViewController {
     }
     
     private func searchFoodCard(barCode: String) {
-        let filteredFoodCards = allCards.filter { foodCard in
-            foodCard.barCode == barCode
+        guard let searchBar = navigationItem.searchController?.searchBar else {
+            print("can not get search bar")
+            return
         }
-        showCards = filteredFoodCards
-        
+        searchBar.text = barCode
+        searchBar.becomeFirstResponder()
+        searchBar.delegate?.searchBar?(searchBar, textDidChange: barCode)
+        if let searchController = navigationItem.searchController {
+            updateSearchResults(for: searchController)
+        }
     }
     
     // MARK: - imagePicker
@@ -317,7 +322,7 @@ extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
         if let searchText = searchController.searchBar.text,
            searchText.isEmpty != true {
             let filteredCards = allCards.filter({ card in
-                card.name.localizedCaseInsensitiveContains(searchText)
+                card.name.localizedCaseInsensitiveContains(searchText) || card.barCode.localizedCaseInsensitiveContains(searchText)
             })
             showCards = filteredCards
         }
