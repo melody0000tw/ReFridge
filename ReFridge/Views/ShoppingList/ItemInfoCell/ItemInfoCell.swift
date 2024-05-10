@@ -9,6 +9,7 @@ import UIKit
 
 protocol ItemInfoCellDelegate: AnyObject {
     func didChangeQty(qty: Int, mesureWord: String, notes: String)
+    func didTappedIconImg()
 }
 
 class ItemInfoCell: UITableViewCell {
@@ -37,7 +38,9 @@ class ItemInfoCell: UITableViewCell {
         mesureWordTextField.text = mesureWord
         noteTextField.text = notes
         setupMesureWordPicker()
-        
+        let tapRecongnizer = UITapGestureRecognizer(target: self, action: #selector(didTappedIcon))
+        iconImage.isUserInteractionEnabled = true
+        iconImage.addGestureRecognizer(tapRecongnizer)
         // Initialization code
     }
     
@@ -46,6 +49,10 @@ class ItemInfoCell: UITableViewCell {
         mesureWordPicker.delegate = self
         mesureWordPicker.dataSource = self
         mesureWordTextField.iq.addDone(target: self, action: #selector(donePickingMesureWord))
+    }
+    
+    @objc func didTappedIcon() {
+        delegate?.didTappedIconImg()
     }
     
     @objc func donePickingMesureWord() {

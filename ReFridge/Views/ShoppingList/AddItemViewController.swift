@@ -12,6 +12,7 @@ class AddItemViewController: BaseViewController {
     
     var listItem = ListItem()
     var typeViewIsOpen = true
+    var mode = FoodCardMode.adding
     
     @IBOutlet weak var tableView: UITableView!
     let typeVC = FoodTypeViewController()
@@ -25,6 +26,17 @@ class AddItemViewController: BaseViewController {
         setupTypeView()
         setupNavigationView()
         self.tabBarController?.tabBar.isHidden = true
+        if mode == .editing {
+            typeViewIsOpen = false
+            typeVC.mode = .editing
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .editing {
+            typeVC.setupInitialFoodType(typeId: listItem.typeId)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -32,7 +44,7 @@ class AddItemViewController: BaseViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
-    // MARK: setups
+    // MARK: - setups
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
@@ -122,6 +134,7 @@ class AddItemViewController: BaseViewController {
     
 }
 
+// MARK: - UITableViewDataSource, UITableViewDelegate
 extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         2
@@ -142,7 +155,7 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: ItemInfoCell.reuseIdentifier, for: indexPath) as? ItemInfoCell {
             cell.delegate = self
-            cell.iconImage.image = UIImage(named: listItem.iconName)
+            cell.iconImage.image = listItem.name == "" ? UIImage(systemName: "fork.knife.circle") : UIImage(named: listItem.iconName)
             cell.qtyTextField.text = listItem.qty == 1 ? "1" : String(listItem.qty)
             cell.mesureWordTextField.text = listItem.mesureWord
             cell.noteTextField.text = listItem.notes == "" ? nil : listItem.notes
@@ -153,7 +166,13 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
     
 }
 
+// MARK: - CardTypeCellDelegate, ItemInfoCellDelegate
 extension  AddItemViewController: CardTypeCellDelegate, ItemInfoCellDelegate {
+    func didTappedIconImg() {
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
     func didToggleTypeView() {
         typeViewIsOpen = !typeViewIsOpen
         tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)

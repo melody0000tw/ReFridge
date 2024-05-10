@@ -44,6 +44,14 @@ class AddFoodCardViewController: BaseViewController {
         self.tabBarController?.tabBar.isHidden = true
         if mode == .editing {
             typeViewIsOpen = false
+            typeVC.mode = .editing
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .editing {
+            typeVC.setupInitialFoodType(typeId: foodCard.typeId)
         }
     }
     
@@ -279,6 +287,11 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
 
 // MARK: - CardTypeCellDelegate, CardInfoCellDelegate
 extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate {
+    func didTappedIconImg() {
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
     func didTappedBarcodeBtn() {
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self

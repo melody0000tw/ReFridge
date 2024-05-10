@@ -20,16 +20,26 @@ class FoodTypeViewController: UIViewController {
         type.categoryId == selectedCategoryId
     }) {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+            self.collectionView.reloadData()
+            if mode == .editing && selectedCategoryId == selectedType.categoryId {
+                let indexPath = IndexPath(item: selectedTypeIndex, section: 0)
+                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
             }
         }
     }
+    
+    var mode = FoodCardMode.adding
     
     var onSelectFoodType: ((FoodType) -> Void)?
     
     private var selectedCategoryId = 1
     private lazy var selectedType: FoodType = allFoodTypes[0]
+    var selectedTypeIndex: Int {
+        let index = self.typesOfSelectedCategory.firstIndex { foodtype in
+            foodtype.typeId == self.selectedType.typeId
+        }
+        return index ?? 0
+    }
     
     private lazy var stackView = UIStackView()
     private lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
@@ -173,6 +183,27 @@ class FoodTypeViewController: UIViewController {
     }
     
     // MARK: - Data
+    func setupInitialFoodType(typeId: String) {
+        let foodType = allFoodTypes.first(where: { type in
+            type.typeId == typeId
+        })
+        guard let foodType = foodType else {
+            print("cannot get initial food type")
+            return
+        }
+        
+        selectedCategoryId = foodType.categoryId
+        selectedType = foodType
+        for btn in buttons {
+            btn.isSelected = false
+            if btn.tag == selectedCategoryId {
+                btn.isSelected = true
+            }
+        }
+        animateBarView()
+        filterTypes()
+    }
+    
     @objc func onChangeCategory(sender: UIButton) {
         for button in buttons {
             button.isSelected = false
@@ -231,7 +262,10 @@ class FoodTypeViewController: UIViewController {
                         return lhs.typeName < rhs.typeName
                     })
                     allFoodTypes = defaultFoodTpyes + userFoodTypes
-                    filterTypes()
+                    DispatchQueue.main.async {
+                        self.filterTypes()
+                    }
+
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

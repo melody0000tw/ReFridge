@@ -50,7 +50,8 @@ class LoginViewController: UIViewController {
         view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
-            make.width.height.equalTo(view.snp.width).multipliedBy(0.8)
+            make.width.height.equalTo(view.snp.width).multipliedBy(0.7)
+            make.bottom.equalTo(view.snp.centerY).offset(-24)
             make.centerX.equalTo(view.snp.centerX)
         }
         
@@ -104,55 +105,55 @@ class LoginViewController: UIViewController {
         }
         Task {
             await firestoreManager.fetchUserInfo { result in
-                switch result {
-                case .success(let userInfo):
-                    guard userInfo != nil else {
-                        presentAvatarVC()
-                        return
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let userInfo):
+                        guard userInfo != nil else {
+                            self.presentAvatarVC()
+                            return
+                        }
+                        self.presentMyFridgeVC()
+                    case .failure(let error):
+                        self.presentAlert(title: "登入失敗", description: "請重新嘗試", image: UIImage(systemName: "xmark.circle"))
+                        print(error.localizedDescription)
                     }
-                    presentMyFridgeVC()
-                case .failure(let error):
-                    print(error.localizedDescription)
                 }
+                
             }
         }
         
     }
     
     private func presentAvatarVC() {
-        DispatchQueue.main.async { [self] in
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
-                print("cannot get avatar vc")
-                return
-            }
-            
-            guard let currentUser = accountManager.getCurrentUser() else {
-                print("cannot get current user")
-                return
-            }
-            
-            let userInfo = UserInfo(
-                uid: currentUser.uid,
-                name: currentUser.displayName ?? "unkown",
-                email: currentUser.email ?? "unknown",
-                avatar: "avatar-avocado",
-                accountStatus: 1
-            )
-            
-            avatarVC.mode = .setup
-            avatarVC.userInfo = userInfo
-            navigationController?.pushViewController(avatarVC, animated: true)
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
+            print("cannot get avatar vc")
+            return
         }
+        
+        guard let currentUser = accountManager.getCurrentUser() else {
+            print("cannot get current user")
+            return
+        }
+        
+        let userInfo = UserInfo(
+            uid: currentUser.uid,
+            name: currentUser.displayName ?? "unkown",
+            email: currentUser.email ?? "unknown",
+            avatar: "avatar-avocado",
+            accountStatus: 1
+        )
+        
+        avatarVC.mode = .setup
+        avatarVC.userInfo = userInfo
+        navigationController?.pushViewController(avatarVC, animated: true)
     }
     
     private func presentMyFridgeVC() {
-        DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let initialViewController = storyboard.instantiateInitialViewController() {
-                initialViewController.modalPresentationStyle = .fullScreen
-                self.present(initialViewController, animated: false)
-            }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let initialViewController = storyboard.instantiateInitialViewController() {
+            initialViewController.modalPresentationStyle = .fullScreen
+            self.present(initialViewController, animated: false)
         }
     }
     

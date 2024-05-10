@@ -36,6 +36,11 @@
                             <constraint firstItem="He2-Nn-tLG" firstAttribute="centerX" secondItem="Bh4-qc-tJa" secondAttribute="centerX" id="tTd-dW-QWh"/>
                             <constraint firstItem="He2-Nn-tLG" firstAttribute="centerY" secondItem="Bh4-qc-tJa" secondAttribute="centerY" id="z1d-aV-kvk"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="RFCornerRadius">
+                                <real key="value" value="5"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="t1K-9n-SeB">
                         <rect key="frame" x="132" y="16" width="257" height="100"/>
