@@ -37,6 +37,8 @@ class MyFridgeViewController: BaseViewController {
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關資料")
     private lazy var refreshControl = RefresherManager()
     
+    private lazy var isScaning = false
+    
     @IBAction func searchByBarCode(_ sender: Any) {
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
@@ -52,13 +54,11 @@ class MyFridgeViewController: BaseViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if isScaning {
+            return
+        }
         collectionView.isHidden = true
         fetchData()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        collectionView.isHidden = true
     }
     
     // MARK: - Setups
@@ -196,10 +196,10 @@ class MyFridgeViewController: BaseViewController {
     }
     
     // MARK: - imagePicker
-    private func presentImagePicker() {
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
         let picker = UIImagePickerController()
         picker.delegate = self
-        picker.sourceType = .photoLibrary
+        picker.sourceType = sourceType
         self.present(picker, animated: true)
     }
 }
@@ -250,7 +250,20 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             foodCardVC.mode = .adding
             self.navigationController?.pushViewController(foodCardVC, animated: true)
         case 1:
-            presentImagePicker()
+            let controller = UIAlertController(title: "請選取影像來源", message: nil, preferredStyle: .actionSheet)
+            let cameraAction = UIAlertAction(title: "開啟相機拍攝", style: .default) { _ in
+                self.presentImagePicker(sourceType: .camera)
+            }
+            let photoLibraryAction = UIAlertAction(title: "選擇相簿圖片", style: .default) { _ in
+                self.presentImagePicker(sourceType: .photoLibrary)
+            }
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+            
+            controller.addAction(cameraAction)
+            controller.addAction(photoLibraryAction)
+            controller.addAction(cancelAction)
+            present(controller, animated: true)
+//            presentImagePicker()
         default:
             let selectedFoodCard = showCards[indexPath.item - 2]
             guard let foodCardVC =
@@ -277,6 +290,7 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
 // MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate
 extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        isScaning = true
         showLoadingIndicator()
         guard let image = info[.originalImage] as? UIImage else { return }
         let scanManager = TextScanManager.shared
@@ -285,10 +299,12 @@ extension MyFridgeViewController: UIImagePickerControllerDelegate, UINavigationC
                 guard let scanResult = result else {
                     self.presentAlert(title: "無法辨識", description: "無法辨識圖片中的文字", image: UIImage(systemName: "xmark.circle"))
                     self.removeLoadingIndicator()
+                    self.isScaning = false
                     return
                 }
                 self.presentScanResult(scanResult: scanResult)
                 self.removeLoadingIndicator()
+                self.isScaning = false
             })
         }
         picker.dismiss(animated: true)
