@@ -8,6 +8,18 @@
 import Foundation
 import FirebaseFirestore
 
+enum FireBaseReference {
+    case userInfo
+    case foodCards
+    case foodTypes
+    case shoppingList
+    case likedRecipes
+    case finishedRecipes
+    case scores
+    case recipes
+}
+
+
 class FirestoreManager {
     
     static let shared = FirestoreManager()
@@ -30,6 +42,7 @@ class FirestoreManager {
     lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
     lazy var finishedRecipesRef = database.collection("users").document("userId").collection("finishedRecipes")
     lazy var scoresRef = database.collection("users").document("userId").collection("scores")
+    lazy var recipeRef = database.collection("recipes")
 
     private init() {
         database = Firestore.firestore()
@@ -49,6 +62,68 @@ class FirestoreManager {
     func configure(withUID uid: String) {
         self.uid = uid
     }
+    
+    // MARK: - ViewModel
+    func fetchDatas<T: Codable>(from reference: CollectionReference, completion: @escaping (Result<[T], Error>) -> Void) {
+        reference.getDocuments { (snapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var items = [T]()
+                snapshot?.documents.forEach { document in
+                    if let item = try? document.data(as: T.self) {
+                        items.append(item)
+                    }
+                }
+                completion(.success(items))
+            }
+        }
+    }
+    
+    func updateDatas<T: Codable>(to reference: DocumentReference, with data: T, completion: @escaping (Result<Void, Error>) -> Void) {
+        do {
+            try reference.setData(from: data) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+    
+    func deleteDatas(from reference: DocumentReference, completion: @escaping (Result<Void, Error>) -> Void) {
+        reference.delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    func queryDatas<T: Codable>(query: Query, completion: @escaping (Result<[T], Error>) -> Void) {
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var items = [T]()
+                snapshot?.documents.forEach { document in
+                    if let item = try? document.data(as: T.self) {
+                        items.append(item)
+                    }
+                }
+                completion(.success(items))
+            }
+        }
+    }
+
+    
+    
+    
+    // MARK: - UserInfo
     
     func fetchUserInfo(completion: (Result<UserInfo?, Error>) -> Void) async {
         do {

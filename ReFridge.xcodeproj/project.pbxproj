@@ -81,6 +81,7 @@
 		EBCC79552BCA5D920029B754 /* IngredientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79542BCA5D920029B754 /* IngredientStatus.swift */; };
 		EBCC79582BCA71BF0029B754 /* RecipeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */; };
 		EBCC79602BCA73F00029B754 /* RecipeStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */; };
+		EBEE25562BEF40F800B6401F /* MyFridgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE25552BEF40F800B6401F /* MyFridgeViewModel.swift */; };
 		EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199522BD75AC700594CCE /* UIView+Ext.swift */; };
 		EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199542BD768E400594CCE /* RecipeHeaderView.swift */; };
 		EBF199572BD7691300594CCE /* RecipeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF199562BD7691300594CCE /* RecipeHeaderView.xib */; };
@@ -178,6 +179,7 @@
 		EBCC79542BCA5D920029B754 /* IngredientStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientStatus.swift; sourceTree = "<group>"; };
 		EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewController.swift; sourceTree = "<group>"; };
 		EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepCell.swift; sourceTree = "<group>"; };
+		EBEE25552BEF40F800B6401F /* MyFridgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFridgeViewModel.swift; sourceTree = "<group>"; };
 		EBF199522BD75AC700594CCE /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		EBF199542BD768E400594CCE /* RecipeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeHeaderView.swift; sourceTree = "<group>"; };
 		EBF199562BD7691300594CCE /* RecipeHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeHeaderView.xib; sourceTree = "<group>"; };
@@ -419,6 +421,30 @@
 			path = RecipeDetailCells;
 			sourceTree = "<group>";
 		};
+		EBEE25522BEF404D00B6401F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EBAF18FD2BE7711700442BA0 /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EBEE25532BEF409300B6401F /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				EBEE25542BEF40E400B6401F /* MyFridge */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
+		EBEE25542BEF40E400B6401F /* MyFridge */ = {
+			isa = PBXGroup;
+			children = (
+				EBEE25552BEF40F800B6401F /* MyFridgeViewModel.swift */,
+			);
+			path = MyFridge;
+			sourceTree = "<group>";
+		};
 		EBF88E242BC5703E00DEF2FA = {
 			isa = PBXGroup;
 			children = (
@@ -444,10 +470,11 @@
 				EB0DD7B62BD64C79002147CC /* ThirdPartyWrappers */,
 				EBFF62CE2BC79F820013F50F /* Extension */,
 				EBFF62C52BC797DA0013F50F /* Views */,
+				EBEE25532BEF409300B6401F /* View Models */,
+				EBFF62D12BC7C9C60013F50F /* Models */,
 				EBFF62C02BC787DC0013F50F /* Managers */,
-				EBFF62D12BC7C9C60013F50F /* Model */,
 				EBAF18F62BE733DA00442BA0 /* Secrets */,
-				EBAF18FD2BE7711700442BA0 /* Fonts */,
+				EBEE25522BEF404D00B6401F /* Resources */,
 				EBF88E302BC5703E00DEF2FA /* AppDelegate.swift */,
 				EBF88E322BC5703E00DEF2FA /* SceneDelegate.swift */,
 				EBF88E392BC5704200DEF2FA /* Assets.xcassets */,
@@ -524,7 +551,7 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		EBFF62D12BC7C9C60013F50F /* Model */ = {
+		EBFF62D12BC7C9C60013F50F /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				EBFF62D22BC7C9E10013F50F /* FoodCard.swift */,
@@ -539,7 +566,7 @@
 				EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */,
 				EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		EBFF62DA2BC819470013F50F /* FoodCardCell */ = {
@@ -752,6 +779,7 @@
 				EB493AF22BD35E41006204D8 /* AddFoodCardViewController.swift in Sources */,
 				EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */,
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
+				EBEE25562BEF40F800B6401F /* MyFridgeViewModel.swift in Sources */,
 				EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */,
 				EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */,
 				EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */,
