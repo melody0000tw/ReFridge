@@ -8,10 +8,9 @@
 import UIKit
 
 class ScanResultViewController: UIViewController {
-    let formatter = FormatterManager.share.formatter
-    let firestoreManager = FirestoreManager.shared
+    var viewModel = ScanResultViewModel(scanResult: ScanResult(recongItems: [], notRecongItems: []))
     
-    var scanResult: ScanResult?
+    let formatter = FormatterManager.share.formatter
     
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
@@ -87,18 +86,14 @@ class ScanResultViewController: UIViewController {
             notRecongLabel.text = "下滑隱藏更多單詞"
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
-                
             }
-            
         } else if sender.direction == .down {
             notRecongViewTopConstraint.constant = -120
             notRecongLabel.text = "上滑顯示更多單詞"
             UIView.animate(withDuration: 0.3) {
                 self.view.layoutIfNeeded()
             }
-           
         }
-            
     }
     
     private func setupCollectionViews() {
@@ -136,38 +131,42 @@ class ScanResultViewController: UIViewController {
     }
     
     private func toggleEmptyLabels() {
-        guard let scanResult = scanResult else {
-            print("scan result is nil")
-            return
+        let result = viewModel.scanResult
+        recongEmptyDataManager.toggleLabel(shouldShow: (result.recongItems.count == 0))
+        notRecongEmptyDataManager.toggleLabel(shouldShow: (result.notRecongItems.count == 0))
+    }
+    
+    // MARK: - Coordinator
+    func presentAddFoodCardVC(foodCard: FoodCard) {
+        guard let addFoodCardVC =
+                storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
+                    print("cannot find foodCardVC")
+                    return
+                }
+        addFoodCardVC.mode = .editingBatch
+        addFoodCardVC.viewModel = AddFoodCardViewModel(foodCard: foodCard)
+        addFoodCardVC.onChangeFoodCard = { newCard in
+            self.viewModel.updateRecogCard(newCard: newCard) {
+                self.recongCollectionView.reloadData()
+                self.toggleEmptyLabels()
+            }
         }
-        recongEmptyDataManager.toggleLabel(shouldShow: (scanResult.recongItems.count == 0))
-        notRecongEmptyDataManager.toggleLabel(shouldShow: (scanResult.notRecongItems.count == 0))
+        self.navigationController?.pushViewController(addFoodCardVC, animated: true)
     }
     
     // MARK: - Data
     @objc func saveData() {
-        guard let scanResult = scanResult else {
-            return
-        }
-        
-        let dispatchGroup = DispatchGroup()
-        for foodCard in scanResult.recongItems {
-            dispatchGroup.enter()
-            Task {
-                await firestoreManager.saveFoodCard(foodCard) { result in
-                    switch result {
-                    case .success:
-                        print("Document successfully written!")
-                    case .failure(let error):
-                        print("Error adding document: \(error)")
-                    }
+        viewModel.saveFoodCards { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success():
+                    print("Documents successfully written!")
+                    self.navigationController?.popViewController(animated: true)
+                case .failure(let error):
+                    print("error: \(error)")
+                    self.navigationController?.popViewController(animated: true)
                 }
-                dispatchGroup.leave()
             }
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -180,9 +179,7 @@ class ScanResultViewController: UIViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension ScanResultViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let scanResult = scanResult else {
-            return 0
-        }
+        let scanResult = viewModel.scanResult
         if collectionView == recongCollectionView {
             return scanResult.recongItems.count
         } else {
@@ -191,9 +188,7 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let scanResult = scanResult else {
-            return UICollectionViewCell()
-        }
+        let scanResult = viewModel.scanResult
         if collectionView == recongCollectionView {
             guard let cell = recongCollectionView.dequeueReusableCell(withReuseIdentifier: RecongCell.reuseIdentifier, for: indexPath) as? RecongCell
             else {
@@ -222,74 +217,35 @@ extension ScanResultViewController: UICollectionViewDataSource, UICollectionView
 // MARK: - RecongCellDelegate
 extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
     func addRecongCell(cell: UICollectionViewCell) {
-        guard var scanResult = scanResult,
-              let indexPath = notRecongCollectionView.indexPath(for: cell)
-        else {
+        guard let index = notRecongCollectionView.indexPath(for: cell)?.row else {
+            print("cannot find index path of cell")
             return
         }
-        var text = scanResult.notRecongItems.remove(at: indexPath.item)
-        let foodCard = FoodCard(
-            cardId: UUID().uuidString,
-            name: text,
-            categoryId: 5,
-            typeId: "501",
-            iconName: "other",
-            qty: 1, createDate: Date(),
-            expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-            isRoutineItem: false,
-            barCode: "",
-            storageType: 0,
-            notes: "")
-        scanResult.recongItems.insert(foodCard, at: 0)
-        self.scanResult = scanResult
-        notRecongCollectionView.reloadData()
-        recongCollectionView.reloadData()
-        toggleEmptyLabels()
         
+        viewModel.addRecogCard(withNotRecogAt: index) { [self] in
+            notRecongCollectionView.reloadData()
+            recongCollectionView.reloadData()
+            toggleEmptyLabels()
+        }
     }
     
     func deleteRecongCell(cell: UICollectionViewCell) {
-        guard var scanResult = scanResult,
-              let indexPath = recongCollectionView.indexPath(for: cell)
-        else {
+        guard let index = recongCollectionView.indexPath(for: cell)?.row else {
+            print("cannot find index path of cell")
             return
         }
-        scanResult.recongItems.remove(at: indexPath.item)
-        self.scanResult = scanResult
-        recongCollectionView.reloadData()
-        toggleEmptyLabels()
+        viewModel.deleteRecogCard(at: index) { [self] in
+            recongCollectionView.reloadData()
+            toggleEmptyLabels()
+        }
     }
     
     func editRecongCell(cell: UICollectionViewCell) {
-        guard let scanResult = scanResult,
-              let indexPath = recongCollectionView.indexPath(for: cell)
-        else {
+        guard let index = recongCollectionView.indexPath(for: cell)?.row else {
+            print("cannot find index path of cell")
             return
         }
-        
-        let foodCard = scanResult.recongItems[indexPath.item]
-        guard let foodCardVC =
-                storyboard?.instantiateViewController(withIdentifier: "AddFoodCardViewController") as? AddFoodCardViewController else {
-                    print("cannot find foodCardVC")
-                    return
-                }
-        foodCardVC.mode = .editingBatch
-        foodCardVC.viewModel.foodCard = foodCard
-//        foodCardVC.foodCard = foodCard
-        foodCardVC.onChangeFoodCard = { newFoodCard in
-            guard var scanResult = self.scanResult else {
-                return
-            }
-            if let index = scanResult.recongItems.firstIndex(where: { $0.cardId == newFoodCard.cardId }) {
-                scanResult.recongItems[index] = newFoodCard
-                self.scanResult = scanResult
-                
-                let indexPath = IndexPath(item: index, section: 0)
-                self.recongCollectionView.reloadItems(at: [indexPath])
-                self.toggleEmptyLabels()
-            }
-        }
-        self.navigationController?.pushViewController(foodCardVC, animated: true)
-
+        let foodCard = viewModel.scanResult.recongItems[index]
+        presentAddFoodCardVC(foodCard: foodCard)
     }
 }

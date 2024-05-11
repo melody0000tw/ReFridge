@@ -130,7 +130,8 @@ class MyFridgeViewController: BaseViewController {
                     print("cannot get scanresult vc")
                     return
             }
-            scanVC.scanResult = scanResult
+            scanVC.viewModel = ScanResultViewModel(scanResult: scanResult)
+//            scanVC.scanResult = scanResult
             navigationController?.pushViewController(scanVC, animated: true)
         }
     }
