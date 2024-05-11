@@ -12,11 +12,11 @@ struct Score: Codable {
 }
 
 struct Scores: Codable {
-    let consumed: Int
-    let thrown: Int
+    var consumed: Int
+    var thrown: Int
 }
 
-enum DeleteWay: String {
+enum DeleteWay: String, CaseIterable {
     case consumed
     case thrown
 }

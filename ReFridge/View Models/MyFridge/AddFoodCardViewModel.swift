@@ -15,7 +15,7 @@ class AddFoodCardViewModel {
     @Published var foodCard: FoodCard
     private var cancellables = Set<AnyCancellable>()
     
-    lazy var docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
+    
     
     init(foodCard: FoodCard = FoodCard()) {
             self.foodCard = foodCard
@@ -63,6 +63,8 @@ class AddFoodCardViewModel {
             foodCard.cardId = UUID().uuidString
         }
         
+        let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
+        
         Task {
             firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, Error>) in
                 switch result {
@@ -89,10 +91,11 @@ class AddFoodCardViewModel {
             print("no food card id")
             return
         }
+        let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
         Task {
             firestoreManager.deleteDatas(from: docRef) { (result: Result< Void, Error>) in
                 switch result {
-                case .success():
+                case .success:
                     print("delete food card successfully")
                     completion(.success(()))
                 case .failure(let error):
@@ -113,22 +116,19 @@ class AddFoodCardViewModel {
                 switch result {
                 case .success(let score):
                     print("successfully fetch old score")
-                    let newScore = Score(number: score.number + 1)
-                    self.setNewScore(newScore: newScore)
+                    let newNum = score.number + 1
+                    let newScore = Score(number: newNum)
+                    self.firestoreManager.updateDatas(to: docRef, with: newScore) { (result: Result<Void, Error>) in
+                        switch result {
+                        case .success():
+                            print("update scores successfully")
+                        case .failure(let error):
+                            print("error: \(error)")
+                        }
+                    }
                 case .failure(let error):
                     print("error: \(error)")
                 }
-            }
-        }
-    }
-    
-    private func setNewScore(newScore: Score) {
-        firestoreManager.updateDatas(to: docRef, with: newScore) { (result: Result<Void, Error>) in
-            switch result {
-            case .success():
-                print("update scores successfully")
-            case .failure(let error):
-                print("error: \(error)")
             }
         }
     }

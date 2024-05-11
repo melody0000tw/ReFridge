@@ -85,6 +85,7 @@
 		EBEE25582BEF609400B6401F /* AddFoodCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE25572BEF609400B6401F /* AddFoodCardViewModel.swift */; };
 		EBEE255A2BEF62D500B6401F /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE25592BEF62D500B6401F /* ErrorType.swift */; };
 		EBEE255C2BEFBBA200B6401F /* ScanResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE255B2BEFBBA200B6401F /* ScanResultViewModel.swift */; };
+		EBEE25602BEFCE3B00B6401F /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE255F2BEFCE3B00B6401F /* ChartViewModel.swift */; };
 		EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199522BD75AC700594CCE /* UIView+Ext.swift */; };
 		EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199542BD768E400594CCE /* RecipeHeaderView.swift */; };
 		EBF199572BD7691300594CCE /* RecipeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF199562BD7691300594CCE /* RecipeHeaderView.xib */; };
@@ -186,6 +187,7 @@
 		EBEE25572BEF609400B6401F /* AddFoodCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodCardViewModel.swift; sourceTree = "<group>"; };
 		EBEE25592BEF62D500B6401F /* ErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		EBEE255B2BEFBBA200B6401F /* ScanResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultViewModel.swift; sourceTree = "<group>"; };
+		EBEE255F2BEFCE3B00B6401F /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
 		EBF199522BD75AC700594CCE /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		EBF199542BD768E400594CCE /* RecipeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeHeaderView.swift; sourceTree = "<group>"; };
 		EBF199562BD7691300594CCE /* RecipeHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeHeaderView.xib; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 		EBEE25532BEF409300B6401F /* View Models */ = {
 			isa = PBXGroup;
 			children = (
+				EBEE255D2BEFCE1200B6401F /* Chart */,
 				EBEE25542BEF40E400B6401F /* MyFridge */,
 			);
 			path = "View Models";
@@ -451,6 +454,14 @@
 				EBEE255B2BEFBBA200B6401F /* ScanResultViewModel.swift */,
 			);
 			path = MyFridge;
+			sourceTree = "<group>";
+		};
+		EBEE255D2BEFCE1200B6401F /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				EBEE255F2BEFCE3B00B6401F /* ChartViewModel.swift */,
+			);
+			path = Chart;
 			sourceTree = "<group>";
 		};
 		EBF88E242BC5703E00DEF2FA = {
@@ -778,6 +789,7 @@
 				EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */,
 				EB425BE42BD1354D000C75A6 /* BarChartView.swift in Sources */,
 				EB5A31252BDF88C30002DFE6 /* TabBarController.swift in Sources */,
+				EBEE25602BEFCE3B00B6401F /* ChartViewModel.swift in Sources */,
 				EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */,
 				EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */,
 				EBAF18F22BE6354000442BA0 /* OpenAIManager.swift in Sources */,

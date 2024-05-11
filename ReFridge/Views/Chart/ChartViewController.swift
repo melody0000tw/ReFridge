@@ -6,34 +6,16 @@
 //
 
 import UIKit
+import Combine
 import SnapKit
 import Charts
 import FirebaseAuth
 import AuthenticationServices
 
-class ChartViewController: BaseViewController{
-    private let firestoreManager = FirestoreManager.shared
+class ChartViewController: BaseViewController {
+    var viewModel = ChartViewModel()
+    private var cancellables: Set<AnyCancellable> = []
     private let accountManager = AccountManager.share
-    
-    private var userInfo: UserInfo?
-    
-    private var foodCards = [FoodCard]() {
-        didSet {
-            DispatchQueue.main.async { [self] in
-                
-                self.emptyDataManager.toggleLabel(shouldShow: (foodCards.count == 0))
-                if foodCards.isEmpty {
-                    chartsContainerView.isHidden = true
-                } else {
-                    // pie chart
-                    chartsContainerView.isHidden = false
-                    pieChartView.configurePieCart(foodCards: foodCards)
-                    // bar chart
-                    barChartView.configureBarCart(foodCards: foodCards)
-                }
-            }
-        }
-    }
     
     private lazy var settingBtn = UIBarButtonItem()
     private lazy var headerView = ProfileHeaderView(frame: CGRect())
@@ -55,13 +37,12 @@ class ChartViewController: BaseViewController{
         setupChartViews()
         barChartView.isHidden = true
         setupNavigationView()
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchUserInfo()
-        fetchData()
-        fetchScores()
+        viewModel.fetchDatas()
     }
     
     // MARK: - setups
@@ -158,12 +139,10 @@ class ChartViewController: BaseViewController{
         
     }
     
-    // MARK: - Food Chart
     private func setupChartViews() {
         view.addSubview(chartsContainerView)
         chartsContainerView.snp.makeConstraints { make in
             make.top.equalTo(stackView.snp.bottom)
-//            make.top.equalTo(colorView.snp.bottom).offset(60)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -189,7 +168,6 @@ class ChartViewController: BaseViewController{
         infoLabel.font = UIFont(name: "PingFangTC-Regular", size: 14)
         infoLabel.textAlignment = .center
         infoLabel.textColor = .darkGray
-//        nameLabel.sizeToFit()
         chartsContainerView.addSubview(infoLabel)
         infoLabel.snp.makeConstraints { make in
             make.centerX.equalTo(chartsContainerView.snp.centerX)
@@ -197,7 +175,7 @@ class ChartViewController: BaseViewController{
         }
     }
     
-    // MARK: - Account Settings
+    // MARK: - Coordinator
     @objc private func presentSettingSheet() {
         let controller = UIAlertController(title: "帳號設定", message: nil, preferredStyle: .actionSheet)
         let updateProfileAction = UIAlertAction(title: "編輯個人資料", style: .default) { _ in
@@ -225,9 +203,7 @@ class ChartViewController: BaseViewController{
             return
         }
         avatarVC.mode = .edit
-        if let userInfo = userInfo {
-            avatarVC.userInfo = userInfo
-        }
+        avatarVC.userInfo = viewModel.userInfo
         avatarVC.modalPresentationStyle = .fullScreen
         present(avatarVC, animated: true)
     }
@@ -243,14 +219,6 @@ class ChartViewController: BaseViewController{
         present(controller, animated: true)
     }
     
-    private func performAccountDeletion() {
-        let request = accountManager.createAppleIdRequest()
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
-    
     private func presentLoginPage() {
         DispatchQueue.main.async {
             let storyboard = UIStoryboard(name: "Login", bundle: nil)
@@ -262,63 +230,58 @@ class ChartViewController: BaseViewController{
     }
     
     // MARK: - Data
-    private func fetchUserInfo() {
-        Task {
-            await firestoreManager.fetchUserInfo { result in
-                switch result {
-                case .success(let userInfo):
-                    self.userInfo = userInfo
-                    if let user = userInfo {
-                        DispatchQueue.main.async {
-                            self.headerView.nameLabel.text = "Hello, \(user.name)!"
-                            self.headerView.imageView.image = UIImage(named: user.avatar)
-                        }
-                    }
-                case .failure(let error):
-                    presentInternetAlert()
-                    print("error: \(error)")
-                }
+    private func bindViewModel() {
+        viewModel.$foodCards
+            .receive(on: RunLoop.main)
+            .sink { [weak self] foodCards in
+                self?.updateChartUI(with: foodCards)
             }
+            .store(in: &cancellables)
+        viewModel.$userInfo
+            .receive(on: RunLoop.main)
+            .sink { [weak self] userInfo in
+                self?.updateUserInfo(with: userInfo)
+            }
+            .store(in: &cancellables)
+        viewModel.$scores
+            .receive(on: RunLoop.main)
+            .sink { [weak self] scores in
+                self?.updateScores(with: scores)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateChartUI(with foodCards: [FoodCard]) {
+        self.emptyDataManager.toggleLabel(shouldShow: (foodCards.count == 0))
+        if foodCards.isEmpty {
+            chartsContainerView.isHidden = true
+        } else {
+            // pie chart
+            chartsContainerView.isHidden = false
+            pieChartView.configurePieCart(foodCards: foodCards)
+            // bar chart
+            barChartView.configureBarCart(foodCards: foodCards)
         }
     }
     
-    private func fetchData() {
-        Task {
-            await firestoreManager.fetchFoodCard { result in
-                switch result {
-                case .success(let foodCards):
-                    self.foodCards = foodCards
-                case .failure(let error):
-                    print("error: \(error)")
-                }
-            }
-        }
+    private func updateUserInfo(with userInfo: UserInfo) {
+        self.headerView.nameLabel.text = "Hello, \(userInfo.name)!"
+        self.headerView.imageView.image = UIImage(named: userInfo.avatar)
     }
     
-    private func fetchScores() {
-        Task {
-            await firestoreManager.fetchScores { result in
-                switch result {
-                case .success(let score):
-                    let total = score.consumed + score.thrown
-                    var scoreDouble = 0.0
-                    
-                    if total != 0 {
-                        scoreDouble = (Double(score.consumed) / Double(total)).rounding(toDecimal: 2)
-                    }
-                    DispatchQueue.main.async { [self] in
-                        headerView.finishedLabel.text = String(score.consumed)
-                        headerView.thrownLabel.text = String(score.thrown)
-                        headerView.progressView.setProgress(Float(scoreDouble), animated: true)
-                    }
-                case .failure(let error):
-                    print("error: \(error)")
-                }
-                
-            }
+    private func updateScores(with scores: Scores) {
+        let total = scores.consumed + scores.thrown
+        var scoreDouble = 0.0
+
+        if total != 0 {
+            scoreDouble = (Double(scores.consumed) / Double(total)).rounding(toDecimal: 2)
         }
+        headerView.finishedLabel.text = String(scores.consumed)
+        headerView.thrownLabel.text = String(scores.thrown)
+        headerView.progressView.setProgress(Float(scoreDouble), animated: true)
     }
-    
+
+    // MARK: - Sign out & Deletion
     private func signoutFireBase() {
         accountManager.signoutFireBase { result in
             switch result {
@@ -330,32 +293,20 @@ class ChartViewController: BaseViewController{
         }
     }
     
-    private func updateUserInfo() {
-        guard let userInfo = userInfo else {
-            print("cannot get userInfo")
-            return
-        }
-        Task {
-            await firestoreManager.updateUserInfo(userInfo: userInfo) { result in
-                switch result {
-                case .success:
-                    print("userInfo is updated: \(userInfo)")
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-                
-            }
-        }
+    private func performAccountDeletion() {
+        let request = accountManager.createAppleIdRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
     }
 }
 
 // MARK: - SignInWithApple
 @available(iOS 13.0, *)
 extension ChartViewController: ASAuthorizationControllerDelegate {
-
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-      userInfo?.accountStatus = 0
-      updateUserInfo()
+      viewModel.updateAccountStatus()
       presentLoginPage()
       
       accountManager.deleteAppleSignInAccount(controller: controller, didCompleteWithAuthorization: authorization) { result in
@@ -371,7 +322,6 @@ extension ChartViewController: ASAuthorizationControllerDelegate {
   func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
     print("Sign in with Apple errored: \(error)")
   }
-
 }
 
 extension ChartViewController: ASAuthorizationControllerPresentationContextProviding {
