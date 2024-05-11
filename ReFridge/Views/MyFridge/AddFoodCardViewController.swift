@@ -113,6 +113,7 @@ class AddFoodCardViewController: BaseViewController {
     private func bindViewModel() {
         viewModel.$foodCard
             .receive(on: RunLoop.main)
+            .dropFirst()
             .sink { [weak self] foodCard in
                 self?.updateCardTypeUI(with: foodCard)
             }
@@ -228,7 +229,6 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.typeContainerView.addSubview(typeVC.view)
                 
                 let card = viewModel.foodCard
-                // TODO: - addCard cell???
                 cell.nameLabel.text = card.name == "" ? "請選取食物種類" : card.name
                 cell.nameLabel.textColor = .darkGray
                 cell.toggleTypeView(shouldOpen: typeViewIsOpen)
