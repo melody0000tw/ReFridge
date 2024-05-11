@@ -8,25 +8,10 @@
 import Foundation
 import FirebaseFirestore
 
-enum FireBaseReference {
-    case userInfo
-    case foodCards
-    case foodTypes
-    case shoppingList
-    case likedRecipes
-    case finishedRecipes
-    case scores
-    case recipes
-}
-
-
 class FirestoreManager {
-    
     static let shared = FirestoreManager()
     private let accountManager = AccountManager.share
-    
     let database: Firestore
-    
     var uid: String? {
         didSet {
             if let uid = uid {
@@ -80,6 +65,17 @@ class FirestoreManager {
         }
     }
     
+    func fetchData<T: Codable>(from reference: DocumentReference, completion: @escaping (Result<T, Error>) -> Void) {
+        reference.getDocument(as: T.self) { result in
+            switch result {
+            case .success(let data):
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func updateDatas<T: Codable>(to reference: DocumentReference, with data: T, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
             try reference.setData(from: data) { error in
@@ -103,26 +99,7 @@ class FirestoreManager {
             }
         }
     }
-    
-    func queryDatas<T: Codable>(query: Query, completion: @escaping (Result<[T], Error>) -> Void) {
-        query.getDocuments { (snapshot, error) in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                var items = [T]()
-                snapshot?.documents.forEach { document in
-                    if let item = try? document.data(as: T.self) {
-                        items.append(item)
-                    }
-                }
-                completion(.success(items))
-            }
-        }
-    }
 
-    
-    
-    
     // MARK: - UserInfo
     
     func fetchUserInfo(completion: (Result<UserInfo?, Error>) -> Void) async {
@@ -207,8 +184,6 @@ class FirestoreManager {
             completion(.failure(error))
         }
     }
-    
-    
     
     func saveFoodCard(_ foodCard: FoodCard, completion: (Result<Any?, Error>) -> Void) async {
         do {

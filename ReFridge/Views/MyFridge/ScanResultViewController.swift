@@ -274,7 +274,8 @@ extension ScanResultViewController: RecongCellDelegate, NotRecongCellDelegate {
                     return
                 }
         foodCardVC.mode = .editingBatch
-        foodCardVC.foodCard = foodCard
+        foodCardVC.viewModel.foodCard = foodCard
+//        foodCardVC.foodCard = foodCard
         foodCardVC.onChangeFoodCard = { newFoodCard in
             guard var scanResult = self.scanResult else {
                 return

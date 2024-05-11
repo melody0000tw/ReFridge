@@ -82,6 +82,8 @@
 		EBCC79582BCA71BF0029B754 /* RecipeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */; };
 		EBCC79602BCA73F00029B754 /* RecipeStepCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */; };
 		EBEE25562BEF40F800B6401F /* MyFridgeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE25552BEF40F800B6401F /* MyFridgeViewModel.swift */; };
+		EBEE25582BEF609400B6401F /* AddFoodCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE25572BEF609400B6401F /* AddFoodCardViewModel.swift */; };
+		EBEE255A2BEF62D500B6401F /* ErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEE25592BEF62D500B6401F /* ErrorType.swift */; };
 		EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199522BD75AC700594CCE /* UIView+Ext.swift */; };
 		EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF199542BD768E400594CCE /* RecipeHeaderView.swift */; };
 		EBF199572BD7691300594CCE /* RecipeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBF199562BD7691300594CCE /* RecipeHeaderView.xib */; };
@@ -180,6 +182,8 @@
 		EBCC79572BCA71BF0029B754 /* RecipeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewController.swift; sourceTree = "<group>"; };
 		EBCC795F2BCA73F00029B754 /* RecipeStepCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeStepCell.swift; sourceTree = "<group>"; };
 		EBEE25552BEF40F800B6401F /* MyFridgeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFridgeViewModel.swift; sourceTree = "<group>"; };
+		EBEE25572BEF609400B6401F /* AddFoodCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFoodCardViewModel.swift; sourceTree = "<group>"; };
+		EBEE25592BEF62D500B6401F /* ErrorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorType.swift; sourceTree = "<group>"; };
 		EBF199522BD75AC700594CCE /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		EBF199542BD768E400594CCE /* RecipeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeHeaderView.swift; sourceTree = "<group>"; };
 		EBF199562BD7691300594CCE /* RecipeHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeHeaderView.xib; sourceTree = "<group>"; };
@@ -441,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				EBEE25552BEF40F800B6401F /* MyFridgeViewModel.swift */,
+				EBEE25572BEF609400B6401F /* AddFoodCardViewModel.swift */,
 			);
 			path = MyFridge;
 			sourceTree = "<group>";
@@ -565,6 +570,7 @@
 				EB84D4392BD24661008E274C /* Scores.swift */,
 				EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */,
 				EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */,
+				EBEE25592BEF62D500B6401F /* ErrorType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -784,6 +790,7 @@
 				EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */,
 				EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */,
 				EBF199552BD768E400594CCE /* RecipeHeaderView.swift in Sources */,
+				EBEE25582BEF609400B6401F /* AddFoodCardViewModel.swift in Sources */,
 				EBCC794F2BCA2CB90029B754 /* RecipeCell.swift in Sources */,
 				EB2F0C652BCB74AB00FFBED5 /* AddItemViewController.swift in Sources */,
 				EB2F0C672BCB7C3700FFBED5 /* FormatterManager.swift in Sources */,
@@ -802,6 +809,7 @@
 				EB0DD7BF2BD679AF002147CC /* RecipeHintLabelCell.swift in Sources */,
 				EBFF62DD2BC8197A0013F50F /* FoodCardCell.swift in Sources */,
 				EBCC79582BCA71BF0029B754 /* RecipeDetailViewController.swift in Sources */,
+				EBEE255A2BEF62D500B6401F /* ErrorType.swift in Sources */,
 				EBAD13222BCCF78200F40A71 /* NotRecongCell.swift in Sources */,
 				EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */,
 				EBFF62C22BC789380013F50F /* FirestoreManager.swift in Sources */,

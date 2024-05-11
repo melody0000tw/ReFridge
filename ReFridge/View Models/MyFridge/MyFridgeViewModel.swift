@@ -12,12 +12,11 @@ class MyFridgeViewModel {
     private let accountManager = AccountManager.share
     private var allCards = [FoodCard]()
     
-    func fetchFoodCards(filter: CardFilter, completion: @escaping (Result<[FoodCard], Error>) -> Void) {
-        
-        let reference = firestoreManager.foodCardsRef
+    func fetchFoodCards(filter: CardFilter, completion: @escaping (Result<[FoodCard], ErrorType>) -> Void) {
+        let colRef = firestoreManager.foodCardsRef
         
         Task {
-            firestoreManager.fetchDatas(from: reference) { [self] (result: Result<[FoodCard], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodCard], Error>) in
                 switch result {
                 case .success(let foodCards):
                     allCards = foodCards
@@ -25,7 +24,7 @@ class MyFridgeViewModel {
                     completion(.success(filteredCards))
                 case .failure(let error):
                     print("error: \(error)")
-                    completion(.failure(error))
+                    completion(.failure(.firebaseError(error)))
                 }
             }
         }
@@ -63,7 +62,7 @@ class MyFridgeViewModel {
     }
     
     func searchFoodCards(with searchText: String) -> [FoodCard] {
-        var filteredCards = allCards.filter({ card in
+        let filteredCards = allCards.filter({ card in
             card.name.localizedCaseInsensitiveContains(searchText) || card.barCode.localizedCaseInsensitiveContains(searchText)
         })
         

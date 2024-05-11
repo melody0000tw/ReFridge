@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct Score: Codable {
+    var number: Int
+}
+
 struct Scores: Codable {
     let consumed: Int
     let thrown: Int
