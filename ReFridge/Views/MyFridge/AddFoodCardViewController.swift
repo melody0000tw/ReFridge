@@ -17,7 +17,7 @@ enum FoodCardMode {
 }
 
 class AddFoodCardViewController: BaseViewController {
-    let viewModel = AddFoodCardViewModel()
+    var viewModel = AddFoodCardViewModel()
     private var cancellables: Set<AnyCancellable> = []
     
     @IBOutlet weak var btnViewHeightConstraint: NSLayoutConstraint!

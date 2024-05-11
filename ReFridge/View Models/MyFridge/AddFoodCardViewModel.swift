@@ -12,10 +12,14 @@ class AddFoodCardViewModel {
     private let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
     
-    @Published var foodCard = FoodCard()
+    @Published var foodCard: FoodCard
     private var cancellables = Set<AnyCancellable>()
     
     lazy var docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
+    
+    init(foodCard: FoodCard = FoodCard()) {
+            self.foodCard = foodCard
+        }
     
     func updateFoodCard(
         name: String? = nil,

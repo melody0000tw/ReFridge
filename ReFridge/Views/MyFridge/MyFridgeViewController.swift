@@ -143,9 +143,10 @@ class MyFridgeViewController: BaseViewController {
                 }
         addFoodCardVC.mode = mode
         if mode == .editing, let foodCard = selectedFoodCard {
-//            addFoodCardVC.foodCard = foodCard
-            addFoodCardVC.viewModel.foodCard = foodCard
-        }
+                addFoodCardVC.viewModel = AddFoodCardViewModel(foodCard: foodCard)
+            } else {
+                addFoodCardVC.viewModel = AddFoodCardViewModel()
+            }
         self.navigationController?.pushViewController(addFoodCardVC, animated: true)
     }
     
