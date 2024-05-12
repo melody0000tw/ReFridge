@@ -6,13 +6,31 @@
 //
 
 import Foundation
+import Combine
 
 class MyFridgeViewModel {
     private let firestoreManager = FirestoreManager.shared
     private let accountManager = AccountManager.share
-    private var allCards = [FoodCard]()
+    var allCards = [FoodCard]()
+    var filter: CardFilter {
+        didSet {
+            filterFoodCards()
+        }
+    }
     
-    func fetchFoodCards(filter: CardFilter, completion: @escaping (Result<[FoodCard], ErrorType>) -> Void) {
+    @Published var showCards = [FoodCard]()
+    @Published var error: Error?
+    @Published var isLoading: Bool = false
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(filter: CardFilter = CardFilter(categoryId: nil, sortBy: .remainingDay)) {
+        self.filter = filter
+        fetchFoodCards()
+    }
+    
+    func fetchFoodCards() {
+        isLoading = true
         let colRef = firestoreManager.foodCardsRef
         
         Task {
@@ -20,17 +38,17 @@ class MyFridgeViewModel {
                 switch result {
                 case .success(let foodCards):
                     allCards = foodCards
-                    let filteredCards = filterFoodCards(by: filter)
-                    completion(.success(filteredCards))
+                    filterFoodCards()
                 case .failure(let error):
                     print("error: \(error)")
-                    completion(.failure(.firebaseError(error)))
+                    self.error = error
                 }
+                isLoading = false
             }
         }
     }
     
-    func filterFoodCards(by filter: CardFilter) -> [FoodCard] {
+    func filterFoodCards() {
         // filter
         var filteredCards = [FoodCard]()
         if let categoryId = filter.categoryId {
@@ -57,16 +75,14 @@ class MyFridgeViewModel {
                 lhs.categoryId <= rhs.categoryId
             }
         }
-        
-        return filteredCards
+        showCards = filteredCards
     }
     
-    func searchFoodCards(with searchText: String) -> [FoodCard] {
+    func searchFoodCards(with searchText: String) {
         let filteredCards = allCards.filter({ card in
             card.name.localizedCaseInsensitiveContains(searchText) || card.barCode.localizedCaseInsensitiveContains(searchText)
         })
         
-        return filteredCards
+        showCards = filteredCards
     }
-    
 }

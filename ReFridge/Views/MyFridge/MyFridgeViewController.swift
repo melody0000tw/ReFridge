@@ -6,37 +6,20 @@
 //
 
 import UIKit
+import Combine
 import VisionKit
 import Vision
 import Lottie
 
 class MyFridgeViewController: BaseViewController {
     private let viewModel = MyFridgeViewModel()
-    var cards = [FoodCard]() {
-        didSet {
-            DispatchQueue.main.async { [self] in
-                collectionView.isHidden = false
-                collectionView.reloadData()
-                emptyDataManager.toggleLabel(shouldShow: (self.cards.count == 0))
-            }
-        }
-    }
-    
-    var cardFilter = CardFilter(categoryId: nil, sortBy: .remainingDay) {
-        didSet {
-            cards = viewModel.filterFoodCards(by: cardFilter)
-        }
-    }
+    private var cancellables = Set<AnyCancellable>()
     
     @IBOutlet weak var filterBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var collectionView: UICollectionView!
-    
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚無相關資料")
     private lazy var refreshControl = RefresherManager()
-    
     private lazy var isScaning = false
-    
     @IBAction func searchByBarCode(_ sender: Any) {
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
@@ -49,6 +32,7 @@ class MyFridgeViewController: BaseViewController {
         setupCollectionView()
         setupSearchBar()
         setupFilterBtn()
+        bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,34 +73,34 @@ class MyFridgeViewController: BaseViewController {
         filterBarButton.primaryAction = nil
         let filterMenu = UIMenu(title: "食物類型", options: .singleSelection, children: [
             UIAction(title: "全部", handler: { _ in
-                self.cardFilter.categoryId = nil
+                self.viewModel.filter.categoryId = nil
             }),
             UIAction(title: "蔬菜", handler: { _ in
-                self.cardFilter.categoryId = 1
+                self.viewModel.filter.categoryId = 1
             }),
             UIAction(title: "水果", handler: { _ in
-                self.cardFilter.categoryId = 2
+                self.viewModel.filter.categoryId = 2
             }),
             UIAction(title: "蛋白質", handler: { _ in
-                self.cardFilter.categoryId = 3
+                self.viewModel.filter.categoryId = 3
             }),
             UIAction(title: "穀物", handler: { _ in
-                self.cardFilter.categoryId = 4
+                self.viewModel.filter.categoryId = 4
             }),
             UIAction(title: "其他", handler: { _ in
-                self.cardFilter.categoryId = 5
+                self.viewModel.filter.categoryId = 5
             })
         ])
         
         let arrangeMenu = UIMenu(title: "排序方式", options: .singleSelection, children: [
             UIAction(title: "依照剩餘天數", handler: { _ in
-                self.cardFilter.sortBy = .remainingDay
+                self.viewModel.filter.sortBy = .remainingDay
             }),
             UIAction(title: "依照加入日期", handler: { _ in
-                self.cardFilter.sortBy = .createDay
+                self.viewModel.filter.sortBy = .createDay
             }),
             UIAction(title: "依照種類", handler: { _ in
-                self.cardFilter.sortBy = .category
+                self.viewModel.filter.sortBy = .category
             })
         ])
         
@@ -131,7 +115,6 @@ class MyFridgeViewController: BaseViewController {
                     return
             }
             scanVC.viewModel = ScanResultViewModel(scanResult: scanResult)
-//            scanVC.scanResult = scanResult
             navigationController?.pushViewController(scanVC, animated: true)
         }
     }
@@ -168,23 +151,39 @@ class MyFridgeViewController: BaseViewController {
     }
     
     // MARK: - Data
-    @objc private func fetchData() {
-        refreshControl.startRefresh()
-        showLoadingIndicator()
-        
-        viewModel.fetchFoodCards(filter: cardFilter) { [self] result in
-            switch result {
-            case .success(let foodCards):
-                cards = foodCards
-                removeLoadingIndicator()
-                refreshControl.endRefresh()
-            case .failure(let error):
-                removeLoadingIndicator()
-                refreshControl.endRefresh()
-                presentInternetAlert()
-                print("error: \(error)")
+    private func bindViewModel() {
+        viewModel.$showCards
+            .receive(on: RunLoop.main)
+            .dropFirst()
+            .sink { [weak self] showCards in
+                self?.collectionView.reloadData()
+                self?.collectionView.isHidden = false
+                self?.emptyDataManager.toggleLabel(shouldShow: (showCards.isEmpty))
             }
-        }
+            .store(in: &cancellables)
+        viewModel.$isLoading
+            .receive(on: RunLoop.main)
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.showLoadingIndicator()
+                    self?.refreshControl.startRefresh()
+                } else {
+                    self?.removeLoadingIndicator()
+                    self?.refreshControl.endRefresh()
+                }
+            }
+            .store(in: &cancellables)
+        viewModel.$error
+            .receive(on: RunLoop.main)
+            .dropFirst()
+            .sink { [weak self] _ in
+                self?.presentInternetAlert()
+            }
+            .store(in: &cancellables)
+    }
+    
+    @objc private func fetchData() {
+        viewModel.fetchFoodCards()
     }
     
     private func searchFoodCard(by barCode: String) {
@@ -212,7 +211,7 @@ class MyFridgeViewController: BaseViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        cards.count + 2
+        viewModel.showCards.count + 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -233,7 +232,8 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
             cell.nameLabel.text = "掃描收據"
             cell.setupDefaultCell()
         default:
-            let foodCard = cards[indexPath.item - 2]
+            let showCards = viewModel.showCards
+            let foodCard = showCards[indexPath.item - 2]
             cell.foodCard = foodCard
             cell.setupCell()
         }
@@ -251,7 +251,7 @@ extension MyFridgeViewController: UICollectionViewDataSource, UICollectionViewDe
         case 1:
             presentScannerActionSheet()
         default:
-            let selectedFoodCard = cards[indexPath.item - 2]
+            let selectedFoodCard = viewModel.showCards[indexPath.item - 2]
             presentAddToCardVC(mode: .editing, selectedFoodCard: selectedFoodCard)
         }
     }
@@ -294,12 +294,12 @@ extension MyFridgeViewController: UISearchResultsUpdating, UISearchBarDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text,
            searchText.isEmpty != true {
-            cards = viewModel.searchFoodCards(with: searchText)
+            viewModel.searchFoodCards(with: searchText)
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        cards = viewModel.filterFoodCards(by: cardFilter)
+        viewModel.filterFoodCards()
     }
 }
 

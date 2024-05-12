@@ -133,6 +133,7 @@ class AddFoodCardViewController: BaseViewController {
     
     // MARK: - Data
     @objc func didTappedSaveBtn() {
+        view.endEditing(true)
         switch mode {
         case .adding:
             saveFoodCard()
@@ -143,7 +144,6 @@ class AddFoodCardViewController: BaseViewController {
                 print("did not set closure")
                 return
             }
-            view.endEditing(true)
             let foodCard = viewModel.foodCard
             onChangeFoodCard(foodCard)
             self.navigationController?.popViewController(animated: true)
