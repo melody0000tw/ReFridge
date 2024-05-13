@@ -105,15 +105,17 @@ class ShoppingListViewController: BaseViewController {
                 notes: "")
             
             // post card
+            let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
+            
             Task {
-                await firestoreManager.saveFoodCard(foodCard) { result in
+                firestoreManager.updateDatas(to: docRef, with: foodCard) { [self] (result: Result< Void, Error>) in
                     switch result {
                     case .success:
                         presentAlert(title: "加入成功", description: "已將完成項目加入我的冰箱", image: UIImage(systemName: "checkmark.circle"))
                         // delete card
                         deleteItem(item: item, group: dispatchGroup)
                     case .failure(let error):
-                        print("Error adding document: \(error)")
+                        print("error: \(error)")
                     }
                 }
             }
