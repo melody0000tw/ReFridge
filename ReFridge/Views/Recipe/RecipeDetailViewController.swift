@@ -70,9 +70,6 @@ class RecipeDetailViewController: BaseViewController {
             make.height.equalTo(60)
         }
         
-        
-        
-//        tableView.tableHeaderView = galleryView
         tableView.tableHeaderView = headerView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 500)
     }
@@ -135,7 +132,8 @@ class RecipeDetailViewController: BaseViewController {
         item.isRoutineItem = false
         
         Task {
-            await firestoreManager.addListItem(item, completion: { result in
+            let docRef = firestoreManager.shoppingListRef.document(item.itemId)
+            firestoreManager.updateDatas(to: docRef, with: item) { [self] result in
                 switch result {
                 case .success:
                     if let alertMessage = alertMessage {
@@ -147,7 +145,7 @@ class RecipeDetailViewController: BaseViewController {
                     print("error: \(error)")
                     presentInternetAlert()
                 }
-            })
+            }
         }
     }
 }

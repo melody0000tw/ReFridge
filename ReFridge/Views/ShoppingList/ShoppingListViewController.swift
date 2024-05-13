@@ -59,7 +59,8 @@ class ShoppingListViewController: BaseViewController {
         refreshControl.startRefresh()
         showLoadingIndicator()
         Task {
-            await firestoreManager.fetchListItems { result in
+            let colRef = firestoreManager.shoppingListRef
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[ListItem], Error>) in
                 switch result {
                 case .success(let list):
                      var sortedList = list.sorted { $0.createDate > $1.createDate }
@@ -125,19 +126,21 @@ class ShoppingListViewController: BaseViewController {
         }
     }
     
-    private func deleteItem(item: ListItem, group: DispatchGroup) {
+    private func deleteItem(item: ListItem, group: DispatchGroup?) {
         Task {
-            await firestoreManager.deleteListItem(by: item.itemId) { result in
+            let docRef = firestoreManager.shoppingListRef.document(item.itemId)
+            firestoreManager.deleteDatas(from: docRef) { result in
                 switch result {
-                case .success(let itemId):
-                    print("成功刪除itemId: \(String(describing: itemId))")
+                case .success:
+                    print("delete document successfully")
                 case .failure(let error):
                     print("error: \(error)")
                 }
+                group?.leave()
             }
-            group.leave()
         }
     }
+    
         
 }
 
@@ -176,7 +179,8 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
         
         // 更新資料庫
         Task {
-            await firestoreManager.updateCheckStatus(newItem: newItem) { result in
+            let docRef = firestoreManager.shoppingListRef.document(newItem.itemId)
+            firestoreManager.updateDatas(to: docRef, with: newItem) { result in
                 switch result {
                 case .success:
                     print("did update checkStatus for \(newItem.itemId)")
@@ -223,16 +227,6 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
         tableView.deleteRows(at: [indexPath], with: .automatic)
         
         // 將刪除更新到資料庫
-        Task {
-            await firestoreManager.deleteListItem(by: itemToDelete.itemId) { result in
-                switch result {
-                case .success:
-                    print("did delete item")
-                case .failure(let error):
-                    print("error: \(error)")
-                }
-            }
-        }
-        
+        deleteItem(item: itemToDelete, group: nil)
     }
 }

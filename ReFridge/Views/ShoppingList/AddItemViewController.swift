@@ -114,8 +114,10 @@ class AddItemViewController: BaseViewController {
         view.endEditing(true)
         print(listItem)
         showLoadingIndicator()
+        
         Task {
-            await firestoreManager.addListItem(listItem) { result in
+            let docRef = firestoreManager.shoppingListRef.document(listItem.itemId)
+            firestoreManager.updateDatas(to: docRef, with: listItem) { [self] result in
                 switch result {
                 case .success:
                     print("Document successfully written!")
@@ -124,7 +126,7 @@ class AddItemViewController: BaseViewController {
                         self.navigationController?.popViewController(animated: true)
                     }
                 case .failure(let error):
-                    print("Error adding document: \(error)")
+                    print("error: \(error)")
                     self.removeLoadingIndicator()
                     presentInternetAlert()
                 }
