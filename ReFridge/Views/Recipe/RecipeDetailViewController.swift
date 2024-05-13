@@ -48,7 +48,6 @@ class RecipeDetailViewController: BaseViewController {
         tableView.RF_registerCellWithNib(identifier: RecipeButtonCell.reuseIdentifier, bundle: nil)
         
         // gallery header
-        
         let galleryView = RecipeGalleryView()
         guard let recipe = self.recipe else { return }
         galleryView.images = recipe.images
@@ -71,9 +70,6 @@ class RecipeDetailViewController: BaseViewController {
             make.height.equalTo(60)
         }
         
-        
-        
-//        tableView.tableHeaderView = galleryView
         tableView.tableHeaderView = headerView
         tableView.tableHeaderView?.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 500)
     }
@@ -136,7 +132,8 @@ class RecipeDetailViewController: BaseViewController {
         item.isRoutineItem = false
         
         Task {
-            await firestoreManager.addListItem(item, completion: { result in
+            let docRef = firestoreManager.shoppingListRef.document(item.itemId)
+            firestoreManager.updateDatas(to: docRef, with: item) { [self] result in
                 switch result {
                 case .success:
                     if let alertMessage = alertMessage {
@@ -148,7 +145,7 @@ class RecipeDetailViewController: BaseViewController {
                     print("error: \(error)")
                     presentInternetAlert()
                 }
-            })
+            }
         }
     }
 }
@@ -307,10 +304,11 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
     }
     
     func didTappedFinishBtn() {
-        print("finished")
         Task {
             guard let recipe = recipe else { return }
-            await firestoreManager.addFinishedRecipe(by: recipe.recipeId) { result in
+            let docRef = firestoreManager.finishedRecipesRef.document(recipe.recipeId)
+            let finishedRecipe = FinishedRecipe(recipeId: recipe.recipeId)
+            firestoreManager.updateDatas(to: docRef, with: finishedRecipe) { [self] result in
                 switch result {
                 case .success:
                     print("成功加入完成食譜清單")
@@ -318,8 +316,6 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
                         self.presentAlert(title: "加入成功", description: "已將食譜加入完成清單", image: UIImage(systemName: "checkmark.circle"))
                         self.navigationController?.popViewController(animated: true)
                     }
-                    
-                    
                 case .failure(let error):
                     print(error.localizedDescription)
                     presentInternetAlert()
@@ -343,9 +339,11 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
         
         Task {
             guard let recipe = recipe else { return }
+            let docRef = firestoreManager.likedRecipesRef.document(recipe.recipeId)
             switch isLiked {
             case true:
-                await firestoreManager.addLikedRecipe(by: recipe.recipeId) { result in
+                let likedRecipe = LikedRecipe(recipeId: recipe.recipeId)
+                firestoreManager.updateDatas(to: docRef, with: likedRecipe) { result in
                     switch result {
                     case .success:
                         print("成功加入收藏清單")
@@ -354,7 +352,7 @@ extension RecipeDetailViewController: RecipeInfoCellDelegate, RecipeHeaderViewDe
                     }
                 }
             case false:
-                await firestoreManager.removeLikedRecipe(by: recipe.recipeId) { result in
+                firestoreManager.deleteDatas(from: docRef) { result in
                     switch result {
                     case .success:
                         print("成功刪除清單")

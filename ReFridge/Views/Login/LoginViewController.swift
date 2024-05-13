@@ -94,34 +94,54 @@ class LoginViewController: UIViewController {
     private func configureUserInfo(user: User) {
         firestoreManager.configure(withUID: user.uid)
         Task {
-            await firestoreManager.fetchScores { result in
+            let docRef = firestoreManager.userInfoRef
+            firestoreManager.fetchData(from: docRef) { (result: Result<UserInfo, Error>) in
+                switch result {
+                case .success(let userInfo):
+                    print("did get userInfo: \(userInfo)")
+                    self.presentMyFridgeVC()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                    self.presentAvatarVC()
+                    
+                }
+            }
+        }
+        Task {
+            let colRef = firestoreManager.scoresRef
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[Score], Error>) in
                 switch result {
                 case .success(let scores):
-                    print("已取得使用者分數 score: \(scores)")
+                    if scores.count == 2 {
+                        print("user have all scores database")
+                    } else {
+                        // fail
+                        print("user's scores count is less than 2, setting up initial scores...")
+                        setupInitialScore()
+                    }
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         }
+    }
+    
+    private func setupInitialScore() {
         Task {
-            await firestoreManager.fetchUserInfo { result in
-                DispatchQueue.main.async {
+            for deleteWay in DeleteWay.allCases {
+                let docRef = firestoreManager.scoresRef.document(deleteWay.rawValue)
+                let initialScore = Score(number: 0)
+            
+                firestoreManager.updateDatas(to: docRef, with: initialScore) { result in
                     switch result {
-                    case .success(let userInfo):
-                        guard userInfo != nil else {
-                            self.presentAvatarVC()
-                            return
-                        }
-                        self.presentMyFridgeVC()
+                    case .success:
+                        print("update scores successfully")
                     case .failure(let error):
-                        self.presentAlert(title: "登入失敗", description: "請重新嘗試", image: UIImage(systemName: "xmark.circle"))
-                        print(error.localizedDescription)
+                        print("error: \(error)")
                     }
                 }
-                
             }
         }
-        
     }
     
     private func presentAvatarVC() {
