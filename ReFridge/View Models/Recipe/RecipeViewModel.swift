@@ -60,7 +60,8 @@ class RecipeViewModel {
                 case .success(let recipes):
                     allRecipes = recipes
                     checkAllStatus { [self] in
-                        showRecipes = allRecipes
+                        filterRecipes()
+//                        showRecipes = allRecipes
                     }
                 case .failure(let error):
                     print("error: \(error)")
@@ -91,7 +92,7 @@ class RecipeViewModel {
     }
     
     private func fetchFinishedRecipeId() {
-        let colRef = firestoreManager.likedRecipesRef
+        let colRef = firestoreManager.finishedRecipesRef
         Task {
             firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FinishedRecipe], Error>) in
                 switch result {
