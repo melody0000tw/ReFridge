@@ -10,7 +10,6 @@ import Combine
 
 class MyFridgeViewModel {
     private let firestoreManager = FirestoreManager.shared
-    private let accountManager = AccountManager.share
     var allCards = [FoodCard]()
     var filter: CardFilter {
         didSet {

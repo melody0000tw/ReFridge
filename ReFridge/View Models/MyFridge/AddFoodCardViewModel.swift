@@ -10,12 +10,9 @@ import Combine
 
 class AddFoodCardViewModel {
     private let firestoreManager = FirestoreManager.shared
-    private let accountManager = AccountManager.share
     
     @Published var foodCard: FoodCard
     private var cancellables = Set<AnyCancellable>()
-    
-    
     
     init(foodCard: FoodCard = FoodCard()) {
             self.foodCard = foodCard

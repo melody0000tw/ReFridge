@@ -99,6 +99,22 @@ class FirestoreManager {
             }
         }
     }
+    
+    func queryDatas<T: Codable>(query: Query, completion: @escaping (Result<[T], Error>) -> Void) {
+        query.getDocuments { (snapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var items = [T]()
+                snapshot?.documents.forEach { document in
+                    if let item = try? document.data(as: T.self) {
+                        items.append(item)
+                    }
+                }
+                completion(.success(items))
+            }
+        }
+    }
 
     // MARK: - UserInfo
     
@@ -195,15 +211,6 @@ class FirestoreManager {
         }
     }
     
-    func deleteFoodCard(_ cardId: String, completion: (Result<Any?, Error>) -> Void) async {
-        do {
-            try await foodCardsRef.document(cardId).delete()
-            completion(.success(nil))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
     func queryFoodCard(by typeId: String, completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
             let querySnapshot = try await foodCardsRef.whereField("typeId", isEqualTo: typeId).getDocuments()
@@ -257,24 +264,6 @@ class FirestoreManager {
             try await thrownRef.setData(thrownData)
             
             completion(.success(initialScore))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
-    func changeScores(deleteWay: String, completion: (Result<Any?, Error>) -> Void) async {
-        do {
-            
-            let docRef = scoresRef.document(deleteWay)
-            let number = try await docRef.getDocument().get("number")
-            guard let oldScore = number as? Int else {
-                print("cannot get the score number")
-                return
-            }
-            let newScore = oldScore + 1
-            let data: [String: Any] = [ "number": newScore ]
-            try await docRef.setData(data)
-            completion(.success(newScore))
         } catch {
             completion(.failure(error))
         }
