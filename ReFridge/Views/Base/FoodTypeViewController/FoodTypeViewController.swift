@@ -33,7 +33,15 @@ class FoodTypeViewController: UIViewController {
     var onSelectFoodType: ((FoodType) -> Void)?
     
     private var selectedCategoryId = 1
-    private lazy var selectedType: FoodType = allFoodTypes[0]
+    
+    private lazy var selectedType: FoodType = allFoodTypes[0] {
+        didSet {
+            if let onSelectFoodType = onSelectFoodType {
+                onSelectFoodType(selectedType)
+            }
+        }
+    }
+    
     var selectedTypeIndex: Int {
         let index = self.typesOfSelectedCategory.firstIndex { foodtype in
             foodtype.typeId == self.selectedType.typeId
@@ -55,7 +63,6 @@ class FoodTypeViewController: UIViewController {
         setupButtons()
         setupCollectionView()
         setupDeleteBtn()
-        setupSelectedBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -160,24 +167,6 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(collectionView.snp.bottom)
             make.height.equalTo(40)
             make.width.equalTo(80)
-            make.leading.equalTo(view.snp.leading)
-        }
-    }
-    
-    private func setupSelectedBtn() {
-        selectTypeBtn.setTitle("選擇類型", for: .normal)
-        selectTypeBtn.setTitleColor(.white, for: .normal)
-        selectTypeBtn.tintColor = .clear
-        selectTypeBtn.isEnabled = false
-        selectTypeBtn.backgroundColor = .lightGray
-        selectTypeBtn.layer.cornerRadius = 5
-        selectTypeBtn.addTarget(self, action: #selector(selectType), for: .touchUpInside)
-        selectTypeBtn.clipsToBounds = true
-        view.addSubview(selectTypeBtn)
-        selectTypeBtn.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
-            make.height.equalTo(40)
-            make.width.equalTo(80)
             make.trailing.equalTo(view.snp.trailing)
         }
     }
@@ -233,7 +222,7 @@ class FoodTypeViewController: UIViewController {
                 let docRef = firestoreManager.foodTypesRef.document(selectedType.typeId)
                 firestoreManager.deleteDatas(from: docRef) {result in
                     switch result {
-                    case .success(let foodTypes):
+                    case .success:
                         self.fetchUserFoodTypes()
                         return
                     case .failure(let error):
@@ -242,12 +231,6 @@ class FoodTypeViewController: UIViewController {
                     
                 }
             }
-        }
-    }
-    
-    @objc func selectType() {
-        if let onSelectFoodType = onSelectFoodType {
-            onSelectFoodType(selectedType)
         }
     }
     

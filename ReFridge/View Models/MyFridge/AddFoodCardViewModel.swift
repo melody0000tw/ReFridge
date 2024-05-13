@@ -65,7 +65,7 @@ class AddFoodCardViewModel {
         Task {
             firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, Error>) in
                 switch result {
-                case .success():
+                case .success:
                     completion(.success(()))
                 case .failure(let error):
                     print("error: \(error)")

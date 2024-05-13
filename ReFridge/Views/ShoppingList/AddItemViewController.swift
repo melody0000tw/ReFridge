@@ -48,14 +48,15 @@ class AddItemViewController: BaseViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            // 選擇完 foodType 後
             listItem.typeId = foodType.typeId
             listItem.categoryId = foodType.categoryId
             listItem.name = foodType.typeName
             listItem.iconName = foodType.typeIcon
             updateCardInfoCell()
-            typeViewIsOpen = !typeViewIsOpen
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            if typeViewIsOpen {
+                typeViewIsOpen = false
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
         }
     }
     

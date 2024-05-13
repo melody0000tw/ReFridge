@@ -68,8 +68,10 @@ class AddFoodCardViewController: BaseViewController {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
             viewModel.updateFoodCard(name: foodType.typeName, typeId: foodType.typeId, categoryId: foodType.categoryId, iconName: foodType.typeIcon)
-            typeViewIsOpen = !typeViewIsOpen
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            if typeViewIsOpen {
+                typeViewIsOpen = false
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
         }
     }
     
@@ -127,6 +129,7 @@ class AddFoodCardViewController: BaseViewController {
             return
         }
         typeCell.nameLabel.text = foodCard.name
+        typeCell.nameLabel.textColor = .darkGray
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
