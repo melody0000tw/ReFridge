@@ -115,22 +115,13 @@ class FirestoreManager {
             }
         }
     }
+    
+    func createQuery<T: Codable>(reference: CollectionReference, field: String, isEqualTo value: T) -> Query {
+        let query = reference.whereField(field, isEqualTo: value)
+        return query
+    }
 
     // MARK: - UserInfo
-    
-    func fetchUserInfo(completion: (Result<UserInfo?, Error>) -> Void) async {
-        do {
-            let querySnapshot = try await userInfoRef.getDocument()
-            if querySnapshot.exists {
-                let userInfo = try querySnapshot.data(as: UserInfo.self)
-                completion(.success(userInfo))
-            } else {
-                 completion(.success(nil))
-            }
-        } catch {
-            completion(.failure(error))
-        }
-    }
     
     func updateUserInfo(userInfo: UserInfo, completion: (Result<Any?, Error>) -> Void) async {
         do {
