@@ -230,7 +230,8 @@ class FoodTypeViewController: UIViewController {
     @objc func deleteType() {
         if selectedType.isDeletable {
             Task {
-                await firestoreManager.deleteUserFoodTypes(typeId: selectedType.typeId) { result in
+                let docRef = firestoreManager.foodTypesRef.document(selectedType.typeId)
+                firestoreManager.deleteDatas(from: docRef) {result in
                     switch result {
                     case .success(let foodTypes):
                         self.fetchUserFoodTypes()
@@ -238,6 +239,7 @@ class FoodTypeViewController: UIViewController {
                     case .failure(let error):
                         print(error.localizedDescription)
                     }
+                    
                 }
             }
         }
@@ -251,10 +253,10 @@ class FoodTypeViewController: UIViewController {
     
     func fetchUserFoodTypes() {
         Task {
-            await firestoreManager.fetchFoodType { result in
+            let colRef = firestoreManager.foodTypesRef
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodType], Error>) in
                 switch result {
                 case .success(let foodTypes):
-                    
                     userFoodTypes = foodTypes.sorted(by: { lhs, rhs in
                         if let lshTime = lhs.createTime, let rhsTime = rhs.createTime {
                             return lshTime < rhsTime
@@ -265,7 +267,7 @@ class FoodTypeViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.filterTypes()
                     }
-
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

@@ -190,7 +190,8 @@ class AddFoodTypeViewController: UIViewController {
             createTime: Date())
         
         Task {
-            await firestoreManager.addUserFoodTypes(foodType: foodType) { result in
+            let docRef = firestoreManager.foodTypesRef.document(foodType.typeId)
+            firestoreManager.updateDatas(to: docRef, with: foodType) { [self] result in
                 switch result {
                 case .success:
                     foodTypeVCdelegate?.fetchUserFoodTypes()
@@ -201,9 +202,24 @@ class AddFoodTypeViewController: UIViewController {
                 case .failure(let error):
                     print("error: \(error)")
                 }
-                
             }
         }
+        
+//        Task {
+//            await firestoreManager.addUserFoodTypes(foodType: foodType) { result in
+//                switch result {
+//                case .success:
+//                    foodTypeVCdelegate?.fetchUserFoodTypes()
+//                    DispatchQueue.main.async {
+//                        self.presentingViewController?.dismiss(animated: true)
+//                    }
+//                    
+//                case .failure(let error):
+//                    print("error: \(error)")
+//                }
+//                
+//            }
+//        }
         
     }
 }

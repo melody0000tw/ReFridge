@@ -121,51 +121,6 @@ class FirestoreManager {
         return query
     }
     
-    // MARK: - Food Type
-    func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {
-        do {
-            let docRef = foodTypesRef.document(String(foodType.typeId))
-            try docRef.setData(from: foodType)
-            completion(.success(nil))
-        } catch {
-            print("error: \(error)")
-            completion(.failure(error))
-        }
-    }
-    
-    func deleteUserFoodTypes(typeId: String, completion: (Result<Any?, Error>) -> Void) async {
-        do {
-            try await foodTypesRef.document(typeId).delete()
-            completion(.success(nil))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
-    func fetchFoodType(completion: (Result<[FoodType], Error>) -> Void) async {
-        do {
-            let querySnapshot = try await foodTypesRef.getDocuments()
-            var foodTypes = [FoodType]()
-            for document in querySnapshot.documents {
-                let foodType = try document.data(as: FoodType.self)
-                foodTypes.append(foodType)
-            }
-            completion(.success(foodTypes))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
-    func queryFoodType(typeId: String, completion: (Result< FoodType, Error>) -> Void) async {
-        do {
-            let querySnapshot = try await foodTypesRef.document(String(describing: typeId)).getDocument()
-            let foodType = try querySnapshot.data(as: FoodType.self)
-            completion(.success(foodType))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
     // MARK: - Food Card
     func fetchFoodCard(completion: (Result<[FoodCard], Error>) -> Void) async {
         do {
