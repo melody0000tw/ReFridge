@@ -34,7 +34,7 @@ class FirestoreManager {
     }
     
     // MARK: - UserInfo
-    func updateDatabaseReferences(uid: String) {
+    private func updateDatabaseReferences(uid: String) {
             userInfoRef = database.collection("users").document(uid).collection("userInfo").document("data")
             foodCardsRef = database.collection("users").document(uid).collection("foodCards")
             foodTypesRef = database.collection("users").document(uid).collection("foodTypes")
@@ -48,7 +48,7 @@ class FirestoreManager {
         self.uid = uid
     }
     
-    // MARK: - ViewModel
+    // MARK: - Base Functions
     func fetchDatas<T: Codable>(from reference: CollectionReference, completion: @escaping (Result<[T], Error>) -> Void) {
         reference.getDocuments { (snapshot, error) in
             if let error = error {

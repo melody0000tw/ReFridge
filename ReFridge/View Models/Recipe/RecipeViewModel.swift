@@ -61,7 +61,6 @@ class RecipeViewModel {
                     allRecipes = recipes
                     checkAllStatus { [self] in
                         filterRecipes()
-//                        showRecipes = allRecipes
                     }
                 case .failure(let error):
                     print("error: \(error)")
@@ -139,7 +138,8 @@ class RecipeViewModel {
         for ingredient in recipe.ingredients {
             dispatchGroup.enter()
             let typeId = ingredient.typeId
-            let query = firestoreManager.foodCardsRef.whereField("typeId", isEqualTo: typeId)
+            let colRef = firestoreManager.foodCardsRef
+            let query = firestoreManager.createQuery(reference: colRef, field: "typeId", isEqualTo: typeId)
             Task {
                 firestoreManager.queryDatas(query: query) {(result: Result<[FoodCard], Error>) in
                     arrayAccessQueue.sync {
