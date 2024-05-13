@@ -166,7 +166,6 @@ class MyFridgeViewController: BaseViewController {
             .sink { [weak self] isLoading in
                 if isLoading {
                     self?.showLoadingIndicator()
-                    self?.refreshControl.startRefresh()
                 } else {
                     self?.removeLoadingIndicator()
                     self?.refreshControl.endRefresh()
@@ -183,6 +182,7 @@ class MyFridgeViewController: BaseViewController {
     }
     
     @objc private func fetchData() {
+        refreshControl.startRefresh()
         viewModel.fetchFoodCards()
     }
     
