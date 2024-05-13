@@ -120,17 +120,6 @@ class FirestoreManager {
         let query = reference.whereField(field, isEqualTo: value)
         return query
     }
-
-    // MARK: - UserInfo
-    
-    func updateUserInfo(userInfo: UserInfo, completion: (Result<Any?, Error>) -> Void) async {
-        do {
-            try userInfoRef.setData(from: userInfo)
-            completion(.success(nil))
-        } catch {
-            completion(.failure(error))
-        }
-    }
     
     // MARK: - Food Type
     func addUserFoodTypes(foodType: FoodType, completion: (Result<Any?, Error>) -> Void) async {

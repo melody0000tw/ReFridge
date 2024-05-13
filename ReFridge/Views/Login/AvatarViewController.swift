@@ -112,19 +112,18 @@ class AvatarViewController: UIViewController {
     }
     
     private func updateUserInfo(userInfo: UserInfo) {
+        let docRef = firestoreManager.userInfoRef
         Task {
-            await firestoreManager.updateUserInfo(userInfo: userInfo) { result in
+            firestoreManager.updateDatas(to: docRef, with: userInfo) { result in
                 DispatchQueue.main.async { [self] in
                 switch result {
                 case .success:
-                    // 判斷模式
                     print("did update userInfo successfully")
                         if mode == .edit {
                             presentingViewController?.dismiss(animated: true)
                         } else {
                             presentMyFridgeVC()
                         }
-                    
                 case .failure(let error):
                     print(error.localizedDescription)
                     presentAlert(title: "更新失敗", description: "無法更新使用者資料請稍候嘗試", image: UIImage(systemName: "xmark.circle"))
@@ -136,6 +135,7 @@ class AvatarViewController: UIViewController {
                 }
                 }
             }
+
         }
     }
     
