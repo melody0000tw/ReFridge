@@ -54,6 +54,10 @@ class AddFoodCardViewController: BaseViewController {
         super.viewDidAppear(animated)
         if mode == .editing {
             let foodCard = viewModel.foodCard
+            // 判斷 type 如果是其他，但名字不是其他，就不 init 狀態
+            if foodCard.typeId == "501" && foodCard.name != "其他" {
+                return
+            }
             typeVC.setupInitialFoodType(typeId: foodCard.typeId)
         }
     }
