@@ -8,7 +8,6 @@
 import UIKit
 
 class BaseViewController: UIViewController {
-    private let networkManager = NetworkManager.shared
     
     private lazy var loadingView = UIView(frame: view.bounds)
     private lazy var indicator = UIActivityIndicatorView(style: .large)
@@ -16,12 +15,6 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLoadingView()
-    }
-    
-    func presentNoInternetVC() {
-        let noInternetVC = NoInternetViewController()
-        noInternetVC.modalPresentationStyle = .fullScreen
-        self.present(noInternetVC, animated: false)
     }
     
     func setupLoadingView() {
@@ -34,6 +27,7 @@ class BaseViewController: UIViewController {
         self.view.addSubview(loadingView)
     }
     
+    // MARK: - Indicator
     func showLoadingIndicator() {
         DispatchQueue.main.async { [self] in
             indicator.startAnimating()
