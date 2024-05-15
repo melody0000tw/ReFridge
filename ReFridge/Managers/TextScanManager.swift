@@ -62,7 +62,7 @@ class TextScanManager {
 //                print("Food array is empty, retrying...")
 //                self.retryFiltering(detectedText, completion: completion)
             case .success(let foodReply):
-                if foodReply.food.count < 5 || foodReply.notFood.count < 5 {
+                if foodReply.food.count < 3 || foodReply.notFood.count < 3 {
                     print("less than 5")
                     let scanResult = self.createFakedatas()
                     completion(scanResult)
@@ -84,7 +84,7 @@ class TextScanManager {
     
     // create fake datas
     private func createFakedatas() -> ScanResult {
-        let newFoodReply = AIFoodReplay(food: ["三重巧克力餅乾*", "半甜巧克力餅乾*", "抹茶白巧克力餅乾1", "棉花糖奶油夾心餅乾", "白巧克力夏威夷果", "經典布朗尼奇樂*", "冰美式咖啡*"], notFood: ["UBER-12","240508P10012", "CASHER", "印單:14", "品名", "數量", "金額", "消費額:", "810元", "結帳額:", "810元"])
+        let newFoodReply = AIFoodReplay(food: ["8吋墨西哥薄餅皮", "農心辛拉麵-黑", "二合一白咖啡80CT", "貓倍麗貓罐24入", "台灣雞清胸肉真空", "空運鮭魚切片"], notFood: ["COSTCO", "EWHOLESALE", "汐止店 874", "新北市 汐止區 221", "大同路一段158號", "統一編號", "16846757", "SALE", "金星會員 89377878301", "商品數小計 =", "295", "349", "599", "659", "546", "824", "295 T", "349 T", "599 T", "659 T", "546", "824", "總金額（T）", "現金", "找零", "（T-含稅）", "3.272", "3.302", "30", "05A2024 12:01 874 11 116 1032"])
         let scanResult = self.createScanResult(foodReply: newFoodReply)
         return scanResult
     }
