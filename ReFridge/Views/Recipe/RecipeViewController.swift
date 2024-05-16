@@ -73,10 +73,11 @@ class RecipeViewController: BaseViewController {
         if let detailVC = segue.destination as? RecipeDetailViewController,
            let recipe = sender as? Recipe,
            let ingredientStatus = viewModel.ingredientsDict[recipe.recipeId] {
-            detailVC.recipe = recipe
-            detailVC.ingredientStatus = ingredientStatus
             let isLiked = viewModel.likedRecipeId.contains([recipe.recipeId])
-            detailVC.isLiked = isLiked
+            detailVC.viewModel = RecipeDetailViewModel(
+                recipe: recipe,
+                ingredientStatus: ingredientStatus,
+                isLiked: isLiked)
         }
     }
     
