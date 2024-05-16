@@ -172,8 +172,8 @@ class LoginViewController: UIViewController {
     private func presentMyFridgeVC() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let initialViewController = storyboard.instantiateInitialViewController() {
-            initialViewController.modalPresentationStyle = .fullScreen
-            self.present(initialViewController, animated: false)
+            self.view.window?.rootViewController = initialViewController
+            self.view.window?.makeKeyAndVisible()
         }
     }
     

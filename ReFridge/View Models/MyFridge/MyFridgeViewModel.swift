@@ -31,9 +31,8 @@ class MyFridgeViewModel {
     func fetchFoodCards() {
         isLoading = true
         let colRef = firestoreManager.foodCardsRef
-        
         Task {
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodCard], Error>) in
+            self.firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodCard], Error>) in
                 switch result {
                 case .success(let foodCards):
                     allCards = foodCards

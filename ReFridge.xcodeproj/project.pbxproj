@@ -34,7 +34,7 @@
 		EB493AF72BD35EA2006204D8 /* CardTypeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB493AF52BD35EA2006204D8 /* CardTypeCell.xib */; };
 		EB493AFA2BD363A1006204D8 /* CardInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB493AF82BD363A1006204D8 /* CardInfoCell.swift */; };
 		EB493AFB2BD363A1006204D8 /* CardInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB493AF92BD363A1006204D8 /* CardInfoCell.xib */; };
-		EB5A31252BDF88C30002DFE6 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5A31242BDF88C30002DFE6 /* TabBarController.swift */; };
+		EB54F55C2BF23CE200EAC7C5 /* TypeImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB54F55B2BF23CE200EAC7C5 /* TypeImageHeaderView.swift */; };
 		EB5A312A2BDFAE7E0002DFE6 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */; };
 		EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */; };
 		EB65EA022BE14D8600FB9EF7 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB65EA012BE14D8600FB9EF7 /* Login.storyboard */; };
@@ -45,7 +45,6 @@
 		EB84D4412BD29AA7008E274C /* TypeImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB84D43F2BD29AA7008E274C /* TypeImageCell.xib */; };
 		EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937C2BCADFE600189B7C /* ListItem.swift */; };
 		EB8893802BCAE7CD00189B7C /* ShoppingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */; };
-		EB9A59562BE8D88400CF5324 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9A59552BE8D88400CF5324 /* NetworkManager.swift */; };
 		EB9A595A2BE8FB4000CF5324 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9A59592BE8FB4000CF5324 /* BaseViewController.swift */; };
 		EBA194552BEBA77600CFEBAC /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EBA194542BEBA77600CFEBAC /* FirebaseFirestoreSwift */; };
 		EBA806D42BEB8074001F9A8C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = EBA806D32BEB8074001F9A8C /* FirebaseCrashlytics */; };
@@ -71,7 +70,6 @@
 		EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */; };
 		EBC154BB2BDD17B300F9AFF8 /* RefresherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */; };
 		EBC154BD2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */; };
-		EBC8A7BA2BE9E61C00A91F2D /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC8A7B92BE9E61C00A91F2D /* NoInternetViewController.swift */; };
 		EBCAFFC62BD36D0600F3DBFD /* UITableView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */; };
 		EBCBBDC72BE3C48C0034246A /* AvatarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCBBDC62BE3C48C0034246A /* AvatarViewController.swift */; };
 		EBCBBDCB2BE3CCE50034246A /* AvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBCBBDC92BE3CCE50034246A /* AvatarCell.swift */; };
@@ -143,7 +141,7 @@
 		EB493AF52BD35EA2006204D8 /* CardTypeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardTypeCell.xib; sourceTree = "<group>"; };
 		EB493AF82BD363A1006204D8 /* CardInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardInfoCell.swift; sourceTree = "<group>"; };
 		EB493AF92BD363A1006204D8 /* CardInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CardInfoCell.xib; sourceTree = "<group>"; };
-		EB5A31242BDF88C30002DFE6 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		EB54F55B2BF23CE200EAC7C5 /* TypeImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeImageHeaderView.swift; sourceTree = "<group>"; };
 		EB5A31282BDF8C230002DFE6 /* ReFridge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReFridge.entitlements; sourceTree = "<group>"; };
 		EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 		EB84D43F2BD29AA7008E274C /* TypeImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TypeImageCell.xib; sourceTree = "<group>"; };
 		EB88937C2BCADFE600189B7C /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListItem.swift; sourceTree = "<group>"; };
 		EB88937F2BCAE7CD00189B7C /* ShoppingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewController.swift; sourceTree = "<group>"; };
-		EB9A59552BE8D88400CF5324 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		EB9A59592BE8FB4000CF5324 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		EBAC188F2BC98325002BB6E7 /* FoodTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoodTypeViewController.swift; sourceTree = "<group>"; };
 		EBAD131C2BCCDEB000F40A71 /* TextScanManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextScanManager.swift; sourceTree = "<group>"; };
@@ -174,7 +171,6 @@
 		EBC154B82BDCE03600F9AFF8 /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefresherManager.swift; sourceTree = "<group>"; };
 		EBC154BC2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftEntryKitWrapper.swift; sourceTree = "<group>"; };
-		EBC8A7B92BE9E61C00A91F2D /* NoInternetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
 		EBCAFFC52BD36D0600F3DBFD /* UITableView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Ext.swift"; sourceTree = "<group>"; };
 		EBCBBDC62BE3C48C0034246A /* AvatarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewController.swift; sourceTree = "<group>"; };
 		EBCBBDC92BE3CCE50034246A /* AvatarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCell.swift; sourceTree = "<group>"; };
@@ -317,6 +313,7 @@
 			children = (
 				EB84D43E2BD29AA7008E274C /* TypeImageCell.swift */,
 				EB84D43F2BD29AA7008E274C /* TypeImageCell.xib */,
+				EB54F55B2BF23CE200EAC7C5 /* TypeImageHeaderView.swift */,
 			);
 			path = TypeImageCell;
 			sourceTree = "<group>";
@@ -336,9 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				EB9B2C4C2BC954D5004CB435 /* FoodTypeViewController */,
-				EB5A31242BDF88C30002DFE6 /* TabBarController.swift */,
 				EB9A59592BE8FB4000CF5324 /* BaseViewController.swift */,
-				EBC8A7B92BE9E61C00A91F2D /* NoInternetViewController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -525,7 +520,6 @@
 				EBC154BA2BDD17B300F9AFF8 /* RefresherManager.swift */,
 				EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */,
 				EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */,
-				EB9A59552BE8D88400CF5324 /* NetworkManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -799,12 +793,10 @@
 			files = (
 				EBF88E352BC5703E00DEF2FA /* MyFridgeViewController.swift in Sources */,
 				EB425BE42BD1354D000C75A6 /* BarChartView.swift in Sources */,
-				EB5A31252BDF88C30002DFE6 /* TabBarController.swift in Sources */,
 				EBEE25602BEFCE3B00B6401F /* ChartViewModel.swift in Sources */,
 				EBC154B92BDCE03600F9AFF8 /* ProfileHeaderView.swift in Sources */,
 				EB88937D2BCADFE600189B7C /* ListItem.swift in Sources */,
 				EBAF18F22BE6354000442BA0 /* OpenAIManager.swift in Sources */,
-				EB9A59562BE8D88400CF5324 /* NetworkManager.swift in Sources */,
 				EBF484CA2BD7530100B37580 /* RecipeInfoCell.swift in Sources */,
 				EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */,
 				EBAD13242BCCF7A800F40A71 /* ScanResultViewController.swift in Sources */,
@@ -826,11 +818,11 @@
 				EBAD13202BCCF75000F40A71 /* RecongCell.swift in Sources */,
 				EB9A595A2BE8FB4000CF5324 /* BaseViewController.swift in Sources */,
 				EB1106432BF108830002E841 /* RecipeViewModel.swift in Sources */,
+				EB54F55C2BF23CE200EAC7C5 /* TypeImageHeaderView.swift in Sources */,
 				EBFF62D32BC7C9E10013F50F /* FoodCard.swift in Sources */,
 				EB84D43C2BD2862A008E274C /* AddFoodTypeViewController.swift in Sources */,
 				EBFF62D72BC7E4750013F50F /* UIImage+Ext.swift in Sources */,
 				EB65EA072BE155A700FB9EF7 /* LoginViewController.swift in Sources */,
-				EBC8A7BA2BE9E61C00A91F2D /* NoInternetViewController.swift in Sources */,
 				EBFF62D02BC79F9E0013F50F /* UICollectionView+Ext.swift in Sources */,
 				EBAD13262BCCFDCB00F40A71 /* ScanTextItem.swift in Sources */,
 				EB0DD7BF2BD679AF002147CC /* RecipeHintLabelCell.swift in Sources */,

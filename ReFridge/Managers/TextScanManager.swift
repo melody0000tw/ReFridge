@@ -60,9 +60,9 @@ class TextScanManager {
                 completion(scanResult)
             case .failure(let error):
                 print(error.localizedDescription)
+                print("error")
                 let foodReply = AIFoodReplay(food: [], notFood: detectedText)
                 let scanResult = self.createScanResult(foodReply: foodReply)
-                completion(scanResult)
             }
         }
     }

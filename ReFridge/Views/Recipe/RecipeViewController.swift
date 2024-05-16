@@ -96,7 +96,6 @@ class RecipeViewController: BaseViewController {
             .sink { [weak self] isLoading in
                 if isLoading {
                     self?.showLoadingIndicator()
-                    self?.refreshControl.startRefresh()
                 } else {
                     self?.removeLoadingIndicator()
                     self?.refreshControl.endRefresh()
@@ -113,6 +112,7 @@ class RecipeViewController: BaseViewController {
     }
     
     @objc private func fetchDatas() {
+        refreshControl.startRefresh()
         viewModel.fetchDatas()
     }
 }

@@ -54,6 +54,10 @@ class AddFoodCardViewController: BaseViewController {
         super.viewDidAppear(animated)
         if mode == .editing {
             let foodCard = viewModel.foodCard
+            // 判斷 type 如果是其他，但名字不是其他，就不 init 狀態
+            if foodCard.typeId == "501" && foodCard.name != "其他" {
+                return
+            }
             typeVC.setupInitialFoodType(typeId: foodCard.typeId)
         }
     }
@@ -68,8 +72,10 @@ class AddFoodCardViewController: BaseViewController {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
             viewModel.updateFoodCard(name: foodType.typeName, typeId: foodType.typeId, categoryId: foodType.categoryId, iconName: foodType.typeIcon)
-            typeViewIsOpen = !typeViewIsOpen
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            if typeViewIsOpen {
+                typeViewIsOpen = false
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
         }
     }
     
@@ -127,6 +133,7 @@ class AddFoodCardViewController: BaseViewController {
             return
         }
         typeCell.nameLabel.text = foodCard.name
+        typeCell.nameLabel.textColor = .darkGray
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
