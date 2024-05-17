@@ -20,7 +20,6 @@ class ShoppingListViewController: BaseViewController {
     }
     
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚未建立購物清單")
-    
     private lazy var refreshControl = RefresherManager()
     
     // MARK: - Life Cycle
@@ -131,11 +130,9 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
-        // 要刪除的 item
         let itemToDelete = viewModel.list.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
-        
-        // 將刪除更新到資料庫
+        emptyDataManager.toggleLabel(shouldShow: viewModel.list.isEmpty)
         viewModel.deleteItem(item: itemToDelete)
     }
 }
