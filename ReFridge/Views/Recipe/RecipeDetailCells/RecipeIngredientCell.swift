@@ -8,7 +8,8 @@
 import UIKit
 
 protocol RecipeIngredientCellDelegate: AnyObject {
-    func didTappedAddToList(cell: RecipeIngredientCell)
+//    func addItemToList(cell: RecipeIngredientCell)
+    func addItemToList(ingredient: Ingredient)
 }
 
 class RecipeIngredientCell: UITableViewCell {
@@ -16,7 +17,7 @@ class RecipeIngredientCell: UITableViewCell {
     static let reuseIdentifier = String(describing: RecipeIngredientCell.self)
     
     var ingredient: Ingredient?
-    var status: Bool?
+    var isChecked: Bool?
     
     @IBOutlet weak var bgView: UIView!
     @IBOutlet weak var statusView: UIImageView!
@@ -33,23 +34,18 @@ class RecipeIngredientCell: UITableViewCell {
     }
     
     @objc func didTappedAddToList() {
-        delegate?.didTappedAddToList(cell: self)
+        guard let ingredient = ingredient else { return }
+        delegate?.addItemToList(ingredient: ingredient)
     }
     
-    func setupData() {
-        guard let ingredient = ingredient, let status = status else {
-            print("cannot get ingredient or status")
-            return
-        }
+    func setupCell(ingredient: Ingredient, foodType: FoodType, isChecked: Bool) {
+        self.ingredient = ingredient
+        self.isChecked = isChecked
         
-        // find type
-        guard let foodType = FoodTypeData.share.queryFoodType(typeId: ingredient.typeId) else {
-            print("cannot find food type in the system")
-            return
-        }
         ingredientLabel.text = "\(foodType.typeName) x \(String(ingredient.qty))\(ingredient.mesureWord)"
         iconImage.image = UIImage(named: foodType.typeIcon)
-        switch status {
+        
+        switch isChecked {
         case true:
             statusView.image = UIImage(systemName: "checkmark.circle.fill")
             statusView.tintColor = .C2

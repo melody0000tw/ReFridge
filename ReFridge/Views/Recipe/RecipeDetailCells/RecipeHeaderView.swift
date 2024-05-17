@@ -8,7 +8,7 @@
 import UIKit
 
 protocol RecipeHeaderViewDelegate: AnyObject {
-    func didTappedAddToList()
+    func didTappedAddAllLackIngredientToList()
 }
 
 class RecipeHeaderView: UITableViewHeaderFooterView {
@@ -20,7 +20,7 @@ class RecipeHeaderView: UITableViewHeaderFooterView {
     
     @IBAction func addToList(_ sender: UIButton) {
         sender.clickBounce()
-        delegate?.didTappedAddToList()
+        delegate?.didTappedAddAllLackIngredientToList()
     }
     
     func toggleAddToListBtn(isAllSet: Bool) {

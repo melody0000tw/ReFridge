@@ -36,6 +36,7 @@
 		EB493AFB2BD363A1006204D8 /* CardInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB493AF92BD363A1006204D8 /* CardInfoCell.xib */; };
 		EB54F55C2BF23CE200EAC7C5 /* TypeImageHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB54F55B2BF23CE200EAC7C5 /* TypeImageHeaderView.swift */; };
 		EB5A312A2BDFAE7E0002DFE6 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */; };
+		EB5FB70E2BF5BD3A00B0F976 /* RecipeDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5FB70D2BF5BD3A00B0F976 /* RecipeDetailViewModel.swift */; };
 		EB65E9DD2BE0D8E200FB9EF7 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */; };
 		EB65EA022BE14D8600FB9EF7 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB65EA012BE14D8600FB9EF7 /* Login.storyboard */; };
 		EB65EA072BE155A700FB9EF7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB65EA062BE155A700FB9EF7 /* LoginViewController.swift */; };
@@ -144,6 +145,7 @@
 		EB54F55B2BF23CE200EAC7C5 /* TypeImageHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeImageHeaderView.swift; sourceTree = "<group>"; };
 		EB5A31282BDF8C230002DFE6 /* ReFridge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReFridge.entitlements; sourceTree = "<group>"; };
 		EB5A31292BDFAE7E0002DFE6 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
+		EB5FB70D2BF5BD3A00B0F976 /* RecipeDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeDetailViewModel.swift; sourceTree = "<group>"; };
 		EB65E9DC2BE0D8E200FB9EF7 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		EB65EA012BE14D8600FB9EF7 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		EB65EA062BE155A700FB9EF7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				EB1106422BF108830002E841 /* RecipeViewModel.swift */,
+				EB5FB70D2BF5BD3A00B0F976 /* RecipeDetailViewModel.swift */,
 			);
 			path = Recipe;
 			sourceTree = "<group>";
@@ -800,6 +803,7 @@
 				EBF484CA2BD7530100B37580 /* RecipeInfoCell.swift in Sources */,
 				EBF199532BD75AC700594CCE /* UIView+Ext.swift in Sources */,
 				EBAD13242BCCF7A800F40A71 /* ScanResultViewController.swift in Sources */,
+				EB5FB70E2BF5BD3A00B0F976 /* RecipeDetailViewModel.swift in Sources */,
 				EB493AF22BD35E41006204D8 /* AddFoodCardViewController.swift in Sources */,
 				EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */,
 				EBF88E312BC5703E00DEF2FA /* AppDelegate.swift in Sources */,
