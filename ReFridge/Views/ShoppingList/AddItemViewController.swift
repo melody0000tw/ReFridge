@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 class AddItemViewController: BaseViewController {
-    private let firestoreManager = FirestoreManager.shared
-    
-    var listItem = ListItem()
+    var viewModel = AddItemViewModel()
+    private var cancellables: Set<AnyCancellable> = []
+
     var typeViewIsOpen = true
     var mode = FoodCardMode.adding
     
@@ -25,6 +26,7 @@ class AddItemViewController: BaseViewController {
         setupTableView()
         setupTypeView()
         setupNavigationView()
+        bindViewModel()
         self.tabBarController?.tabBar.isHidden = true
         if mode == .editing {
             typeViewIsOpen = false
@@ -35,7 +37,8 @@ class AddItemViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if mode == .editing {
-            typeVC.setupInitialFoodType(typeId: listItem.typeId)
+            let typeId = viewModel.listItem.typeId
+            typeVC.setupInitialFoodType(typeId: typeId)
         }
     }
     
@@ -48,11 +51,7 @@ class AddItemViewController: BaseViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            listItem.typeId = foodType.typeId
-            listItem.categoryId = foodType.categoryId
-            listItem.name = foodType.typeName
-            listItem.iconName = foodType.typeIcon
-            updateCardInfoCell()
+            viewModel.updateItem(name: foodType.typeName, typeId: foodType.typeId, categoryId: foodType.categoryId, iconName: foodType.typeIcon)
             if typeViewIsOpen {
                 typeViewIsOpen = false
                 tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
@@ -64,7 +63,7 @@ class AddItemViewController: BaseViewController {
         saveBtn.tintColor = .C2
         saveBtn.image = UIImage(systemName: "checkmark")
         saveBtn.target = self
-        saveBtn.action = #selector(saveData)
+        saveBtn.action = #selector(didTappedSaveBtn)
         navigationItem.rightBarButtonItem = saveBtn
         closeBtn.tintColor = .C2
         closeBtn.image = UIImage(systemName: "xmark")
@@ -82,57 +81,66 @@ class AddItemViewController: BaseViewController {
     }
     
     // MARK: - Data
+    private func bindViewModel() {
+        viewModel.$listItem
+            .receive(on: RunLoop.main)
+            .dropFirst()
+            .sink { [weak self] item in
+                self?.updateCardInfoCell(with: item)
+            }
+            .store(in: &cancellables)
+    }
     
-    private func updateCardInfoCell() {
+    private func updateCardInfoCell(with item: ListItem) {
         guard let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell,
             let infoCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? ItemInfoCell
         else {
             return
         }
-        typeCell.nameLabel.text = listItem.name
-        infoCell.iconImage.image = UIImage(named: listItem.iconName)
+        typeCell.nameLabel.text = item.name
+        infoCell.iconImage.image = UIImage(named: item.iconName)
+        infoCell.qtyTextField.text = String(item.qty)
+        infoCell.mesureWordTextField.text = item.mesureWord
+        infoCell.noteTextField.text = item.notes == "" ? nil : item.notes
     }
     
     @objc func closePage() {
         self.navigationController?.popViewController(animated: true)
     }
     
-    @objc func saveData() {
-        guard listItem.name != "" else {
-            typeViewIsOpen = true
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
-                return
-            }
-            cell.nameLabel.text = "尚未選取食物種類"
-            cell.nameLabel.textColor = .red
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.typeVC.selectTypeBtn.clickBounce()
-            }
+    @objc func didTappedSaveBtn() {
+        let item = viewModel.listItem
+        guard item.name != "" else {
+            presentIncompletionAlert()
             return
         }
         
         view.endEditing(true)
-        print(listItem)
         showLoadingIndicator()
-        
-        Task {
-            let docRef = firestoreManager.shoppingListRef.document(listItem.itemId)
-            firestoreManager.updateDatas(to: docRef, with: listItem) { [self] result in
-                switch result {
-                case .success:
-                    print("Document successfully written!")
-                    DispatchQueue.main.async {
-                        self.removeLoadingIndicator()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                case .failure(let error):
-                    print("error: \(error)")
+        viewModel.saveItem { result in
+            switch result {
+            case .success:
+                print("Document successfully written!")
+                DispatchQueue.main.async {
                     self.removeLoadingIndicator()
-                    presentInternetAlert()
+                    self.navigationController?.popViewController(animated: true)
                 }
+            case .failure(let error):
+                print("error: \(error)")
+                self.removeLoadingIndicator()
+                self.presentInternetAlert()
             }
         }
+    }
+    
+    private func presentIncompletionAlert() {
+        typeViewIsOpen = true
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
+            return
+        }
+        cell.nameLabel.text = "尚未選取食物種類"
+        cell.nameLabel.textColor = .red
     }
     
 }
@@ -149,7 +157,9 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.delegate = self
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
-                cell.nameLabel.text = listItem.name == "" ? "請選取食物種類" : listItem.name
+                
+                let item = viewModel.listItem
+                cell.nameLabel.text = item.name == "" ? "請選取食物種類" : item.name
                 cell.nameLabel.textColor = .darkGray
                 cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
@@ -158,10 +168,11 @@ extension AddItemViewController: UITableViewDataSource, UITableViewDelegate {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: ItemInfoCell.reuseIdentifier, for: indexPath) as? ItemInfoCell {
             cell.delegate = self
-            cell.iconImage.image = listItem.name == "" ? UIImage(systemName: "fork.knife.circle") : UIImage(named: listItem.iconName)
-            cell.qtyTextField.text = listItem.qty == 1 ? "1" : String(listItem.qty)
-            cell.mesureWordTextField.text = listItem.mesureWord
-            cell.noteTextField.text = listItem.notes == "" ? nil : listItem.notes
+            let item = viewModel.listItem
+            cell.iconImage.image = item.name == "" ? UIImage(systemName: "fork.knife.circle") : UIImage(named: item.iconName)
+            cell.qtyTextField.text = String(item.qty)
+            cell.mesureWordTextField.text = item.mesureWord
+            cell.noteTextField.text = item.notes == "" ? nil : item.notes
             return cell
         }
         return UITableViewCell()
@@ -182,8 +193,6 @@ extension  AddItemViewController: CardTypeCellDelegate, ItemInfoCellDelegate {
     }
     
     func didChangeQty(qty: Int, mesureWord: String, notes: String) {
-        listItem.qty = qty
-        listItem.mesureWord = mesureWord
-        listItem.notes = notes
+        viewModel.updateItem(qty: qty, mesureWord: mesureWord, notes: notes)
     }
 }

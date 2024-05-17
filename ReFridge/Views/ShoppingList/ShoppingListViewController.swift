@@ -120,8 +120,9 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
             print("can not get addItemVC")
             return
         }
+        let viewModel = AddItemViewModel(listItem: itemToEdit)
+        addItemVC.viewModel = viewModel
         addItemVC.mode = .editing
-        addItemVC.listItem = itemToEdit
         navigationController?.pushViewController(addItemVC, animated: true)
         
     }
