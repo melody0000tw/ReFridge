@@ -73,7 +73,7 @@ extension UIView {
         }
     }
     
-    func clickBounce(action: @escaping (() -> ())) {
+    func clickBounce(action: @escaping (() -> Void)) {
         self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         UIView.animate(withDuration: 0.2) {
             self.transform = CGAffineTransform(scaleX: 1.03, y: 1.03)

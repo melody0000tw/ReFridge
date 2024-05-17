@@ -63,6 +63,7 @@
 		EBAF18F52BE639D900442BA0 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = EBAF18F42BE639D900442BA0 /* OpenAI */; };
 		EBAF18F82BE733EF00442BA0 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAF18F72BE733EF00442BA0 /* Secrets.swift */; };
 		EBAF18FF2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EBAF18FE2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf */; };
+		EBB3E4F52BF7228500465B57 /* ShoppingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB3E4F42BF7228500465B57 /* ShoppingListViewModel.swift */; };
 		EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */; };
 		EBB9714C2BD4FBF000F5D1DB /* ItemInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */; };
 		EBB9714D2BD4FBF000F5D1DB /* ItemInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */; };
@@ -165,6 +166,7 @@
 		EBAF18F12BE6354000442BA0 /* OpenAIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIManager.swift; sourceTree = "<group>"; };
 		EBAF18F72BE733EF00442BA0 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		EBAF18FE2BE7713C00442BA0 /* NothingYouCouldDo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NothingYouCouldDo-Regular.ttf"; sourceTree = "<group>"; };
+		EBB3E4F42BF7228500465B57 /* ShoppingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListViewModel.swift; sourceTree = "<group>"; };
 		EBB971472BD4F2EC00F5D1DB /* MesureWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MesureWord.swift; sourceTree = "<group>"; };
 		EBB9714A2BD4FBF000F5D1DB /* ItemInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemInfoCell.swift; sourceTree = "<group>"; };
 		EBB9714B2BD4FBF000F5D1DB /* ItemInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemInfoCell.xib; sourceTree = "<group>"; };
@@ -379,6 +381,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		EBB3E4F32BF7225600465B57 /* ShoppingList */ = {
+			isa = PBXGroup;
+			children = (
+				EBB3E4F42BF7228500465B57 /* ShoppingListViewModel.swift */,
+			);
+			path = ShoppingList;
+			sourceTree = "<group>";
+		};
 		EBB971492BD4FB9300F5D1DB /* ItemInfoCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -450,6 +460,7 @@
 			children = (
 				EBEE25542BEF40E400B6401F /* MyFridge */,
 				EB1106412BF108680002E841 /* Recipe */,
+				EBB3E4F32BF7225600465B57 /* ShoppingList */,
 				EBEE255D2BEFCE1200B6401F /* Chart */,
 			);
 			path = "View Models";
@@ -840,6 +851,7 @@
 				EB0DD7B82BD64CA2002147CC /* KingFisherWrapper.swift in Sources */,
 				EBFF62D52BC7CF7F0013F50F /* FoodType.swift in Sources */,
 				EBC154BD2BDE3EB700F9AFF8 /* SwiftEntryKitWrapper.swift in Sources */,
+				EBB3E4F52BF7228500465B57 /* ShoppingListViewModel.swift in Sources */,
 				EBCBBDCB2BE3CCE50034246A /* AvatarCell.swift in Sources */,
 				EBB971482BD4F2EC00F5D1DB /* MesureWord.swift in Sources */,
 				EB425BE62BD145DD000C75A6 /* ChartCounts.swift in Sources */,
