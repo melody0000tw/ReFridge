@@ -14,6 +14,8 @@ protocol ShoppingListCellDelegate: AnyObject {
 }
 
 class ShoppingListCell: UITableViewCell {
+    
+    var checkStatus = 0
 
     weak var delegate: ShoppingListCellDelegate?
     static let reuseIdentifier = String(describing: ShoppingListCell.self)
@@ -62,6 +64,14 @@ class ShoppingListCell: UITableViewCell {
         }
         checkView.isHidden = true
     }
+    
+    func setupCell(with item: ListItem) {
+        itemLabel.text = item.name
+        qtyLabel.text = "\(String(item.qty))\(item.mesureWord)"
+        self.checkStatus = item.checkStatus
+        toggleStyle(checkStatus: item.checkStatus)
+    }
+
     
     func toggleStyle(checkStatus: Int) {
         if checkStatus == 0 {

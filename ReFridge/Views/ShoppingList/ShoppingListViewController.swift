@@ -8,24 +8,18 @@
 import UIKit
 
 class ShoppingListViewController: BaseViewController {
-    private let firestoreManager = FirestoreManager.shared
-    var list = [ListItem]() {
-        didSet {
-            DispatchQueue.main.async { [self] in
-                tableView.isHidden = false
-                emptyDataManager.toggleLabel(shouldShow: (self.list.count == 0))
-            }
-        }
-    }
+    var viewModel = ShoppingListViewModel()
     
     @IBOutlet weak var tableView: UITableView!
     @IBAction func addToFridge(_ sender: UIButton) {
         sender.clickBounce()
-        addCheckItemToFridge()
+        viewModel.addAllCheckedItemToFridge {
+            self.fetchList()
+            self.presentAlert(title: "加入成功", description: "已將完成項目加入我的冰箱", image: UIImage(systemName: "checkmark.circle"))
+        }
     }
     
     lazy var emptyDataManager = EmptyDataManager(view: self.view, emptyMessage: "尚未建立購物清單")
-    
     private lazy var refreshControl = RefresherManager()
     
     // MARK: - Life Cycle
@@ -58,96 +52,25 @@ class ShoppingListViewController: BaseViewController {
     @objc private func fetchList() {
         refreshControl.startRefresh()
         showLoadingIndicator()
-        Task {
-            let colRef = firestoreManager.shoppingListRef
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[ListItem], Error>) in
-                switch result {
-                case .success(let list):
-                     var sortedList = list.sorted { $0.createDate > $1.createDate }
-                    self.list = sortedList
-                    removeLoadingIndicator()
-                    DispatchQueue.main.async { [self] in
-                        tableView.reloadData()
-                        refreshControl.endRefresh()
-                    }
-                case .failure(let error):
-                    print("error: \(error)")
-                    removeLoadingIndicator()
-                    refreshControl.endRefresh()
-                    presentInternetAlert()
-                }
+        viewModel.fetchList { [self] result in
+            switch result {
+            case .success(let list):
+                tableView.reloadData()
+                tableView.isHidden = false
+                emptyDataManager.toggleLabel(shouldShow: (list.isEmpty))
+            case .failure(let error):
+                presentInternetAlert()
             }
+            removeLoadingIndicator()
+            refreshControl.endRefresh()
         }
     }
-    
-    private func addCheckItemToFridge() {
-        let dispatchGroup = DispatchGroup()
-        // filter checkItems
-        let checkItems = list.filter { item in
-            item.checkStatus == 1
-        }
-        // create card
-        for item in checkItems {
-            dispatchGroup.enter()
-            
-            let foodCard = FoodCard(
-                cardId: UUID().uuidString,
-                name: item.name,
-                categoryId: item.categoryId,
-                typeId: item.typeId,
-                iconName: item.iconName,
-                qty: item.qty,
-                mesureWord: item.mesureWord,
-                createDate: Date(),
-                expireDate: Date().createExpiredDate(afterDays: 7) ?? Date(),
-                isRoutineItem: item.isRoutineItem,
-                barCode: "",
-                storageType: 0,
-                notes: "")
-            
-            // post card
-            let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
-            
-            Task {
-                firestoreManager.updateDatas(to: docRef, with: foodCard) { [self] (result: Result< Void, Error>) in
-                    switch result {
-                    case .success:
-                        presentAlert(title: "加入成功", description: "已將完成項目加入我的冰箱", image: UIImage(systemName: "checkmark.circle"))
-                        // delete card
-                        deleteItem(item: item, group: dispatchGroup)
-                    case .failure(let error):
-                        print("error: \(error)")
-                    }
-                }
-            }
-        }
-        dispatchGroup.notify(queue: .main) { [self] in
-            fetchList()
-        }
-    }
-    
-    private func deleteItem(item: ListItem, group: DispatchGroup?) {
-        Task {
-            let docRef = firestoreManager.shoppingListRef.document(item.itemId)
-            firestoreManager.deleteDatas(from: docRef) { result in
-                switch result {
-                case .success:
-                    print("delete document successfully")
-                case .failure(let error):
-                    print("error: \(error)")
-                }
-                group?.leave()
-            }
-        }
-    }
-    
-        
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        list.count
+        viewModel.list.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -156,7 +79,7 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
             return UITableViewCell()
         }
         cell.delegate = self
-        let item = list[indexPath.row]
+        let item = viewModel.list[indexPath.row]
         cell.itemLabel.text = item.name
         cell.qtyLabel.text = "\(String(item.qty))\(item.mesureWord)"
         cell.toggleStyle(checkStatus: item.checkStatus)
@@ -169,26 +92,12 @@ extension ShoppingListViewController: UITableViewDataSource, UITableViewDelegate
             return
         }
         cell.clickBounce()
-        let originalStatus = list[indexPath.row].checkStatus
-        let newStatus = originalStatus == 0 ? 1 : 0
+        var item = viewModel.list[indexPath.row]
+        item.checkStatus = item.checkStatus == 0 ? 1 : 0
+        viewModel.list[indexPath.row] = item
         
-        // 更改本地端資料 & UI
-        cell.toggleStyle(checkStatus: newStatus)
-        list[indexPath.row].checkStatus =  newStatus
-        let newItem = list[indexPath.row]
-        
-        // 更新資料庫
-        Task {
-            let docRef = firestoreManager.shoppingListRef.document(newItem.itemId)
-            firestoreManager.updateDatas(to: docRef, with: newItem) { result in
-                switch result {
-                case .success:
-                    print("did update checkStatus for \(newItem.itemId)")
-                case .failure(let error):
-                    print("error: \(error)")
-                }
-            }
-        }
+        cell.toggleStyle(checkStatus: item.checkStatus)
+        viewModel.updateItem(item: item)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -206,14 +115,14 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
-        let itemToEdit = list[indexPath.row]
-        
+        let itemToEdit = viewModel.list[indexPath.row]
         guard let addItemVC = storyboard?.instantiateViewController(withIdentifier: "AddItemViewController") as? AddItemViewController else {
             print("can not get addItemVC")
             return
         }
+        let viewModel = AddItemViewModel(listItem: itemToEdit)
+        addItemVC.viewModel = viewModel
         addItemVC.mode = .editing
-        addItemVC.listItem = itemToEdit
         navigationController?.pushViewController(addItemVC, animated: true)
         
     }
@@ -222,11 +131,9 @@ extension ShoppingListViewController: ShoppingListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
-        // 要刪除的 item
-        let itemToDelete = list.remove(at: indexPath.row)
+        let itemToDelete = viewModel.list.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
-        
-        // 將刪除更新到資料庫
-        deleteItem(item: itemToDelete, group: nil)
+        emptyDataManager.toggleLabel(shouldShow: viewModel.list.isEmpty)
+        viewModel.deleteItem(item: itemToDelete)
     }
 }
