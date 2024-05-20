@@ -17,6 +17,7 @@
 		EB0DD7C02BD679AF002147CC /* RecipeHintLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0DD7BE2BD679AF002147CC /* RecipeHintLabelCell.xib */; };
 		EB0DD7C22BD6B312002147CC /* RecipeStepCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB0DD7C12BD6B312002147CC /* RecipeStepCell.xib */; };
 		EB1106432BF108830002E841 /* RecipeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1106422BF108830002E841 /* RecipeViewModel.swift */; };
+		EB13B4912BF8B406004ACE9A /* ReFridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB13B4902BF8B406004ACE9A /* ReFridgeTests.swift */; };
 		EB1698C72BDB632C00B972D0 /* RecipeButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1698C52BDB632C00B972D0 /* RecipeButtonCell.swift */; };
 		EB1698C82BDB632C00B972D0 /* RecipeButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EB1698C62BDB632C00B972D0 /* RecipeButtonCell.xib */; };
 		EB1698CD2BDB893300B972D0 /* EmptyDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB1698CC2BDB893300B972D0 /* EmptyDataManager.swift */; };
@@ -114,6 +115,16 @@
 		EBFF62E02BC8565E0013F50F /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFF62DF2BC8565E0013F50F /* Date+Ext.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		EB13B4922BF8B406004ACE9A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBF88E252BC5703E00DEF2FA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EBF88E2C2BC5703E00DEF2FA;
+			remoteInfo = ReFridge;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		2A2A3BE874E2D79E74386116 /* Pods-ReFridge.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReFridge.debug.xcconfig"; path = "Target Support Files/Pods-ReFridge/Pods-ReFridge.debug.xcconfig"; sourceTree = "<group>"; };
 		7BF189C45662E7553E5D97B2 /* Pods_ReFridge.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReFridge.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +138,8 @@
 		EB0DD7BE2BD679AF002147CC /* RecipeHintLabelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeHintLabelCell.xib; sourceTree = "<group>"; };
 		EB0DD7C12BD6B312002147CC /* RecipeStepCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeStepCell.xib; sourceTree = "<group>"; };
 		EB1106422BF108830002E841 /* RecipeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeViewModel.swift; sourceTree = "<group>"; };
+		EB13B48E2BF8B406004ACE9A /* ReFridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReFridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB13B4902BF8B406004ACE9A /* ReFridgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReFridgeTests.swift; sourceTree = "<group>"; };
 		EB1698C52BDB632C00B972D0 /* RecipeButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeButtonCell.swift; sourceTree = "<group>"; };
 		EB1698C62BDB632C00B972D0 /* RecipeButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipeButtonCell.xib; sourceTree = "<group>"; };
 		EB1698CC2BDB893300B972D0 /* EmptyDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDataManager.swift; sourceTree = "<group>"; };
@@ -221,6 +234,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		EB13B48B2BF8B406004ACE9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EBF88E2A2BC5703E00DEF2FA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -281,6 +301,14 @@
 				EB5FB70D2BF5BD3A00B0F976 /* RecipeDetailViewModel.swift */,
 			);
 			path = Recipe;
+			sourceTree = "<group>";
+		};
+		EB13B48F2BF8B406004ACE9A /* ReFridgeTests */ = {
+			isa = PBXGroup;
+			children = (
+				EB13B4902BF8B406004ACE9A /* ReFridgeTests.swift */,
+			);
+			path = ReFridgeTests;
 			sourceTree = "<group>";
 		};
 		EB425BDC2BD0DE8C000C75A6 /* Chart */ = {
@@ -491,6 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				EBF88E2F2BC5703E00DEF2FA /* ReFridge */,
+				EB13B48F2BF8B406004ACE9A /* ReFridgeTests */,
 				EBF88E2E2BC5703E00DEF2FA /* Products */,
 				22D9E3801F9236079ED991B8 /* Pods */,
 				8C0B61C3021579B8CC73B909 /* Frameworks */,
@@ -501,6 +530,7 @@
 			isa = PBXGroup;
 			children = (
 				EBF88E2D2BC5703E00DEF2FA /* ReFridge.app */,
+				EB13B48E2BF8B406004ACE9A /* ReFridgeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -623,6 +653,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		EB13B48D2BF8B406004ACE9A /* ReFridgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB13B4962BF8B406004ACE9A /* Build configuration list for PBXNativeTarget "ReFridgeTests" */;
+			buildPhases = (
+				EB13B48A2BF8B406004ACE9A /* Sources */,
+				EB13B48B2BF8B406004ACE9A /* Frameworks */,
+				EB13B48C2BF8B406004ACE9A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EB13B4932BF8B406004ACE9A /* PBXTargetDependency */,
+			);
+			name = ReFridgeTests;
+			productName = ReFridgeTests;
+			productReference = EB13B48E2BF8B406004ACE9A /* ReFridgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		EBF88E2C2BC5703E00DEF2FA /* ReFridge */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EBF88E412BC5704200DEF2FA /* Build configuration list for PBXNativeTarget "ReFridge" */;
@@ -663,6 +711,10 @@
 				LastSwiftUpdateCheck = 1520;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
+					EB13B48D2BF8B406004ACE9A = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = EBF88E2C2BC5703E00DEF2FA;
+					};
 					EBF88E2C2BC5703E00DEF2FA = {
 						CreatedOnToolsVersion = 15.2;
 					};
@@ -686,11 +738,19 @@
 			projectRoot = "";
 			targets = (
 				EBF88E2C2BC5703E00DEF2FA /* ReFridge */,
+				EB13B48D2BF8B406004ACE9A /* ReFridgeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		EB13B48C2BF8B406004ACE9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EBF88E2B2BC5703E00DEF2FA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -804,6 +864,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		EB13B48A2BF8B406004ACE9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB13B4912BF8B406004ACE9A /* ReFridgeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EBF88E292BC5703E00DEF2FA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -888,6 +956,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		EB13B4932BF8B406004ACE9A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EBF88E2C2BC5703E00DEF2FA /* ReFridge */;
+			targetProxy = EB13B4922BF8B406004ACE9A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		EBF88E362BC5703E00DEF2FA /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -908,6 +984,52 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		EB13B4942BF8B406004ACE9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 69265F56VU;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yunChiehLee.ReFridgeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReFridge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ReFridge";
+			};
+			name = Debug;
+		};
+		EB13B4952BF8B406004ACE9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 69265F56VU;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yunChiehLee.ReFridgeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReFridge.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ReFridge";
+			};
+			name = Release;
+		};
 		EBF88E3F2BC5704200DEF2FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1175,6 +1297,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		EB13B4962BF8B406004ACE9A /* Build configuration list for PBXNativeTarget "ReFridgeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB13B4942BF8B406004ACE9A /* Debug */,
+				EB13B4952BF8B406004ACE9A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EBF88E282BC5703E00DEF2FA /* Build configuration list for PBXProject "ReFridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
