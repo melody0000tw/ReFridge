@@ -7,11 +7,12 @@
 
 import Foundation
 
-enum ErrorType: Error, Equatable {
-    static func == (lhs: ErrorType, rhs: ErrorType) -> Bool {
+enum RFError: Error, Equatable {
+    static func == (lhs: RFError, rhs: RFError) -> Bool {
         lhs.localizedDescription == rhs.localizedDescription
     }
     
     case incompletedInfo
+    case noInternet
     case firebaseError(Error)
 }

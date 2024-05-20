@@ -15,13 +15,13 @@ class ScanResultViewModel {
         self.scanResult = scanResult
     }
     
-    func saveFoodCards(completion: @escaping (Result<Void, ErrorType>) -> Void) {
+    func saveFoodCards(completion: @escaping (Result<Void, RFError>) -> Void) {
         let dispatchGroup = DispatchGroup()
         for foodCard in scanResult.recongItems {
             dispatchGroup.enter()
             let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
             Task {
-                firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, Error>) in
+                firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, RFError>) in
                     switch result {
                     case .success():
                         completion(.success(()))

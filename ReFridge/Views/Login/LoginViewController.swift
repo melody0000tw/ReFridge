@@ -95,7 +95,7 @@ class LoginViewController: UIViewController {
         firestoreManager.configure(withUID: user.uid)
         Task {
             let docRef = firestoreManager.userInfoRef
-            firestoreManager.fetchData(from: docRef) { (result: Result<UserInfo, Error>) in
+            firestoreManager.fetchData(from: docRef) { (result: Result<UserInfo, RFError>) in
                 switch result {
                 case .success(let userInfo):
                     print("did get userInfo: \(userInfo)")
@@ -109,7 +109,7 @@ class LoginViewController: UIViewController {
         }
         Task {
             let colRef = firestoreManager.scoresRef
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[Score], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[Score], RFError>) in
                 switch result {
                 case .success(let scores):
                     if scores.count == 2 {

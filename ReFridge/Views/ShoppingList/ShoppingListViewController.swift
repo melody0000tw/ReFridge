@@ -60,6 +60,7 @@ class ShoppingListViewController: BaseViewController {
                 emptyDataManager.toggleLabel(shouldShow: (list.isEmpty))
             case .failure(let error):
                 presentInternetAlert()
+                tableView.isHidden = false
             }
             removeLoadingIndicator()
             refreshControl.endRefresh()

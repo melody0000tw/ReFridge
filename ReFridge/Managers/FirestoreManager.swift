@@ -7,11 +7,14 @@
 
 import Foundation
 import FirebaseFirestore
+import Network
 
 class FirestoreManager {
     static let shared = FirestoreManager()
     private let accountManager = AccountManager.share
+    private let networkManager = NetworkManager.shared
     let database: Firestore
+    
     var uid: String? {
         didSet {
             if let uid = uid {
@@ -49,10 +52,15 @@ class FirestoreManager {
     }
     
     // MARK: - Base Functions
-    func fetchDatas<T: Codable>(from reference: CollectionReference, completion: @escaping (Result<[T], Error>) -> Void) {
+    func fetchDatas<T: Codable>(from reference: CollectionReference, completion: @escaping (Result<[T], RFError>) -> Void) {
+        guard networkManager.checkInternetConnetcion() else {
+            completion(.failure(RFError.noInternet))
+            return
+        }
+        print("fetchDatas starts!")
         reference.getDocuments { (snapshot, error) in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(RFError.firebaseError(error)))
             } else {
                 var items = [T]()
                 snapshot?.documents.forEach { document in
@@ -65,45 +73,65 @@ class FirestoreManager {
         }
     }
     
-    func fetchData<T: Codable>(from reference: DocumentReference, completion: @escaping (Result<T, Error>) -> Void) {
+    func fetchData<T: Codable>(from reference: DocumentReference, completion: @escaping (Result<T, RFError>) -> Void) {
+        guard networkManager.checkInternetConnetcion() else {
+            completion(.failure(RFError.noInternet))
+            return
+        }
+        
         reference.getDocument(as: T.self) { result in
             switch result {
             case .success(let data):
                 completion(.success(data))
             case .failure(let error):
-                completion(.failure(error))
+                completion(.failure(.firebaseError(error)))
             }
         }
     }
     
-    func updateDatas<T: Codable>(to reference: DocumentReference, with data: T, completion: @escaping (Result<Void, Error>) -> Void) {
+    func updateDatas<T: Codable>(to reference: DocumentReference, with data: T, completion: @escaping (Result<Void, RFError>) -> Void) {
+        guard networkManager.checkInternetConnetcion() else {
+            completion(.failure(RFError.noInternet))
+            return
+        }
+        
         do {
             try reference.setData(from: data) { error in
                 if let error = error {
-                    completion(.failure(error))
+                    completion(.failure(.firebaseError(error)))
                 } else {
                     completion(.success(()))
                 }
             }
         } catch {
-            completion(.failure(error))
+            completion(.failure(.firebaseError(error)))
         }
     }
     
-    func deleteDatas(from reference: DocumentReference, completion: @escaping (Result<Void, Error>) -> Void) {
+    func deleteDatas(from reference: DocumentReference, completion: @escaping (Result<Void, RFError>) -> Void) {
+        guard networkManager.checkInternetConnetcion() else {
+            completion(.failure(RFError.noInternet))
+            return
+        }
+        
         reference.delete { error in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(.firebaseError(error)))
             } else {
                 completion(.success(()))
             }
         }
     }
     
-    func queryDatas<T: Codable>(query: Query, completion: @escaping (Result<[T], Error>) -> Void) {
+    func queryDatas<T: Codable>(query: Query, completion: @escaping (Result<[T], RFError>) -> Void) {
+        guard networkManager.checkInternetConnetcion() else {
+            completion(.failure(RFError.noInternet))
+            return
+        }
+        
         query.getDocuments { (snapshot, error) in
             if let error = error {
-                completion(.failure(error))
+                completion(.failure(.firebaseError(error)))
             } else {
                 var items = [T]()
                 snapshot?.documents.forEach { document in

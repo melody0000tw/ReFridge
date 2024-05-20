@@ -32,16 +32,18 @@ class MyFridgeViewModel {
         isLoading = true
         let colRef = firestoreManager.foodCardsRef
         Task {
-            self.firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodCard], Error>) in
+            self.firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodCard], RFError>) in
                 switch result {
                 case .success(let foodCards):
                     allCards = foodCards
                     filterFoodCards()
+                    isLoading = false
                 case .failure(let error):
                     print("error: \(error)")
                     self.error = error
+                    isLoading = false
                 }
-                isLoading = false
+                
             }
         }
     }

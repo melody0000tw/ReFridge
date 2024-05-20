@@ -35,7 +35,7 @@ class RecipeViewModel {
         recipeFilter: RecipeFilter = .all,
         ingredientsDict: [String: IngredientStatus] = [:],
         likedRecipeId: [String] = [],
-        finishedRecipeId: [String] = []){
+        finishedRecipeId: [String] = []) {
         self.allRecipes = allRecipes
         self.showRecipes = showRecipes
         self.recipeFilter = recipeFilter
@@ -55,18 +55,20 @@ class RecipeViewModel {
         isLoading = true
         let colRef = firestoreManager.recipeRef
         Task {
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[Recipe], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[Recipe], RFError>) in
                 switch result {
                 case .success(let recipes):
                     allRecipes = recipes
                     checkAllStatus { [self] in
                         filterRecipes()
+                        isLoading = false
                     }
                 case .failure(let error):
                     print("error: \(error)")
                     self.error = error
+                    isLoading = false
                 }
-                isLoading = false
+                
             }
         }
     }
@@ -74,7 +76,7 @@ class RecipeViewModel {
     private func fetchLikedRecipeId() {
         let colRef = firestoreManager.likedRecipesRef
         Task {
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[LikedRecipe], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[LikedRecipe], RFError>) in
                 switch result {
                 case .success(let recipes):
                     var likedRecipes = [String]()
@@ -93,7 +95,7 @@ class RecipeViewModel {
     private func fetchFinishedRecipeId() {
         let colRef = firestoreManager.finishedRecipesRef
         Task {
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FinishedRecipe], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FinishedRecipe], RFError>) in
                 switch result {
                 case .success(let recipes):
                     var finishedRecipes = [String]()
@@ -141,7 +143,7 @@ class RecipeViewModel {
             let colRef = firestoreManager.foodCardsRef
             let query = firestoreManager.createQuery(reference: colRef, field: "typeId", isEqualTo: typeId)
             Task {
-                firestoreManager.queryDatas(query: query) {(result: Result<[FoodCard], Error>) in
+                firestoreManager.queryDatas(query: query) {(result: Result<[FoodCard], RFError>) in
                     arrayAccessQueue.sync {
                         switch result {
                         case .success(let foodCards):

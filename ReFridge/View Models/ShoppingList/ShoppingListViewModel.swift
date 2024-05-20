@@ -15,7 +15,7 @@ class ShoppingListViewModel {
     func fetchList(completion: @escaping (Result<[ListItem], Error>) -> Void) {
         Task {
             let colRef = firestoreManager.shoppingListRef
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[ListItem], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[ListItem], RFError>) in
                 switch result {
                 case .success(let list):
                     let sortedList = list.sorted { $0.createDate > $1.createDate }
@@ -75,7 +75,7 @@ class ShoppingListViewModel {
     private func postFoodCard(foodCard: FoodCard, completion: @escaping (Result<Void, Error>) -> Void) {
         let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
         Task {
-            firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, Error>) in
+            firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, RFError>) in
                 switch result {
                 case .success:
                     print("update food card successfully")
