@@ -25,7 +25,7 @@ class ChartViewModel {
     private func fetchUserInfo() {
         let docRef = firestoreManager.userInfoRef
         Task {
-            firestoreManager.fetchData(from: docRef) { (result: Result<UserInfo, Error>) in
+            firestoreManager.fetchData(from: docRef) { (result: Result<UserInfo, RFError>) in
                 switch result {
                 case .success(let userInfo):
                     self.userInfo = userInfo
@@ -39,7 +39,7 @@ class ChartViewModel {
     private func fetchFoodCards() {
         let colRef = firestoreManager.foodCardsRef
         Task {
-            firestoreManager.fetchDatas(from: colRef) { (result: Result<[FoodCard], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { (result: Result<[FoodCard], RFError>) in
                 switch result {
                 case .success(let foodCards):
                     self.foodCards = foodCards
@@ -54,7 +54,7 @@ class ChartViewModel {
         for way in DeleteWay.allCases {
             let docRef = firestoreManager.scoresRef.document(way.rawValue)
             _Concurrency.Task {
-                firestoreManager.fetchData(from: docRef) { (result: Result<Score, Error>) in
+                firestoreManager.fetchData(from: docRef) { (result: Result<Score, RFError>) in
                     switch result {
                     case .success(let score):
                         if way == .consumed {

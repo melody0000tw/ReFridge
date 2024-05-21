@@ -237,7 +237,7 @@ class FoodTypeViewController: UIViewController {
     func fetchUserFoodTypes() {
         Task {
             let colRef = firestoreManager.foodTypesRef
-            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodType], Error>) in
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodType], RFError>) in
                 switch result {
                 case .success(let foodTypes):
                     userFoodTypes = foodTypes.sorted(by: { lhs, rhs in

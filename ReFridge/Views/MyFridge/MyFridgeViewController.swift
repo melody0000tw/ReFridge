@@ -169,6 +169,7 @@ class MyFridgeViewController: BaseViewController {
                 } else {
                     self?.removeLoadingIndicator()
                     self?.refreshControl.endRefresh()
+                    self?.collectionView.isHidden = false
                 }
             }
             .store(in: &cancellables)

@@ -49,7 +49,7 @@ class AddFoodCardViewModel {
         }
     }
     
-    func saveFoodCard(completion: @escaping (Result<Void, ErrorType>) -> Void) {
+    func saveFoodCard(completion: @escaping (Result<Void, RFError>) -> Void) {
 
         guard foodCard.name != "" else {
             completion(.failure(.incompletedInfo))
@@ -63,7 +63,7 @@ class AddFoodCardViewModel {
         let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
         
         Task {
-            firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, Error>) in
+            firestoreManager.updateDatas(to: docRef, with: foodCard) { (result: Result< Void, RFError>) in
                 switch result {
                 case .success:
                     completion(.success(()))
@@ -75,7 +75,7 @@ class AddFoodCardViewModel {
         }
     }
     
-    func didTappedDeleteBtn(deleteWay: DeleteWay, completion: @escaping (Result<Void, ErrorType>) -> Void) {
+    func didTappedDeleteBtn(deleteWay: DeleteWay, completion: @escaping (Result<Void, RFError>) -> Void) {
         if foodCard.isRoutineItem {
             addToShoppingList()
         }
@@ -83,14 +83,14 @@ class AddFoodCardViewModel {
         deleteFoodCard(completion: completion)
     }
     
-    func deleteFoodCard(completion: @escaping (Result<Void, ErrorType>) -> Void) {
+    func deleteFoodCard(completion: @escaping (Result<Void, RFError>) -> Void) {
         guard foodCard.cardId != "" else {
             print("no food card id")
             return
         }
         let docRef = firestoreManager.foodCardsRef.document(foodCard.cardId)
         Task {
-            firestoreManager.deleteDatas(from: docRef) { (result: Result< Void, Error>) in
+            firestoreManager.deleteDatas(from: docRef) { (result: Result< Void, RFError>) in
                 switch result {
                 case .success:
                     print("delete food card successfully")
@@ -109,13 +109,13 @@ class AddFoodCardViewModel {
         let docRef = firestoreManager.scoresRef.document(way)
         
         Task {
-            firestoreManager.fetchData(from: docRef) { (result: Result<Score, Error>) in
+            firestoreManager.fetchData(from: docRef) { (result: Result<Score, RFError>) in
                 switch result {
                 case .success(let score):
                     print("successfully fetch old score")
                     let newNum = score.number + 1
                     let newScore = Score(number: newNum)
-                    self.firestoreManager.updateDatas(to: docRef, with: newScore) { (result: Result<Void, Error>) in
+                    self.firestoreManager.updateDatas(to: docRef, with: newScore) { (result: Result<Void, RFError>) in
                         switch result {
                         case .success():
                             print("update scores successfully")
@@ -144,7 +144,7 @@ class AddFoodCardViewModel {
         let docRef = firestoreManager.shoppingListRef.document(item.itemId)
         
         Task { [item] in
-            firestoreManager.updateDatas(to: docRef, with: item) { (result: Result< Void, Error>) in
+            firestoreManager.updateDatas(to: docRef, with: item) { (result: Result< Void, RFError>) in
                 switch result {
                 case .success:
                     print("Document successfully written!")

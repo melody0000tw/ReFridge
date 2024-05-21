@@ -94,12 +94,14 @@ class RecipeViewController: BaseViewController {
             .store(in: &cancellables)
         viewModel.$isLoading
             .receive(on: RunLoop.main)
+//            .dropFirst()
             .sink { [weak self] isLoading in
                 if isLoading {
                     self?.showLoadingIndicator()
                 } else {
                     self?.removeLoadingIndicator()
                     self?.refreshControl.endRefresh()
+                    self?.tableView.isHidden = false
                 }
             }
             .store(in: &cancellables)
