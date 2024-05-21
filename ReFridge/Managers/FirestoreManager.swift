@@ -23,17 +23,18 @@ class FirestoreManager {
         }
     }
     
-    lazy var userInfoRef = database.collection("users").document("userId").collection("userInfo").document("data")
-    lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
-    lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
-    lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
-    lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
-    lazy var finishedRecipesRef = database.collection("users").document("userId").collection("finishedRecipes")
-    lazy var scoresRef = database.collection("users").document("userId").collection("scores")
-    lazy var recipeRef = database.collection("recipes")
+    private(set) lazy var userInfoRef = database.collection("users").document("userId").collection("userInfo").document("data")
+    private(set) lazy var foodCardsRef = database.collection("users").document("userId").collection("foodCards")
+    private(set) lazy var foodTypesRef = database.collection("users").document("userId").collection("foodTypes")
+    private(set) lazy var shoppingListRef = database.collection("users").document("userId").collection("shoppingList")
+    private(set) lazy var likedRecipesRef = database.collection("users").document("userId").collection("likedRecipes")
+    private(set) lazy var finishedRecipesRef = database.collection("users").document("userId").collection("finishedRecipes")
+    private(set) lazy var scoresRef = database.collection("users").document("userId").collection("scores")
+    private(set) lazy var recipeRef = database.collection("recipes")
 
     private init() {
         database = Firestore.firestore()
+        recipeRef = database.collection("recipes")
     }
     
     // MARK: - UserInfo
@@ -124,10 +125,6 @@ class FirestoreManager {
     }
     
     func queryDatas<T: Codable>(query: Query, completion: @escaping (Result<[T], RFError>) -> Void) {
-        guard networkManager.checkInternetConnetcion() else {
-            completion(.failure(RFError.noInternet))
-            return
-        }
         
         query.getDocuments { (snapshot, error) in
             if let error = error {
