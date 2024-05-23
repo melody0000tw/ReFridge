@@ -1,5 +1,8 @@
+
+<img src="https://github.com/melody0000tw/ReFridge/assets/141668860/299d2907-183d-4f8a-8da7-84798cbc9869" width="200">
+
 Refridge
--
+===
 ReFridge is an useful fridge management tool designed to help you efficiently manage your food items, reduce waste, and rebuild a healthier relationship with your refrigerator.
 
 Usage
@@ -23,26 +26,73 @@ ReFridge offers beautiful statistical charts to help you analyze the types and e
 Demo
 -
 
+**Add food card manually**
 
-https://github.com/melody0000tw/ReFridge/assets/141668860/afe3f596-b168-40f9-aa34-20788acd2d41
+https://github.com/melody0000tw/ReFridge/assets/141668860/86f38e39-73c7-4aea-b173-f003054db03c
 
-
-
-https://github.com/melody0000tw/ReFridge/assets/141668860/384c74d9-7e81-4709-9ac4-5d5458a8bf48
-
-
-
-https://github.com/melody0000tw/ReFridge/assets/141668860/5833b74d-0ab6-4361-a935-38e922d1390a
-
-
+**Search cards by bar code**
 
 https://github.com/melody0000tw/ReFridge/assets/141668860/40c5995e-7cea-4b12-b56c-e25662e78f9b
 
+**Add food card by image scan**
 
+https://github.com/melody0000tw/ReFridge/assets/141668860/afe3f596-b168-40f9-aa34-20788acd2d41
+
+**recommended recipes**
+
+https://github.com/melody0000tw/ReFridge/assets/141668860/384c74d9-7e81-4709-9ac4-5d5458a8bf48
+
+**shopping list**
+
+https://github.com/melody0000tw/ReFridge/assets/141668860/5833b74d-0ab6-4361-a935-38e922d1390a
+
+**Statistics Charts and personal settings**
 
 https://github.com/melody0000tw/ReFridge/assets/141668860/50e371e8-d959-406c-aac8-d005d924c45e
 
 
+Getting Start
+-
+You cannot directly build the project base on this repository since the sensetive information are not included.
+For more information, please reach me through the email below.
 
-https://github.com/melody0000tw/ReFridge/assets/141668860/86f38e39-73c7-4aea-b173-f003054db03c
+Technical Features
+-
+- Implemented **MVVM-based architecture** for a clean, maintainable, and scalable codebase.
+- Utilized **Combine** and **Closure** for capturing and processing values asynchronously.
+- Employed **Auto Layout** to ensure a responsive design across multiple devices.
+- Integrated **Firebase Firestore** for data management.
+- Applied **Vision** framework and **OpenAI** public API for processing image **text recognition** and manage food items.
+- Used **Network** framework to handle internet connectivity issues and ensure seamless user experience.
+- Used **SwiftEntryKit** framework to present alert messages from a separate window, enhancing user experience by avoiding interruptions in the user flow.
+- Integrated **Kingfisher** framework for handling asynchronous image downloading and caching.
+- Applied **Charts** framework to visualize refrigerator data using pie charts and bar charts.
+- Implemented **Sign in with Apple** for secure **OAuth 2.0** authentication.
+- Employed **XCTest** to ensure functionality and quality of the work.
+- Integrated **Firebase Crashlytics** to track app crashes information for further improvement.
+- Experienced with beta testing build **TestFlight** and **App Store deployment**.
+
+Libraries & Dependencies
+-
+- FirebaseAuth
+- FirebaseFirestore
+- OpenAI
+- FirebaseCrashlytics
+- SwiftLint
+- SnapKit
+- IQKeyboardManagerSwift
+- Charts
+- Kingfisher
+- lottie-ios
+- SwiftEntryKit
+
+Requirement
+-
+- iOS 16+
+- Xcode 15.2+
+
+Contact
+-
+Yun Chieh Lee / melody0000tw@gmail.com
+
 
