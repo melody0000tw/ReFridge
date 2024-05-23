@@ -51,9 +51,9 @@ https://github.com/melody0000tw/ReFridge/assets/141668860/5833b74d-0ab6-4361-a93
 https://github.com/melody0000tw/ReFridge/assets/141668860/50e371e8-d959-406c-aac8-d005d924c45e
 
 
-Getting Start
+Getting Started
 -
-You cannot directly build the project base on this repository since the sensetive information are not included.
+You cannot directly build the project base on this repository since API key and other required sensetive information are not included.
 For more information, please reach me through the email below.
 
 Technical Features
