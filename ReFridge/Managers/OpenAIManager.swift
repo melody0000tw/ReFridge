@@ -29,7 +29,7 @@ class OpenAIManager {
         
         // swiftlint:disable line_length
         // system role
-        let systemRole = "You are a helpful assistant tasked with categorizing text within an array. Your goal is to discern whether each item in the array is food-related or not. Once categorized, you will organize the items into two separate arrays accordingly. Your final output should be returned as JSON format, providing clear distinctions between food-related and non-food-related items"
+        let systemRole = "You are a helpful assistant tasked with categorizing text within an array. Your goal is to discern whether each item in the array is food-related or not. Once categorized, you will organize the items into two separate arrays accordingly. Your final output should be returned as JSON format, providing clear distinctions between food-related and non-food-related items."
         // swiftlint:enable line_length
         
         // reply example
@@ -63,11 +63,14 @@ class OpenAIManager {
                        let foodAry = jsonDict["food"]
                        let notFoodAry = jsonDict["notFood"]
                     let foodReply = AIFoodReplay(food: foodAry ?? [""], notFood: notFoodAry ?? [""])
+                    print("=========success: \(foodReply)")
                     completion(.success(foodReply))
                 } else {
+                    print("=========failure TextScanError.decodeJsonFailed")
                     completion(.failure(TextScanError.decodeJsonFailed))
                 }
             case .failure(let error):
+                print("=========failure open ai failed")
                 completion(.failure(error))
             }
         }

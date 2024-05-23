@@ -32,7 +32,9 @@ class RecipeInfoCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        setupCell()
+        bgView.layer.cornerRadius = 10
+        bgView.backgroundColor = .clear
+//        setupCell()
         // Initialization code
     }
 
@@ -42,10 +44,12 @@ class RecipeInfoCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    private func setupCell() {
-        bgView.layer.cornerRadius = 10
-//        bgView.dropShadow()
-        bgView.backgroundColor = .clear
+    func setupCell(recipe: Recipe) {
+        titleLabel.text = recipe.title
+        cookingTimeLabel.text = "\(String(recipe.cookingTime))分鐘"
+        servingLabel.text = "\(String(recipe.servings))人份"
+        caloriesLabel.text = "\(String(recipe.calories))大卡"
+        descriptionLabel.text = recipe.description
         
     }
     

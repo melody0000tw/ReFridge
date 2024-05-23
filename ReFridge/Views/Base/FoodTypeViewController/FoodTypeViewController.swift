@@ -20,16 +20,34 @@ class FoodTypeViewController: UIViewController {
         type.categoryId == selectedCategoryId
     }) {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+            self.collectionView.reloadData()
+            if mode == .editing && selectedCategoryId == selectedType.categoryId {
+                let indexPath = IndexPath(item: selectedTypeIndex, section: 0)
+                collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredVertically)
             }
         }
     }
     
+    var mode = FoodCardMode.adding
+    
     var onSelectFoodType: ((FoodType) -> Void)?
     
     private var selectedCategoryId = 1
-    private lazy var selectedType: FoodType = allFoodTypes[0]
+    
+    private lazy var selectedType: FoodType = allFoodTypes[0] {
+        didSet {
+            if let onSelectFoodType = onSelectFoodType {
+                onSelectFoodType(selectedType)
+            }
+        }
+    }
+    
+    var selectedTypeIndex: Int {
+        let index = self.typesOfSelectedCategory.firstIndex { foodtype in
+            foodtype.typeId == self.selectedType.typeId
+        }
+        return index ?? 0
+    }
     
     private lazy var stackView = UIStackView()
     private lazy var collectionView = UICollectionView(frame: CGRect(), collectionViewLayout: configureLayout())
@@ -45,7 +63,6 @@ class FoodTypeViewController: UIViewController {
         setupButtons()
         setupCollectionView()
         setupDeleteBtn()
-        setupSelectedBtn()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -150,29 +167,32 @@ class FoodTypeViewController: UIViewController {
             make.top.equalTo(collectionView.snp.bottom)
             make.height.equalTo(40)
             make.width.equalTo(80)
-            make.leading.equalTo(view.snp.leading)
-        }
-    }
-    
-    private func setupSelectedBtn() {
-        selectTypeBtn.setTitle("選擇類型", for: .normal)
-        selectTypeBtn.setTitleColor(.white, for: .normal)
-        selectTypeBtn.tintColor = .clear
-        selectTypeBtn.isEnabled = false
-        selectTypeBtn.backgroundColor = .lightGray
-        selectTypeBtn.layer.cornerRadius = 5
-        selectTypeBtn.addTarget(self, action: #selector(selectType), for: .touchUpInside)
-        selectTypeBtn.clipsToBounds = true
-        view.addSubview(selectTypeBtn)
-        selectTypeBtn.snp.makeConstraints { make in
-            make.top.equalTo(collectionView.snp.bottom)
-            make.height.equalTo(40)
-            make.width.equalTo(80)
             make.trailing.equalTo(view.snp.trailing)
         }
     }
     
     // MARK: - Data
+    func setupInitialFoodType(typeId: String) {
+        let foodType = allFoodTypes.first(where: { type in
+            type.typeId == typeId
+        })
+        guard let foodType = foodType else {
+            print("cannot get initial food type")
+            return
+        }
+        
+        selectedCategoryId = foodType.categoryId
+        selectedType = foodType
+        for btn in buttons {
+            btn.isSelected = false
+            if btn.tag == selectedCategoryId {
+                btn.isSelected = true
+            }
+        }
+        animateBarView()
+        filterTypes()
+    }
+    
     @objc func onChangeCategory(sender: UIButton) {
         for button in buttons {
             button.isSelected = false
@@ -199,31 +219,27 @@ class FoodTypeViewController: UIViewController {
     @objc func deleteType() {
         if selectedType.isDeletable {
             Task {
-                await firestoreManager.deleteUserFoodTypes(typeId: selectedType.typeId) { result in
+                let docRef = firestoreManager.foodTypesRef.document(selectedType.typeId)
+                firestoreManager.deleteDatas(from: docRef) {result in
                     switch result {
-                    case .success(let foodTypes):
+                    case .success:
                         self.fetchUserFoodTypes()
                         return
                     case .failure(let error):
                         print(error.localizedDescription)
                     }
+                    
                 }
             }
         }
     }
     
-    @objc func selectType() {
-        if let onSelectFoodType = onSelectFoodType {
-            onSelectFoodType(selectedType)
-        }
-    }
-    
     func fetchUserFoodTypes() {
         Task {
-            await firestoreManager.fetchFoodType { result in
+            let colRef = firestoreManager.foodTypesRef
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[FoodType], RFError>) in
                 switch result {
                 case .success(let foodTypes):
-                    
                     userFoodTypes = foodTypes.sorted(by: { lhs, rhs in
                         if let lshTime = lhs.createTime, let rhsTime = rhs.createTime {
                             return lshTime < rhsTime
@@ -231,7 +247,10 @@ class FoodTypeViewController: UIViewController {
                         return lhs.typeName < rhs.typeName
                     })
                     allFoodTypes = defaultFoodTpyes + userFoodTypes
-                    filterTypes()
+                    DispatchQueue.main.async {
+                        self.filterTypes()
+                    }
+                    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }

@@ -8,6 +8,7 @@
 import UIKit
 import VisionKit
 import Vision
+import Combine
 
 enum FoodCardMode {
     case adding
@@ -16,7 +17,8 @@ enum FoodCardMode {
 }
 
 class AddFoodCardViewController: BaseViewController {
-    private let firestoreManager = FirestoreManager.shared
+    var viewModel = AddFoodCardViewModel()
+    private var cancellables: Set<AnyCancellable> = []
     
     @IBOutlet weak var btnViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonsView: UIView!
@@ -28,7 +30,6 @@ class AddFoodCardViewController: BaseViewController {
     let saveBtn = UIBarButtonItem()
     let closeBtn = UIBarButtonItem()
     
-    var foodCard = FoodCard()
     var mode = FoodCardMode.adding
     var typeViewIsOpen = true
     var onChangeFoodCard: ((FoodCard) -> Void)? // for editingBatch
@@ -41,9 +42,23 @@ class AddFoodCardViewController: BaseViewController {
         setupNavigationView()
         setupDeleteBtns()
         toggleBtnView()
+        bindViewModel()
         self.tabBarController?.tabBar.isHidden = true
         if mode == .editing {
             typeViewIsOpen = false
+            typeVC.mode = .editing
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if mode == .editing {
+            let foodCard = viewModel.foodCard
+            // 判斷 type 如果是其他，但名字不是其他，就不 init 狀態
+            if foodCard.typeId == "501" && foodCard.name != "其他" {
+                return
+            }
+            typeVC.setupInitialFoodType(typeId: foodCard.typeId)
         }
     }
     
@@ -56,13 +71,11 @@ class AddFoodCardViewController: BaseViewController {
     private func setupTypeView() {
         addChild(typeVC)
         typeVC.onSelectFoodType = { [self] foodType in
-            foodCard.categoryId = foodType.categoryId
-            foodCard.typeId = foodType.typeId
-            foodCard.name = foodType.typeName
-            foodCard.iconName = foodType.typeIcon
-            updateCardInfoCell()
-            typeViewIsOpen = !typeViewIsOpen
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            viewModel.updateFoodCard(name: foodType.typeName, typeId: foodType.typeId, categoryId: foodType.categoryId, iconName: foodType.typeIcon)
+            if typeViewIsOpen {
+                typeViewIsOpen = false
+                tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            }
         }
     }
     
@@ -77,7 +90,7 @@ class AddFoodCardViewController: BaseViewController {
         saveBtn.tintColor = .C2
         saveBtn.image = UIImage(systemName: "checkmark")
         saveBtn.target = self
-        saveBtn.action = #selector(saveData)
+        saveBtn.action = #selector(didTappedSaveBtn)
         navigationItem.rightBarButtonItem = saveBtn
         closeBtn.tintColor = .C2
         closeBtn.image = UIImage(systemName: "xmark")
@@ -103,19 +116,31 @@ class AddFoodCardViewController: BaseViewController {
         }
     }
     
-    private func updateCardInfoCell() {
+    private func bindViewModel() {
+        viewModel.$foodCard
+            .receive(on: RunLoop.main)
+            .dropFirst()
+            .sink { [weak self] foodCard in
+                self?.updateCardTypeUI(with: foodCard)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func updateCardTypeUI(with foodCard: FoodCard) {
         guard let typeCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell,
             let infoCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CardInfoCell
         else {
             return
         }
         typeCell.nameLabel.text = foodCard.name
+        typeCell.nameLabel.textColor = .darkGray
         infoCell.iconImage.image = UIImage(named: foodCard.iconName)
         infoCell.barcodeTextField.text = foodCard.barCode
     }
     
     // MARK: - Data
-    @objc func saveData() {
+    @objc func didTappedSaveBtn() {
+        view.endEditing(true)
         switch mode {
         case .adding:
             saveFoodCard()
@@ -126,7 +151,7 @@ class AddFoodCardViewController: BaseViewController {
                 print("did not set closure")
                 return
             }
-            view.endEditing(true)
+            let foodCard = viewModel.foodCard
             onChangeFoodCard(foodCard)
             self.navigationController?.popViewController(animated: true)
             
@@ -139,70 +164,18 @@ class AddFoodCardViewController: BaseViewController {
     
     // edit or adding
     private func saveFoodCard() {
-        view.endEditing(true)
-        guard foodCard.name != "" else {
-            typeViewIsOpen = true
-            tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
-                return
-            }
-            cell.nameLabel.text = "尚未選取食物種類"
-            cell.nameLabel.textColor = .red
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.typeVC.selectTypeBtn.clickBounce()
-            }
-            return
-        }
-        
-        foodCard.cardId = foodCard.cardId == "" ? UUID().uuidString : foodCard.cardId
-        showLoadingIndicator()
-        Task {
-            await firestoreManager.saveFoodCard(foodCard) { result in
+        viewModel.saveFoodCard { [self] result in
+            DispatchQueue.main.async { [self] in
                 switch result {
                 case .success:
                     print("Document successfully written!")
-                    DispatchQueue.main.async {
-                        self.removeLoadingIndicator()
-                        self.navigationController?.popViewController(animated: true)
-                    }
+                    removeLoadingIndicator()
+                    navigationController?.popViewController(animated: true)
                 case .failure(let error):
-                    print("Error adding document: \(error)")
-                    self.removeLoadingIndicator()
-                    presentInternetAlert()
-                }
-            }
-        }
-    }
-    
-    @objc func didTappedDelete(sender: UIButton) {
-        if foodCard.isRoutineItem {
-            addToShoopingList()
-        }
-        
-        if sender == deleteByConsumedBtn {
-            changeScore(deleteWay: .consumed)
-        } else if sender == deleteByThrownBtn {
-            changeScore(deleteWay: .thrown)
-        }
-        
-        deleteData()
-    }
-    
-    private func deleteData() {
-        if foodCard.cardId != "" {
-            showLoadingIndicator()
-            Task {
-                await firestoreManager.deleteFoodCard( foodCard.cardId) { result in
-                    switch result {
-                    case .success:
-                        print("Document successfully delete!")
-                        presentAlert(title: "刪除成功", description: "已將小卡從冰箱中刪除", image: UIImage(systemName: "checkmark.circle"))
-                        DispatchQueue.main.async {
-                            self.removeLoadingIndicator()
-                            self.navigationController?.popViewController(animated: true)
-                        }
-                    case .failure(let error):
-                        print("Error adding document: \(error)")
+                    removeLoadingIndicator()
+                    if error == .incompletedInfo {
+                        presentIncompletionAlert()
+                    } else {
                         presentInternetAlert()
                     }
                 }
@@ -210,38 +183,39 @@ class AddFoodCardViewController: BaseViewController {
         }
     }
     
-    private func changeScore(deleteWay: DeleteWay) {
-        let way = deleteWay.rawValue
-        Task {
-            await firestoreManager.changeScores(deleteWay: way) { result in
-                switch result {
-                case .success(let newScore):
-                    print("successfully change score of \(way) to \(String(describing: newScore))")
-                case .failure(let error):
-                    print("Error adding document: \(error)")
-                }
-            }
+    private func presentIncompletionAlert() {
+        typeViewIsOpen = true
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+        guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? CardTypeCell else {
+            return
+        }
+        cell.nameLabel.text = "尚未選取食物種類"
+        cell.nameLabel.textColor = .red
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.typeVC.selectTypeBtn.clickBounce()
         }
     }
     
-    private func addToShoopingList() {
-        var item = ListItem()
-        item.checkStatus = 0
-        item.itemId = UUID().uuidString
-        item.categoryId = foodCard.categoryId
-        item.name = foodCard.name
-        item.qty = foodCard.qty
-        item.mesureWord = foodCard.mesureWord
-        item.typeId = foodCard.typeId
-        item.isRoutineItem = foodCard.isRoutineItem
+    @objc func didTappedDelete(sender: UIButton) {
+        showLoadingIndicator()
+        var deleteWay = DeleteWay.consumed
+        if sender == deleteByConsumedBtn {
+            deleteWay = .consumed
+        } else if sender == deleteByThrownBtn {
+            deleteWay = .thrown
+        }
         
-        Task {
-            await firestoreManager.addListItem(item) { result in
+        viewModel.didTappedDeleteBtn(deleteWay: deleteWay) { result in
+            DispatchQueue.main.async { [self] in
                 switch result {
                 case .success:
-                    print("Document successfully written!")
+                    print("Document successfully delete!")
+                    presentAlert(title: "刪除成功", description: "已將小卡從冰箱中刪除", image: UIImage(systemName: "checkmark.circle"))
+                    self.removeLoadingIndicator()
+                    self.navigationController?.popViewController(animated: true)
                 case .failure(let error):
-                    print("Error adding list item: \(error)")
+                    print("Error adding document: \(error)")
+                    presentInternetAlert()
                 }
             }
         }
@@ -260,7 +234,9 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
                 cell.delegate = self
                 typeVC.view.frame = cell.typeContainerView.bounds
                 cell.typeContainerView.addSubview(typeVC.view)
-                cell.nameLabel.text = foodCard.name == "" ? "請選取食物種類" : foodCard.name
+                
+                let card = viewModel.foodCard
+                cell.nameLabel.text = card.name == "" ? "請選取食物種類" : card.name
                 cell.nameLabel.textColor = .darkGray
                 cell.toggleTypeView(shouldOpen: typeViewIsOpen)
                 return cell
@@ -269,7 +245,8 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: CardInfoCell.reuseIdentifier, for: indexPath) as? CardInfoCell {
             cell.delegate = self
-            cell.foodCard = foodCard
+            let card = viewModel.foodCard
+            cell.foodCard = card
             cell.setupData()
             return cell
         }
@@ -279,6 +256,11 @@ extension AddFoodCardViewController: UITableViewDelegate, UITableViewDataSource 
 
 // MARK: - CardTypeCellDelegate, CardInfoCellDelegate
 extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate {
+    func didTappedIconImg() {
+        typeViewIsOpen = !typeViewIsOpen
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+    }
+    
     func didTappedBarcodeBtn() {
         let documentCameraViewController = VNDocumentCameraViewController()
         documentCameraViewController.delegate = self
@@ -286,13 +268,14 @@ extension AddFoodCardViewController: CardTypeCellDelegate, CardInfoCellDelegate 
     }
     
     func didChangeCardInfo(foodCard: FoodCard) {
-        self.foodCard.qty = foodCard.qty
-        self.foodCard.mesureWord = foodCard.mesureWord
-        self.foodCard.expireDate = foodCard.expireDate
-        self.foodCard.barCode = foodCard.barCode
-        self.foodCard.storageType = foodCard.storageType
-        self.foodCard.isRoutineItem = foodCard.isRoutineItem
-        self.foodCard.notes = foodCard.notes
+        viewModel.updateFoodCard(
+            qty: foodCard.qty,
+            mesureWord: foodCard.mesureWord,
+            expireDate: foodCard.expireDate,
+            isRoutineItem: foodCard.isRoutineItem,
+            barCode: foodCard.barCode,
+            storageType: foodCard.storageType,
+            notes: foodCard.notes)
     }
     
     func didToggleTypeView() {
@@ -321,11 +304,7 @@ extension AddFoodCardViewController: VNDocumentCameraViewControllerDelegate {
                     guard let barcode = observation.payloadStringValue else {
                         return
                     }
-                    self.foodCard.barCode = barcode
-                    
-                    DispatchQueue.main.async {
-                        self.updateCardInfoCell()
-                    }
+                    self.viewModel.updateFoodCard(barCode: barcode)
                 } else {
                     print(error.debugDescription)
                 }

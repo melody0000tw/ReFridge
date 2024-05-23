@@ -10,7 +10,12 @@ import UIKit
 class AddFoodTypeViewController: UIViewController {
     private let firestoreManager = FirestoreManager.shared
     
-    let images = ["apple", "asparagus", "avocado", "bags", "banana", "cabbage", "carrot", "cheese", "cherry", "chicken", "chili-pepper", "croissant", "cupcake", "donut", "drink", "egg", "eggplant", "fish", "fries", "green-pepper", "hamburger", "icecream", "lemon", "mashroom", "meat", "milk", "noodles", "pizza", "popcorn", "popsicle", "sandwich", "onion", "soup", "spinach", "taco", "toast", "other", "cookie", "sausage", "shrimp", "broccoli", "cake"]
+    let datas = [
+        ["spinach", "broccoli", "asparagus", "eggplant", "cabbage", "carrot", "green-pepper", "chili-pepper", "onion", "mashroom", "apple", "avocado", "cherry", "lemon", "pear", "banana"],
+        ["egg", "meat", "sausage", "chicken", "fish", "shrimp", "milk", "cheese"],
+        ["cookie", "cupcake", "cake", "donut", "croissant", "toast", "drink", "icecream", "popsicle", "popcorn"],
+        ["other", "sandwich", "fries", "pizza", "hamburger", "taco", "noodles", "soup"]
+    ]
     
     lazy var containerView = UIView()
     lazy var imageView = UIImageView()
@@ -21,7 +26,7 @@ class AddFoodTypeViewController: UIViewController {
     lazy var cancelBtn = UIButton(type: .system)
     lazy var createBtn = UIButton(type: .system)
     
-    var selectedImage = "carrot" {
+    var selectedImage = "spinach" {
         didSet {
             DispatchQueue.main.async {
                 self.imageView.image = UIImage(named: self.selectedImage)
@@ -54,6 +59,11 @@ class AddFoodTypeViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionView.selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .centeredVertically)
+    }
+    
     private func configureLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 60, height: 60)
@@ -74,7 +84,7 @@ class AddFoodTypeViewController: UIViewController {
             make.trailing.equalTo(view.snp.trailing).offset(-24)
         }
         
-        imageView.image = UIImage(named: "carrot")
+        imageView.image = UIImage(named: "spinach")
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         containerView.addSubview(imageView)
@@ -125,13 +135,13 @@ class AddFoodTypeViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.RF_registerCellWithNib(identifier: String(describing: TypeImageCell.self), bundle: nil)
+        collectionView.register(TypeImageHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TypeImageHeaderView.reuseIdentifier)
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(containerView.snp.bottom).offset(24)
             make.leading.equalTo(view.snp.leading).offset(24)
             make.trailing.equalTo(view.snp.trailing).offset(-24)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-80)
-//            make.height.equalTo(200)
         }
     }
     
@@ -154,7 +164,6 @@ class AddFoodTypeViewController: UIViewController {
         createBtn.backgroundColor = .C1
         createBtn.tintColor = .darkGray
         createBtn.layer.cornerRadius = 8
-//        createBtn.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
         createBtn.addTarget(self, action: #selector(createType), for: .touchUpInside)
         view.addSubview(createBtn)
         createBtn.snp.makeConstraints { make in
@@ -190,7 +199,8 @@ class AddFoodTypeViewController: UIViewController {
             createTime: Date())
         
         Task {
-            await firestoreManager.addUserFoodTypes(foodType: foodType) { result in
+            let docRef = firestoreManager.foodTypesRef.document(foodType.typeId)
+            firestoreManager.updateDatas(to: docRef, with: foodType) { [self] result in
                 switch result {
                 case .success:
                     foodTypeVCdelegate?.fetchUserFoodTypes()
@@ -201,30 +211,47 @@ class AddFoodTypeViewController: UIViewController {
                 case .failure(let error):
                     print("error: \(error)")
                 }
-                
             }
         }
-        
     }
 }
 
-extension AddFoodTypeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension AddFoodTypeViewController: UICollectionViewDelegate, UICollectionViewDataSource,  UICollectionViewDelegateFlowLayout {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return datas.count
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return images.count
+        return datas[section].count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TypeImageCell.reuseIdentifier, for: indexPath) as? TypeImageCell else {
             return UICollectionViewCell()
         }
-        
-        let image = images[indexPath.item]
+        let image = datas[indexPath.section][indexPath.row]
         cell.imageView.image = UIImage(named: image)
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+                return UICollectionReusableView()
+            }
+        let headers = ["蔬菜水果", "蛋白質", "點心", "其他"]
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TypeImageHeaderView.reuseIdentifier, for: indexPath) as? TypeImageHeaderView else {
+            return UICollectionReusableView()
+        }
+        header.label.text = headers[indexPath.section]
+        return header
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let image = images[indexPath.row]
+        let image = datas[indexPath.section][indexPath.row]
         selectedImage = image
     }
 }

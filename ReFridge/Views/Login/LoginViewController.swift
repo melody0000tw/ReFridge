@@ -50,7 +50,8 @@ class LoginViewController: UIViewController {
         view.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(48)
-            make.width.height.equalTo(view.snp.width).multipliedBy(0.8)
+            make.width.height.equalTo(view.snp.width).multipliedBy(0.7)
+            make.bottom.equalTo(view.snp.centerY).offset(-24)
             make.centerX.equalTo(view.snp.centerX)
         }
         
@@ -93,66 +94,86 @@ class LoginViewController: UIViewController {
     private func configureUserInfo(user: User) {
         firestoreManager.configure(withUID: user.uid)
         Task {
-            await firestoreManager.fetchScores { result in
+            let docRef = firestoreManager.userInfoRef
+            firestoreManager.fetchData(from: docRef) { (result: Result<UserInfo, RFError>) in
                 switch result {
-                case .success(let scores):
-                    print("已取得使用者分數 score: \(scores)")
+                case .success(let userInfo):
+                    print("did get userInfo: \(userInfo)")
+                    self.presentMyFridgeVC()
                 case .failure(let error):
                     print(error.localizedDescription)
+                    self.presentAvatarVC()
+                    
                 }
             }
         }
         Task {
-            await firestoreManager.fetchUserInfo { result in
+            let colRef = firestoreManager.scoresRef
+            firestoreManager.fetchDatas(from: colRef) { [self] (result: Result<[Score], RFError>) in
                 switch result {
-                case .success(let userInfo):
-                    guard userInfo != nil else {
-                        presentAvatarVC()
-                        return
+                case .success(let scores):
+                    if scores.count == 2 {
+                        print("user have all scores database")
+                    } else {
+                        // fail
+                        print("user's scores count is less than 2, setting up initial scores...")
+                        setupInitialScore()
                     }
-                    presentMyFridgeVC()
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
             }
         }
-        
     }
     
-    private func presentAvatarVC() {
-        DispatchQueue.main.async { [self] in
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
-                print("cannot get avatar vc")
-                return
+    private func setupInitialScore() {
+        Task {
+            for deleteWay in DeleteWay.allCases {
+                let docRef = firestoreManager.scoresRef.document(deleteWay.rawValue)
+                let initialScore = Score(number: 0)
+            
+                firestoreManager.updateDatas(to: docRef, with: initialScore) { result in
+                    switch result {
+                    case .success:
+                        print("update scores successfully")
+                    case .failure(let error):
+                        print("error: \(error)")
+                    }
+                }
             }
-            
-            guard let currentUser = accountManager.getCurrentUser() else {
-                print("cannot get current user")
-                return
-            }
-            
-            let userInfo = UserInfo(
-                uid: currentUser.uid,
-                name: currentUser.displayName ?? "unkown",
-                email: currentUser.email ?? "unknown",
-                avatar: "avatar-avocado",
-                accountStatus: 1
-            )
-            
-            avatarVC.mode = .setup
-            avatarVC.userInfo = userInfo
-            navigationController?.pushViewController(avatarVC, animated: true)
         }
     }
     
+    private func presentAvatarVC() {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        guard let avatarVC = storyboard.instantiateViewController(withIdentifier: "AvatarViewController") as? AvatarViewController else {
+            print("cannot get avatar vc")
+            return
+        }
+        
+        guard let currentUser = accountManager.getCurrentUser() else {
+            print("cannot get current user")
+            return
+        }
+        
+        let userInfo = UserInfo(
+            uid: currentUser.uid,
+            name: currentUser.displayName ?? "unkown",
+            email: currentUser.email ?? "unknown",
+            avatar: "avatar-avocado",
+            accountStatus: 1
+        )
+        
+        avatarVC.mode = .setup
+        avatarVC.userInfo = userInfo
+        navigationController?.pushViewController(avatarVC, animated: true)
+    }
+    
     private func presentMyFridgeVC() {
-        DispatchQueue.main.async {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if let initialViewController = storyboard.instantiateInitialViewController() {
-                initialViewController.modalPresentationStyle = .fullScreen
-                self.present(initialViewController, animated: false)
-            }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let initialViewController = storyboard.instantiateInitialViewController() {
+            self.view.window?.rootViewController = initialViewController
+            self.view.window?.makeKeyAndVisible()
         }
     }
     

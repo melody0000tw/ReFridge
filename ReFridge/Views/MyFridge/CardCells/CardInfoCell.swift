@@ -10,6 +10,7 @@ import UIKit
 protocol CardInfoCellDelegate: AnyObject {
     func didTappedBarcodeBtn()
     func didChangeCardInfo(foodCard: FoodCard)
+    func didTappedIconImg()
 }
 
 class CardInfoCell: UITableViewCell {
@@ -61,6 +62,9 @@ class CardInfoCell: UITableViewCell {
         dateBtn.tintColor = .C2
         expireDateTextField.delegate = self
         iconBgView.backgroundColor = .C1
+        let tapRecongnizer = UITapGestureRecognizer(target: self, action: #selector(didTappedIcon))
+        iconImage.isUserInteractionEnabled = true
+        iconImage.addGestureRecognizer(tapRecongnizer)
     }
     
     func setupData() {
@@ -98,6 +102,10 @@ class CardInfoCell: UITableViewCell {
         foodCard.expireDate = expiredDate
         expireDateTextField.text = formatter.string(from: expiredDate)
         expireDateTextField.resignFirstResponder()
+    }
+    
+    @objc func didTappedIcon() {
+        delegate?.didTappedIconImg()
     }
     
     // MARK: - MesureWordPicker

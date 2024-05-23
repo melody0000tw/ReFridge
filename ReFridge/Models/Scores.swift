@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct Scores: Codable {
-    let consumed: Int
-    let thrown: Int
+struct Score: Codable {
+    var number: Int
 }
 
-enum DeleteWay: String {
+struct Scores: Codable {
+    var consumed: Int
+    var thrown: Int
+}
+
+enum DeleteWay: String, CaseIterable {
     case consumed
     case thrown
 }

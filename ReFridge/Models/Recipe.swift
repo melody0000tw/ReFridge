@@ -25,6 +25,14 @@ struct Ingredient: Codable {
     let mesureWord: String
 }
 
+struct LikedRecipe: Codable {
+    let recipeId: String
+}
+
+struct FinishedRecipe: Codable {
+    let recipeId: String
+}
+
 struct RecipeData: Codable {
     static let share = RecipeData()
     var data: [Recipe] = [
